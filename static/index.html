@@ -12,11 +12,6 @@
   <meta http-equiv="Content-Type"
         content="text/html; charset=UTF-8" />
   <style>
-    video {
-      width:  320px;
-      height:  240px;
-      border:  1px solid black;
-    }
     div {
       display:  inline-block;
     }
@@ -38,15 +33,10 @@
 
 <script>
 var signalingChannel, key, id,
-    haveLocalMedia = false,
     weWaited = false,
-    myVideoStream, myVideo, 
-    yourVideoStream, yourVideo,
     doNothing = function() {},
     pc, dc, data = {},
-    constraints = {mandatory: {
-                    OfferToReceiveAudio: true,
-                    OfferToReceiveVideo: true}};
+    constraints = {};
 
 ////////////////////////////
 // This is the main routine.
@@ -61,15 +51,6 @@ window.onload = function () {
     document.getElementById("key").value = queryparams['key'];
     connect();
   }
-
-  myVideo = document.getElementById("myVideo");
-  yourVideo = document.getElementById("yourVideo");
-  
-  getMedia();
-
-  //  connect() calls createPC() when connected.
-  //  attachMedia() is called when both createPC() and getMedia()
-  //  have succeeded.
 };
 
 
@@ -154,29 +135,6 @@ function send(msg) {
 }
 
 
-/////////////////////////////
-// This next section is for getting local media
-/////////////////////////////
-
-function getMedia() {
-  getUserMedia({"audio":true, "video":true},
-               gotUserMedia, didntGetUserMedia);
-}
-
-function gotUserMedia(stream) {
-  myVideoStream = stream;
-  haveLocalMedia = true;
-
-  // display my local video to me
-  attachMediaStream(myVideo, myVideoStream);
-  // wait for RTCPeerConnection to be created
-  attachMediaIfReady();
-}
-
-function didntGetUserMedia() {
-  console.log("couldn't get video");
-}
-
 //////////////////////////////
 // This next section is for setting up the RTC Peer Connection
 //////////////////////////////
@@ -240,7 +198,7 @@ function onIceCandidate(e) {
 // media stream, show it on screen
 function onRemoteStreamAdded(e) {
   yourVideoStream = e.stream;
-  attachMediaStream(yourVideo, yourVideoStream);
+  //attachMediaStream(yourVideo, yourVideoStream);
   setStatus("On call");
 }
 
@@ -254,7 +212,6 @@ function onRemoteStreamRemoved(e) {}
 function onDataChannelAdded(e) {
     dc = e.channel;
     setupDataHandlers();
-    sendChat("hello");
 }
 
 //Set up the datachanner message handler
@@ -286,43 +243,27 @@ function setupDataHandlers() {
             } else if (msg.storeData) {
                 console.log("Received data store message.");
                 dataBox.value  = msg.id + "\n" + msg.storeData;
+                //Make an object url out of the data
+                console.log(typeof(msg.storeData));
+                consol.log(blobURL);
+
             } else { 
                 console.log("received " + msg + "on data channel"); 
                 } 
                 }; 
     }
 
-//Send real-time text. Basically for every keyup event sent
-//the entire string so far as real-time message so it can be
-//displayed at each keyup.
-function sendRtt() {
-    var msg = document.getElementById("chat").value;
-    data.send({'rtt':msg});
-}
-
 
 function sendStoreMsg() {
-    var msg = new Blob(["This is a text blob"],{type: "text/plain"});
-    data.send({'id':'myId','storeData':msg});
+
+    //Get data from file chosen
+    var file = document.getElementById('share').files[0];
+
+    //var msg = new Blob(["This is a text blob"],{type: "text/plain"});
+    data.send({'id':uuid(),'storeData':file});
     console.log('Sent data object');
 }
 
-//Send  normal chat message, This happends when there is an enter
-// keyup event, meaning that the remote user has finished typing
-// a line. This is also used to send our inidividual hello message.
-function sendChat(msg) {
-    var cb = document.getElementById("chatbox"), 
-    c = document.getElementById("chat");
-
-    //display message locally, send it, and force chat window to 
-    // last line
-    msg = msg || c.value; 
-    console.log("sendChat(" + msg + ")"); 
-    cb.value += "-> " + msg + "\n"; 
-    data.send({'chat':msg}); 
-    c.value = ''; 
-    cb.scrollTop = cb.scrollHeight; 
-}
 
 ///////////////////////////////////
 // This next section is for attaching local media to the Peer
@@ -335,7 +276,7 @@ function sendChat(msg) {
 function attachMediaIfReady() {
   // If RTCPeerConnection is ready and we have local media,
   // proceed.
-  if (pc && haveLocalMedia) {attachMedia();}
+  if (pc) {attachMedia();}
 }
 
 // This routine adds our local media stream to the Peer
@@ -343,7 +284,7 @@ function attachMediaIfReady() {
 // All it does is to let the browser know to include this stream
 // in its next SDP description.
 function attachMedia() {
-  pc.addStream(myVideoStream);
+  
   setStatus("Ready for call");
 
   // auto-call if truthy value for call param in URI
@@ -382,6 +323,13 @@ function gotDescription(localDesc) {
   send(localDesc);
 }
 
+function uuid()
+{   /* Credit http://stackoverflow.com/a/2117523 */ 
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+    });
+}
 
 ////////////////////////////////////
 // This section is for changing the UI based on application
@@ -406,14 +354,10 @@ function setStatus(str) {
       statuslineE.style.display = "inline";
       statusE.innerHTML =
         "Waiting for peer signaling connection";
-      sendE.style.display = "none";
       connectE.style.display = "none";
       break;
     case 'Connected':
       statuslineE.style.display = "inline";
-      statusE.innerHTML =
-        "Peer signaling connected, waiting for local media";
-      sendE.style.display = "inline";
       connectE.style.display = "none";
       scMessageE.style.display = "inline-block";
       break;
@@ -427,6 +371,7 @@ function setStatus(str) {
       break;
     default:
   }
+
 }
 
 </script>
@@ -446,18 +391,11 @@ function setStatus(str) {
   </p>
 </div>
 
-<p>DataBox:</p>
 <p>Send data:</p>
+<input type="file" id="share" />
 <textarea onchange="sendStoreMsg()" id="dataBox"></textarea>
 
 <div id="scMessage" style="float:right;display:none">
-  <p>Signaling channel message:
-    <input type="text" width="100%" name="message" id="message"
-           onkeyup="if (event.keyCode == 13) {
-                      send(); return false;}"/>
-    <button id="send" style="display:none"
-            onclick="send()">Send</button>
-  </p>
 
   <p>Response:  <span id="response"></span></p>
 </div>
@@ -465,10 +403,6 @@ function setStatus(str) {
 <br/>
 
 <div style="width:30%;vertical-align:top">
-  <div>
-    <video id="myVideo" autoplay="autoplay" controls
-           muted="true"/>
-  </div>
   <p><b>Outgoing Messages</b>
      <br/>
      <textarea id="outmessages" rows="100"
@@ -476,24 +410,8 @@ function setStatus(str) {
   </p>
 </div>
 
-<div style="width:30%;vertical-align:top">
-    <textarea id="chatbox" rows="10" style="width:100%"></textarea>
-    <p style="width:100%"><b>Real-time:</b> 
-    <textarea id="rtt" rows="2" style="width:100%"></textarea> 
-    </p> 
-    <p style="width:100%"><b>Chat message:</b> 
-    <input type="text" style="width:100%" name="chat" id="chat" 
-    onkeyup="sendRtt(); 
-    if (event.keyCode == 13) { 
-        sendChat(); return false;}"/> 
-    </p> 
-    </div>
-</div>
 
 <div style="width:30%;vertical-align:top">
-  <div>
-    <video id="yourVideo" autoplay="autoplay" controls />
-  </div>
   <p><b>Incoming Messages</b>
      <br/>
      <textarea id="inmessages" rows="100"

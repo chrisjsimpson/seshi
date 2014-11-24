@@ -242,10 +242,13 @@ function setupDataHandlers() {
             cb.scrollTop = cb.scrollHeight; msg = msg.chat; 
             } else if (msg.storeData) {
                 console.log("Received data store message.");
-                dataBox.value  = msg.id + "\n" + msg.storeData;
+                //Create object url:
+                var blob = new Blob([msg.storeData], {type:'image/jpeg'});
+                var url = window.URL.createObjectURL(blob);
+                dataBox.value  = msg.id + "\n" + url;
                 //Make an object url out of the data
                 console.log(typeof(msg.storeData));
-                consol.log(blobURL);
+                //console.log(blobURL);
 
             } else { 
                 console.log("received " + msg + "on data channel"); 
@@ -254,16 +257,34 @@ function setupDataHandlers() {
     }
 
 
-function sendStoreMsg() {
+var sendStoreMsg = function(evt) {
 
     //Get data from file chosen
-    var file = document.getElementById('share').files[0];
+    var files = evt.target.files;
+    var file = files[0];
 
-    //var msg = new Blob(["This is a text blob"],{type: "text/plain"});
-    data.send({'id':uuid(),'storeData':file});
-    console.log('Sent data object');
+    var reader = new FileReader();
+    reader.onload = function(readerEvt) {
+        var binaryString = readerEvt.target.result;
+        //var msg = new Blob(["This is a text blob"],{type: "text/plain"});
+        //Base64encode data
+        //binaryString = utf8_to_b64(binaryString);
+        //binaryString = btoa(binaryString);
+        data.send({'id':uuid(),'storeData':binaryString});
+        console.log('Sent data object');
+    }
+
+    reader.readAsBinaryString(file);
+
 }
 
+function utf8_to_b64(str) {
+        return window.btoa(encodeURIComponent(escape(str)));
+}
+
+function b64_to_utf8(str) {
+        return unescape(decodeURIComponent(window.atob(str)));
+}
 
 ///////////////////////////////////
 // This next section is for attaching local media to the Peer
@@ -393,7 +414,7 @@ function setStatus(str) {
 
 <p>Send data:</p>
 <input type="file" id="share" />
-<textarea onchange="sendStoreMsg()" id="dataBox"></textarea>
+<textarea id="dataBox"></textarea>
 
 <div id="scMessage" style="float:right;display:none">
 
@@ -420,5 +441,9 @@ function setStatus(str) {
 </div>
 
 </body>
+<script>
+document.getElementById('share').addEventListener('change', sendStoreMsg, false);
+</script>
+
 </html>
 

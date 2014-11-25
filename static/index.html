@@ -18,6 +18,8 @@
   </style>
 </head>
 <body>
+<img />
+<div id="preview"></div>
 
 <!-- blank script section is placeholder for query params -->
 <script></script>
@@ -222,11 +224,22 @@ function setupDataHandlers() {
         dc.send(msg);
     }
     dc.onmessage = function(e) {
-        var msg = JSON.parse(e.data),
+        trace('Received Message: ' + event.data);
+        var blob = new Blob([event.data], {type:"text/plain"});
+        var reader = new FileReader();
+        reader.onload = function(file) {
+            if (reader.readyState == FileReader.DONE) {
+                var preview = document.getElementById('preview');
+                preview.innerHTML = file.target.result;
+                }
+            }
+        reader.readAsDataURL(blob);
+        
+
+        var msg = e.data, /* JSON.parse(e.data),*/
         cb = document.getElementById("chatbox");
         rtt = document.getElementById("rtt");
         dataBox = document.getElementById("dataBox");
-
     if(msg.rtt) {
         // if real-time-text (per keypress) message, display in 
         // real-time window 
@@ -242,16 +255,11 @@ function setupDataHandlers() {
             cb.scrollTop = cb.scrollHeight; msg = msg.chat; 
             } else if (msg.storeData) {
                 console.log("Received data store message.");
-                //Create object url:
-                var blob = new Blob([msg.storeData], {type:'image/jpeg'});
-                var url = window.URL.createObjectURL(blob);
-                dataBox.value  = msg.id + "\n" + url;
-                //Make an object url out of the data
-                console.log(typeof(msg.storeData));
                 //console.log(blobURL);
 
             } else { 
                 console.log("received " + msg + "on data channel"); 
+                console.log(typeof(msg.storeData));
                 } 
                 }; 
     }
@@ -263,19 +271,31 @@ var sendStoreMsg = function(evt) {
     var files = evt.target.files;
     var file = files[0];
 
-    var reader = new FileReader();
-    reader.onload = function(readerEvt) {
-        var binaryString = readerEvt.target.result;
-        //var msg = new Blob(["This is a text blob"],{type: "text/plain"});
-        //Base64encode data
-        //binaryString = utf8_to_b64(binaryString);
-        //binaryString = btoa(binaryString);
-        data.send({'id':uuid(),'storeData':binaryString});
-        console.log('Sent data object');
+    if(file) {
+        trace('Uploading file ' + file);
+        
+        var reader = new FileReader();
+            reader.onload = function(file) {
+                if ( reader.readyState == FileReader.DONE) {
+                    //base64encode it
+                    result = btoa(file.target.result);
+                    dc.send(file.target.result);
+                }
+            };
+            reader.readAsBinaryString(file);
+            console.log('Sent data object');
+    } else {
+        trace('Failed to get file for upload.');
     }
 
-    reader.readAsBinaryString(file);
+}
 
+function trace(text) {
+  // This function is used for logging.
+  if (text[text.length - 1] == '\n') {
+    text = text.substring(0, text.length - 1);
+  }
+  console.log((performance.now() / 1000).toFixed(3) + ": " + text);
 }
 
 function utf8_to_b64(str) {

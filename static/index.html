@@ -278,7 +278,7 @@ var sendStoreMsg = function(evt) {
             reader.onload = function(file) {
                 if ( reader.readyState == FileReader.DONE) {
                     //base64encode it
-                    result = btoa(file.target.result);
+                    result = file.target.result;
                     dc.send(file.target.result);
                 }
             };

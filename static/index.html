@@ -225,7 +225,7 @@ function setupDataHandlers() {
     }
     dc.onmessage = function(e) {
         trace('Received Message: ' + event.data);
-        var blob = new Blob([event.data], {type:"text/plain"});
+        var blob = new Blob([event.data], {type:"image/png"});
         var reader = new FileReader();
         reader.onload = function(file) {
             if (reader.readyState == FileReader.DONE) {

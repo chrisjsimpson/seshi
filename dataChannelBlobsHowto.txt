@@ -1,0 +1,41 @@
+Steps to send blobs over dataChannel:
+
+Support for sending Blobs does not exist yet, however "Binary support exists (using ArrayBuffer/ArrayBufferView). Blobs are the only thing not supported yet."(http://code.google.com/p/webrtc/issues/detail?id=2276)
+
+How to use ArrayBuffer/ArrayBufferView:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
+
+Note: You can not directly manipulate the contents of an ArrayBuffer; instead, you create one of the typed array objects or a DataView object which represents the buffer in a specific format, and use that to read and write the contents of the buffer.
+
+Steps (e.g. storing file object in ArrayBuffer):
+var file = files[0]; //file.size = 154
+var buffer = new ArrayBuffer(160); //size in bytes (must be divisable by 4)
+var view = new Int32Array(buffer); //view.byteLength = 160
+view = file; //store file in buffer. view.size is now 154 
+
+//Test locally accesability of the object by viewing it:
+url = window.URL.createObjectURL(view); //Creates local object URL to view file.
+
+//Send over datachannel:
+dc.send(view);
+
+in short:
+read file with Filereader() using readAsArrayBuffer(file)
+use reader.result (which is an arrayBuffer) and send that over the datachannel.
+dc.send(reader.result); //which is an ArrayBuffer and not a blob yet.
+At the receiving end, create the blob: 
+var blob = new Blob([reader.result], {type:"image/png"});
+
+
+
+
+
+
+
+
+
+
+
+
+
+

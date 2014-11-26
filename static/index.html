@@ -1,0 +1,647 @@
+<!--
+// Copyright 2013-2014 Digital Codex LLC
+// You may use this code for your own education.  If you use it
+// largely intact, or develop something from it, don't claim that
+// your code came first.  You are using this code completely at
+// your own risk.  If you rely on it to work in any particular
+// way, you're an idiot and we won't be held responsible.
+-->
+
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+        content="text/html; charset=UTF-8" />
+  <style>
+    div {
+      display:  inline-block;
+    }
+  </style>
+</head>
+<body>
+<img />
+<div id="preview"></div>
+
+<!-- blank script section is placeholder for query params -->
+<script></script>
+
+<!-- load polyfill, local copy first for local testing -->
+<script src="adapter.js" type="text/javascript"></script>
+
+
+<!-- load XHR-based signaling channel that direct connects based
+     on a key -->
+<script src="clientXHRSignalingChannel.js"
+        type="text/javascript"></script>
+
+<script>
+var signalingChannel, key, id,
+    weWaited = false,
+    doNothing = function() {},
+    pc, dc, data = {},
+    constraints = {};
+
+////////////////////////////
+// This is the main routine.
+////////////////////////////
+
+// This kicks off acquisition of local media.  Also, it can
+// automatically start the signaling channel.
+window.onload = function () {
+
+  // auto-connect signaling channel if key provided in URI
+  if (queryparams && queryparams['key']) {
+    document.getElementById("key").value = queryparams['key'];
+    connect();
+  }
+};
+
+
+/////////////////////
+// This next section is for setting up the signaling channel.
+/////////////////////
+
+// This routine connects to the web server and sets up the
+// signaling channel.  It is called either automatically on doc
+// load or when the user clicks on the "Connect" button.
+function connect() {
+  var errorCB, scHandlers, handleMsg;
+
+  // First, get the key used to connect
+  key = document.getElementById("key").value;
+
+  // This is the handler for all messages received on the
+  // signaling channel.
+  handleMsg = function (msg) {
+    // First, we clean up the message and post it on-screen
+    var msgE = document.getElementById("inmessages");
+    var msgString = JSON.stringify(msg).replace(/\\r\\n/g,'\n');
+    msgE.value = msgString + "\n" + msgE.value;
+
+    // Then, we take action based on the kind of message
+    if (msg.type === "offer") {
+      pc.setRemoteDescription(new RTCSessionDescription(msg));
+      answer();
+    } else if (msg.type === "answer") {
+      pc.setRemoteDescription(new RTCSessionDescription(msg));
+    } else if (msg.type === "candidate") {
+      pc.addIceCandidate(
+        new RTCIceCandidate({sdpMLineIndex:msg.mlineindex,
+                             candidate:msg.candidate}));
+    }
+  };
+
+  // handlers for signaling channel
+  scHandlers = {
+    'onWaiting' : function () {
+      setStatus("Waiting");
+      // weWaited will be used later for auto-call
+      weWaited = true;
+    },
+    'onConnected': function () {
+      setStatus("Connected");
+      // set up the RTC Peer Connection since we're connected
+      createPC();
+    },
+    'onMessage': handleMsg
+  };
+
+  // Finally, create signaling channel
+  signalingChannel = createSignalingChannel(key, scHandlers);
+  errorCB = function (msg) {
+    document.getElementById("response").innerHTML = msg;
+  };
+
+  // and connect.
+  signalingChannel.connect(errorCB);
+}
+
+
+// This routine sends a message on the signaling channel, either
+// by explicit call or by the user clicking on the Send button.
+function send(msg) {
+  var handler = function (res) {
+    document.getElementById("response").innerHTML = res;
+    return;
+  },
+
+  // Get message if not passed in
+  msg = msg || document.getElementById("message").value;
+
+  // Clean it up and post it on-screen
+  msgE = document.getElementById("outmessages");
+  var msgString = JSON.stringify(msg).replace(/\\r\\n/g,'\n');
+  msgE.value = msgString + "\n" + msgE.value;
+
+  // and send on signaling channel
+  signalingChannel.send(msg, handler);
+}
+
+
+//////////////////////////////
+// This next section is for setting up the RTC Peer Connection
+//////////////////////////////
+
+function createPC() {
+  var stunuri = true,
+      turnuri = false,
+      myfalse = function(v) {
+                  return ((v==="0")||(v==="false")||(!v)); },
+      config = new Array();
+
+  // adjust config string based on any query params
+  if (queryparams) {
+    if ('stunuri' in queryparams) {
+      stunuri = !myfalse(queryparams['stunuri']);
+    }
+    if ('turnuri' in queryparams) {
+      turnuri = !myfalse(queryparams['turnuri']);
+    };
+  };
+
+  if (stunuri) {
+    // this is one of Google's public STUN servers
+    config.push({"url":"stun:stun.l.google.com:19302"});
+  }
+  if (turnuri) {
+    if (stunuri) {
+      // can't use TURN-only TURN server in this case because of
+      // bug in Chrome that causes STUN server responses to be
+      // ignored, so we use TURN server that also does STUN
+      config.push({"url":"turn:user@turn.webrtcbook.com",
+                   "credential":"test"});
+    } else {
+      // this is our TURN-only TURN server
+      config.push({"url":"turn:user@turn-only.webrtcbook.com",
+                   "credential":"test"});
+    }
+  }
+  console.log("config = " + JSON.stringify(config));
+
+  pc = new RTCPeerConnection({iceServers:config});
+  pc.onicecandidate = onIceCandidate;
+  pc.onaddstream = onRemoteStreamAdded;
+  pc.onremovestream = onRemoteStreamRemoved;
+  pc.ondatachannel = onDataChannelAdded;
+
+  // wait for local media to be ready
+  attachMediaIfReady();
+}
+
+// When our browser has another candidate, send it to the peer
+function onIceCandidate(e) {
+  if (e.candidate) {
+    send({type:  'candidate',
+          mlineindex:  e.candidate.sdpMLineIndex,
+          candidate:  e.candidate.candidate});
+  }
+}
+
+// When our browser detects that the other side has added the
+// media stream, show it on screen
+function onRemoteStreamAdded(e) {
+  yourVideoStream = e.stream;
+  //attachMediaStream(yourVideo, yourVideoStream);
+  setStatus("On call");
+}
+
+// Yes, we do nothing if the remote side removes the stream.
+// This is a *simple* demo, after all.
+function onRemoteStreamRemoved(e) {}
+
+//When our browser detects that the other side has added the 
+//data channel, save it, set up handlers, and send welcome
+// message
+function onDataChannelAdded(e) {
+    dc = e.channel;
+    setupDataHandlers();
+}
+
+//Set up the datachanner message handler
+function setupDataHandlers() {
+    data.send = function(msg) {
+        msg = JSON.stringify(msg);
+        console.log("Sending: " + msg + " over data channel");
+        dc.send(msg);
+    }
+    dc.onmessage = function(e) {
+        trace('Received Message: ' + event.data);
+        var blob = new Blob([event.data], {type:"image/png"});
+        var reader = new FileReader();
+        reader.onload = function(file) {
+            if (reader.readyState == FileReader.DONE) {
+                var preview = document.getElementById('preview');
+                preview.innerHTML = file.target.result;
+                }
+            }
+        reader.readAsDataURL(blob);
+        
+
+        var msg = e.data; /* JSON.parse(e.data),*/
+        //Catch ArrayBuffer sent through the datachannel
+        var blob = new Blob([msg], {type:"image/png"});
+        //Create ObjectURL to recieved data
+        var url = window.URL.createObjectURL(blob);
+        console.log(url);
+        cb = document.getElementById("chatbox");
+        rtt = document.getElementById("rtt");
+        dataBox = document.getElementById("dataBox");
+    if(msg.rtt) {
+        // if real-time-text (per keypress) message, display in 
+        // real-time window 
+        console.log("received rtt of '" + msg.rtt + "'"); 
+        rtt.value = msg.rtt; msg = msg.rtt; 
+        } else if (msg.chat) { 
+            // if full message, display in chat window, 
+            // reset real-time window, 
+            // and force chat window to last line 
+            console.log("received chat of '" + msg.chat + "'"); 
+            cb.value += "<- " + msg.chat + "\n"; 
+            rtt.value = ""; 
+            cb.scrollTop = cb.scrollHeight; msg = msg.chat; 
+            } else if (msg.storeData) {
+                console.log("Received data store message.");
+                //console.log(blobURL);
+
+            } else { 
+                console.log("received " + msg + "on data channel"); 
+                console.log(typeof(msg.storeData));
+                } 
+                }; 
+    }
+
+
+var sendStoreMsg = function(evt) {
+
+    //Get data from file chosen
+    var files = evt.target.files;
+    var file = files[0];
+
+    if(file) {
+        trace('Uploading file ' + file);
+        
+        var reader = new FileReader();
+            reader.onload = function(file) {
+                if ( reader.readyState == FileReader.DONE) {
+                    //base64encode it
+                    result = file.target.result;
+                    dc.send(file.target.result);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+            console.log('Sent data object');
+    } else {
+        trace('Failed to get file for upload.');
+    }
+
+}
+
+function trace(text) {
+  // This function is used for logging.
+  if (text[text.length - 1] == '\n') {
+    text = text.substring(0, text.length - 1);
+  }
+  console.log((performance.now() / 1000).toFixed(3) + ": " + text);
+}
+
+function utf8_to_b64(str) {
+        return window.btoa(encodeURIComponent(escape(str)));
+}
+
+function b64_to_utf8(str) {
+        return unescape(decodeURIComponent(window.atob(str)));
+}
+
+///////////////////////////////////
+// This next section is for attaching local media to the Peer
+// Connection.
+///////////////////////////////////
+
+// This guard routine effectively synchronizes completion of two
+// async activities:  the creation of the Peer Connection and
+// acquisition of local media.
+function attachMediaIfReady() {
+  // If RTCPeerConnection is ready and we have local media,
+  // proceed.
+  if (pc) {attachMedia();}
+}
+
+// This routine adds our local media stream to the Peer
+// Connection.  Note that this does not cause any media to flow.
+// All it does is to let the browser know to include this stream
+// in its next SDP description.
+function attachMedia() {
+  
+  setStatus("Ready for call");
+
+  // auto-call if truthy value for call param in URI
+  // but also make sure we were the last to connect (to increase
+  // chances that everything is set up properly at both ends)
+  if (queryparams && queryparams['call'] && !weWaited) {
+    call();
+  }
+
+}
+
+
+////////////////////////////
+// This next section is for calling and answering
+////////////////////////////
+
+// This generates the session description for an offer
+function call() {
+  dc = pc.createDataChannel('chat');
+  setupDataHandlers();
+  pc.createOffer(gotDescription, doNothing, constraints);
+}
+
+// and this generates it for an answer.
+function answer() {
+  pc.createAnswer(gotDescription, doNothing, constraints);
+}
+
+// In either case, once we get the session description we tell
+// our browser to use it as our local description and then send
+// it to the other browser.  It is the setting of the local
+// description that allows the browser to send media and prepare
+// to receive from the other side.
+function gotDescription(localDesc) {
+  pc.setLocalDescription(localDesc);
+  send(localDesc);
+}
+
+function uuid()
+{   /* Credit http://stackoverflow.com/a/2117523 */ 
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+    });
+}
+
+////////////////////////////////////
+// This section is for changing the UI based on application
+// progress.
+////////////////////////////////////
+
+// This function hides, displays, and fills various UI elements
+// to give the user some idea of how the browser is progressing
+// at setting up the signaling channel, getting local media,
+// creating the peer connection, and actually connecting
+// media (calling).
+function setStatus(str) {
+  var statuslineE = document.getElementById("statusline"),
+      statusE = document.getElementById("status"),
+      sendE = document.getElementById("send"),
+      connectE = document.getElementById("connect"),
+      callE = document.getElementById("call"),
+      scMessageE = document.getElementById("scMessage");
+
+  switch (str) {
+    case 'Waiting':
+      statuslineE.style.display = "inline";
+      statusE.innerHTML =
+        "Waiting for peer signaling connection";
+      connectE.style.display = "none";
+      break;
+    case 'Connected':
+      statuslineE.style.display = "inline";
+      connectE.style.display = "none";
+      scMessageE.style.display = "inline-block";
+      break;
+    case 'Ready for call':
+      statusE.innerHTML = "Ready for call";
+      callE.style.display = "inline";
+      break;
+    case 'On call':
+      statusE.innerHTML = "On call";
+      callE.style.display = "none";
+      break;
+    default:
+  }
+
+}
+
+"use strict";
+
+/*\
+|*|
+|*|  Base64 / binary data / UTF-8 strings utilities
+|*|
+|*|  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Base64_encoding_and_decoding
+|*|
+\*/
+
+/* Array of bytes to base64 string decoding */
+
+function b64ToUint6 (nChr) {
+
+  return nChr > 64 && nChr < 91 ?
+      nChr - 65
+    : nChr > 96 && nChr < 123 ?
+      nChr - 71
+    : nChr > 47 && nChr < 58 ?
+      nChr + 4
+    : nChr === 43 ?
+      62
+    : nChr === 47 ?
+      63
+    :
+      0;
+
+}
+
+function base64DecToArr (sBase64, nBlocksSize) {
+
+  var
+    sB64Enc = sBase64.replace(/[^A-Za-z0-9\+\/]/g, ""), nInLen = sB64Enc.length,
+    nOutLen = nBlocksSize ? Math.ceil((nInLen * 3 + 1 >> 2) / nBlocksSize) * nBlocksSize : nInLen * 3 + 1 >> 2, taBytes = new Uint8Array(nOutLen);
+
+  for (var nMod3, nMod4, nUint24 = 0, nOutIdx = 0, nInIdx = 0; nInIdx < nInLen; nInIdx++) {
+    nMod4 = nInIdx & 3;
+    nUint24 |= b64ToUint6(sB64Enc.charCodeAt(nInIdx)) << 18 - 6 * nMod4;
+    if (nMod4 === 3 || nInLen - nInIdx === 1) {
+      for (nMod3 = 0; nMod3 < 3 && nOutIdx < nOutLen; nMod3++, nOutIdx++) {
+        taBytes[nOutIdx] = nUint24 >>> (16 >>> nMod3 & 24) & 255;
+      }
+      nUint24 = 0;
+
+    }
+  }
+
+  return taBytes;
+}
+
+/* Base64 string to array encoding */
+
+function uint6ToB64 (nUint6) {
+
+  return nUint6 < 26 ?
+      nUint6 + 65
+    : nUint6 < 52 ?
+      nUint6 + 71
+    : nUint6 < 62 ?
+      nUint6 - 4
+    : nUint6 === 62 ?
+      43
+    : nUint6 === 63 ?
+      47
+    :
+      65;
+
+}
+
+function base64EncArr (aBytes) {
+
+  var nMod3 = 2, sB64Enc = "";
+
+  for (var nLen = aBytes.length, nUint24 = 0, nIdx = 0; nIdx < nLen; nIdx++) {
+    nMod3 = nIdx % 3;
+    if (nIdx > 0 && (nIdx * 4 / 3) % 76 === 0) { sB64Enc += "\r\n"; }
+    nUint24 |= aBytes[nIdx] << (16 >>> nMod3 & 24);
+    if (nMod3 === 2 || aBytes.length - nIdx === 1) {
+      sB64Enc += String.fromCharCode(uint6ToB64(nUint24 >>> 18 & 63), uint6ToB64(nUint24 >>> 12 & 63), uint6ToB64(nUint24 >>> 6 & 63), uint6ToB64(nUint24 & 63));
+      nUint24 = 0;
+    }
+  }
+
+  return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? '' : nMod3 === 1 ? '=' : '==');
+
+}
+
+/* UTF-8 array to DOMString and vice versa */
+
+function UTF8ArrToStr (aBytes) {
+
+  var sView = "";
+
+  for (var nPart, nLen = aBytes.length, nIdx = 0; nIdx < nLen; nIdx++) {
+    nPart = aBytes[nIdx];
+    sView += String.fromCharCode(
+      nPart > 251 && nPart < 254 && nIdx + 5 < nLen ? /* six bytes */
+        /* (nPart - 252 << 30) may be not so safe in ECMAScript! So...: */
+        (nPart - 252) * 1073741824 + (aBytes[++nIdx] - 128 << 24) + (aBytes[++nIdx] - 128 << 18) + (aBytes[++nIdx] - 128 << 12) + (aBytes[++nIdx] - 128 << 6) + aBytes[++nIdx] - 128
+      : nPart > 247 && nPart < 252 && nIdx + 4 < nLen ? /* five bytes */
+        (nPart - 248 << 24) + (aBytes[++nIdx] - 128 << 18) + (aBytes[++nIdx] - 128 << 12) + (aBytes[++nIdx] - 128 << 6) + aBytes[++nIdx] - 128
+      : nPart > 239 && nPart < 248 && nIdx + 3 < nLen ? /* four bytes */
+        (nPart - 240 << 18) + (aBytes[++nIdx] - 128 << 12) + (aBytes[++nIdx] - 128 << 6) + aBytes[++nIdx] - 128
+      : nPart > 223 && nPart < 240 && nIdx + 2 < nLen ? /* three bytes */
+        (nPart - 224 << 12) + (aBytes[++nIdx] - 128 << 6) + aBytes[++nIdx] - 128
+      : nPart > 191 && nPart < 224 && nIdx + 1 < nLen ? /* two bytes */
+        (nPart - 192 << 6) + aBytes[++nIdx] - 128
+      : /* nPart < 127 ? */ /* one byte */
+        nPart
+    );
+  }
+
+  return sView;
+
+}
+
+function strToUTF8Arr (sDOMStr) {
+
+  var aBytes, nChr, nStrLen = sDOMStr.length, nArrLen = 0;
+
+  /* mapping... */
+
+  for (var nMapIdx = 0; nMapIdx < nStrLen; nMapIdx++) {
+    nChr = sDOMStr.charCodeAt(nMapIdx);
+    nArrLen += nChr < 0x80 ? 1 : nChr < 0x800 ? 2 : nChr < 0x10000 ? 3 : nChr < 0x200000 ? 4 : nChr < 0x4000000 ? 5 : 6;
+  }
+
+  aBytes = new Uint8Array(nArrLen);
+
+  /* transcription... */
+
+  for (var nIdx = 0, nChrIdx = 0; nIdx < nArrLen; nChrIdx++) {
+    nChr = sDOMStr.charCodeAt(nChrIdx);
+    if (nChr < 128) {
+      /* one byte */
+      aBytes[nIdx++] = nChr;
+    } else if (nChr < 0x800) {
+      /* two bytes */
+      aBytes[nIdx++] = 192 + (nChr >>> 6);
+      aBytes[nIdx++] = 128 + (nChr & 63);
+    } else if (nChr < 0x10000) {
+      /* three bytes */
+      aBytes[nIdx++] = 224 + (nChr >>> 12);
+      aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+      aBytes[nIdx++] = 128 + (nChr & 63);
+    } else if (nChr < 0x200000) {
+      /* four bytes */
+      aBytes[nIdx++] = 240 + (nChr >>> 18);
+      aBytes[nIdx++] = 128 + (nChr >>> 12 & 63);
+      aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+      aBytes[nIdx++] = 128 + (nChr & 63);
+    } else if (nChr < 0x4000000) {
+      /* five bytes */
+      aBytes[nIdx++] = 248 + (nChr >>> 24);
+      aBytes[nIdx++] = 128 + (nChr >>> 18 & 63);
+      aBytes[nIdx++] = 128 + (nChr >>> 12 & 63);
+      aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+      aBytes[nIdx++] = 128 + (nChr & 63);
+    } else /* if (nChr <= 0x7fffffff) */ {
+      /* six bytes */
+      aBytes[nIdx++] = 252 + (nChr >>> 30);
+      aBytes[nIdx++] = 128 + (nChr >>> 24 & 63);
+      aBytes[nIdx++] = 128 + (nChr >>> 18 & 63);
+      aBytes[nIdx++] = 128 + (nChr >>> 12 & 63);
+      aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+      aBytes[nIdx++] = 128 + (nChr & 63);
+    }
+  }
+
+  return aBytes;
+
+}
+
+</script>
+
+<div id="setup">
+  <p>WebRTC Book Demo (local media, signaling, and peer connection, and data channel)</p>
+  <p>Key:
+    <input type="text" name="key" id="key"
+           onkeyup="if (event.keyCode == 13) {
+                      connect(); return false;}"/>
+    <button id="connect" onclick="connect()">Connect</button>
+    <span id="statusline" style="display:none">Status:
+      <span id="status">Disconnected</span>
+    </span>
+    <button id="call" style="display:none"
+            onclick = "call()">Call</button>
+  </p>
+</div>
+
+<p>Send data:</p>
+<input type="file" id="share" />
+<textarea id="dataBox"></textarea>
+
+<div id="scMessage" style="float:right;display:none">
+
+  <p>Response:  <span id="response"></span></p>
+</div>
+
+<br/>
+
+<div style="width:30%;vertical-align:top">
+  <p><b>Outgoing Messages</b>
+     <br/>
+     <textarea id="outmessages" rows="100"
+               style="width:100%"></textarea>
+  </p>
+</div>
+
+
+<div style="width:30%;vertical-align:top">
+  <p><b>Incoming Messages</b>
+     <br/>
+     <textarea id="inmessages" rows="100"
+               style="width:100%"></textarea>
+  </p>
+</div>
+
+</body>
+<script>
+document.getElementById('share').addEventListener('change', sendStoreMsg, false);
+</script>
+
+</html>
+

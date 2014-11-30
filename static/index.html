@@ -38,7 +38,8 @@ var signalingChannel, key, id,
     weWaited = false,
     doNothing = function() {},
     pc, dc, data = {},
-    constraints = {};
+    constraints = {},
+    fileMeta = {"name":null,"type":null,"size":null};
 
 ////////////////////////////
 // This is the main routine.
@@ -225,6 +226,19 @@ function setupDataHandlers() {
     }
     dc.onmessage = function(e) {
         trace('Received Message: ' + event.data);
+
+        //Check if message is an array buffer (data)
+        if( event.data instanceof ArrayBuffer){
+            console.log('Recieved ArrayBuffer message');
+        } else {
+            if(JSON.parse(event.data))
+            {   
+                var fileMeta = JSON.parse(event.data);
+                console.log('Got file meta');
+                fileType = fileMeta.type;
+            }
+        }//End get fileMeta
+
         var blob = new Blob([event.data], {type:"image/png"});
         var reader = new FileReader();
         reader.onload = function(file) {
@@ -277,6 +291,9 @@ var sendStoreMsg = function(evt) {
     var file = files[0];
 
     if(file) {
+        //Get file metadata
+        trace('File meta: ' + 'Name: ' + fileMeta.name + 
+                ' Type: ' + fileMeta.type + ' Size: ' + fileMeta.size);
         trace('Uploading file ' + file);
         
         var reader = new FileReader();
@@ -287,6 +304,9 @@ var sendStoreMsg = function(evt) {
                     dc.send(file.target.result);
                 }
             };
+            //Send meta data
+            fileMeta = JSON.stringify(fileMeta).replace(/\\r\\n/g,'\n');
+            dc.send(fileMeta);
             reader.readAsArrayBuffer(file);
             console.log('Sent data object');
     } else {

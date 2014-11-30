@@ -39,7 +39,7 @@ var signalingChannel, key, id,
     doNothing = function() {},
     pc, dc, data = {},
     constraints = {},
-    fileMeta = {"name":null,"type":null,"size":null};
+    fileMeta = {};
 
 ////////////////////////////
 // This is the main routine.
@@ -251,7 +251,7 @@ function setupDataHandlers() {
 
         var msg = e.data; /* JSON.parse(e.data),*/
         //Catch ArrayBuffer sent through the datachannel
-        var blob = new Blob([msg], {type:"image/png"});
+        var blob = new Blob([msg], {type:fileMeta.type});
         //Create ObjectURL to recieved data
         var url = window.URL.createObjectURL(blob);
         console.log(url);
@@ -291,6 +291,7 @@ var sendStoreMsg = function(evt) {
 
     if(file) {
         //Get file metadata
+        fileMeta = file;
         trace('File meta: ' + 'Name: ' + fileMeta.name + 
                 ' Type: ' + fileMeta.type + ' Size: ' + fileMeta.size);
         trace('Uploading file ' + file);

@@ -233,13 +233,12 @@ function setupDataHandlers() {
         } else {
             if(JSON.parse(event.data))
             {   
-                var fileMeta = JSON.parse(event.data);
+                fileMeta = JSON.parse(event.data);
                 console.log('Got file meta');
-                fileType = fileMeta.type;
             }
         }//End get fileMeta
 
-        var blob = new Blob([event.data], {type:"image/png"});
+        var blob = new Blob([event.data], {type:fileMeta.type});
         var reader = new FileReader();
         reader.onload = function(file) {
             if (reader.readyState == FileReader.DONE) {

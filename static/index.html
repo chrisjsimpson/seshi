@@ -230,23 +230,23 @@ function setupDataHandlers() {
         //Check if message is an array buffer (data)
         if( event.data instanceof ArrayBuffer){
             console.log('Recieved ArrayBuffer message');
-        } else {
+            var blob = new Blob([event.data], {type:fileMeta.type});
+            var reader = new FileReader();
+            reader.onload = function(file) {
+                if (reader.readyState == FileReader.DONE) {
+                    var preview = document.getElementById('preview');
+                    preview.innerHTML = file.target.result;
+                    }
+                }
+            reader.readAsDataURL(blob);
+        } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
             {   
                 fileMeta = JSON.parse(event.data);
                 console.log('Got file meta');
             }
-        }//End get fileMeta
+        }//End determin if data message or control message.  
 
-        var blob = new Blob([event.data], {type:fileMeta.type});
-        var reader = new FileReader();
-        reader.onload = function(file) {
-            if (reader.readyState == FileReader.DONE) {
-                var preview = document.getElementById('preview');
-                preview.innerHTML = file.target.result;
-                }
-            }
-        reader.readAsDataURL(blob);
         
 
         var msg = e.data; /* JSON.parse(e.data),*/

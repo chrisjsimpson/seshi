@@ -230,15 +230,12 @@ function setupDataHandlers() {
         //Check if message is an array buffer (data)
         if( event.data instanceof ArrayBuffer){
             console.log('Recieved ArrayBuffer message');
+            //Catch ArrayBuffer sent through the datachannel
             var blob = new Blob([event.data], {type:fileMeta.type});
-            var reader = new FileReader();
-            reader.onload = function(file) {
-                if (reader.readyState == FileReader.DONE) {
-                    var preview = document.getElementById('preview');
-                    preview.innerHTML = file.target.result;
-                    }
-                }
-            reader.readAsDataURL(blob);
+            //Create ObjectURL to recieved data
+            var url = window.URL.createObjectURL(blob);
+            console.log(url);
+            window.open(url);
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
             {   
@@ -250,11 +247,6 @@ function setupDataHandlers() {
         
 
         var msg = e.data; /* JSON.parse(e.data),*/
-        //Catch ArrayBuffer sent through the datachannel
-        var blob = new Blob([msg], {type:fileMeta.type});
-        //Create ObjectURL to recieved data
-        var url = window.URL.createObjectURL(blob);
-        console.log(url);
         cb = document.getElementById("chatbox");
         rtt = document.getElementById("rtt");
         dataBox = document.getElementById("dataBox");

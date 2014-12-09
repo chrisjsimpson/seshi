@@ -1,23 +1,117 @@
 <input type="file" onchange="previewFile()"><br>
-<img src="" height="200" alt="Image preview...">
+<img src="" id="first" height="200" alt="Image preview...">
+<img src="" id="copy" height="200" alt="Image copy...">
 
 <script type="text/javascript">
 
 function previewFile() {
-  var preview = document.querySelector('img');
+  var preview = document.getElementById('first');
+  var copy = document.getElementById('copy');
   var file    = document.querySelector('input[type=file]').files[0];
   var reader  = new FileReader();
 
   reader.onloadend = function () {
-    preview.src = reader.result;
+    preview.src = reader.address;
   }
 
+
   if (file) {
-    //reader.readAsDataURL(file);
+    
+    //Get file size
+    log("File size is: " + file.size);
+    var fileSize = file.size;
+
+    //Work out number of chunks needed
+    var maxChunkSize = 6451200; //bytes
+    log("Chunk size is set to: " + maxChunkSize + " bytes.");
+    var numChunksNeeded = Math.ceil(fileSize/maxChunkSize);
+    log("We need " + numChunksNeeded + " chunks. (" + fileSize +"/" + maxChunkSize + ")");
+
+
+    //Create FileReader (to read file)
+    reader.onload = function(file) {
+        if ( reader.readyState == FileReader.DONE) 
+        {
+            //Good place for chunking???
+            if ( reader.result instanceof ArrayBuffer )
+            {
+                //Create blob from ArrayBuffer
+                var blob = new Blob([reader.result], {type: "image/png"});
+                reader.address = window.URL.createObjectURL(blob);
+                
+                //Chunks array
+                var chunks = [];
+                var start = 0;
+                var end = maxChunkSize;
+                
+                //Begin chunking
+                for(var i=0; i<= numChunksNeeded; i++)
+                {
+                    chunks[i] = blob.slice(start, end);   
+
+                    //Incriment start by maxChunkSize
+                    start = start + maxChunkSize;
+                    end = end + maxChunkSize;
+                }//End create chunks
+
+                //Reassemble
+                reassemble(chunks);
+
+            }//End if arraybuffer (read entire file complete)
+        }//End reader readyState == DONE
+    }
+
     reader.readAsArrayBuffer(file);
   } else {
     preview.src = "";
   }
+}
+
+
+function reassemble(chunks) {
+  
+  var reader2  = new FileReader();
+  reader2.onloadend = function () {
+      copy.src = reader2.address;
+  }
+
+    log("Re-assembling chunks...");
+
+    var sizeNeeded = 0;
+
+    //Work out how large arrayBuffer needs to be
+    // to re-creat entire file.
+    for ( var i=0; i< chunks.length; i++ )
+    {
+        sizeNeeded = sizeNeeded + chunks[i].size;
+    }//End calculate size
+    
+    log("Size needed is: " + sizeNeeded);
+    //Create new arrayBuffer of sizeNeeded
+        //Make divisable by ten
+    //sizeNeeded = Math.round(sizeNeeded/10)*100;
+    
+    var completeFile = new Blob(chunks);
+
+    reader2.onload = function(file)
+    {
+        if (reader2.readyState == FileReader.DONE)
+        {
+            file.result;
+            //Create blob from ArrayBuffer
+            var blob = new Blob([reader2.result], {type: "image/png"});
+            reader2.address = window.URL.createObjectURL(blob);
+            // Set src of copy img to this Blob url
+
+        }
+    }//End on reading copy file load
+
+    reader2.readAsArrayBuffer(completeFile);
+
+}//End reassemble(chunks)
+
+function log(text) {
+    console.log(text);
 }
 
 </script>

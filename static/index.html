@@ -260,7 +260,7 @@ function setupDataHandlers() {
             // reset real-time window, 
             // and force chat window to last line 
             console.log("received chat of '" + msg.chat + "'"); 
-            cb.value += "<- " + msg.chat + "\n"; 
+            cb.value += msg.chat + "\n"; 
             rtt.value = ""; 
             cb.scrollTop = cb.scrollHeight; msg = msg.chat; 
             } else if (msg.storeData) {
@@ -287,28 +287,49 @@ var sendStoreMsg = function(evt) {
         trace('File meta: ' + 'Name: ' + fileMeta.name + 
                 ' Type: ' + fileMeta.type + ' Size: ' + fileMeta.size);
         trace('Uploading file ' + file);
-        //Send meta data
-        fileMeta = JSON.stringify(fileMeta).replace(/\\r\\n/g,'\n');
-        dc.send(fileMeta);
         
         
         var reader = new FileReader();
-        reader.readAsArrayBuffer(file);
-
-
-        //Get file size
-        log("File size is: " + file.size);
-        var fileSize = file.size;
-
-        
             reader.onload = function(file) {
                 if ( reader.readyState == FileReader.DONE) {
-                    //base64encode it
                     result = file.target.result;
+                    //Get file size
+                    console.log("File size is: " + result.byteLength);
+                    var fileSize = result.byteLength;
+                    //Begin chunking...
+                    //Work out number of chunks needed
+                    var maxChunkSize = 64512; //bytes
+                    console.log("Chunk size is set to: " + maxChunkSize + " bytes.");
+                    var numChunksNeeded = Math.ceil(fileSize/maxChunkSize);
+                    console.log("We need " + numChunksNeeded + " chunks. (" + fileSize +"/" + maxChunkSize + ")");
+
+                    var chunks = [];
+                    var start = 0;
+                    var end = maxChunkSize;
+                    //Create blob from ArrayBuffer
+                    var blob = new Blob([reader.result], {type: "image/png"});
+                    reader.address = window.URL.createObjectURL(blob);
+
+                    //Begin chunking
+                    for(var i=0; i<= numChunksNeeded; i++)
+                    {
+                        chunks[i] = blob.slice(start, end);
+                        //Incriment start by maxChunkSize
+                        start = start + maxChunkSize;
+                    }//End create chunks
+
                     dc.send(file.target.result);
-                }
+                }//End file reader.readstate == FileReader.DONE
             };
-            console.log('Sent data object');
+        //Send meta data
+        fileMeta = JSON.stringify(fileMeta).replace(/\\r\\n/g,'\n');
+        dc.send(fileMeta);
+        reader.readAsArrayBuffer(file);
+        console.log('Sent data object');
+
+
+
+        
     } else {
         trace('Failed to get file for upload.');
     }

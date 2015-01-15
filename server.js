@@ -97,8 +97,8 @@ function serveFile(filepath, info) {
     if (err) {log(err.message);
               noHandlerErr(filepath, res);
               return;}
-    var readBuffer = new Buffer(20480);
-    fs.read(fd, readBuffer, 0, 20480, 0,
+    var readBuffer = new Buffer(204800);
+    fs.read(fd, readBuffer, 0, 204800, 0,
       function(err, readBytes) {
         if (err) {log(err.message);
                   fs.close(fd);

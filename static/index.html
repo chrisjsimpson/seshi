@@ -24,6 +24,10 @@
 <!-- blank script section is placeholder for query params -->
 <script></script>
 
+<!-- load Dexie.js for IndexedDB -->
+<script src="Dexie.js" type="text/javascript"></script>
+<script src="databaseSchema.js" type="text/javascript"></script>
+
 <!-- load polyfill, local copy first for local testing -->
 <script src="adapter.js" type="text/javascript"></script>
 
@@ -32,6 +36,7 @@
      on a key -->
 <script src="clientXHRSignalingChannel.js"
         type="text/javascript"></script>
+
 
 <script>
 var signalingChannel, key, id,
@@ -287,12 +292,17 @@ var sendStoreMsg = function(evt) {
         trace('File meta: ' + 'Name: ' + fileMeta.name + 
                 ' Type: ' + fileMeta.type + ' Size: ' + fileMeta.size);
         trace('Uploading file ' + file);
-        
+       
+        window.fileName = file.name;
+        window.fileSize = file.size;
+        window.fileType = file.type; 
         
         var reader = new FileReader();
             reader.onload = function(file) {
                 if ( reader.readyState == FileReader.DONE) {
                     result = file.target.result;
+                    //Generate uuid for file
+                    var uuid = window.uuid();
                     //Get file size
                     console.log("File size is: " + result.byteLength);
                     var fileSize = result.byteLength;
@@ -307,18 +317,33 @@ var sendStoreMsg = function(evt) {
                     var start = 0;
                     var end = maxChunkSize;
                     //Create blob from ArrayBuffer
-                    var blob = new Blob([reader.result], {type: "image/png"});
+                    var blob = new Blob([reader.result], {type: window.fileType});
                     reader.address = window.URL.createObjectURL(blob);
 
                     //Begin chunking
                     for(var i=0; i<= numChunksNeeded; i++)
                     {
-                        chunks[i] = blob.slice(start, end);
+                        //chunks[i] = blob.slice(start, end);
+                        var test = blob.slice(start,end);
+                        
+                        //Add chunk
+                        db.chunks
+                            .add({
+                                fileId: uuid,
+                                boxId: 'myBoxID',
+                                fileName: window.fileName,
+                                chunkNumber: i,
+                                numberOfChunks: numChunksNeeded,
+                                chunkSize: window.fileSize,
+                                chunk: test 
+                            });
+
                         //Incriment start by maxChunkSize
                         start = start + maxChunkSize;
+                        end = end + maxChunkSize;
                     }//End create chunks
 
-                    dc.send(file.target.result);
+                    //dc.send(file.target.result);
                 }//End file reader.readstate == FileReader.DONE
             };
         //Send meta data
@@ -335,6 +360,14 @@ var sendStoreMsg = function(evt) {
     }
 
 }
+
+
+/* Inspect store */
+db.chunks.where('fileId').equals('b0d75183-cc10-4ddd-a326-81bea0adebcf').each(
+    function(file){
+        console.log(file.fileName);
+        
+        })
 
 function trace(text) {
   // This function is used for logging.
@@ -403,7 +436,7 @@ function gotDescription(localDesc) {
   send(localDesc);
 }
 
-function uuid()
+window.uuid = function()
 {   /* Credit http://stackoverflow.com/a/2117523 */ 
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);

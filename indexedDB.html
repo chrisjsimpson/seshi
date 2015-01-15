@@ -1,108 +1,37 @@
+<script src="static/Dexie.js"></script>
+
 <script type="text/javascript">
-console.log("Begin.");
-
-var customerData = [
-  { ssn: "666-44-4444", name: "Bill", age: 35, email: "sam@company.com" },
-  { ssn: "777-55-5555", name: "Donna", age: 32, email: "jak@home.org" }
-];
-
-var idbSupported = false;
-var db;
-const dbName = "the_name";
- 
-document.addEventListener("DOMContentLoaded", function(){
-
-var request = indexedDB.open(dbName, 2);
-
-request.onerror = function(event) {
-  // Handle errors.
-  console.log("Database error: " + event.target.errorCode);
-};
-
-request.onsuccess = function(event) {
-  var db = event.target.result;
+function uuid()
+{   /* Credit http://stackoverflow.com/a/2117523 */ 
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+    });
 }
 
-request.onupgradeneeded = function(event) {
+//Make a database connection
+var db = new Dexie('flytipper');
 
-  // Create an objectStore to hold information about our customers. We're
-  // going to use "ssn" as our key path because it's guaranteed to be
-  // unique - or at least that's what I was told during the kickoff meeting.
-  var objectStore = db.createObjectStore("customers", { keyPath: "ssn" });
-
-  // Create an index to search customers by name. We may have duplicates
-  // so we can't use a unique index.
-  objectStore.createIndex("name", "name", { unique: false });
-
-  // Create an index to search customers by email. We want to ensure that
-  // no two customers have the same email, so use a unique index.
-  objectStore.createIndex("email", "email", { unique: true });
-
-  // Use transaction oncomplete to make sure the objectStore creation is 
-  // finished before adding data into it.
-  objectStore.transaction.oncomplete = function(event) {
-    // Store values in the newly created objectStore.
-    var customerObjectStore = db.transaction("customers", "readwrite").objectStore("customers");
-    for (var i in customerData) {
-      customerObjectStore.add(customerData[i]);
-    }
-  }
-};
-
-//Create key generator
-var request = indexedDB.open(dbName, 3);
-    
-    request.onupgradeneeded = function (event) {
-        var db = event.target.result;
-        //Create another object store calles "names" with the 
-        // autoIncrement flag set as true.
-        var objStore = db.createObjectStore("names", {autoIncrement : true});
-        // Because the "names" object store has the key generator,
-        // the keys for the name values are generated automatically.
-        // The added records would be like:
-        // key : 1 => value : "Bill"
-        // key : 2 => value : "Donna"
-        for (var i in customerData) {
-            objStore.add(customerData[i].name);
-        }
-}//End create key generator
-
-//Insert new record
-//New customer data
-var customerData = [
-  { ssn: "888-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
-  { ssn: "999-55-5555", name: "Donna", age: 32, email: "donna@home.org" }
-];
+//Define a schema
+db.version(2)
+    .stores({
+        chunks: 'fileId, fileName, chunkNumber, size, chunk'
+    });
 
 
-var request = indexedDB.open("the_name", 2);
-
-request.onsuccess = function(event) {
-    console.log("Database opened...");
-    var db = event.target.result;
-
-var transaction = db.transaction(["customers"], "readwrite");
-// Do something when all the data is added to the database.
-transaction.oncomplete = function(event) {
-  alert("All done!");
-};
-
-transaction.onerror = function(event) {
-  // Don't forget to handle errors!
-    console.log("Database insert error: " + event.target.error.message);
-};
-
-var objectStore = transaction.objectStore("customers");
-for (var i in customerData) {
-  var request = objectStore.add(customerData[i]);
-  request.onsuccess = function(event) {
-    // event.target.result == customerData[i].ssn;
-    console.log("Sucess");
-  };
-}
-
-} // End request.onsuccess
-},false); //End DOM loaded
+// Open the database
+db.open()
+    .catch(function(error){
+        alert('Oh oh : ' + error);
+    });
 
 
+// Add stuff to it
+db.chunks
+    .add({
+        fileId: uuid(),
+        fileName: 'Test.txt',
+        chunkNumber: 1,
+        size: 23
+    });
 </script>

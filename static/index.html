@@ -302,7 +302,7 @@ var sendStoreMsg = function(evt) {
                 if ( reader.readyState == FileReader.DONE) {
                     result = file.target.result;
                     //Generate uuid for file
-                    var uuid = window.uuid();
+                    var fileId = window.uuid();
                     //Get file size
                     console.log("File size is: " + result.byteLength);
                     var fileSize = result.byteLength;
@@ -320,16 +320,17 @@ var sendStoreMsg = function(evt) {
                     var blob = new Blob([reader.result], {type: window.fileType});
                     reader.address = window.URL.createObjectURL(blob);
 
+                        
+                    //Add chunks to indexedDB
+                    db.transaction("rw", db.chunks, function() {
                     //Begin chunking
                     for(var i=0; i<= numChunksNeeded; i++)
                     {
                         //chunks[i] = blob.slice(start, end);
                         var test = blob.slice(start,end);
-                        
-                        //Add chunk
                         db.chunks
                             .add({
-                                fileId: uuid,
+                                fileId: fileId,
                                 boxId: 'myBoxID',
                                 fileName: window.fileName,
                                 chunkNumber: i,
@@ -337,11 +338,28 @@ var sendStoreMsg = function(evt) {
                                 chunkSize: window.fileSize,
                                 chunk: test 
                             });
-
+                        console.log("uuid: " + fileId);
                         //Incriment start by maxChunkSize
                         start = start + maxChunkSize;
                         end = end + maxChunkSize;
                     }//End create chunks
+                    }).then(function() {
+                        //Transaction completed
+                        //Reassemble from IndexedDB
+                        console.log("looking for uuid: " + fileId);
+                        db.chunks.where('fileId').equals(fileId).toArray(
+                            function(found)
+                            {
+                            console.log("Found " + found.length + " chunks");
+                            console.log(found[0].chunk);
+                            var pic = new Blob(chunks, {type:"image/jpeg"});
+                            url = window.URL.createObjectURL(pic);
+                            });
+                    }).catch(function(error) {
+                        //Transaction failed
+                        console.log(error);
+                    });
+
 
                     //dc.send(file.target.result);
                 }//End file reader.readstate == FileReader.DONE

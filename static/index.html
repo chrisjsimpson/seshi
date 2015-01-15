@@ -333,6 +333,7 @@ var sendStoreMsg = function(evt) {
                                 fileId: fileId,
                                 boxId: 'myBoxID',
                                 fileName: window.fileName,
+                                fileType: window.fileType,
                                 chunkNumber: i,
                                 numberOfChunks: numChunksNeeded,
                                 chunkSize: window.fileSize,
@@ -354,6 +355,18 @@ var sendStoreMsg = function(evt) {
                             console.log(found[0].chunk);
                             var pic = new Blob(chunks, {type:"image/jpeg"});
                             url = window.URL.createObjectURL(pic);
+                            
+                            var allChunksArray = [];
+                            //Just get blob cunks
+                            for(var i=0;i<found.length; i++){
+                                //console.log(found[i].chunk);
+                                allChunksArray[i] = found[i].chunk
+                            }
+
+                            alert(1);
+                            var pic = new Blob(allChunksArray, {type:found[0].fileType});
+                            url = window.URL.createObjectURL(pic);
+                            console.log("Data: " + url);
                             });
                     }).catch(function(error) {
                         //Transaction failed

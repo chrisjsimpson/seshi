@@ -71,6 +71,29 @@ window.onload = function () {
        window.boxId = elm.value;
   }//End setBoxId
 
+
+/* experiment */
+var chunks = {
+    fill: function(){alert(1);},
+    parts:[],
+    status:''
+}
+
+/*
+while(chunks.status != 'DONE')
+{
+    for(var i=0;i<=4709999;i++)
+    {
+        var sum = i + 1;
+        chunks.parts[i] = {ID:i, num: sum};
+    }
+chunks.status = 'DONE';
+}
+alert('Yay');
+*/
+
+/* end experiment */
+
   var showFiles = document.getElementById('showFiles');
   showFiles.addEventListener("click", showBoxFiles, false);
 
@@ -79,33 +102,56 @@ window.onload = function () {
     console.log("Show files in box eventlistner called..."); 
     var filesInBox = document.getElementById('filesInBox');
     //Get list of files for given boxId.
-    files = [];
-    var i = 0;
-    var count = 0;
-    db.chunks.where('boxId').equals(window.boxId).distinct().each(
-        function(boxChunks) {
-            //console.log(boxChunks.fileId);
-            
-            files[i] = {fileId:boxChunks.fileId, fileName: boxChunks.fileName};            
-            i++;
-            })//End get fileList 
+    files = {
+            fill:function(cb){
+                db.transaction("rw", db.chunks, function() {
+                var i = 0;
+                var sum = 0;
+                var count = 0;
+                var id = '';
+                db.chunks.where('boxId').equals(window.boxId).each(
+                    function(boxChunks) {
+                        //console.log(boxChunks.fileId);
+                       
+                        if(id != boxChunks.fileId)
+                        {
+                            files.chunks[i] = {fileId:boxChunks.fileId, fileName: boxChunks.fileName};            
+                            i++;
+                        }
+                        id = boxChunks.fileId;
+                        //console.log("Comparing: '" + files.chunks[sum].fileId + "' with: '" + boxChunks.fileId);
+                        Array.observe(files.chunks, trythis);
+                        })//End get fileList 
+                        files.readyState = 'DONE';
 
-            showFileList(files.unique, updateFileList);
+                        
+            }).then(function() {
+
+                         files.chunks.forEach(function(elm) {
+                                        //console.log(elm);
+                                    });
+                var fileNames = [];
+                fileNames = files.chunks;
+                console.log("There are currently " + fileNames.length + " files in boxId: " + window.boxId);
+
+            }).catch(function(err) {
+                    console.log(err);
+                });
+            },
+            chunks:[],
+            readyState:''
+    }//End files object
+
+
+files.fill(trythis);
+
   }//End showBoxFiles()
 
-  var example = {
-    updateFilelist: function(files, cb) {
-        console.log("Do some love....");
-        files = files.unique();
-        
-        cb(files);
-    }
-  };//End example
 
-    //Try it
-    example.updateFilelist([1,2,3,3,3,2,2,3,4,4], function(data) {
-        console.log('Super...' + data.length);
-    });
+function trythis(updates) {
+    //console.log(updates[0].object.length);
+}
+
 };
 
 
@@ -378,7 +424,7 @@ var sendStoreMsg = function(evt) {
                         db.chunks
                             .add({
                                 fileId: fileId,
-                                boxId: 'myBoxID',
+                                boxId: window.boxId,
                                 fileName: window.fileName,
                                 fileType: window.fileType,
                                 chunkNumber: i,

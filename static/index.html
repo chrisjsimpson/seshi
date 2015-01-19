@@ -134,6 +134,28 @@ alert('Yay');
                 fileNames = files.chunks;
                 console.log("There are currently " + fileNames.length + " files in boxId: " + window.boxId);
 
+                for(var i=0; i< fileNames.length;i++) {
+                    console.log(fileNames[i].fileId);
+                }
+
+                //Update files list box
+                var filesInBox = document.getElementById('filesInBox');
+                var list = '<ul>';
+                
+                for(var i=0;i<fileNames.length;i++)
+                {
+                        list += '<li title="Download"><a class="fileDownload" href="';
+                        list += 'index.html?download=';
+                        list += fileNames[i].fileId;
+                        list += '">';
+                        list += fileNames[i].fileName;
+                        list += '</a></li>';
+                }
+
+                list += '</ul>';
+                console.log(list);
+                filesInBox.innerHTML = list;
+
             }).catch(function(err) {
                     console.log(err);
                 });

@@ -147,6 +147,8 @@ alert('Yay');
                         list += '<li title="Download"><a class="fileDownload" href="';
                         list += 'index.html?download=';
                         list += fileNames[i].fileId;
+                        list += '" data-fileId="';
+                        list += fileNames[i].fileId;
                         list += '">';
                         list += fileNames[i].fileName;
                         list += '</a></li>';
@@ -156,6 +158,16 @@ alert('Yay');
                 console.log(list);
                 filesInBox.innerHTML = list;
 
+                //Add event listeners to these files for downloading
+                var downloads = document.getElementsByClassName('fileDownload');
+                for(var i=0;i<downloads.length;i++)
+                {
+                    //Get fileId
+                    var fileId = downloads[i];
+                    //Add downloadFile event listener
+                    fileId.addEventListener('click', downloadFile, false);
+                }//End add download event listener to each file link.
+ 
             }).catch(function(err) {
                     console.log(err);
                 });
@@ -168,6 +180,42 @@ alert('Yay');
 files.fill(trythis);
 
   }//End showBoxFiles()
+
+function downloadFile(event) {
+    event.preventDefault();    
+    var fileId = event.target.getAttribute('data-fileid');
+
+    //Query IndexedDB to get the file
+    db.transaction('r', db.chunks, function() {
+        
+            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                //Transaction scope
+                console.log("Found " + chunks.length + " chunks");
+                
+                var allChunksArray = [];
+                //Just get blob cunks
+                for(var i=0;i<chunks.length; i++){
+                    //console.log(found[i].chunk);
+                    allChunksArray[i] = chunks[i].chunk
+                }
+
+                var file = new Blob(allChunksArray, {type:chunks[0].fileType});
+                url = window.URL.createObjectURL(file);
+                console.log("Data: " + url);
+                //Open file
+                window.open(url);
+            })
+        
+        }).then(function() {
+            //Transaction completed
+
+        }).catch (function (err) {
+            
+            console.error(err);
+    
+    });//End get fildIdChunks from fileId
+
+}//End download file
 
 
 function trythis(updates) {

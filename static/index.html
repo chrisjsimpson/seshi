@@ -120,7 +120,11 @@ alert('Yay');
                         }
                         id = boxChunks.fileId;
                         //console.log("Comparing: '" + files.chunks[sum].fileId + "' with: '" + boxChunks.fileId);
-                        Array.observe(files.chunks, trythis);
+                        	//Check Array.observe exists
+				if(typeof Array.observe != "undefined")
+				{
+				 Array.observe(files.chunks, trythis);
+				}
                         })//End get fileList 
                         files.readyState = 'DONE';
 

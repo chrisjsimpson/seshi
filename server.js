@@ -30,11 +30,11 @@ function start(handle, port) {
                 "query": urldata.query,
                 "postData":""};
  
-    log("Request for " + pathname + " received");
+    //log("Request for " + pathname + " received");
     req.setEncoding("utf8");
     req.addListener("data", function(postDataChunk) {
       info.postData += postDataChunk;
-      log("Received POST data chunk '"+ postDataChunk + "'.");
+      //log("Received POST data chunk '"+ postDataChunk + "'.");
     });
     req.addListener("end", function() {
       route(handle, pathname, info);
@@ -52,11 +52,11 @@ exports.start = start;
 // Determines whether requested path is a static file or a custom
 // path with its own handler
 function route(handle, pathname, info) {
-  log("About to route a request for " + pathname);
+  //log("About to route a request for " + pathname);
   // Check if path after leading slash is an existing file that
   // can be served
   var filepath = createFilePath(pathname);
-  log("Attempting to locate " + filepath);
+  //log("Attempting to locate " + filepath);
   fs.stat(filepath, function(err, stats) {
     if (!err && stats.isFile()) {  // serve file
       serveFile(filepath, info);
@@ -92,7 +92,7 @@ function serveFile(filepath, info) {
   var res = info.res,
       query = info.query;
 
-  log("Serving file " + filepath);
+  //log("Serving file " + filepath);
   fs.open(filepath, 'r', function(err, fd) {
     if (err) {log(err.message);
               noHandlerErr(filepath, res);
@@ -104,7 +104,7 @@ function serveFile(filepath, info) {
                   fs.close(fd);
                   noHandlerErr(filepath, res);
                   return;}
-        log('just read ' + readBytes + ' bytes');
+      //  log('just read ' + readBytes + ' bytes');
         if (readBytes > 0) {
           res.writeHead(200,
                         {"Content-Type": contentType(filepath)});

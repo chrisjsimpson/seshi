@@ -14,8 +14,8 @@ var connections = {},
 
 // queue the sending of a json response
 function webrtcResponse(response, res) {
-  log("replying with webrtc response " +
-      JSON.stringify(response));
+  /* log("replying with webrtc response " +
+      JSON.stringify(response)); */
   res.writeHead(200, {"Content-Type":"application/json"});
   res.write(JSON.stringify(response));
   res.end();
@@ -24,7 +24,7 @@ function webrtcResponse(response, res) {
 
 // send an error as the json WebRTC response
 function webrtcError(err, res) {
-  log("replying with webrtc error:  " + err);
+  //log("replying with webrtc error:  " + err);
   webrtcResponse({"err": err}, res);
 }
 
@@ -34,6 +34,8 @@ function connect(info) {
   var res = info.res,
       query = info.query,
       thisconnection,
+
+
       newID = function() {
         // create large random number unlikely to be repeated
         // soon in server's lifetime
@@ -65,7 +67,10 @@ function connect(info) {
                         "status":thisconnection.status}, res);
       };
 
-  log("Request handler 'connect' was called.");
+
+	console.log(query);
+
+  //log("Request handler 'connect' was called.");
   if (query && query.key) {
     var thisconnection = connections[query.key] ||
                          {status:"new"};
@@ -137,9 +142,9 @@ function getMessages(info) {
     return;
   }
 
-  log("Sending messages ***" +
+  /* log("Sending messages ***" +
       JSON.stringify(messagesFor[postData.id]) + "*** to id " +
-      postData.id);
+      postData.id); */
   webrtcResponse({'msgs':messagesFor[postData.id]}, res);
   messagesFor[postData.id] = [];
 }

@@ -14,7 +14,7 @@ var port = process.argv[2] || 5001;
 // returns 404
 function fourohfour(info) {
   var res = info.res;
-  log("Request handler fourohfour was called.");
+  //log("Request handler fourohfour was called.");
   res.writeHead(404, {"Content-Type": "text/plain"});
   res.write("404 Page Not Found");
   res.end();

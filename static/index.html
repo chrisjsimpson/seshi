@@ -72,28 +72,6 @@ window.onload = function () {
   }//End setBoxId
 
 
-/* experiment */
-var chunks = {
-    fill: function(){alert(1);},
-    parts:[],
-    status:''
-}
-
-/*
-while(chunks.status != 'DONE')
-{
-    for(var i=0;i<=4709999;i++)
-    {
-        var sum = i + 1;
-        chunks.parts[i] = {ID:i, num: sum};
-    }
-chunks.status = 'DONE';
-}
-alert('Yay');
-*/
-
-/* end experiment */
-
   var showFiles = document.getElementById('showFiles');
   showFiles.addEventListener("click", showBoxFiles, false);
 
@@ -397,7 +375,7 @@ function setupDataHandlers() {
         console.log("Sending: " + msg + " over data channel");
         dc.send(msg);
     }
-    dc.onmessage = function(e) {
+    dc.onmessage = function(event) {
         trace('Received Message: ' + event.data);
 
         //Check if message is an array buffer (data)
@@ -461,7 +439,7 @@ var sendStoreMsg = function(evt) {
                 ' Type: ' + fileMeta.type + ' Size: ' + fileMeta.size);
         trace('Uploading file ' + file);
        
-        window.fileName = file.name;
+	window.fileName = file.name;
         window.fileSize = file.size;
         window.fileType = file.type; 
         
@@ -488,14 +466,25 @@ var sendStoreMsg = function(evt) {
                     var blob = new Blob([reader.result], {type: window.fileType});
                     reader.address = window.URL.createObjectURL(blob);
 
+                    
+			for(var i=0; i<= numChunksNeeded; i++)
+			{	//Send chunk over datachannel
+                        	var test = blob.slice(start,end);
+				//Incriment start by maxChunkSize
+				start = start + maxChunkSize;
+				dc.send(test);
+			}
                         
                     //Add chunks to indexedDB
+                    var start = 0;
+                    var end = maxChunkSize;
                     db.transaction("rw", db.chunks, function() {
                     //Begin chunking
                     for(var i=0; i<= numChunksNeeded; i++)
                     {
                         //chunks[i] = blob.slice(start, end);
                         var test = blob.slice(start,end);
+			
                         db.chunks
                             .add({
                                 fileId: fileId,
@@ -631,6 +620,8 @@ function answer() {
 // description that allows the browser to send media and prepare
 // to receive from the other side.
 function gotDescription(localDesc) {
+  console.log("Local Description type: " + localDesc.type);
+  console.log("Local Description sdp: " + localDesc.sdp);
   pc.setLocalDescription(localDesc);
   send(localDesc);
 }

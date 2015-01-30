@@ -17,6 +17,7 @@ function webrtcResponse(response, res) {
   /* log("replying with webrtc response " +
       JSON.stringify(response)); */
   res.writeHead(200, {"Content-Type":"application/json"});
+  console.log("WebrtcResponse: \r\n" + JSON.stringify(response) + '\r\n');
   res.write(JSON.stringify(response));
   res.end();
 }
@@ -35,12 +36,6 @@ function connect(info) {
       query = info.query,
       thisconnection,
 
-
-      newID = function() {
-        // create large random number unlikely to be repeated
-        // soon in server's lifetime
-        return Math.floor(Math.random()*1000000000);
-      },
       connectFirstParty = function() {
         if (thisconnection.status == "connected") {
           // delete pairing and any stored messages
@@ -52,18 +47,18 @@ function connect(info) {
         connections[query.key] = {};
         thisconnection = connections[query.key];
         thisconnection.status = "waiting";
-        thisconnection.ids = [newID()];
+        thisconnection.ids = [123];
         webrtcResponse({"id":thisconnection.ids[0],
                         "status":thisconnection.status}, res);
       },
       connectSecondParty = function() {
-        thisconnection.ids[1] = newID();
+        thisconnection.ids[1] = 123; 
         partner[thisconnection.ids[0]] = thisconnection.ids[1];
         partner[thisconnection.ids[1]] = thisconnection.ids[0];
         messagesFor[thisconnection.ids[0]] = [];
         messagesFor[thisconnection.ids[1]] = [];
         thisconnection.status = "connected";
-        webrtcResponse({"id":thisconnection.ids[1],
+        webrtcResponse({"id":thisconnection.ids[0],
                         "status":thisconnection.status}, res);
       };
 
@@ -89,7 +84,7 @@ exports.connect = connect;
 // Queues message in info.postData.message for sending to the
 // partner of the id in info.postData.id
 function sendMessage(info) {
-  log("postData received is ***" + info.postData + "***");
+  //log("postData received is ***" + info.postData + "***");
   var postData = JSON.parse(info.postData),
       res = info.res;
 

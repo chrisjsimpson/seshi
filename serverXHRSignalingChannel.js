@@ -36,6 +36,11 @@ function connect(info) {
       query = info.query,
       thisconnection,
 
+      newID = function() {
+        // create large random number unlikely to be repeated
+        // soon in server's lifetime
+        return Math.floor(Math.random()*1000000000);
+      },
       connectFirstParty = function() {
         if (thisconnection.status == "connected") {
           // delete pairing and any stored messages
@@ -47,18 +52,18 @@ function connect(info) {
         connections[query.key] = {};
         thisconnection = connections[query.key];
         thisconnection.status = "waiting";
-        thisconnection.ids = [123];
+        thisconnection.ids = [newID()];
         webrtcResponse({"id":thisconnection.ids[0],
                         "status":thisconnection.status}, res);
       },
       connectSecondParty = function() {
-        thisconnection.ids[1] = 123; 
+        thisconnection.ids[1] = newID(); 
         partner[thisconnection.ids[0]] = thisconnection.ids[1];
         partner[thisconnection.ids[1]] = thisconnection.ids[0];
         messagesFor[thisconnection.ids[0]] = [];
         messagesFor[thisconnection.ids[1]] = [];
         thisconnection.status = "connected";
-        webrtcResponse({"id":thisconnection.ids[0],
+        webrtcResponse({"id":thisconnection.ids[1],
                         "status":thisconnection.status}, res);
       };
 

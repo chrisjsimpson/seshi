@@ -117,6 +117,7 @@ function poll() {
       if (msgs.length > 0) {           // we got messages
         pollWaitDelay.reset();
         for (i=0; i<msgs.length; i+=1) {
+	  console.log("The msg is: " + msgs[i]);	
           handleMessage(msgs[i]);
         }
       } else {                         // didn't get any messages

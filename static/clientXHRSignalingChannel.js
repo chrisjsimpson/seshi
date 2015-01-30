@@ -68,7 +68,7 @@ function connect(failureCB) {
   // open XHR and send the connection request with the key
   var client = new XMLHttpRequest();
   client.onreadystatechange = handler;
-  client.open("GET", "192.168.1.65:8000/signalingServerNetwork/peerSignaller.js?key=" + key);
+  client.open("GET", "http://192.168.1.65:8000/signalingServerNetwork/peerSignaller.js?key=" + key);
   client.send();
 }
 

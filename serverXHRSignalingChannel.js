@@ -18,7 +18,7 @@ function webrtcResponse(response, res) {
       JSON.stringify(response)); */
   res.writeHead(200, {"Content-Type":"application/json"});
 
-  if(response.msgs != "" && typeof response.err != "string")
+  if(response.msgs != "" && typeof response.err != "string" && typeof response != "string")
   {
   	console.log("WebrtcResponse: \r\n" + JSON.stringify(response) + '\r\n');
   }
@@ -120,8 +120,8 @@ function sendMessage(info) {
     return;
   }
   messagesFor[partner[postData.id]].push(postData.message);
-  log("Saving message ***" + postData.message +
-      "*** for delivery to id " + partner[postData.id]);
+  /* log("Saving message ***" + postData.message +
+      "*** for delivery to id " + partner[postData.id]); */
   webrtcResponse("Saving message ***" + postData.message +
                  "*** for delivery to id " +
                  partner[postData.id], res);

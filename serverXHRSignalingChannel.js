@@ -17,7 +17,12 @@ function webrtcResponse(response, res) {
   /* log("replying with webrtc response " +
       JSON.stringify(response)); */
   res.writeHead(200, {"Content-Type":"application/json"});
-  console.log("WebrtcResponse: \r\n" + JSON.stringify(response) + '\r\n');
+
+  if(response.msgs != "" && typeof response.err != "string")
+  {
+  	console.log("WebrtcResponse: \r\n" + JSON.stringify(response) + '\r\n');
+  }
+
   res.write(JSON.stringify(response));
   res.end();
 }

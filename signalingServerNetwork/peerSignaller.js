@@ -13,13 +13,13 @@ var server = http.createServer(function(req, res) {
 
 	res.setHeader('Access-Control-Allow-Origin', '*');
 
-	var key = query.parse(req.url, true).query.key;
+	var boxId = query.parse(req.url, true).query.boxId;
 	
 	//Push data into peers array
-	peers.push(key);
+	peers.push(boxId);
 
-	console.log("Key is: " + key);
-        res.write('Key is: ' + key + '\r\n' );
+	console.log("boxId is: " + boxId);
+        res.write('boxId is: ' + boxId + '\r\n' );
 
 	console.log(JSON.stringify(peers));
 	

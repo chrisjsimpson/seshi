@@ -73,6 +73,7 @@ function connect(info) {
       };
 
 
+	console.log("The query was: ");
 	console.log(query);
 
   //log("Request handler 'connect' was called.");

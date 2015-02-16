@@ -199,8 +199,40 @@ function send(msg, responseHandler) {
   client.open("POST", "/send");
   var sendData = {"id":id, "message":msg};
   client.send(JSON.stringify(sendData));
+
+  //Call my peerToPeerSignaling channel
+  callPeerSignalingChanne(msg);
 }
 
+function callPeerSignalingChanne(msg, responseHandler) {
+	console.log("Calling peer signaling server.");
+	var responseHandler = responseHandler || function() {};
+	// parse response and send to handler
+	  function handler() {
+	    if(this.readyState == this.DONE) {
+	      if(this.status == 200 && this.response != null) {
+		var res = JSON.parse(this.response);
+		if (res.err) {
+		  responseHandler("error:  " + res.err);
+		  return;
+		}
+		responseHandler(res);
+		return;
+	      } else {
+		responseHandler("HTTP error:  " + this.status);
+		return;
+	      }
+	    }
+	  }
+
+	//Open XHR and send SDP data A json to peer signaling server x
+	var peerSignaller = new XMLHttpRequest();
+	peerSignaller.onreadystatechange = handler;
+	peerSignaller.open("POST", "http://192.168.1.100:8000/");
+	var sendData = {"changeToBoxId":boxId, "sdp":msg};
+	peerSignaller.send(JSON.stringify(sendData));
+
+}//End callPeerSignalingChanne(msg)
 
 return {
   connect:  connect,

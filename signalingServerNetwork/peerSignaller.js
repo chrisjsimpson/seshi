@@ -13,8 +13,15 @@ var server = http.createServer(function(req, res) {
 
 	res.setHeader('Access-Control-Allow-Origin', '*');
 
-	var boxId = query.parse(req.url, true).query.boxId;
+
+	var boxId = query.parse(req.url, true).query.changeToBoxId;
+
+	res.setEncoding('utf8');
+	res.on('data', function (chunk) {
+		console.log('BODY: ' + chunk);
+	});
 	
+
 	//Push data into peers array
 	peers.push(boxId);
 

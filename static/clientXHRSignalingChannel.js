@@ -227,10 +227,12 @@ function callPeerSignalingChanne(msg, responseHandler) {
 
 	//Open XHR and send SDP data A json to peer signaling server x
 	var peerSignaller = new XMLHttpRequest();
+	//Send JSON object of peer SDP (and their box id, and peer signaling peers??)
 	peerSignaller.onreadystatechange = handler;
-	peerSignaller.open("POST", "http://192.168.1.100:8000/");
-	var sendData = {"changeToBoxId":boxId, "sdp":msg};
-	peerSignaller.send(JSON.stringify(sendData));
+	peerSignaller.open("POST", "http://192.168.1.68:8000/");
+	peerSignaller.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	//var sendData = {"changeToBoxId":boxId, "sdp":msg};
+	peerSignaller.send("sdp=" + msg);
 
 }//End callPeerSignalingChanne(msg)
 

@@ -27,7 +27,7 @@
 <script src="clientXHRSignalingChannel.js"
         type="text/javascript"></script>
 
-
+<script src="boxHandling.js"></script>
 <script>
 var signalingChannel, key, id,
     weWaited = false,
@@ -40,163 +40,14 @@ var signalingChannel, key, id,
 // This is the main routine.
 ////////////////////////////
 
-// This kicks off acquisition of local media.  Also, it can
-// automatically start the signaling channel.
-window.onload = function () {
-
-  //Event listner to set Boxid
-  window.boxId = 'myBoxID'; //Default box id
-  var elm = document.getElementById("setBoxId");
-  elm.addEventListener("click", setBoxId, false);
-
-  function setBoxId(event)
-  {
-       var elm = document.getElementById("boxId");
-       window.boxId = elm.value;
-  }//End setBoxId
-
-  var showFiles = document.getElementById('showFiles');
-  showFiles.addEventListener("click", showBoxFiles, false);
-
-  function showBoxFiles(event)
-  {
-    console.log("Show files in box eventlistner called..."); 
-    var filesInBox = document.getElementById('filesInBox');
-    //Get list of files for given boxId.
-    files = {
-            fill:function(cb){
-                db.transaction("rw", db.chunks, function() {
-                var i = 0;
-                var sum = 0;
-                var count = 0;
-                var id = '';
-                db.chunks.where('boxId').equals(window.boxId).each(
-                    function(boxChunks) {
-                        //console.log(boxChunks.fileId);
-                       
-                        if(id != boxChunks.fileId)
-                        {
-                            files.chunks[i] = {fileId:boxChunks.fileId, fileName: boxChunks.fileName};            
-                            i++;
-                        }
-                        id = boxChunks.fileId;
-                        //console.log("Comparing: '" + files.chunks[sum].fileId + "' with: '" + boxChunks.fileId);
-                        	//Check Array.observe exists
-				if(typeof Array.observe != "undefined")
-				{
-				 Array.observe(files.chunks, trythis);
-				}
-                        })//End get fileList 
-                        files.readyState = 'DONE';
-
-                        
-            }).then(function() {
-
-                         files.chunks.forEach(function(elm) {
-                                        //console.log(elm);
-                                    });
-                var fileNames = [];
-                fileNames = files.chunks;
-                console.log("There are currently " + fileNames.length + " files in boxId: " + window.boxId);
-
-                for(var i=0; i< fileNames.length;i++) {
-                    console.log(fileNames[i].fileId);
-                }
-
-                //Update files list box
-                var filesInBox = document.getElementById('filesInBox');
-                var list = '<ul>';
-                
-                for(var i=0;i<fileNames.length;i++)
-                {
-                        list += '<li title="Download"><a class="fileDownload" href="';
-                        list += 'index.html?download=';
-                        list += fileNames[i].fileId;
-                        list += '" data-fileId="';
-                        list += fileNames[i].fileId;
-                        list += '">';
-                        list += fileNames[i].fileName;
-                        list += '</a></li>';
-                }
-
-                list += '</ul>';
-                console.log(list);
-                filesInBox.innerHTML = list;
-
-                //Add event listeners to these files for downloading
-                var downloads = document.getElementsByClassName('fileDownload');
-                for(var i=0;i<downloads.length;i++)
-                {
-                    //Get fileId
-                    var fileId = downloads[i];
-                    //Add downloadFile event listener
-                    fileId.addEventListener('click', downloadFile, false);
-                }//End add download event listener to each file link.
- 
-            }).catch(function(err) {
-                    console.log(err);
-                });
-            },
-            chunks:[],
-            readyState:''
-    }//End files object
-
-
-files.fill(trythis);
-
-  }//End showBoxFiles()
-
-function downloadFile(event) {
-    event.preventDefault();    
-    var fileId = event.target.getAttribute('data-fileid');
-
-    //Query IndexedDB to get the file
-    db.transaction('r', db.chunks, function() {
-        
-            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
-                //Transaction scope
-                console.log("Found " + chunks.length + " chunks");
-                
-                var allChunksArray = [];
-                //Just get blob cunks
-                for(var i=0;i<chunks.length; i++){
-                    //console.log(found[i].chunk);
-                    allChunksArray[i] = chunks[i].chunk
-                }
-
-                var file = new Blob(allChunksArray, {type:chunks[0].fileType});
-                url = window.URL.createObjectURL(file);
-                console.log("Data: " + url);
-                //Open file
-                window.open(url);
-            })
-        
-        }).then(function() {
-            //Transaction completed
-
-        }).catch (function (err) {
-            
-            console.error(err);
-    
-    });//End get fildIdChunks from fileId
-
-}//End download file
-
-
-function trythis(updates) {
-    //console.log(updates[0].object.length);
-}
-
-};
-
 
 /////////////////////
-// This next section is for setting up the signaling channel.
+// This section is for setting up the signaling channel.
 /////////////////////
 
 // This routine connects to the web server and sets up the
-// signaling channel.  It is called either automatically on doc
-// load or when the user clicks on the "Connect" button.
+// signaling channel.  
+
 function connect() {
   var errorCB, scHandlers, handleMsg;
 
@@ -228,8 +79,10 @@ function connect() {
   scHandlers = {
     'onWaiting' : function () {
       setStatus("Waiting");
-      // weWaited will be used later for auto-call
+      // weWaited will be used for auto-call
       weWaited = true;
+	//Hak?
+	createPC(); //Origionally only in 'onConnected'
     },
     'onConnected': function () {
       setStatus("Connected");
@@ -297,19 +150,6 @@ function createPC() {
     //config.push({"url":"stun:stun.l.google.com:19302"});
     config.push({"url":"stun:192.168.1.65"});
   }
-  if (turnuri) {
-    if (stunuri) {
-      // can't use TURN-only TURN server in this case because of
-      // bug in Chrome that causes STUN server responses to be
-      // ignored, so we use TURN server that also does STUN
-      config.push({"url":"turn:user@turn.webrtcbook.com",
-                   "credential":"test"});
-    } else {
-      // this is our TURN-only TURN server
-      config.push({"url":"turn:user@turn-only.webrtcbook.com",
-                   "credential":"test"});
-    }
-  }
   console.log("config = " + JSON.stringify(config));
 
   pc = new RTCPeerConnection({iceServers:config});
@@ -334,13 +174,10 @@ function onIceCandidate(e) {
 // When our browser detects that the other side has added the
 // media stream, show it on screen
 function onRemoteStreamAdded(e) {
-  yourVideoStream = e.stream;
-  //attachMediaStream(yourVideo, yourVideoStream);
   setStatus("On call");
 }
 
 // Yes, we do nothing if the remote side removes the stream.
-// This is a *simple* demo, after all.
 function onRemoteStreamRemoved(e) {}
 
 //When our browser detects that the other side has added the 
@@ -570,14 +407,6 @@ function attachMediaIfReady() {
 function attachMedia() {
   
   setStatus("Ready for call");
-
-  // auto-call if truthy value for call param in URI
-  // but also make sure we were the last to connect (to increase
-  // chances that everything is set up properly at both ends)
-  if (queryparams && queryparams['call'] && !weWaited) {
-    call();
-  }
-
 }
 
 
@@ -662,6 +491,7 @@ function setStatus(str) {
 
 </script>
 
+<h1>Need peer connection in order to get local SDP (the pc variable). This was made active by calling createPC() (search for 'Hak' in this file. Then pc.createOffer(...) can be called...</h1>
 <div id="setup">
   <p>WebRTC Book Demo (local media, signaling, and peer connection, and data channel)</p>
   <p>Key:

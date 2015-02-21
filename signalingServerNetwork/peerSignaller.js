@@ -1,4 +1,4 @@
-peers = [];
+connections = {}; /* Connections is an object with objects attatched named by their CIDs which contain their related BOXid and SDP data */
 
 var util = require('util'); //nodejs utilities
 
@@ -28,8 +28,13 @@ app.use(function(req, res, next) {
 
 app.post('/', jsonParser, function (req, res) {
 	console.log("Saving message ***" + req.body);
-	//Add node to peers wanting to find each other
-	peers[req.body];
+	//Add node to connections object of peers wanting to find each other
+		//Check dosn't already exist (peer has found their friend!)
+		if ( typeof connections[req.body.cid] == "undefined" ) {
+			console.log("First time connect, should add to connections object...");	
+		} //End add first time connect peer to connections object
+	
+	//peers[req.body];
 	debugger;
 
   	res.send(JSON.stringify(req.body, null, 2));

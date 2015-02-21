@@ -44,12 +44,6 @@ var signalingChannel, key, id,
 // automatically start the signaling channel.
 window.onload = function () {
 
-  // auto-connect signaling channel if key provided in URI
-  if (queryparams && queryparams['key']) {
-    document.getElementById("key").value = queryparams['key'];
-    connect();
-  }
-
   //Event listner to set Boxid
   window.boxId = 'myBoxID'; //Default box id
   var elm = document.getElementById("setBoxId");
@@ -60,7 +54,6 @@ window.onload = function () {
        var elm = document.getElementById("boxId");
        window.boxId = elm.value;
   }//End setBoxId
-
 
   var showFiles = document.getElementById('showFiles');
   showFiles.addEventListener("click", showBoxFiles, false);

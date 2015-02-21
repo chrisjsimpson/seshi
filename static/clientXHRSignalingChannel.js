@@ -71,6 +71,7 @@ function connect(failureCB) {
   //client.open("GET", "http://192.168.1.65:8000/signalingServerNetwork/peerSignaller.js?key=" + key);
   client.open("GET", "/connect?key=" + key);
   client.send();
+  callPeerSignalingChanne(); //Send the CID, BOXiD and SDP to peerSignaling server(s)
 }
 
 // poll() waits n ms between gets to the server.  n is at 10 ms
@@ -201,7 +202,7 @@ function send(msg, responseHandler) {
   client.send(JSON.stringify(sendData));
 
   //Call my peerToPeerSignaling channel
-  callPeerSignalingChanne(msg);
+  //callPeerSignalingChanne(msg);
 }
 
 function callPeerSignalingChanne(msg, responseHandler) {

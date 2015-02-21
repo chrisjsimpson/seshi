@@ -1,12 +1,3 @@
-// Copyright 2013-2014 Digital Codex LLC
-// You may use this code for your own education.  If you use it
-// largely intact, or develop something from it, don't claim
-// that your code came first.  You are using this code completely
-// at your own risk.  If you rely on it to work in any particular
-// way, you're an idiot and we won't be held responsible.
-
-var log = require("./log").log;
-
 var connections = {},
     partner = {},
     messagesFor = {};
@@ -37,6 +28,7 @@ function webrtcError(err, res) {
 
 // handle XML HTTP Request to connect using a given key
 function connect(info) {
+	debugger;
   var res = info.res,
       query = info.query,
       thisconnection,
@@ -121,8 +113,8 @@ function sendMessage(info) {
     return;
   }
   messagesFor[partner[postData.id]].push(postData.message);
-  /* log("Saving message ***" + postData.message +
-      "*** for delivery to id " + partner[postData.id]); */
+  log("Saving message ***" + postData.message +
+      "*** for delivery to id " + partner[postData.id]); 
   webrtcResponse("Saving message ***" + postData.message +
                  "*** for delivery to id " +
                  partner[postData.id], res);

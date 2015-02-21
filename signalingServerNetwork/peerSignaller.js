@@ -20,24 +20,18 @@ app.use(bodyParser.urlencoded({
 
 
 //http://tinyurl.com/m3wv7ym
-/* app.use(function(req, res, next) {
-	res.setHeader('Content-Type', 'text/plain');
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	return next();
-	});
-*/
 app.use(function(req, res, next) {
     	res.setHeader("Access-Control-Allow-Origin", "*");
 	next();
   });
 
 
-
 app.post('/', jsonParser, function (req, res) {
-	console.log(JSON.stringify(req.body.sdp, null, 2));
-	console.log("inspect: " + JSON.stringify(util.inspect(req.body.sdp, true, null), null, 2));
-	console.log(req.body.sdp);
-	console.log(util.inspect(req.body, true, null));
+	console.log(JSON.stringify(util.inspect(req.body.sdp), null, 2));
+	console.log("Saving message ***" + req.body);
+	//Add node to peers wanting to find each other
+	peers[req.body];
+	debugger;
 
   	res.send(JSON.stringify(req.body, null, 2));
 })//End show posted data

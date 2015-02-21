@@ -1,3 +1,5 @@
+var log = require("./log").log;
+
 var connections = {},
     partner = {},
     messagesFor = {};

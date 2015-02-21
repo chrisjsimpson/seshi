@@ -27,7 +27,6 @@ app.use(function(req, res, next) {
 
 
 app.post('/', jsonParser, function (req, res) {
-	console.log(JSON.stringify(util.inspect(req.body.sdp), null, 2));
 	console.log("Saving message ***" + req.body);
 	//Add node to peers wanting to find each other
 	peers[req.body];

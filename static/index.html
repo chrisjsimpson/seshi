@@ -724,6 +724,7 @@ function setStatus(str) {
 </body>
 <script>
 document.getElementById('share').addEventListener('change', sendStoreMsg, false);
+document.getElementById('key').value = window.uuid(); //Give connection a random uuid to start with...this may well become the boxID for the initial connection share
 </script>
 
 </html>

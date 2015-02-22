@@ -154,6 +154,10 @@ function addQuery(str, q) {
 function handleCustom(handle, pathname, info) {
   if (typeof handle[pathname] == 'function') {
     handle[pathname](info);
+	if(pathname == '/send') {
+   		console.log(pathname);
+		console.log(info);
+	}
   } else {
     noHandlerErr(pathname, info.res);
   }

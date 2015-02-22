@@ -36,6 +36,41 @@ var signalingChannel, key, id,
     constraints = {},
     fileMeta = {};
 
+function callPeerSignalingChanne(msg, responseHandler) {
+        console.log("Calling peer signaling server.");
+        var responseHandler = responseHandler || function() {};
+        // parse response and send to handler
+          function handler() {
+            if(this.readyState == this.DONE) {
+              if(this.status == 200 && this.response != null) {
+                var res = JSON.parse(this.response);
+                if (res.err) {
+                  responseHandler("error:  " + res.err);
+                  return;
+                }
+                responseHandler(res);
+                return;
+              } else {
+                responseHandler("HTTP error:  " + this.status);
+                return;
+              }
+            }
+          }
+
+        //Open XHR and send SDP data A json to peer signaling server x
+        var peerSignaller = new XMLHttpRequest();
+        //Send JSON object of peer SDP (and their box id, and peer signaling peers??)
+        peerSignaller.onreadystatechange = handler;
+        peerSignaller.open("POST", "http://192.168.1.94:8000/");
+        //peerSignaller.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        //peerSignaller.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+        //var sendData = {"changeToBoxId":boxId, "sdp":msg};
+        console.log("Sending: " + msg + " to signaling peer");
+        var sendData = {"id":window.boxId, "message":JSON.stringify(msg)};
+        peerSignaller.send(JSON.stringify(sendData));
+
+}//End callPeerSignalingChanne(msg)
+
 ////////////////////////////
 // This is the main routine.
 ////////////////////////////
@@ -83,6 +118,12 @@ function connect() {
       weWaited = true;
 	//Hak?
 	createPC(); //Origionally only in 'onConnected'
+	//Get localDescription ready to send to Peer Signaling server
+	pc.createOffer
+	function gotPeerDescription(localSDPOffer) {
+		console.log("The Local SDP is: " + localSDPOffer);
+	}//End gotPeerDescription(localSDP)
+	pc.createOffer(gotPeerDescription);
     },
     'onConnected': function () {
       setStatus("Connected");
@@ -165,10 +206,11 @@ function createPC() {
 // When our browser has another candidate, send it to the peer
 function onIceCandidate(e) {
   if (e.candidate) {
-    send({type:  'candidate',
-          mlineindex:  e.candidate.sdpMLineIndex,
-          candidate:  e.candidate.candidate});
-  }
+	
+	send({type:  'candidate',
+        	mlineindex:  e.candidate.sdpMLineIndex,
+          	candidate:  e.candidate.candidate});
+  	}
 }
 
 // When our browser detects that the other side has added the
@@ -546,7 +588,7 @@ function setStatus(str) {
 
 </body>
 <script>
-document.getElementById('share').addEventListener('change', sendStoreMsg, false);
+//document.getElementById('share').addEventListener('change', sendStoreMsg, false);
 document.getElementById('key').value = window.uuid(); //Give connection a random uuid to start with...this may well become the boxID for the initial connection share
 </script>
 

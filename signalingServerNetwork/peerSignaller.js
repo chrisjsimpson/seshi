@@ -12,34 +12,37 @@ var query = require('url');
 var app = express();
 
 // parse application/x-www-form-urlencoded
-app.use( bodyParser.json() );
 app.use(bodyParser.urlencoded({
-	extended: true
+	extended: false 
 }));
+app.use( bodyParser.json() );
 
 
 
 //http://tinyurl.com/m3wv7ym
-app.use(function(req, res, next) {
-    	res.setHeader("Access-Control-Allow-Origin", "*");
-	next();
+app.use(function(req, res) {
+	res.setHeader("Content-Type","text/plain");
+    	//res.setHeader("Access-Control-Allow-Origin", "*");
+	res.write("Test");
+	res.end(util.inspect(req));
   });
 
 
-app.post('/', jsonParser, function (req, res) {
-	console.log("Saving message ***" + req.body);
+//app.post('/', jsonParser, function (req, res) {
+//	console.log("Saving message ***" + req.body);
+//	debugger;
 	//Add node to connections object of peers wanting to find each other
 		//Check dosn't already exist (peer has found their friend!)
-		if ( typeof connections[req.body.cid] == "undefined" ) {
-			console.log("First time connect, should add to connections object...");	
-		} //End add first time connect peer to connections object
+//		if ( typeof connections[req.body.cid] == "undefined" ) {
+//			console.log("First time connect, should add to connections object...");	
+//		} //End add first time connect peer to connections object
+
+	//messagesFor[partner[postData.id]].push(postData.message);
 	
 	//peers[req.body];
-	debugger;
-
-  	res.send(JSON.stringify(req.body, null, 2));
-})//End show posted data
-
+//	var test = {"Hello":"Sucess... ;)"};
+//  	res.send(JSON.stringify(test));
+//})//End show posted data
 
 
 	//res.setHeader('Access-Control-Allow-Origin', '*');

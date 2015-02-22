@@ -64,7 +64,6 @@ function connect(failureCB) {
   //client.open("GET", "http://192.168.1.65:8000/signalingServerNetwork/peerSignaller.js?key=" + key);
   client.open("GET", "/connect?key=" + key);
   client.send();
-  callPeerSignalingChanne(); //Send the CID, BOXiD and SDP to peerSignaling server(s)
 }
 
 // poll() waits n ms between gets to the server.  n is at 10 ms
@@ -193,44 +192,11 @@ function send(msg, responseHandler) {
   client.open("POST", "/send");
   var sendData = {"id":id, "message":msg};
   client.send(JSON.stringify(sendData));
-
+  
   //Call my peerToPeerSignaling channel
-  //callPeerSignalingChanne(msg);
+  var sendData = {"id":window.key, "message":msg};
+  callPeerSignalingChanne(sendData); //Send the CID, BOXiD and SDP to peerSignaling server(s)
 }
-
-function callPeerSignalingChanne(msg, responseHandler) {
-	console.log("Calling peer signaling server.");
-	var responseHandler = responseHandler || function() {};
-	// parse response and send to handler
-	  function handler() {
-	    if(this.readyState == this.DONE) {
-	      if(this.status == 200 && this.response != null) {
-		var res = JSON.parse(this.response);
-		if (res.err) {
-		  responseHandler("error:  " + res.err);
-		  return;
-		}
-		responseHandler(res);
-		return;
-	      } else {
-		responseHandler("HTTP error:  " + this.status);
-		return;
-	      }
-	    }
-	  }
-
-	//Open XHR and send SDP data A json to peer signaling server x
-	var peerSignaller = new XMLHttpRequest();
-	//Send JSON object of peer SDP (and their box id, and peer signaling peers??)
-	peerSignaller.onreadystatechange = handler;
-	peerSignaller.open("POST", "http://192.168.1.86:8000/");
-	peerSignaller.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	//var sendData = {"changeToBoxId":boxId, "sdp":msg};
-	console.log("Sending: " + msg + " to signaling peer");
-  	var sendData = {"id":window.boxId, "message":msg};
-	peerSignaller.send(JSON.stringify(sendData));
-
-}//End callPeerSignalingChanne(msg)
 
 return {
   connect:  connect,
@@ -239,3 +205,34 @@ return {
 
 };
 
+function callPeerSignalingChanne(msg, responseHandler) {
+        console.log("Calling peer signaling server.");
+        var responseHandler = responseHandler || function() {};
+        // parse response and send to handler
+          function handler() {
+            if(this.readyState == this.DONE) {
+              if(this.status == 200 && this.response != null) {
+                var res = JSON.parse(this.response);
+                if (res.err) {
+                  responseHandler("error:  " + res.err);
+                  return;
+                }
+                responseHandler(res);
+                return;
+              } else {
+                responseHandler("HTTP error:  " + this.status);
+                return;
+              }
+            }
+          }
+
+        //Open XHR and send SDP data A json to peer signaling server x
+        var peerSignaller = new XMLHttpRequest();
+        //Send JSON object of peer SDP (and their box id, and peer signaling peers??)
+        peerSignaller.onreadystatechange = handler;
+        peerSignaller.open("POST", "http://192.168.1.94:8000/");
+        //peerSignaller.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        //peerSignaller.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+        console.log("Sending: " + msg + " to signaling peer");
+        peerSignaller.send(JSON.stringify(msg));
+}//End callPeerSignalingChanne(msg)

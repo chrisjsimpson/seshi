@@ -139,4 +139,7 @@ function downloadFile(event) {
 function trythis(updates) {
     //console.log(updates[0].object.length);
 }
+
+document.getElementById('share').addEventListener('change', sendStoreMsg, false);
+
 };

@@ -30,7 +30,6 @@ function webrtcError(err, res) {
 
 // handle XML HTTP Request to connect using a given key
 function connect(info) {
-	debugger;
   var res = info.res,
       query = info.query,
       thisconnection,
@@ -89,6 +88,7 @@ exports.connect = connect;
 // Queues message in info.postData.message for sending to the
 // partner of the id in info.postData.id
 function sendMessage(info) {
+	//debugger;
   //log("postData received is ***" + info.postData + "***");
   var postData = JSON.parse(info.postData),
       res = info.res;

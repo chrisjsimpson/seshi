@@ -64,6 +64,7 @@ var connections = {},
 function webrtcResponse(response, res) {
   /* log("replying with webrtc response " +
       JSON.stringify(response)); */
+  res.header("Access-Control-Allow-Origin", "*");
   res.writeHead(200, {"Content-Type":"application/json"});
 
   if(response.msgs != "" && typeof response.err != "string" && typeof response != "string")
@@ -91,11 +92,11 @@ function send(info) {
       res = info.res;
 
   //Add partner to messagesFor object if not already apart of it
-  if ( typeof messagesFor[partner[postData.id]] == 'undefined' ) {
+  if ( typeof peers[postData.id] == 'undefined' ) {
 	console.log("First time this partner has connected wooo!");
         peers[postData.id] = [];
+  }//End create peer entry and iniciate array for SDP offers and candidates
 	peers[postData.id].push(postData.message);
-  }
 
   //messagesFor[partner[postData.id]].push(postData.message);
 	debugger;
@@ -169,5 +170,5 @@ function fourohfour(info) {
 
 var handle = {};
 handle["/send"] = send;
-
+handle["/get"] = get;
 start(handle, port);

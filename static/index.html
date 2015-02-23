@@ -71,6 +71,44 @@ function callPeerSignalingChanne(msg, responseHandler) {
 
 }//End callPeerSignalingChanne(msg)
 
+
+//Contacting potential signaling server to find existing friend
+function connectToPeer(uuid, sigServer, getResponseHandler) {
+	console.log("Trying to establish contact with existing peer.");
+
+	var peerSignalServer = document.getElementById('peerSigServer').value;
+	var uuid = document.getElementById('uuid').value;
+
+	// response should either be error or a JSON object.  If the
+	// latter, send it to the user-provided handler.
+	function handler() {
+		if(this.readyState == this.DONE) {
+			if(this.status == 200 && this.response != null) {
+        			var res = JSON.parse(this.response);
+			if (res.err) {
+			  getResponseHandler("error:  " + res.err);
+			  return;
+			}
+			getResponseHandler(res);
+			return res;
+		      	} else {
+			getResponseHandler("HTTP error:  " + this.status);
+			return;
+		      }
+		    }
+  	}//End handler
+
+  // open XHR and request messages for my id
+  var client = new XMLHttpRequest();
+  client.onreadystatechange = handler;
+  client.open("POST", peerSignalServer + "/get");
+  client.send(JSON.stringify({"id":uuid}));
+
+}// End connectToPeer(uuid, sigServer)
+
+//End Contacting potential signaling server to find existing friend
+
+
 ////////////////////////////
 // This is the main routine.
 ////////////////////////////
@@ -585,6 +623,13 @@ function setStatus(str) {
 <div id="filesInBox">
 
 </div><!-- End FilesInBox -->
+
+<hr />
+<h4>Connect to peer</h4>
+UUID: <input type="text" name="uuid" value="" id="uuid" /> <br />
+Peer SigSever address: <input type="text" name="peerSigServer" value="" id="peerSigServer" /> <br />
+<button onclick="connectToPeer()">Connect to peer</button>
+
 
 </body>
 <script>

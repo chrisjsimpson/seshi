@@ -114,6 +114,7 @@ function connectToPeer(getResponseHandler) {
 
 //Handle SDP messages recived
 function handleMessage(msg) {
+	setStatus("Connected");
 	createPC();
 	//Parse SDP message as JSON
 	var sdp = JSON.parse(msg);
@@ -140,8 +141,6 @@ function connectedToPeer(e) {
 	console.log("Great. Connected to peer via peer signaling channel, probably.");
 	setStatus("Connected");
 	// set up the RTC Peer Connection since we're connected
-	createPC();
-
 }//End  
 
 ////////////////////////////
@@ -190,7 +189,7 @@ function connect() {
       // weWaited will be used for auto-call
       weWaited = true;
 	//Hak?
-	createPC(); //Origionally only in 'onConnected'
+	//createPC(); //Origionally only in 'onConnected'
 	//Get localDescription ready to send to Peer Signaling server
 	pc.createOffer
 	function gotPeerDescription(localSDPOffer) {
@@ -606,7 +605,7 @@ function setStatus(str) {
 
 </script>
 
-<h1>Need peer connection in order to get local SDP (the pc variable). This was made active by calling createPC() (search for 'Hak' in this file. Then pc.createOffer(...) can be called...</h1>
+<h1>Remove polling then defaul to sending SDP as the [seccond|first?] party. Then connect with the seccond peer manually (e.g. qr code).<h1>
 <div id="setup">
   <p>WebRTC Book Demo (local media, signaling, and peer connection, and data channel)</p>
   <p>Key:

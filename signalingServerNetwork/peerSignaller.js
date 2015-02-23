@@ -56,15 +56,16 @@ function noHandlerErr(pathname, res) {
 
 var connections = {},
     partner = {},
-    messagesFor = {},
-    peers = {}; //Object of Peers waiting to be connected to indexed by their uuid. peer[uuid].sdp 
+    messagesFor = {};
+
+GLOBAL.peers = {} //Object of Peers waiting to be connected to indexed by their uuid. peer[uuid].sdp 
 
 
 // queue the sending of a json response
 function webrtcResponse(response, res) {
   /* log("replying with webrtc response " +
       JSON.stringify(response)); */
-  res.header("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.writeHead(200, {"Content-Type":"application/json"});
 
   if(response.msgs != "" && typeof response.err != "string" && typeof response != "string")
@@ -99,7 +100,6 @@ function send(info) {
 	peers[postData.id].push(postData.message);
 
   //messagesFor[partner[postData.id]].push(postData.message);
-	debugger;
   if (typeof postData === "undefined") {
     webrtcError("No posted data in JSON format!", res);
     return;
@@ -112,7 +112,7 @@ function send(info) {
     webrtcError("No id received with message", res);
     return;
   }
-  if (typeof (partner[postData.id]) === "undefined") {
+  if (typeof (peers[postData.id]) === "undefined") {
     webrtcError("Invalid id " + postData.id, res);
     return;
   }
@@ -134,7 +134,6 @@ function send(info) {
 function get(info) {
   var postData = JSON.parse(info.postData),
       res = info.res;
-
   if (typeof postData === "undefined") {
     webrtcError("No posted data in JSON format!", res);
     return;
@@ -143,16 +142,17 @@ function get(info) {
     webrtcError("No id received on get", res);
     return;
   }
-  if (typeof (messagesFor[postData.id]) === "undefined") {
+  if (typeof (peers[postData.id]) === "undefined") {
     webrtcError("Invalid id " + postData.id, res);
     return;
   }
 
-  /* log("Sending messages ***" +
-      JSON.stringify(messagesFor[postData.id]) + "*** to id " +
-      postData.id); */
-  webrtcResponse({'msgs':messagesFor[postData.id]}, res);
-  messagesFor[postData.id] = [];
+  console.log("Sending messages ***" +
+      JSON.stringify(peers[postData.id]) + "*** to id " +
+      postData.id); 
+  webrtcResponse({'msgs':peers[postData.id]}, res);
+	debugger;
+  peers[postData.id] = []; ///Remove peers messages as now have been collected! NEEDS IMPROVING as peer id still attached.
 }
 
 

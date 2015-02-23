@@ -73,7 +73,7 @@ function callPeerSignalingChanne(msg, responseHandler) {
 
 
 //Contacting potential signaling server to find existing friend
-function connectToPeer(uuid, sigServer, getResponseHandler) {
+function connectToPeer(getResponseHandler) {
 	console.log("Trying to establish contact with existing peer.");
 
 	var peerSignalServer = document.getElementById('peerSigServer').value;
@@ -85,6 +85,13 @@ function connectToPeer(uuid, sigServer, getResponseHandler) {
 		if(this.readyState == this.DONE) {
 			if(this.status == 200 && this.response != null) {
         			var res = JSON.parse(this.response);
+			
+				//Loop through each SDP message and handle it (find out if is offer, answer, or candidate SDP)
+				for ( i=0; i<res.msgs.length; i+=1 ) {
+					handleMessage(res.msgs[i]);
+				}//End loop through each SDP recieved to 		
+	
+					
 			if (res.err) {
 			  getResponseHandler("error:  " + res.err);
 			  return;
@@ -104,10 +111,38 @@ function connectToPeer(uuid, sigServer, getResponseHandler) {
   client.open("POST", peerSignalServer + "/get");
   client.send(JSON.stringify({"id":uuid}));
 
+
+//Handle SDP messages recived
+function handleMessage(msg) {
+	createPC();
+	//Parse SDP message as JSON
+	var sdp = JSON.parse(msg);
+	if ( sdp.message.type === "offer" ) {
+		pc.setRemoteDescription(new RTCSessionDescription(sdp.message));
+		answer();
+	} else if ( sdp.message.type === "answer" ) {
+		pc.setRemoteDescription(new RTCSessionDescription(sdp.message));
+	} else if ( msg.type === "candidate") {
+		pc.addIceCandidate(
+			new RTCIceCandidate({sdpMLineIndex:sdp.msg.mlineindex,
+						candidate:sdp.message.candidate}));
+	}//End process SDP message acording to its type
+	
+}//End handleMessage(msg) 
+
+
 }// End connectToPeer(uuid, sigServer)
 
 //End Contacting potential signaling server to find existing friend
 
+
+function connectedToPeer(e) {
+	console.log("Great. Connected to peer via peer signaling channel, probably.");
+	setStatus("Connected");
+	// set up the RTC Peer Connection since we're connected
+	createPC();
+
+}//End  
 
 ////////////////////////////
 // This is the main routine.
@@ -231,11 +266,11 @@ function createPC() {
   }
   console.log("config = " + JSON.stringify(config));
 
-  pc = new RTCPeerConnection({iceServers:config});
-  pc.onicecandidate = onIceCandidate;
-  pc.onaddstream = onRemoteStreamAdded;
-  pc.onremovestream = onRemoteStreamRemoved;
-  pc.ondatachannel = onDataChannelAdded;
+  window.pc = new RTCPeerConnection({iceServers:config});
+  window.pc.onicecandidate = onIceCandidate;
+  window.pc.onaddstream = onRemoteStreamAdded;
+  window.pc.onremovestream = onRemoteStreamRemoved;
+  window.pc.ondatachannel = onDataChannelAdded;
 
   // wait for local media to be ready
   attachMediaIfReady();
@@ -627,8 +662,8 @@ function setStatus(str) {
 <hr />
 <h4>Connect to peer</h4>
 UUID: <input type="text" name="uuid" value="" id="uuid" /> <br />
-Peer SigSever address: <input type="text" name="peerSigServer" value="" id="peerSigServer" /> <br />
-<button onclick="connectToPeer()">Connect to peer</button>
+Peer SigSever address: <input type="text" name="peerSigServer" value="http://192.168.1.94:8000" id="peerSigServer" /> <br />
+<button onclick="connectToPeer(connectedToPeer)">Connect to peer</button>
 
 
 </body>

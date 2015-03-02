@@ -61,7 +61,7 @@ function callPeerSignalingChanne(msg, responseHandler) {
         var peerSignaller = new XMLHttpRequest();
         //Send JSON object of peer SDP (and their box id, and peer signaling peers??)
         peerSignaller.onreadystatechange = handler;
-        peerSignaller.open("POST", "http://192.168.1.94:8000/send");
+        peerSignaller.open("POST", "http://192.168.56.101:8000/send");
         //peerSignaller.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         //peerSignaller.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
         //var sendData = {"changeToBoxId":boxId, "sdp":msg};
@@ -191,11 +191,11 @@ function connect() {
 	//Hak?
 	//createPC(); //Origionally only in 'onConnected'
 	//Get localDescription ready to send to Peer Signaling server
-	pc.createOffer
+	//pc.createOffer
 	function gotPeerDescription(localSDPOffer) {
 		console.log("The Local SDP is: " + localSDPOffer);
 	}//End gotPeerDescription(localSDP)
-	pc.createOffer(gotPeerDescription);
+	//pc.createOffer(gotPeerDescription);
     },
     'onConnected': function () {
       setStatus("Connected");

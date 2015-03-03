@@ -10,6 +10,15 @@ window.onload = function () {
        window.boxId = elm.value;
   }//End setBoxId
 
+var qrcode = new QRCode("qrcode");
+
+function makeCode () {      
+    var elText = document.getElementById("qrcodeImage");
+    
+        elText.focus();
+    
+    qrcode.makeCode(elText.value);
+}
 
 
 
@@ -98,6 +107,7 @@ window.onload = function () {
 		function shareFile(e) {
 			//Get file id:
 			e.target.dataset.fileid;
+			makeCode();
 		}//End shareFile	
 
 

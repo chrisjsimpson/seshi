@@ -26,7 +26,7 @@
      on a key -->
 <script src="clientXHRSignalingChannel.js"
         type="text/javascript"></script>
-
+<script src="qrcode.js"></script>
 <script src="boxHandling.js"></script>
 <script>
 var signalingChannel, key, id,
@@ -261,7 +261,7 @@ function createPC() {
   if (stunuri) {
     // this is one of Google's public STUN servers
     //config.push({"url":"stun:stun.l.google.com:19302"});
-    config.push({"url":"stun:192.168.1.65"});
+    config.push({"url":"stun:192.168.56.101"});
   }
   console.log("config = " + JSON.stringify(config));
 

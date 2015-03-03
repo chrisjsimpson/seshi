@@ -10,6 +10,11 @@ window.onload = function () {
        window.boxId = elm.value;
   }//End setBoxId
 
+
+
+
+
+//Event listner for file downloading
   var showFiles = document.getElementById('showFiles');
   showFiles.addEventListener("click", showBoxFiles, false);
 
@@ -70,6 +75,9 @@ window.onload = function () {
                         list += '">';
                         list += fileNames[i].fileName;
                         list += '</a></li>';
+			list += '<li><button class="shareFile" data-fileId="';
+			list += fileNames[i].fileId;
+			list += '">Share file</button></li>';
                 }
 
                 list += '</ul>';
@@ -85,7 +93,18 @@ window.onload = function () {
                     //Add downloadFile event listener
                     fileId.addEventListener('click', downloadFile, false);
                 }//End add download event listener to each file link.
- 
+
+		var shares = document.getElementsByClassName('shareFile');
+		function shareFile(e) {
+			//Get file id:
+			e.target.dataset.fileid;
+		}//End shareFile	
+
+
+		for(i=0;i<shares.length;i++) {
+			shares[i].addEventListener('click', shareFile, false);
+		} 
+
             }).catch(function(err) {
                     console.log(err);
                 });

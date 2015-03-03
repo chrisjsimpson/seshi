@@ -29,6 +29,7 @@
 <script src="qrcode.js"></script>
 <script src="boxHandling.js"></script>
 <script>
+
 var signalingChannel, key, id,
     weWaited = false,
     doNothing = function() {},
@@ -605,7 +606,9 @@ function setStatus(str) {
 
 </script>
 
-<h1>Remove polling then defaul to sending SDP as the [seccond|first?] party. Then connect with the seccond peer manually (e.g. qr code).<h1>
+<input id="text" type="text" value="https://twitter.com/monsterlarry" style="width:80%" /><br />
+<div id="qrcode"></div>
+
 <div id="qrcodeImage"></div>
 <div id="setup">
   <p>WebRTC Book Demo (local media, signaling, and peer connection, and data channel)</p>

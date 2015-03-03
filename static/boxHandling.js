@@ -10,17 +10,6 @@ window.onload = function () {
        window.boxId = elm.value;
   }//End setBoxId
 
-var qrcode = new QRCode("qrcode");
-
-function makeCode () {      
-    var elText = document.getElementById("qrcodeImage");
-    
-        elText.focus();
-    
-    qrcode.makeCode(elText.value);
-}
-
-
 
 
 //Event listner for file downloading
@@ -106,7 +95,16 @@ function makeCode () {
 		var shares = document.getElementsByClassName('shareFile');
 		function shareFile(e) {
 			//Get file id:
-			e.target.dataset.fileid;
+			var fileId = e.target.dataset.fileid;
+			var sessionId = document.getElementById('key').value;
+			var partnerInfo = {"sessionId": sessionId, "fileId": fileId};
+			//Make QR code 
+			var qrcode = new QRCode("qrcode");
+
+			function makeCode () {      
+			    qrcode.makeCode(JSON.stringify(partnerInfo));
+			}
+
 			makeCode();
 		}//End shareFile	
 

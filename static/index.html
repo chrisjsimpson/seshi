@@ -425,7 +425,7 @@ var sendStoreMsg = function(evt) {
                         	var test = blob.slice(start,end);
 				//Incriment start by maxChunkSize
 				start = start + maxChunkSize;
-				dc.send(test);
+				//dc.send(test); //Disabled to allow chrome to function & until needed (see dataChannelBlobsHowto.txt)
 			}
                         
                     //Add chunks to indexedDB

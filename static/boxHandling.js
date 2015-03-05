@@ -10,6 +10,13 @@ window.onload = function () {
        window.boxId = elm.value;
   }//End setBoxId
 
+//Event listener for QR code reader
+var readQrCodeBtn = document.getElementById('readQrCode');
+readQrCodeBtn.addEventListener("click", readQrCode, false);
+
+function readQrCode(e) {
+	canvas_loader(evt, document.getElementById("qrlogo_canvas"), document.getElementById('QrImg'),qrdecode_ondecode);
+}//end readQrCode(e) 
 
 
 //Event listner for file downloading

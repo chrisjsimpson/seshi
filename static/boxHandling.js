@@ -12,12 +12,36 @@ window.onload = function () {
 
 //Event listener for QR code reader
 var readQrCodeBtn = document.getElementById('readQrCode');
-readQrCodeBtn.addEventListener("click", readQrCode, false);
+readQrCodeBtn.addEventListener("change", readQrCode, false);
 
-function readQrCode(e) {
-	canvas_loader(evt, document.getElementById("qrlogo_canvas"), document.getElementById('QrImg'),qrdecode_ondecode);
+function readQrCode(evt) {
+
+	var canvas = document.getElementById('qrlogo_canvas');
+	var ctx = canvas.getContext('2d');
+	var files = evt.target.files; // FileList object
+	var theFile = files[0];
+
+	var reader = new FileReader();
+
+	reader.onload = ( function(e) {
+		var img = new Image();
+		img.onload = function() {  
+			canvas.width = img.width;
+			canvas.height = img.height;
+			ctx.drawImage(img,0,0);
+		};
+		img.src = e.target.result; 
+		evt = null;
+		canvas_loader(evt, document.getElementById("qrlogo_canvas"), theFile ,qrdecode_ondecode);
+	});
+
+	// Read in the image file as a data URL.
+	reader.readAsDataURL(theFile);
+
 }//end readQrCode(e) 
 
+
+/*********************************************************************/
 
 //Event listner for file downloading
   var showFiles = document.getElementById('showFiles');

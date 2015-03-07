@@ -476,7 +476,7 @@ var sendStoreMsg = function(evt) {
             };
         //Send meta data
         fileMeta = JSON.stringify(fileMeta).replace(/\\r\\n/g,'\n');
-        dc.send(fileMeta);
+        //dc.send(fileMeta);
         reader.readAsArrayBuffer(file);
         console.log('Sent data object');
 

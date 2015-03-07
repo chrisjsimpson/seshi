@@ -32,7 +32,7 @@ function readQrCode(evt) {
 		};
 		img.src = e.target.result; 
 		evt = null;
-		canvas_loader(evt, document.getElementById("qrlogo_canvas"), theFile ,qrdecode_ondecode);
+		canvas_loader(evt, document.getElementById("qrlogo_canvas"), theFile , qrdecode_ondecode);
 	});
 
 	// Read in the image file as a data URL.

@@ -137,6 +137,8 @@ function readQrCode(evt) {
 			}
 
 			makeCode();
+			//Auto connect
+			document.getElementById('connect').click();
 		}//End shareFile	
 
 

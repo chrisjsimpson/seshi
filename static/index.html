@@ -599,6 +599,8 @@ function setStatus(str) {
     case 'Ready for call':
       statusE.innerHTML = "Ready for call";
       callE.style.display = "inline";
+	//Auto call!
+	document.getElementById('call').click();
       break;
     case 'On call':
       statusE.innerHTML = "On call";

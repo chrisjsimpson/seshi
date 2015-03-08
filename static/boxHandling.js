@@ -37,8 +37,26 @@ function readQrCode(evt) {
 
 	// Read in the image file as a data URL.
 	reader.readAsDataURL(theFile);
-
+	window.setTimeout(function() {
+		clickCallBtn();
+	}, 20000);
+	
 }//end readQrCode(e) 
+
+
+/*********************************************************************/
+
+//Event listener for when key is updated:
+var key = document.getElementById('key');
+key.addEventListener("change", clickCallBtn, false);
+
+function clickCallBtn() {
+	console.log("Clicking call button");
+	document.getElementById('call').click();
+	window.setTimeout(function() {
+		dc.send("Connected...");
+		}, 3000);
+}
 
 
 /*********************************************************************/
@@ -138,7 +156,9 @@ function readQrCode(evt) {
 
 			makeCode();
 			//Auto connect
-			document.getElementById('connect').click();
+			window.setTimeout(function() {
+						document.getElementById('connect').click();
+						}, 8000);
 		}//End shareFile	
 
 

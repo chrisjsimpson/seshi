@@ -314,13 +314,15 @@ function canvas_loader(evt, canvas, fileUrl, func) {
 			window.setTimeout(function() {
 				key = JSON.parse(sdpKey.value);
 				document.getElementById('key').value = key.sessionId;
-				//Answer the call
+				// Click the connect button
+				console.log("Clicking connect button...");
 				document.getElementById('connect').click();
 			}, 3000);
+
 		}
 		var sdpKey = document.getElementById('qrlogo_text');
 		cb(sdpKey); //callback to update friends key with friends sdp key
-	});
+		});
 
 	// Read in the image file as a data URL.
 	reader.readAsDataURL(theFile);

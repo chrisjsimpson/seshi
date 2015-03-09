@@ -38,8 +38,9 @@ function readQrCode(evt) {
 	// Read in the image file as a data URL.
 	reader.readAsDataURL(theFile);
 	window.setTimeout(function() {
-		clickCallBtn();
-	}, 20000);
+		console.log("About to call clickCallBtn");
+		//clickCallBtn();
+	}, 9000);
 	
 }//end readQrCode(e) 
 
@@ -54,8 +55,8 @@ function clickCallBtn() {
 	console.log("Clicking call button");
 	document.getElementById('call').click();
 	window.setTimeout(function() {
-		dc.send("Connected...");
-		}, 3000);
+		//dc.send("Connected...");
+		}, 8000);
 }
 
 

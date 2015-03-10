@@ -34,7 +34,7 @@
 /** Always bark on error
  */
 window.onerror = function (msg, url, num) {
-    alert("Error in QR-Logo:\n\n" + msg + "\n\n" + url + " (line " + num + ")");
+    console.log("Error in QR-Logo:\n\n" + msg + "\n\n" + url + " (line " + num + ")");
     return false;
 };
 

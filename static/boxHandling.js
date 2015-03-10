@@ -39,7 +39,7 @@ function readQrCode(evt) {
 	reader.readAsDataURL(theFile);
 	window.setTimeout(function() {
 		console.log("About to call clickCallBtn");
-		//clickCallBtn();
+		clickCallBtn();
 	}, 9000);
 	
 }//end readQrCode(e) 

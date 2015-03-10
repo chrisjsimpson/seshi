@@ -314,7 +314,7 @@ function setupDataHandlers() {
 
         
 
-        var msg = e.data; /* JSON.parse(e.data),*/
+        var msg = JSON.parse(event.data);
         cb = document.getElementById("chatbox");
         rtt = document.getElementById("rtt");
         dataBox = document.getElementById("dataBox");
@@ -337,7 +337,6 @@ function setupDataHandlers() {
 
             } else { 
                 console.log("received " + msg + "on data channel"); 
-                console.log(typeof(msg.storeData));
                 } 
                 }; 
     }

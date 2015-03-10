@@ -323,7 +323,12 @@ function setupDataHandlers() {
         // real-time window 
         console.log("received rtt of '" + msg.rtt + "'"); 
         rtt.value = msg.rtt; msg = msg.rtt; 
-        } else if (msg.chat) { 
+        } else if (msg.requestFileId) {
+
+ 		console.log("Request for file recieved.");
+		sendFileToPeer(msg.requestFileId);
+
+	} else if (msg.chat) { 
             // if full message, display in chat window, 
             // reset real-time window, 
             // and force chat window to last line 
@@ -341,6 +346,10 @@ function setupDataHandlers() {
                 }; 
     }
 
+
+function sendFileToPeer(fileid) {
+	//Presumes dc.send is already active
+}
 
 var sendStoreMsg = function(evt) {
 

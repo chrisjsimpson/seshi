@@ -54,10 +54,26 @@ key.addEventListener("change", clickCallBtn, false);
 function clickCallBtn() {
 	console.log("Clicking call button");
 	document.getElementById('call').click();
+
+	//Request file download from peer.
 	window.setTimeout(function() {
-		//dc.send("Connected...");
+		console.log("Calling requestFileFromConnectedPeer()");
+		requestFileFromConnectedPeer();
 		}, 8000);
-}
+	
+}//End clickCallBtn();
+
+function requestFileFromConnectedPeer() {
+	console.log("Called requestFileFromConnectedPeer.");
+	var seshpack = JSON.parse(document.getElementById('qrlogo_text').value);
+	//Get fileID requested
+	var fileId = seshpack.fileId;
+	
+	//Send request for file to already connected peer
+	var msg = {"requestFileId":fileId};
+	msg = JSON.stringify(msg);
+	dc.send(msg);
+}//requestFileFromConnectedPeer()
 
 
 /*********************************************************************/

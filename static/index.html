@@ -314,7 +314,12 @@ function setupDataHandlers() {
 
         
 
-        var msg = JSON.parse(event.data);
+	//Don't JSON.parse is data is already an object ;) 
+        if ( typeof event.data != "object" ) {
+		var msg = JSON.parse(event.data);
+	} else {
+		var msg = event.data;
+	}//End don't parse data message recived if already an object!
         cb = document.getElementById("chatbox");
         rtt = document.getElementById("rtt");
         dataBox = document.getElementById("dataBox");

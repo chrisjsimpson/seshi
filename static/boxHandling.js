@@ -66,8 +66,9 @@ function clickCallBtn() {
 function requestFileFromConnectedPeer() {
 	console.log("Called requestFileFromConnectedPeer.");
 	var seshpack = JSON.parse(document.getElementById('qrlogo_text').value);
-	//Get fileID requested
-	var fileId = seshpack.fileId;
+	
+	var fileId = seshpack.fileId; //Get fileID requested
+	var chunksNeeded = seshpack.numberOfChunks; //Get number of chunks to file.
 	
 	//Send request for file to already connected peer
 	var msg = {"requestFileId":fileId};

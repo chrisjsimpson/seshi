@@ -354,7 +354,20 @@ function setupDataHandlers() {
 
 function sendFileToPeer(fileid) {
 	//Presumes dc.send is already active
-	
+	console.log("Begin sending file: " + fileid + " to peer operations.");	
+	/* Query Indexed DB for all chunks pertaining to the requested fileId,
+	send each chunk (potentially in any order), one chunk at a time,
+	over the dc.send() datachannel as arraybuffers. */
+
+	/* Steps: 
+	*  > Query all chunks with file id x
+	*  > For each chunk found, send over data channel until 'last chunk'* has been sent.
+	*  > *Not all peers will have all chunks to the file, some may only have a subset.
+	*  > Close the connection? no. 
+	*  	>Exchange useful data: 
+	*		Share known signaling servers, peer exchange, file lists (names), boxIds
+	*/
+
 }//end sendFileToPeer(fileId)
 
 var sendStoreMsg = function(evt) {

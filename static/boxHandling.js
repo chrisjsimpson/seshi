@@ -72,7 +72,7 @@ function requestFileFromConnectedPeer() {
 	//Send request for file to already connected peer
 	var msg = {"requestFileId":fileId};
 	msg = JSON.stringify(msg);
-	dc.send(msg);
+	//dc.send(msg);
 }//requestFileFromConnectedPeer()
 
 
@@ -162,8 +162,19 @@ function requestFileFromConnectedPeer() {
 		function shareFile(e) {
 			//Get file id:
 			var fileId = e.target.dataset.fileid;
-			var sessionId = document.getElementById('key').value;
-			var partnerInfo = {"sessionId": sessionId, "fileId": fileId};
+			//Get number of chunks this file has
+			var numChunks = 0;
+			var p1 = new Promise(
+				function(resolve, reject) {
+					numChunks = numberOfChunksFileHas(fileId);
+					resolve(numChunks);
+				});
+			p1.then(
+				function(val) {
+				var sessionId = document.getElementById('key').value;
+				var partnerInfo = {"sessionId": sessionId, "fileId": fileId,"numberOfChunks": numChunks};
+				}
+			)//End then promis
 			//Make QR code 
 			var qrcode = new QRCode("qrcode");
 
@@ -195,6 +206,14 @@ function requestFileFromConnectedPeer() {
 files.fill(trythis);
 
   }//End showBoxFiles()
+
+function numberOfChunksFileHas(fileId) {
+	db.chunks.where("fileId").equals(fileId).first(function(chunks) {
+	console.log("There are: " + chunks.numberOfChunks + " chunks to this file in total.");
+	return chunks.numberOfChunks;
+	})	
+	//End query fileId's complete number of chunks from indexedDB
+}//End numberOfChunksFileHas(fileId)
 
 function downloadFile(event) {
     event.preventDefault();    

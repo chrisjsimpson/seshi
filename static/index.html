@@ -352,9 +352,9 @@ function setupDataHandlers() {
     }
 
 
-function sendFileToPeer(fileid) {
+function sendFileToPeer(fileId) {
 	//Presumes dc.send is already active
-	console.log("Begin sending file: " + fileid + " to peer operations.");	
+	console.log("Begin sending file: " + fileId + " to peer operations.");	
 	/* Query Indexed DB for all chunks pertaining to the requested fileId,
 	send each chunk (potentially in any order), one chunk at a time,
 	over the dc.send() datachannel as arraybuffers. */
@@ -367,6 +367,17 @@ function sendFileToPeer(fileid) {
 	*  	>Exchange useful data: 
 	*		Share known signaling servers, peer exchange, file lists (names), boxIds
 	*/
+
+	//Query for all chunks with given fileId.
+	console.log("Querying and sending file to peer");
+	 db.chunks.where('fileId').equals("0458f1bb-8d81-4917-8a92-48f518f2a76e").each(
+                    function(boxChunks) {
+
+                       
+                        console.log(boxChunks);
+			dc.send(boxChunks);
+
+                        })//End get fileList
 
 }//end sendFileToPeer(fileId)
 

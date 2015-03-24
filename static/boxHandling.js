@@ -224,26 +224,28 @@ function downloadFile(event) {
                 for(var i=0;i<chunks.length; i++){
                     //console.log(found[i].chunk);
                     allChunksArray[i] = chunks[i].chunk
-                }
+		
+			//Sending file meta...
+			var meta = {"fileId":chunks[i].fileId, "chunkNumber":chunks[i].chunkNumber, "numberOfChunks":chunks[i].numberOfChunks,"fileType":chunks[i].fileType,"fileName":chunks[i].fileName};
+			var sendChunk = new Blob([chunks[i].chunk, JSON.stringify(meta)]);
+			url = window.URL.createObjectURL(sendChunk);
+			var reader = new FileReader();
+				reader.onload = function(file) {
+				if( reader.readyState == FileReader.DONE ) {
+					result = file.target.result;
+					//Send over dc????
+					dc.send(result);
+				}//End FileReader.DONE
+		
+			}//End reader.onload
+			reader.readAsArrayBuffer(sendChunk);	
+			//End sending file meta
+                }//End put all chunks into all chunks array
 
                 var file = new Blob(allChunksArray, {type:chunks[0].fileType});
                 url = window.URL.createObjectURL(file);
+		window.open(url);
                 console.log("Data: " + url);
-		var meta = {"fileId":chunks[0].fileId, "chunkNumber":chunks[0].chunkNumber, "numberOfChunks":chunks[0].numberOfChunks,"fileType":chunks[0].fileType,"fileName":chunks[0].fileName};
-		var firstChunk = new Blob([chunks[0].chunk, JSON.stringify(meta)]);
-                url = window.URL.createObjectURL(firstChunk);
-		//Sending file meta...
-		var reader = new FileReader();
-			reader.onload = function(file) {
-			if( reader.readyState == FileReader.DONE ) {
-				result = file.target.result;
-				//Send over dc????
-				dc.send(result);
-			}//End FileReader.DONE
-	
-		}//End reader.onload
-		reader.readAsArrayBuffer(firstChunk);	
-		//End sending file meta
 		
             })//End db.chunks toArray using Dexie (.then follows)
         

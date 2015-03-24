@@ -328,8 +328,8 @@ function setupDataHandlers() {
 
 	    //End extract file meta from blob		
 
-            //Create ObjectURL to recieved data
-            var url = window.URL.createObjectURL(blob);
+            //Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 
+            var url = window.URL.createObjectURL(chunkBlob);
             console.log(url);
             window.open(url);
         } else { //If not an ArrayBuffer , treat as control packet.

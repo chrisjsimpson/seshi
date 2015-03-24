@@ -229,9 +229,30 @@ function downloadFile(event) {
                 var file = new Blob(allChunksArray, {type:chunks[0].fileType});
                 url = window.URL.createObjectURL(file);
                 console.log("Data: " + url);
+
+		var firstChunk = new Blob([chunks[0].chunk]);
+                url = window.URL.createObjectURL(firstChunk);
+		/* Send first chunk over dc connection
+		var buff = new ArrayBuffer(65512); ///SIZE SHOULD BE MORE?!??!
+		var view = new Int32Array(buff);
+		view = chunks[0].chunk;
+		dc.send(buff); */
                 //Open file
                 window.open(url);
-            })
+		
+		//Sending file meta...
+		var reader = new FileReader();
+			reader.onload = function(file) {
+			if( reader.readyState == FileReader.DONE ) {
+				result = file.target.result;
+				//Send over dc????
+				dc.send(result);
+			}//End FileReader.DONE
+	
+		}//End reader.onload
+		reader.readAsArrayBuffer(firstChunk);	
+		
+            })//End db.chunks toArray using Dexie (.then follows)
         
         }).then(function() {
             //Transaction completed

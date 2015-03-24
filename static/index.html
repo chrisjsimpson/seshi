@@ -295,6 +295,10 @@ function setupDataHandlers() {
     dc.onmessage = function(event) {
         trace('Received Message: ' + event.data);
 
+	if ( event.data instanceof Array ) {
+		alert('Is array');
+	}
+
         //Check if message is an array buffer (data)
         if( event.data instanceof ArrayBuffer){
             console.log('Recieved ArrayBuffer message');

@@ -229,17 +229,9 @@ function downloadFile(event) {
                 var file = new Blob(allChunksArray, {type:chunks[0].fileType});
                 url = window.URL.createObjectURL(file);
                 console.log("Data: " + url);
-
-		var firstChunk = new Blob([chunks[0].chunk]);
+		var meta = {"fileId":chunks[0].fileId, "chunkNumber":chunks[0].chunkNumber, "numberOfChunks":chunks[0].numberOfChunks,"fileType":chunks[0].fileType,"fileName":chunks[0].fileName};
+		var firstChunk = new Blob([chunks[0].chunk, JSON.stringify(meta)]);
                 url = window.URL.createObjectURL(firstChunk);
-		/* Send first chunk over dc connection
-		var buff = new ArrayBuffer(65512); ///SIZE SHOULD BE MORE?!??!
-		var view = new Int32Array(buff);
-		view = chunks[0].chunk;
-		dc.send(buff); */
-                //Open file
-                window.open(url);
-		
 		//Sending file meta...
 		var reader = new FileReader();
 			reader.onload = function(file) {
@@ -251,6 +243,7 @@ function downloadFile(event) {
 	
 		}//End reader.onload
 		reader.readAsArrayBuffer(firstChunk);	
+		//End sending file meta
 		
             })//End db.chunks toArray using Dexie (.then follows)
         

@@ -303,7 +303,31 @@ function setupDataHandlers() {
         if( event.data instanceof ArrayBuffer){
             console.log('Recieved ArrayBuffer message');
             //Catch ArrayBuffer sent through the datachannel
-            var blob = new Blob([event.data], {type:fileMeta.type});
+            var blob = new Blob([event.data]);
+
+	    //Split file meta from end of chunk (all chunk payloads are 64512 bytes in length)
+	    var chunkFileMeta = blob.slice(64512); //First get file type, chunk number etc
+		var reader = new FileReader();
+		reader.onload = function(file) {
+			if ( reader.readyState == FileReader.DONE ) {
+				result = file.target.result;
+			 	var chunkInProgress = JSON.parse(result);
+				//Update window with current chunk information
+				var chunkProgresTextBox = document.getElementById('chunkInProgress');
+				var message = "File id: " + chunkInProgress.fileId + " ChunkNumber: ";
+				message += chunkInProgress.chunkNumber + " Filetype: " + chunkInProgress.fileType;
+				message += " FileName: " + chunkInProgress.fileName;
+
+				chunkProgresTextBox.value = message;
+				
+			}//End reader.readtState == DONE
+		}//End reader.onload
+		reader.readAsText(chunkFileMeta);
+
+	    var chunkBlob = blob.slice(0, 64512); //Get chunk payload
+
+	    //End extract file meta from blob		
+
             //Create ObjectURL to recieved data
             var url = window.URL.createObjectURL(blob);
             console.log(url);
@@ -634,6 +658,7 @@ function setStatus(str) {
 
 Upload friends QR code: <input type="file" id="readQrCode" value="Read QR code" />
 <input id="qrlogo_text" type="text" value="Your friends SDP will display here." style="width:80%" /><br />
+<input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" style="width:80%" /><br />
 <input id="qrlogo_debug_checkbox" type="text" />
 <div id="qrcode"></div>
 

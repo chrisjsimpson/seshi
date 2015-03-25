@@ -311,12 +311,12 @@ function setupDataHandlers() {
 		reader.onload = function(file) {
 			if ( reader.readyState == FileReader.DONE ) {
 				result = file.target.result;
-			 	var chunkInProgress = JSON.parse(result);
+			 	window.curChunk = JSON.parse(result);
 				//Update window with current chunk information
 				var chunkProgresTextBox = document.getElementById('chunkInProgress');
-				var message = "File id: " + chunkInProgress.fileId + " ChunkNumber: ";
-				message += chunkInProgress.chunkNumber + " Filetype: " + chunkInProgress.fileType;
-				message += " FileName: " + chunkInProgress.fileName;
+				var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
+				message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
+				message += " FileName: " + curChunk.fileName;
 
 				chunkProgresTextBox.value = message;
 				
@@ -325,13 +325,14 @@ function setupDataHandlers() {
 		reader.readAsText(chunkFileMeta);
 
 	    var chunkBlob = blob.slice(0, 64512); //Get chunk payload
-
 	    //End extract file meta from blob		
-
+	    
+	    //Store chunkBlob into IndexedDB
+ 	    addChunkToDb(chunkBlob);
             //Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 
             var url = window.URL.createObjectURL(chunkBlob);
             console.log(url);
-            window.open(url);
+            //window.open(url);
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
             {   
@@ -547,6 +548,33 @@ function trace(text) {
   }
   console.log((performance.now() / 1000).toFixed(3) + ": " + text);
 }
+
+
+function addChunkToDb(blob) {
+        //Add chunks to indexedDB
+        db.transaction("rw", db.chunks, function() {
+        var test = blob;
+        db.chunks
+            .add({
+                fileId: window.curChunk.fileId,
+                boxId: window.boxId,
+                fileName: window.curChunk.fileName,
+                fileType: window.curChunk.fileType,
+                chunkNumber: window.curChunk.chunkNumber,
+                numberOfChunks: window.curChunk.numberOfChunks,
+                chunkSize: window.curChunk.chunkSize,
+                chunk: blob
+            });
+        }).then(function() {
+        //Transaction completed
+        console.log('Time to show file back to user/recipricant..?');
+    }).catch(function(error) {
+        //Transaction failed
+        console.log(error);
+    });
+
+}//End addChunkToDb
+
 
 
 ///////////////////////////////////

@@ -311,28 +311,31 @@ function setupDataHandlers() {
 		reader.onload = function(file) {
 			if ( reader.readyState == FileReader.DONE ) {
 				result = file.target.result;
-			 	window.curChunk = JSON.parse(result);
-				//Update window with current chunk information
-				var chunkProgresTextBox = document.getElementById('chunkInProgress');
-				var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
-				message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
-				message += " FileName: " + curChunk.fileName;
+				if( result.length > 0 ) {
+					window.curChunk = JSON.parse(result);
+					//Update window with current chunk information
+					var chunkProgresTextBox = document.getElementById('chunkInProgress');
+					var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
+					message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
+					message += " FileName: " + curChunk.fileName;
 
-				chunkProgresTextBox.value = message;
+					chunkProgresTextBox.value = message;
+				        var chunkBlob = blob.slice(0, 64512); //Get chunk payload
+				        //End extract file meta from blob		
+				    
+				        //Store chunkBlob into IndexedDB
+				        addChunkToDb(chunkBlob);
+				        //Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 
+				        var url = window.URL.createObjectURL(chunkBlob);
+				        console.log(url);
+				        //window.open(url);
+				}//End check read data is > 0 
 				
 			}//End reader.readtState == DONE
 		}//End reader.onload
 		reader.readAsText(chunkFileMeta);
+		alert(2);
 
-	    var chunkBlob = blob.slice(0, 64512); //Get chunk payload
-	    //End extract file meta from blob		
-	    
-	    //Store chunkBlob into IndexedDB
- 	    addChunkToDb(chunkBlob);
-            //Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 
-            var url = window.URL.createObjectURL(chunkBlob);
-            console.log(url);
-            //window.open(url);
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
             {   

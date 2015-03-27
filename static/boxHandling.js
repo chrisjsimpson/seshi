@@ -233,8 +233,6 @@ function downloadFile(event) {
 				reader.onload = function(file) {
 				if( reader.readyState == FileReader.DONE ) {
 					result = file.target.result;
-					//Send over dc????
-					dc.send(result);
 				}//End FileReader.DONE
 		
 			}//End reader.onload
@@ -251,7 +249,7 @@ function downloadFile(event) {
         
         }).then(function() {
             //Transaction completed
-
+            sendChunksToPeer(fileId);
         }).catch (function (err) {
             
             console.error(err);
@@ -260,6 +258,35 @@ function downloadFile(event) {
 
 }//End download file
 
+
+function sendChunksToPeer(fileId) {
+
+    db.transaction('r', db.chunks, function() {
+        
+            db.chunks.where("fileId").equals(fileId).each(function(chunk) {
+                //Transaction scope
+                for(var i=0;i<chunk.length; i++){
+		
+			//Sending file meta...
+			var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+			var sendChunk = new Blob([chunk.chunk, JSON.stringify(meta)]);
+			url = window.URL.createObjectURL(sendChunk);
+			dc.send(sendChunk);	
+			//End sending file meta
+                }//End put all chunks into all chunks array
+
+            })//End db.chunks toArray using Dexie (.then follows)
+        
+        }).then(function() {
+            //Transaction completed
+
+        }).catch (function (err) {
+            
+            console.error(err);
+    
+    });//End get fildIdChunks from fileId
+
+}//End sendChunksToPeer
 
 function trythis(updates) {
     //console.log(updates[0].object.length);

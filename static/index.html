@@ -311,7 +311,7 @@ function setupDataHandlers() {
 		reader.onload = function(file) {
 			if ( reader.readyState == FileReader.DONE ) {
 				result = file.target.result;
-				if( result.length > 0 ) {
+				if ( result.length > 0 ) {
 					window.curChunk = JSON.parse(result);
 					//Update window with current chunk information
 					var chunkProgresTextBox = document.getElementById('chunkInProgress');
@@ -322,20 +322,19 @@ function setupDataHandlers() {
 					chunkProgresTextBox.value = message;
 				        var chunkBlob = blob.slice(0, 64512); //Get chunk payload
 				        //End extract file meta from blob		
-				    
-				        //Store chunkBlob into IndexedDB
-				        addChunkToDb(chunkBlob);
-				        //Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 
-				        var url = window.URL.createObjectURL(chunkBlob);
-				        console.log(url);
-				        //window.open(url);
 				}//End check read data is > 0 
-				
 			}//End reader.readtState == DONE
 		}//End reader.onload
 		reader.readAsText(chunkFileMeta);
-		alert(2);
+	        //End extract file meta from blob		
 
+	    	var chunkBlob = blob.slice(0, 64512); //Get chunk payload
+		//Store chunkBlob into IndexedDB
+		addChunkToDb(chunkBlob);
+		//Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 
+		var url = window.URL.createObjectURL(chunkBlob);
+		console.log(url);
+		//window.open(url);
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
             {   
@@ -557,16 +556,17 @@ function addChunkToDb(blob) {
         //Add chunks to indexedDB
         db.transaction("rw", db.chunks, function() {
         var test = blob;
+	console.log("Storing chunk number: " + window.curChunk.chunkNumber);
         db.chunks
             .add({
-                fileId: window.curChunk.fileId,
                 boxId: window.boxId,
+                chunk: blob,
+                chunkNumber: window.curChunk.chunkNumber,
+                chunkSize: window.curChunk.chunkSize,
+                fileId: window.curChunk.fileId,
                 fileName: window.curChunk.fileName,
                 fileType: window.curChunk.fileType,
-                chunkNumber: window.curChunk.chunkNumber,
-                numberOfChunks: window.curChunk.numberOfChunks,
-                chunkSize: window.curChunk.chunkSize,
-                chunk: blob
+                numberOfChunks: window.curChunk.numberOfChunks
             });
         }).then(function() {
         //Transaction completed

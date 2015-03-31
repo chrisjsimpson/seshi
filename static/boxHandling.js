@@ -292,6 +292,28 @@ function trythis(updates) {
     //console.log(updates[0].object.length);
 }
 
+function generateCode() {
+
+//Remove any existing code from display:
+if( document.getElementById('QrImg') ) {
+	document.getElementById('QrImg').remove() ;
+}
+var sessionId = document.getElementById('key').value;
+var partnerInfo = {"sessionId": sessionId};
+//Make QR code 
+var qrcode = new QRCode("qrcode");
+
+function makeCode () { 
+    qrcode.makeCode(JSON.stringify(partnerInfo));
+}
+makeCode();
+//Auto connect
+window.setTimeout( function() {
+		document.getElementById('connect').click();
+	       }, 8000);
+}//End generateCode 
+
 document.getElementById('share').addEventListener('change', sendStoreMsg, false);
+document.getElementById('Generate').addEventListener('click', generateCode, false);
 
 };

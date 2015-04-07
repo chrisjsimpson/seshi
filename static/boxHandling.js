@@ -265,16 +265,23 @@ function sendChunksToPeer(fileId) {
         
             db.chunks.where("fileId").equals(fileId).each(function(chunk) {
                 //Transaction scope
-                for(var i=0;i<chunk.length; i++){
 		
 			//Sending file meta...
 			var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
 			var sendChunk = new Blob([chunk.chunk, JSON.stringify(meta)]);
 			url = window.URL.createObjectURL(sendChunk);
-			dc.send(sendChunk);	
-			//End sending file meta
-                }//End put all chunks into all chunks array
+			//Needs to be sent as an arrayBuffer
+			var reader = new FileReader();
+                                reader.onload = function(file) {
+                                if( reader.readyState == FileReader.DONE ) {
+                                        dc.send(result = file.target.result);
+                                }//End FileReader.DONE
 
+                        }//End reader.onload
+                        reader.readAsArrayBuffer(sendChunk);
+
+			//dc.send(sendChunk);	
+			//End sending file meta
             })//End db.chunks toArray using Dexie (.then follows)
         
         }).then(function() {

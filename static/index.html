@@ -323,18 +323,19 @@ function setupDataHandlers() {
 				        var chunkBlob = blob.slice(0, 64512); //Get chunk payload
 				        //End extract file meta from blob		
 				}//End check read data is > 0 
+					//Start send data payload
+					var chunkBlob = blob.slice(0, 64512); //Get chunk payload
+					//Store chunkBlob into IndexedDB
+					addChunkToDb(chunkBlob);
+					//Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 
+					var url = window.URL.createObjectURL(chunkBlob);
+					console.log(url);
+					//End send data chunk payload
 			}//End reader.readtState == DONE
 		}//End reader.onload
 		reader.readAsText(chunkFileMeta);
 	        //End extract file meta from blob		
 
-	    	var chunkBlob = blob.slice(0, 64512); //Get chunk payload
-		//Store chunkBlob into IndexedDB
-		addChunkToDb(chunkBlob);
-		//Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 
-		var url = window.URL.createObjectURL(chunkBlob);
-		console.log(url);
-		//window.open(url);
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
             {   

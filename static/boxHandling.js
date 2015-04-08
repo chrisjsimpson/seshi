@@ -267,7 +267,7 @@ function sendChunksToPeer(fileId) {
                 //Transaction scope
 		
 			//Sending file meta...
-			var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+			var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
 			var sendChunk = new Blob([chunk.chunk, JSON.stringify(meta)]);
 			url = window.URL.createObjectURL(sendChunk);
 			//Needs to be sent as an arrayBuffer

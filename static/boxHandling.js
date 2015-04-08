@@ -44,6 +44,15 @@ function readQrCode(evt) {
 	
 }//end readQrCode(e) 
 
+function zeroFill( number, width )
+{
+  width -= number.toString().length;
+  if ( width > 0 )
+  {
+    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+  }
+  return number + ""; // always return a string
+}//End zeroFill
 
 /*********************************************************************/
 
@@ -226,7 +235,9 @@ function downloadFile(event) {
 		
 			//Sending file meta...
 			var meta = {"fileId":chunks[i].fileId, "chunkNumber":chunks[i].chunkNumber, "numberOfChunks":chunks[i].numberOfChunks,"fileType":chunks[i].fileType,"fileName":chunks[i].fileName};
-			var sendChunk = new Blob([chunks[i].chunk, JSON.stringify(meta)]);
+			var lengthOfMeta = JSON.stringify(meta).length;
+			lengthOfMeta = zeroFill(lengthOfMeta, 64);
+			var sendChunk = new Blob([lengthOfMeta, JSON.stringify(meta), chunks[i].chunk]);
 			url = window.URL.createObjectURL(sendChunk);
 			var reader = new FileReader();
 				reader.onload = function(file) {
@@ -267,7 +278,11 @@ function sendChunksToPeer(fileId) {
 		
 			//Sending file meta...
 			var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
-			var sendChunk = new Blob([chunk.chunk, JSON.stringify(meta)]);
+			var lengthOfMeta = JSON.stringify(meta).length;
+			lengthOfMeta = zeroFill(lengthOfMeta, 64);
+			var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
+			var header = JSON.stringify(metaLength) + JSON.stringify(meta);
+			var sendChunk = new Blob([header, chunk.chunk]);
 			url = window.URL.createObjectURL(sendChunk);
 			//Needs to be sent as an arrayBuffer
 			var reader = new FileReader();

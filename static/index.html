@@ -305,7 +305,24 @@ function setupDataHandlers() {
             //Catch ArrayBuffer sent through the datachannel
             var blob = new Blob([event.data]);
 
-	    //Split file meta from end of chunk (all chunk payloads are 64512 bytes in length)
+/* Change this to read the lengthOfMeta, which is always at the start of the blob and is 64 bytes long. 
+We might need to reduce the size of the chunks for this to work over STCP!!! 
+#########*/
+		//Get length of file meta (size specified is always a zerofilled 64byte long string at the begining of the blob
+		var metaLength = blob.slice(0,81);
+
+		//Read metaLength to get size in bytes of chunk fileMeta
+		var reader2 = new FileReader();
+		reader2.onload = function(file2) {
+			if ( reader2.readyState == FileReader.DONE ) {
+				result2 = file2.target.result;			
+				var fileMetaLengthObj = JSON.parse(result2);
+				var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
+			}//End IF reading byte lenth of fileMeata
+		}//End get bytelength of fileMeta
+		reader2.readAsText(metaLength);
+
+	    //Split file meta from begining of chunk (all chunk payloads are 64512 bytes in length)
 	    var chunkFileMeta = blob.slice(64512); //First get file type, chunk number etc
 		var reader = new FileReader();
 		reader.onload = function(file) {

@@ -363,7 +363,7 @@ function setupDataHandlers() {
         } else if (msg.requestFileId) {
 
  		console.log("Request for file recieved.");
-		sendFileToPeer(msg.requestFileId);
+		//sendFileToPeer(msg.requestFileId);
 
 	} else if (msg.chat) { 
             // if full message, display in chat window, 
@@ -518,12 +518,10 @@ var sendStoreMsg = function(evt) {
                     });
 
 
-                    //dc.send(file.target.result);
                 }//End file reader.readstate == FileReader.DONE
             };
         //Send meta data
         fileMeta = JSON.stringify(fileMeta).replace(/\\r\\n/g,'\n');
-        //dc.send(fileMeta);
         reader.readAsArrayBuffer(file);
         console.log('Sent data object');
 

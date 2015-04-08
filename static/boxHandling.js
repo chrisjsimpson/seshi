@@ -73,7 +73,6 @@ function requestFileFromConnectedPeer() {
 	//Send request for file to already connected peer
 	var msg = {"requestFileId":fileId};
 	msg = JSON.stringify(msg);
-	//dc.send(msg);
 }//requestFileFromConnectedPeer()
 
 
@@ -280,7 +279,6 @@ function sendChunksToPeer(fileId) {
                         }//End reader.onload
                         reader.readAsArrayBuffer(sendChunk);
 
-			//dc.send(sendChunk);	
 			//End sending file meta
             })//End db.chunks toArray using Dexie (.then follows)
         

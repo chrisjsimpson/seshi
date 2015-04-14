@@ -318,30 +318,31 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
 				result2 = file2.target.result;			
 				var fileMetaLengthObj = JSON.parse(result2);
 				var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
+				window.fileMetaLength = fileMetaLength;
+							
 			}//End IF reading byte lenth of fileMeata
 		}//End get bytelength of fileMeta
 		reader2.readAsText(metaLength);
 
 	    //Split file meta from begining of chunk (all chunk payloads are 64512 bytes in length)
-	    var chunkFileMeta = blob.slice(64512); //First get file type, chunk number etc
+	    var chunkFileMeta = blob.slice(81, window.fileMetaLength + 1); //First get file type, chunk number etc
 		var reader = new FileReader();
 		reader.onload = function(file) {
 			if ( reader.readyState == FileReader.DONE ) {
 				result = file.target.result;
 				if ( result.length > 0 ) {
-					window.curChunk = JSON.parse(result);
+					//window.curChunk = JSON.parse(result);
 					//Update window with current chunk information
 					var chunkProgresTextBox = document.getElementById('chunkInProgress');
 					var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
 					message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
 					message += " FileName: " + curChunk.fileName;
-
 					chunkProgresTextBox.value = message;
-				        var chunkBlob = blob.slice(0, 64512); //Get chunk payload
 				        //End extract file meta from blob		
 				}//End check read data is > 0 
 					//Start send data payload
-					var chunkBlob = blob.slice(0, 64512); //Get chunk payload
+					var headerOffset = 81 + window.fileMetaLength;
+					var chunkBlob = blob.slice(headerOffset); //Get chunk payload
 					//Store chunkBlob into IndexedDB
 					addChunkToDb(chunkBlob);
 					//Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 

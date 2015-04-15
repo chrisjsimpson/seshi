@@ -463,6 +463,7 @@ var sendStoreMsg = function(evt) {
                     //Begin chunking...
                     //Work out number of chunks needed
                     var maxChunkSize = 64512; //bytes
+                    var maxChunkSize = 24512; //bytes
                     console.log("Chunk size is set to: " + maxChunkSize + " bytes.");
                     var numChunksNeeded = Math.ceil(fileSize/maxChunkSize);
                     console.log("We need " + numChunksNeeded + " chunks. (" + fileSize +"/" + maxChunkSize + ")");

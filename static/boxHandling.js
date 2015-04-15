@@ -290,6 +290,11 @@ function sendChunksToPeer(fileId) {
                                 if( reader.readyState == FileReader.DONE ) {
 					for(var i=0;i<=999999999;i++) {}//Crude delay!
                                         dc.send(result = file.target.result);
+					/* 
+						Create array of chunks.
+						Then use http://stackoverflow.com/questions/6425062/passing-functions-to-settimeout-in-a-loop-always-the-last-value
+						to do the packets every few seconds
+					*/
                                 }//End FileReader.DONE
 
                         }//End reader.onload

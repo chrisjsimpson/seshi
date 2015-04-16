@@ -322,7 +322,7 @@ function sendChunksToPeer(e) {
     
     });//End get fildIdChunks from fileId
 
-}//End sendChunksToPeer
+} //End sendChunksToPeer
 
 function trythis(updates) {
     //console.log(updates[0].object.length);

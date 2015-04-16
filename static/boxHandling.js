@@ -150,7 +150,10 @@ function requestFileFromConnectedPeer() {
                         list += '</a></li>';
 			list += '<li><button class="shareFile" data-fileId="';
 			list += fileNames[i].fileId;
-			list += '">Share file</button></li>';
+			list += '">Share file</button>';
+			list += '<button class="send" data-fileId="';
+			list += fileNames[i].fileId;
+			list += '">Send</button></li>';
                 }
 
                 list += '</ul>';
@@ -202,6 +205,12 @@ function requestFileFromConnectedPeer() {
 		for(i=0;i<shares.length;i++) {
 			shares[i].addEventListener('click', shareFile, false);
 		} 
+		
+		var sendButtons = document.getElementsByClassName('send');
+		for(i=0;i<sendButtons.length;i++) {
+			sendButtons[i].addEventListener('click', sendChunksToPeer, false);
+		} 
+		
 
             }).catch(function(err) {
                     console.log(err);
@@ -259,7 +268,6 @@ function downloadFile(event) {
         
         }).then(function() {
             //Transaction completed
-            sendChunksToPeer(fileId);
         }).catch (function (err) {
             
             console.error(err);
@@ -269,7 +277,9 @@ function downloadFile(event) {
 }//End download file
 
 
-function sendChunksToPeer(fileId) {
+function sendChunksToPeer(e) {
+	//Get file id:
+        var fileId = e.target.dataset.fileid;
 
     db.transaction('r', db.chunks, function() {
         

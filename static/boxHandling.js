@@ -298,7 +298,7 @@ function sendChunksToPeer(e) {
 			var reader = new FileReader();
                                 reader.onload = function(file) {
                                 if( reader.readyState == FileReader.DONE ) {
-					for(var i=0;i<=999999999;i++) {}//Crude delay!
+					//for(var i=0;i<=999999999;i++) {}//Crude delay!
                                         dc.send(result = file.target.result);
 					/* 
 						Create array of chunks.

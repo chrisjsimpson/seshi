@@ -722,7 +722,7 @@ Generate your connect code: <button id="Generate">Generate code</button>
 <div id="setup">
   <p>WebRTC Book Demo (local media, signaling, and peer connection, and data channel)</p>
   <p>Key:
-    <input type="text" name="key" id="key"
+    <input type="text" name="key" id="key" value="123"
            onkeyup="if (event.keyCode == 13) {
                       connect(); return false;}"/>
     <button id="connect" onclick="connect()">Connect</button>
@@ -781,7 +781,7 @@ Peer SigSever address: <input type="text" name="peerSigServer" value="http://192
 </body>
 <script>
 //document.getElementById('share').addEventListener('change', sendStoreMsg, false);
-document.getElementById('key').value = window.uuid(); //Give connection a random uuid to start with...this may well become the boxID for the initial connection share
+//document.getElementById('key').value = window.uuid(); //Give connection a random uuid to start with...this may well become the boxID for the initial connection share
 </script>
 
 </html>

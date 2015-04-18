@@ -150,7 +150,7 @@ function requestFileFromConnectedPeer() {
                         list += '</a></li>';
 			list += '<li><button class="shareFile" data-fileId="';
 			list += fileNames[i].fileId;
-			list += '">Share file</button>';
+			list += '">Generate QR Code</button>';
 			list += '<button class="send" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Send</button></li>';

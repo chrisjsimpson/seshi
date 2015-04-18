@@ -37,8 +37,52 @@ function readQrCode(evt) {
 
 	// Read in the image file as a data URL.
 	reader.readAsDataURL(theFile);
-
+	window.setTimeout(function() {
+		console.log("About to call clickCallBtn");
+		clickCallBtn();
+	}, 9000);
+	
 }//end readQrCode(e) 
+
+function zeroFill( number, width )
+{
+  width -= number.toString().length;
+  if ( width > 0 )
+  {
+    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+  }
+  return number + ""; // always return a string
+}//End zeroFill
+
+/*********************************************************************/
+
+//Event listener for when key is updated:
+var key = document.getElementById('key');
+key.addEventListener("change", clickCallBtn, false);
+
+function clickCallBtn() {
+	console.log("Clicking call button");
+	document.getElementById('call').click();
+
+	//Request file download from peer.
+	window.setTimeout(function() {
+		console.log("Calling requestFileFromConnectedPeer()");
+		requestFileFromConnectedPeer();
+		}, 8000);
+	
+}//End clickCallBtn();
+
+function requestFileFromConnectedPeer() {
+	console.log("Called requestFileFromConnectedPeer.");
+	var seshpack = JSON.parse(document.getElementById('qrlogo_text').value);
+	
+	var fileId = seshpack.fileId; //Get fileID requested
+	var chunksNeeded = seshpack.numberOfChunks; //Get number of chunks to file.
+	
+	//Send request for file to already connected peer
+	var msg = {"requestFileId":fileId};
+	msg = JSON.stringify(msg);
+}//requestFileFromConnectedPeer()
 
 
 /*********************************************************************/
@@ -106,7 +150,10 @@ function readQrCode(evt) {
                         list += '</a></li>';
 			list += '<li><button class="shareFile" data-fileId="';
 			list += fileNames[i].fileId;
-			list += '">Share file</button></li>';
+			list += '">Share file</button>';
+			list += '<button class="send" data-fileId="';
+			list += fileNames[i].fileId;
+			list += '">Send</button></li>';
                 }
 
                 list += '</ul>';
@@ -127,24 +174,43 @@ function readQrCode(evt) {
 		function shareFile(e) {
 			//Get file id:
 			var fileId = e.target.dataset.fileid;
-			var sessionId = document.getElementById('key').value;
-			var partnerInfo = {"sessionId": sessionId, "fileId": fileId};
-			//Make QR code 
-			var qrcode = new QRCode("qrcode");
+			//Get number of chunks this file has
+			var numChunks = 0;
+			
+			db.chunks.where("fileId").equals(fileId).first(function(chunks) {
+			console.log("There are: " + chunks.numberOfChunks + " chunks to this file in total.");
+			var numChunks = chunks.numberOfChunks;
+			return numChunks;
+			//End query fileId's complete number of chunks from indexedDB
+			}).then(function(numChunks) {
+				console.log("Ready..");
+				var sessionId = document.getElementById('key').value;
+				var partnerInfo = {"sessionId": sessionId, "fileId": fileId,"numberOfChunks": numChunks};
+				//Make QR code 
+				var qrcode = new QRCode("qrcode");
 
-			function makeCode () {      
-			    qrcode.makeCode(JSON.stringify(partnerInfo));
-			}
+				function makeCode () {      
+				    qrcode.makeCode(JSON.stringify(partnerInfo));
+				}
 
-			makeCode();
-			//Auto connect
-			document.getElementById('connect').click();
+				makeCode();
+				//Auto connect
+				window.setTimeout(function() {
+						document.getElementById('connect').click();
+						}, 8000);
+			});
 		}//End shareFile	
 
 
 		for(i=0;i<shares.length;i++) {
 			shares[i].addEventListener('click', shareFile, false);
 		} 
+		
+		var sendButtons = document.getElementsByClassName('send');
+		for(i=0;i<sendButtons.length;i++) {
+			sendButtons[i].addEventListener('click', sendChunksToPeer, false);
+		} 
+		
 
             }).catch(function(err) {
                     console.log(err);
@@ -175,14 +241,77 @@ function downloadFile(event) {
                 for(var i=0;i<chunks.length; i++){
                     //console.log(found[i].chunk);
                     allChunksArray[i] = chunks[i].chunk
-                }
+		
+			//Sending file meta...
+			var meta = {"fileId":chunks[i].fileId, "chunkNumber":chunks[i].chunkNumber, "numberOfChunks":chunks[i].numberOfChunks,"fileType":chunks[i].fileType,"fileName":chunks[i].fileName};
+			var lengthOfMeta = JSON.stringify(meta).length;
+			lengthOfMeta = zeroFill(lengthOfMeta, 64);
+			var sendChunk = new Blob([lengthOfMeta, JSON.stringify(meta), chunks[i].chunk]);
+			url = window.URL.createObjectURL(sendChunk);
+			var reader = new FileReader();
+				reader.onload = function(file) {
+				if( reader.readyState == FileReader.DONE ) {
+					result = file.target.result;
+				}//End FileReader.DONE
+		
+			}//End reader.onload
+			reader.readAsArrayBuffer(sendChunk);	
+			//End sending file meta
+                }//End put all chunks into all chunks array
 
                 var file = new Blob(allChunksArray, {type:chunks[0].fileType});
                 url = window.URL.createObjectURL(file);
+		window.open(url);
                 console.log("Data: " + url);
-                //Open file
-                window.open(url);
-            })
+		
+            })//End db.chunks toArray using Dexie (.then follows)
+        
+        }).then(function() {
+            //Transaction completed
+        }).catch (function (err) {
+            
+            console.error(err);
+    
+    });//End get fildIdChunks from fileId
+
+}//End download file
+
+
+function sendChunksToPeer(e) {
+	//Get file id:
+        var fileId = e.target.dataset.fileid;
+
+    db.transaction('r', db.chunks, function() {
+        
+            db.chunks.where("fileId").equals(fileId).each(function(chunk) {
+                //Transaction scope
+		
+			//Sending file meta...
+			var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+			var lengthOfMeta = JSON.stringify(meta).length;
+			lengthOfMeta = zeroFill(lengthOfMeta, 64);
+			var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
+			var header = JSON.stringify(metaLength) + JSON.stringify(meta);
+			var sendChunk = new Blob([header, chunk.chunk]);
+			url = window.URL.createObjectURL(sendChunk);
+			//Needs to be sent as an arrayBuffer
+			var reader = new FileReader();
+                                reader.onload = function(file) {
+                                if( reader.readyState == FileReader.DONE ) {
+					for(var i=0;i<=99999999;i++) {}//Crude delay!
+                                        dc.send(result = file.target.result);
+					/* 
+						Create array of chunks.
+						Then use http://stackoverflow.com/questions/6425062/passing-functions-to-settimeout-in-a-loop-always-the-last-value
+						to do the packets every few seconds
+					*/
+                                }//End FileReader.DONE
+
+                        }//End reader.onload
+                        reader.readAsArrayBuffer(sendChunk);
+
+			//End sending file meta
+            })//End db.chunks toArray using Dexie (.then follows)
         
         }).then(function() {
             //Transaction completed
@@ -193,13 +322,34 @@ function downloadFile(event) {
     
     });//End get fildIdChunks from fileId
 
-}//End download file
-
+} //End sendChunksToPeer
 
 function trythis(updates) {
     //console.log(updates[0].object.length);
 }
 
+function generateCode() {
+
+//Remove any existing code from display:
+if( document.getElementById('QrImg') ) {
+	document.getElementById('QrImg').remove() ;
+}
+var sessionId = document.getElementById('key').value;
+var partnerInfo = {"sessionId": sessionId};
+//Make QR code 
+var qrcode = new QRCode("qrcode");
+
+function makeCode () { 
+    qrcode.makeCode(JSON.stringify(partnerInfo));
+}
+makeCode();
+//Auto connect
+window.setTimeout( function() {
+		document.getElementById('connect').click();
+	       }, 8000);
+}//End generateCode 
+
 document.getElementById('share').addEventListener('change', sendStoreMsg, false);
+document.getElementById('Generate').addEventListener('click', generateCode, false);
 
 };

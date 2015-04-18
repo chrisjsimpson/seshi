@@ -61,7 +61,6 @@ function connect(failureCB) {
   // open XHR and send the connection request with the key
   var client = new XMLHttpRequest();
   client.onreadystatechange = handler;
-  //client.open("GET", "http://192.168.1.65:8000/signalingServerNetwork/peerSignaller.js?key=" + key);
   client.open("GET", "/connect?key=" + key);
   client.send();
 }
@@ -192,47 +191,11 @@ function send(msg, responseHandler) {
   client.open("POST", "/send");
   var sendData = {"id":id, "message":msg};
   client.send(JSON.stringify(sendData));
-  
-  //Call my peerToPeerSignaling channel
-  var sendData = {"id":window.key, "message":msg};
-  callPeerSignalingChanne(sendData); //Send the CID, BOXiD and SDP to peerSignaling server(s)
 }
 
 return {
   connect:  connect,
   send:  send
 };
-
 };
 
-function callPeerSignalingChanne(msg, responseHandler) {
-        console.log("Calling peer signaling server.");
-        var responseHandler = responseHandler || function() {};
-        // parse response and send to handler
-          function handler() {
-            if(this.readyState == this.DONE) {
-              if(this.status == 200 && this.response != null) {
-                var res = JSON.parse(this.response);
-                if (res.err) {
-                  responseHandler("error:  " + res.err);
-                  return;
-                }
-                responseHandler(res);
-                return;
-              } else {
-                responseHandler("HTTP error:  " + this.status);
-                return;
-              }
-            }
-          }
-
-        //Open XHR and send SDP data A json to peer signaling server x
-        var peerSignaller = new XMLHttpRequest();
-        //Send JSON object of peer SDP (and their box id, and peer signaling peers??)
-        peerSignaller.onreadystatechange = handler;
-        peerSignaller.open("POST", "http://192.168.56.101:8000/");
-        //peerSignaller.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        //peerSignaller.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-        console.log("Sending: " + msg + " to signaling peer");
-        peerSignaller.send(JSON.stringify(msg));
-}//End callPeerSignalingChanne(msg)

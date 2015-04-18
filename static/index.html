@@ -42,41 +42,6 @@ var signalingChannel, key, id,
     constraints = {},
     fileMeta = {};
 
-function callPeerSignalingChanne(msg, responseHandler) {
-        console.log("Calling peer signaling server.");
-        var responseHandler = responseHandler || function() {};
-        // parse response and send to handler
-          function handler() {
-            if(this.readyState == this.DONE) {
-              if(this.status == 200 && this.response != null) {
-                var res = JSON.parse(this.response);
-                if (res.err) {
-                  responseHandler("error:  " + res.err);
-                  return;
-                }
-                responseHandler(res);
-                return;
-              } else {
-                responseHandler("HTTP error:  " + this.status);
-                return;
-              }
-            }
-          }
-
-        //Open XHR and send SDP data A json to peer signaling server x
-        var peerSignaller = new XMLHttpRequest();
-        //Send JSON object of peer SDP (and their box id, and peer signaling peers??)
-        peerSignaller.onreadystatechange = handler;
-        peerSignaller.open("POST", "http://192.168.56.101:8000/send");
-        //peerSignaller.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        //peerSignaller.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-        //var sendData = {"changeToBoxId":boxId, "sdp":msg};
-        console.log("Sending: " + msg + " to signaling peer");
-        var sendData = {"id":window.key, "message":JSON.stringify(msg)};
-        peerSignaller.send(JSON.stringify(sendData));
-
-}//End callPeerSignalingChanne(msg)
-
 
 //Contacting potential signaling server to find existing friend
 function connectToPeer(getResponseHandler) {
@@ -125,14 +90,20 @@ function handleMessage(msg) {
 	//Parse SDP message as JSON
 	var sdp = JSON.parse(msg);
 	if ( sdp.message.type === "offer" ) {
-		pc.setRemoteDescription(new RTCSessionDescription(sdp.message));
+		pc.setRemoteDescription(new RTCSessionDescription(sdp.message),
+			function(){console.log("Sucess setRemoteDescription offer..");},
+			function(){console.log("Failed setRemoteDescription offer...");});
 		answer();
 	} else if ( sdp.message.type === "answer" ) {
-		pc.setRemoteDescription(new RTCSessionDescription(sdp.message));
+		pc.setRemoteDescription(new RTCSessionDescription(sdp.message),
+			function(){console.log("Sucess setRemoteDescription answer..");},
+			function(){console.log("Failed setRemoteDescription answer...");});
 	} else if ( msg.type === "candidate") {
 		pc.addIceCandidate(
 			new RTCIceCandidate({sdpMLineIndex:sdp.msg.mlineindex,
-						candidate:sdp.message.candidate}));
+						candidate:sdp.message.candidate}),
+				function(){console.log('Sucess adding iceCandidate..');},
+				function(){console.log('Error adding iceCandidate..');});
 	}//End process SDP message acording to its type
 	
 }//End handleMessage(msg) 
@@ -177,14 +148,20 @@ function connect() {
 
     // Then, we take action based on the kind of message
     if (msg.type === "offer") {
-      pc.setRemoteDescription(new RTCSessionDescription(msg));
+      pc.setRemoteDescription(new RTCSessionDescription(msg,
+			function(){console.log("Sucess setRemoteDescription offer on connect()..");},
+			function(){console.log("Failed setRemoteDescription offer on connect()...");}));
       answer();
     } else if (msg.type === "answer") {
-      pc.setRemoteDescription(new RTCSessionDescription(msg));
+      pc.setRemoteDescription(new RTCSessionDescription(msg,
+			function(){console.log("Sucess setRemoteDescription answer on connect..");},
+			function(){console.log("Failed setRemoteDescription answer on connect...");}));
     } else if (msg.type === "candidate") {
       pc.addIceCandidate(
         new RTCIceCandidate({sdpMLineIndex:msg.mlineindex,
-                             candidate:msg.candidate}));
+                             candidate:msg.candidate}),
+		function(){console.log("Add iceCandidate sucess on connect() call..");},
+		function(){console.log("error accing iceCanditation on connect() call..");});
     }
   };
 
@@ -266,8 +243,9 @@ function createPC() {
 
   if (stunuri) {
     // this is one of Google's public STUN servers
-    //config.push({"url":"stun:stun.l.google.com:19302"});
-    config.push({"url":"stun:10.160.66.213"});
+    config.push({"url":"stun:stun.l.google.com:19302"});
+    //config.push({"url":"stun:178.62.83.184:3478"});
+    config.push({"url":"turn:178.62.83.184"});
   }
   console.log("config = " + JSON.stringify(config));
 
@@ -318,15 +296,68 @@ function setupDataHandlers() {
     dc.onmessage = function(event) {
         trace('Received Message: ' + event.data);
 
+	if ( event.data instanceof Array ) {
+		alert('Is array');
+	}
+
         //Check if message is an array buffer (data)
         if( event.data instanceof ArrayBuffer){
             console.log('Recieved ArrayBuffer message');
             //Catch ArrayBuffer sent through the datachannel
-            var blob = new Blob([event.data], {type:fileMeta.type});
-            //Create ObjectURL to recieved data
-            var url = window.URL.createObjectURL(blob);
-            console.log(url);
-            window.open(url);
+            var blob = new Blob([event.data]);
+
+/* Change this to read the lengthOfMeta, which is always at the start of the blob and is 64 bytes long. 
+We might need to reduce the size of the chunks for this to work over STCP!!! 
+#########*/
+		//Get length of file meta (size specified is always a zerofilled 64byte long string at the begining of the blob
+		var metaLength = blob.slice(0,81);
+
+		//Read metaLength to get size in bytes of chunk fileMeta
+		var reader2 = new FileReader();
+		reader2.onload = function(file2) {
+			if ( reader2.readyState == FileReader.DONE ) {
+				result2 = file2.target.result;			
+				var fileMetaLengthObj = JSON.parse(result2);
+				var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
+				window.fileMetaLength = fileMetaLength;
+				console.log("Meta length is:" + fileMetaLength);
+
+				    //Split file meta from begining of chunk (all chunk payloads are 64512 bytes in length)
+				    var chunkFileMeta = blob.slice(81, window.fileMetaLength + 81); //First get file type, chunk number etc
+					var reader = new FileReader();
+					reader.onload = function(file) {
+						if ( reader.readyState == FileReader.DONE ) {
+							result = file.target.result;
+							if ( result.length > 0 ) {
+								window.curChunk = JSON.parse(result);
+								//Update window with current chunk information
+								var chunkProgresTextBox = document.getElementById('chunkInProgress');
+								var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
+								message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
+								message += " FileName: " + curChunk.fileName;
+								chunkProgresTextBox.value = message;
+								//End extract file meta from blob		
+							}//End check read data is > 0 
+								//Start send data payload
+								var headerOffset = 81 + window.fileMetaLength;
+								var chunkBlob = blob.slice(headerOffset); //Get chunk payload
+								//Store chunkBlob into IndexedDB
+								addChunkToDb(chunkBlob);
+								//Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing) 
+								var url = window.URL.createObjectURL(chunkBlob);
+								console.log(url);
+								//End send data chunk payload
+						}//End reader.readtState == DONE
+					}//End reader.onload
+					reader.readAsText(chunkFileMeta);
+					//End extract file meta from blob		
+
+				
+			}//End IF reading byte lenth of fileMeata
+		}//End get bytelength of fileMeta
+		reader2.readAsText(metaLength);
+
+
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
             {   
@@ -337,7 +368,12 @@ function setupDataHandlers() {
 
         
 
-        var msg = e.data; /* JSON.parse(e.data),*/
+	//Don't JSON.parse is data is already an object ;) 
+        if ( typeof event.data != "object" ) {
+		var msg = JSON.parse(event.data);
+	} else {
+		var msg = event.data;
+	}//End don't parse data message recived if already an object!
         cb = document.getElementById("chatbox");
         rtt = document.getElementById("rtt");
         dataBox = document.getElementById("dataBox");
@@ -346,7 +382,12 @@ function setupDataHandlers() {
         // real-time window 
         console.log("received rtt of '" + msg.rtt + "'"); 
         rtt.value = msg.rtt; msg = msg.rtt; 
-        } else if (msg.chat) { 
+        } else if (msg.requestFileId) {
+
+ 		console.log("Request for file recieved.");
+		//sendFileToPeer(msg.requestFileId);
+
+	} else if (msg.chat) { 
             // if full message, display in chat window, 
             // reset real-time window, 
             // and force chat window to last line 
@@ -360,11 +401,39 @@ function setupDataHandlers() {
 
             } else { 
                 console.log("received " + msg + "on data channel"); 
-                console.log(typeof(msg.storeData));
                 } 
                 }; 
     }
 
+
+function sendFileToPeer(fileId) {
+	//Presumes dc.send is already active
+	console.log("Begin sending file: " + fileId + " to peer operations.");	
+	/* Query Indexed DB for all chunks pertaining to the requested fileId,
+	send each chunk (potentially in any order), one chunk at a time,
+	over the dc.send() datachannel as arraybuffers. */
+
+	/* Steps: 
+	*  > Query all chunks with file id x
+	*  > For each chunk found, send over data channel until 'last chunk'* has been sent.
+	*  > *Not all peers will have all chunks to the file, some may only have a subset.
+	*  > Close the connection? no. 
+	*  	>Exchange useful data: 
+	*		Share known signaling servers, peer exchange, file lists (names), boxIds
+	*/
+
+	//Query for all chunks with given fileId.
+	console.log("Querying and sending file to peer");
+	 db.chunks.where('fileId').equals("0458f1bb-8d81-4917-8a92-48f518f2a76e").each(
+                    function(boxChunks) {
+
+                       
+                        console.log(boxChunks);
+			dc.send(boxChunks);
+
+                        })//End get fileList
+
+}//end sendFileToPeer(fileId)
 
 var sendStoreMsg = function(evt) {
 
@@ -395,6 +464,7 @@ var sendStoreMsg = function(evt) {
                     //Begin chunking...
                     //Work out number of chunks needed
                     var maxChunkSize = 64512; //bytes
+                    var maxChunkSize = 24512; //bytes
                     console.log("Chunk size is set to: " + maxChunkSize + " bytes.");
                     var numChunksNeeded = Math.ceil(fileSize/maxChunkSize);
                     console.log("We need " + numChunksNeeded + " chunks. (" + fileSize +"/" + maxChunkSize + ")");
@@ -471,12 +541,10 @@ var sendStoreMsg = function(evt) {
                     });
 
 
-                    //dc.send(file.target.result);
                 }//End file reader.readstate == FileReader.DONE
             };
         //Send meta data
         fileMeta = JSON.stringify(fileMeta).replace(/\\r\\n/g,'\n');
-        //dc.send(fileMeta);
         reader.readAsArrayBuffer(file);
         console.log('Sent data object');
 
@@ -504,6 +572,34 @@ function trace(text) {
   }
   console.log((performance.now() / 1000).toFixed(3) + ": " + text);
 }
+
+
+function addChunkToDb(blob) {
+        //Add chunks to indexedDB
+        db.transaction("rw", db.chunks, function() {
+        var test = blob;
+	console.log("Storing chunk number: " + window.curChunk.chunkNumber);
+        db.chunks
+            .add({
+                boxId: window.boxId,
+                chunk: blob,
+                chunkNumber: window.curChunk.chunkNumber,
+                chunkSize: window.curChunk.chunkSize,
+                fileId: window.curChunk.fileId,
+                fileName: window.curChunk.fileName,
+                fileType: window.curChunk.fileType,
+                numberOfChunks: window.curChunk.numberOfChunks
+            });
+        }).then(function() {
+        //Transaction completed
+        console.log('Time to show file back to user/recipricant..?');
+    }).catch(function(error) {
+        //Transaction failed
+        console.log(error);
+    });
+
+}//End addChunkToDb
+
 
 
 ///////////////////////////////////
@@ -554,7 +650,9 @@ function answer() {
 function gotDescription(localDesc) {
   console.log("Local Description type: " + localDesc.type);
   console.log("Local Description sdp: " + localDesc.sdp);
-  pc.setLocalDescription(localDesc);
+  pc.setLocalDescription(localDesc, 
+		function(){console.log("Sucess setLocalDescription...");},
+		function(error){console.log("Failed setLocalDescription...");});
   send(localDesc);
 }
 
@@ -599,8 +697,6 @@ function setStatus(str) {
     case 'Ready for call':
       statusE.innerHTML = "Ready for call";
       callE.style.display = "inline";
-	//Auto call!
-	document.getElementById('call').click();
       break;
     case 'On call':
       statusE.innerHTML = "On call";
@@ -614,7 +710,10 @@ function setStatus(str) {
 </script>
 
 Upload friends QR code: <input type="file" id="readQrCode" value="Read QR code" />
+<br />
+Generate your connect code: <button id="Generate">Generate code</button>
 <input id="qrlogo_text" type="text" value="Your friends SDP will display here." style="width:80%" /><br />
+<input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" style="width:80%" /><br />
 <input id="qrlogo_debug_checkbox" type="text" />
 <div id="qrcode"></div>
 

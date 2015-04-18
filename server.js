@@ -15,7 +15,7 @@ var serveFileDir = "";
 
 // Sets the path to the static files (HTML, JS, etc.)
 function setServeFilePath(p) {
-  serveFilePath = p;
+  serveFilePath = "/root/website/" + p;
 }
 exports.serveFilePath = setServeFilePath;
 

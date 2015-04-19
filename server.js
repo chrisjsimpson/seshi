@@ -52,7 +52,11 @@ exports.start = start;
 // Determines whether requested path is a static file or a custom
 // path with its own handler
 function route(handle, pathname, info) {
-  //log("About to route a request for " + pathname);
+	//Default to the homepage
+	if ( pathname == '/' ) {
+		pathname = '/index.html';
+	}
+  log("About to route a request for " + pathname);
   // Check if path after leading slash is an existing file that
   // can be served
   var filepath = createFilePath(pathname);

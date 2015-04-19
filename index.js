@@ -8,7 +8,7 @@
 var server = require("./server");
 var requestHandlers = require("./serverXHRSignalingChannel");
 var log = require("./log").log;
-var port = process.argv[2] || 5001;
+var port = process.argv[2] || 80;
 
 
 // returns 404

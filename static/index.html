@@ -34,6 +34,8 @@
         type="text/javascript"></script>
 <script src="qrcode.js"></script>
 <script src="boxHandling.js"></script>
+<script src="jquery-1.11.2.min.js"></script>
+<script src="jquery.knob.min.js"></script>
 <script>
 
 var signalingChannel, key, id,
@@ -305,6 +307,10 @@ function setupDataHandlers() {
         if( event.data instanceof ArrayBuffer){
             console.log('Recieved ArrayBuffer message');
             //Catch ArrayBuffer sent through the datachannel
+		//Enable progress knob
+		$(function() {
+        	$(".progressKnob").knob();
+    		});//End enable progress knob
             var blob = new Blob([event.data]);
 
 /* Change this to read the lengthOfMeta, which is always at the start of the blob and is 64 bytes long. 
@@ -337,6 +343,17 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
 								message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
 								message += " FileName: " + curChunk.fileName;
 								chunkProgresTextBox.value = message;
+								//Update knob
+								$('.progressKnob').trigger(
+								'configure',
+								{
+								    "max":curChunk.numberOfChunks,
+								    "cursor":false
+								}
+							    	);
+								$('.progressKnob')
+								.val(curChunk.chunkNumber)
+								.trigger('change');//End update knob
 								//End extract file meta from blob		
 							}//End check read data is > 0 
 								//Start send data payload
@@ -715,6 +732,7 @@ Upload friends QR code: <input type="file" id="readQrCode" value="Read QR code" 
 Generate your connect code: <button id="Generate">Generate code</button>
 <input id="qrlogo_text" type="text" value="Your friends SDP will display here." style="width:80%" /><br />
 <input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" style="width:80%" /><br />
+<input type="text" value="0" class="progressKnob" data-readOnly="true">
 <input id="qrlogo_debug_checkbox" type="text" />
 <div id="qrcode"></div>
 

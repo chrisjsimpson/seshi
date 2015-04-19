@@ -151,6 +151,9 @@ function requestFileFromConnectedPeer() {
 			list += '<li><button class="shareFile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Generate QR Code</button>';
+			list += '<button class="downloadFileMobile" data-fileId="';
+			list += fileNames[i].fileId;
+			list += '">Download file Mobile</button>';
 			list += '<button class="send" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Send</button></li>';
@@ -261,7 +264,14 @@ function downloadFile(event) {
 
                 var file = new Blob(allChunksArray, {type:chunks[0].fileType});
                 url = window.URL.createObjectURL(file);
-		window.open(url);
+		//window.open(url);
+		var a = document.createElement("a");
+		document.body.appendChild(a);
+		a.style = "display: none";
+		a.href = url;
+		a.download = chunks[0].fileName;
+		a.click();
+		//window.URL.revokeObjectURL(url);
                 console.log("Data: " + url);
 		
             })//End db.chunks toArray using Dexie (.then follows)

@@ -1,5 +1,5 @@
 //Make a new database conection
-var db = new Dexie('flytipper');
+var db = new Dexie('seshi');
 
 //Define a schema
 db.version(1)

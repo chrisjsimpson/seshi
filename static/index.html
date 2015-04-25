@@ -246,9 +246,9 @@ function createPC() {
 
   if (stunuri) {
     // this is one of Google's public STUN servers
-    config.push({"url":"stun:stun.l.google.com:19302"});
+    //config.push({"url":"stun:stun.l.google.com:19302"});
     //config.push({"url":"stun:178.62.83.184:3478"});
-    config.push({"url":"turn:178.62.83.184"});
+    config.push({"url":"turn:my_password@seshi.io","credential":"my_password", "username":"my_password"});
   }
   console.log("config = " + JSON.stringify(config));
 
@@ -347,12 +347,15 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
 								$('.progressKnob').trigger(
 								'configure',
 								{
-								    "max":curChunk.numberOfChunks,
+								    "max":100,
+								    //"max":curChunk.numberOfChunks,
 								    "cursor":false
 								}
 							    	);
+								var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
 								$('.progressKnob')
-								.val(curChunk.chunkNumber)
+								.val(chunkProg)
+								//.val(curChunk.chunkNumber)
 								.trigger('change');//End update knob
 								//End extract file meta from blob		
 							}//End check read data is > 0 

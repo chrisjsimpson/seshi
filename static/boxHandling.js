@@ -148,7 +148,10 @@ function requestFileFromConnectedPeer() {
                         list += '">';
                         list += fileNames[i].fileName;
                         list += '</a></li>';
-			list += '<li><button class="shareFile" data-fileId="';
+			list += '<li><button class="deleteFile" data-fileId="';
+			list += fileNames[i].fileId;
+			list += '">Delete.</button>';
+			list += '<button class="shareFile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Generate QR Code</button>';
 			list += '<button class="downloadFileMobile" data-fileId="';
@@ -172,6 +175,28 @@ function requestFileFromConnectedPeer() {
                     //Add downloadFile event listener
                     fileId.addEventListener('click', downloadFile, false);
                 }//End add download event listener to each file link.
+                
+		//Add event listeners for deleting a single file 
+		var deleteCandidates = document.getElementsByClassName('deleteFile');
+                for(var i=0;i<deleteCandidates.length;i++)
+                {
+                    //Get fileId
+                    var fileId = deleteCandidates[i];
+                    //Add delete  event listener
+                    fileId.addEventListener('click', deleteFile, false);
+                }//End add deleteFileevent listener to each file link.
+		//End deleteFile event listener
+
+
+		function deleteFile(e) {
+			var fileId = e.target.dataset.fileid;
+			db.chunks.where("fileId").equals(fileId).delete()
+			.then(function(deleteCount) {
+			 console.log("Deleted: " + deleteCount + " chunks. Of fileId: " + fileId );
+			 showBoxFiles(); //Reload files list
+			});
+		}//End delete file
+
 
 		var shares = document.getElementsByClassName('shareFile');
 		function shareFile(e) {

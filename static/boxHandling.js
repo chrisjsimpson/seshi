@@ -136,7 +136,7 @@ function requestFileFromConnectedPeer() {
 
                 //Update files list box
                 var filesInBox = document.getElementById('filesInBox');
-                var list = '<ul>';
+                var list = '<ul><audio id="audio"></audio>';
                 
                 for(var i=0;i<fileNames.length;i++)
                 {
@@ -154,7 +154,7 @@ function requestFileFromConnectedPeer() {
 			list += '<button class="shareFile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Generate QR Code</button>';
-			list += '<button class="loadFile">load</button><button id=play>play</button><audio></audio><button class="downloadFileMobile" data-fileId="';
+			list += '<button class="loadFile">load</button><button id=play>play</button><button class="downloadFileMobile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Download file Mobile</button>';
 			list += '<button class="send" data-fileId="';
@@ -165,41 +165,6 @@ function requestFileFromConnectedPeer() {
                 list += '</ul>';
                 console.log(list);
                 filesInBox.innerHTML = list;
-
-		//Playback handler
-		play[0].addEventListener('canplay', function(event) {
-			var audio = document.querySelector("audio");
-			audio.play();
-		});
-
-		var loadBtns = document.getElementsByClassName('loadFile');
-		for(var i=0;i<=loadBtns.length;i++)
-		{
-		
-		play[0].addEventListener('canplay', function() { alert('Can play audio...'); });	
-		loadBtns[i].onclick = function(e) {
-			var fileId = e.target.parentElement.firstChild.dataset.fileid; 
-			//Get audio from IndexedDB
-			db.transaction('r', db.chunks, function() {
-        			db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
-				//Transaction scope
-				console.log("Found " + chunks.length + " chunks");
-
-				var allChunksArray = [];
-				//Just get blob cunks
-				for(var i=0;i<chunks.length; i++){
-					allChunksArray[i] = chunks[i].chunk
-				}//End put all chunks into all chunks array
-
-				var file = new Blob(allChunksArray, {type:chunks[0].fileType});
-				url = window.URL.createObjectURL(file);
-				var audio = document.querySelector("audio");
-				audio.src = url;
-				alert("Sound loaded")});
-			});
-		}
-		}//End loop through each load button
-		//End playback handler
 
                 //Add event listeners to these files for downloading
                 var downloads = document.getElementsByClassName('fileDownload');

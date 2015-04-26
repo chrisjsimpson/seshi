@@ -244,7 +244,6 @@ function downloadFile(event) {
                 for(var i=0;i<chunks.length; i++){
                     //console.log(found[i].chunk);
                     allChunksArray[i] = chunks[i].chunk
-		
 			//Sending file meta...
 			var meta = {"fileId":chunks[i].fileId, "chunkNumber":chunks[i].chunkNumber, "numberOfChunks":chunks[i].numberOfChunks,"fileType":chunks[i].fileType,"fileName":chunks[i].fileName};
 			var lengthOfMeta = JSON.stringify(meta).length;
@@ -270,10 +269,10 @@ function downloadFile(event) {
 		a.style = "display: none";
 		a.href = url;
 		a.download = chunks[0].fileName;
-		a.click();
+	///	a.click();
 		//window.URL.revokeObjectURL(url);
                 console.log("Data: " + url);
-		
+		window.open(url);
             })//End db.chunks toArray using Dexie (.then follows)
         
         }).then(function() {

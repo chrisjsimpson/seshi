@@ -33,6 +33,8 @@ function connect(info) {
   var res = info.res,
       query = info.query,
       thisconnection,
+      res.writeHead("Access-Control-Allow-Origin", "*");
+      res.writeHead("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
       newID = function() {
         // create large random number unlikely to be repeated

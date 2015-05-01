@@ -61,7 +61,7 @@ function connect(failureCB) {
   // open XHR and send the connection request with the key
   var client = new XMLHttpRequest();
   client.onreadystatechange = handler;
-  client.open("GET", "/connect?key=" + key);
+  client.open("GET", "http://178.62.83.184/connect?key=" + key);
   client.send();
 }
 
@@ -151,7 +151,7 @@ function get(getResponseHandler) {
   // open XHR and request messages for my id
   var client = new XMLHttpRequest();
   client.onreadystatechange = handler;
-  client.open("POST", "/get");
+  client.open("POST", "http://seshi.co/get");
   client.send(JSON.stringify({"id":id}));
 }
 
@@ -188,7 +188,7 @@ function send(msg, responseHandler) {
   // open XHR and send my id and message as JSON string
   var client = new XMLHttpRequest();
   client.onreadystatechange = handler;
-  client.open("POST", "/send");
+  client.open("POST", "http://seshi.co/send");
   var sendData = {"id":id, "message":msg};
   client.send(JSON.stringify(sendData));
 }

@@ -145,7 +145,7 @@ function requestFileFromConnectedPeer() {
                         list += fileNames[i].fileId;
                         list += '" data-fileId="';
                         list += fileNames[i].fileId;
-                        list += '">';
+                        list += '" onclick="scroll(0,0)">';
                         list += fileNames[i].fileName;
                         list += '</a></li>';
 			list += '<li><button class="deleteFile" data-fileId="';
@@ -287,17 +287,28 @@ function downloadFile(event) {
                 }//End put all chunks into all chunks array
 
                 var file = new Blob(allChunksArray, {type:chunks[0].fileType});
+		console.log(chunks[0].fileType);
                 url = window.URL.createObjectURL(file);
-		//window.open(url);
-		var a = document.createElement("a");
-		document.body.appendChild(a);
-		a.style = "display: none";
-		a.href = url;
-		a.download = chunks[0].fileName;
-	///	a.click();
-		//window.URL.revokeObjectURL(url);
-                console.log("Data: " + url);
-		window.open(url);
+		console.log("Data: " + url);
+		if(chunks[0].fileType.indexOf('image') == -1) {
+		var video = document.getElementById('video');
+		var obj_url = window.URL.createObjectURL(file);
+		video.src = obj_url;
+		video.play();
+		} else {
+		window.location= url;
+		}
+		//Simply download file if on mobiles
+		if( window.screen.width < 700 )
+		{
+			var a = document.createElement("a");
+			document.body.appendChild(a);
+			a.style = "display: none";
+			a.href = url;
+			a.download = chunks[0].fileName;
+			a.click();
+		}//End simply download if on a mobile.
+
             })//End db.chunks toArray using Dexie (.then follows)
         
         }).then(function() {

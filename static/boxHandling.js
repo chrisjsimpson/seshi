@@ -296,7 +296,7 @@ function downloadFile(event) {
 		video.src = obj_url;
 		video.play();
 		} else {
-		window.location= url;
+		window.open(url);
 		}
 		//Simply download file if on mobiles
 		if( window.screen.width < 700 )

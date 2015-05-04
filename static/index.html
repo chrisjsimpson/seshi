@@ -311,7 +311,7 @@ function setupDataHandlers() {
 	}
 
         //Check if message is an array buffer (data)
-        if( event.data instanceof ArrayBuffer){
+        if(event.data instanceof ArrayBuffer || event.data.size){ //event.data.size is for Firefox(automatically transforms data to Blob type
             console.log('Recieved ArrayBuffer message');
             //Catch ArrayBuffer sent through the datachannel
 		//Enable progress knob

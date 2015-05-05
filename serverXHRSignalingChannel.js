@@ -30,8 +30,11 @@ function webrtcError(err, res) {
 
 // handle XML HTTP Request to connect using a given key
 function connect(info) {
-  var res = info.res,
-      query = info.query,
+  var res = info.res;
+  res.setHeader("Access-Control-Allow-Origin", "*"); //Allow CORS
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  var query = info.query,
       thisconnection,
      // res.writeHead("Access-Control-Allow-Origin", "*");
      // res.writeHead("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -94,6 +97,8 @@ function sendMessage(info) {
   //log("postData received is ***" + info.postData + "***");
   var postData = JSON.parse(info.postData),
       res = info.res;
+  res.setHeader("Access-Control-Allow-Origin", "*"); //Allow CORS
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (typeof postData === "undefined") {
     webrtcError("No posted data in JSON format!", res);
@@ -130,6 +135,8 @@ exports.send = sendMessage;
 function getMessages(info) {
   var postData = JSON.parse(info.postData),
       res = info.res;
+  res.setHeader("Access-Control-Allow-Origin", "*"); //Allow CORS
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (typeof postData === "undefined") {
     webrtcError("No posted data in JSON format!", res);

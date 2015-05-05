@@ -58,11 +58,17 @@ function connect(failureCB) {
     }
   }
 
+  // For each signalingServer stored in indexedDB, connect to it with key then
   // open XHR and send the connection request with the key
-  var client = new XMLHttpRequest();
-  client.onreadystatechange = handler;
-  client.open("GET", "http://94.196.245.223:5001/connect?key=" + key);
-  client.send();
+	signalServerDb.signalServers.each(function(signalingServer){
+	
+		 var client = new XMLHttpRequest();
+		 client.onreadystatechange = handler;
+		 client.open("GET", "http://" + signalingServer.address + "/connect?key=" + key);
+		 client.send();
+	}).catch(function(error){
+		console.error(error);
+	});
 }
 
 // poll() waits n ms between gets to the server.  n is at 10 ms

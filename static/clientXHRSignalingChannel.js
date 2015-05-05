@@ -66,6 +66,7 @@ function connect(failureCB) {
 		 client.onreadystatechange = handler;
 		 client.open("GET", "http://" + signalingServer.address + "/connect?key=" + key);
 		 client.send();
+		for(var i=0;i<=99999999;i++) {}
 	}).catch(function(error){
 		console.error(error);
 	});
@@ -77,19 +78,20 @@ function connect(failureCB) {
 function poll() {
   var msgs;
   var pollWaitDelay = (function() {
-    var delay = 10, counter = 1;
+    var delay = 5000, counter = 1;
+
 
     function reset() {
-      delay = 10;
+      delay = 5000;
       counter = 1;
     }
 
     function increase() {
       counter += 1;
       if (counter > 20) {
-        delay = 1000;
+        delay = 10000;
       } else if (counter > 10) {
-        delay = 100;
+        delay = 10000;
       }                          // else leave delay at 10
     }
 
@@ -154,11 +156,16 @@ function get(getResponseHandler) {
     }
   }
 
+  // For each signaling server in db,
   // open XHR and request messages for my id
-  var client = new XMLHttpRequest();
-  client.onreadystatechange = handler;
-  client.open("POST", "http://94.196.245.223:5001/get");
-  client.send(JSON.stringify({"id":id}));
+	signalServerDb.signalServers.each(function(signalingServer){
+		var client = new XMLHttpRequest();
+		client.onreadystatechange = handler;
+		client.open("POST", "http://" + signalingServer.address + "/get");
+		client.send(JSON.stringify({"id":id}));
+	}).catch(function(error) {
+		console.error(error);
+	})
 }
 
 
@@ -191,12 +198,17 @@ function send(msg, responseHandler) {
     }
   }
 
+  // fOR EACH SIGNALLINGsERVER IN DB,
   // open XHR and send my id and message as JSON string
-  var client = new XMLHttpRequest();
-  client.onreadystatechange = handler;
-  client.open("POST", "http://94.196.245.223:5001/send");
-  var sendData = {"id":id, "message":msg};
-  client.send(JSON.stringify(sendData));
+	signalServerDb.signalServers.each(function(signalingServer){
+		var client = new XMLHttpRequest();
+		client.onreadystatechange = handler;
+		client.open("POST", "http://" + signalingServer.address + "/send");
+		var sendData = {"id":id, "message":msg};
+		client.send(JSON.stringify(sendData));
+	}).catch(function(error){
+		console.error(error);
+	});
 }
 
 return {

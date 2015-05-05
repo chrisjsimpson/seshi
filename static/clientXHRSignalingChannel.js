@@ -60,6 +60,7 @@ function connect(failureCB) {
 
   // For each signalingServer stored in indexedDB, connect to it with key then
   // open XHR and send the connection request with the key
+	
 	signalServerDb.signalServers.each(function(signalingServer){
 	
 		 var client = new XMLHttpRequest();
@@ -70,66 +71,30 @@ function connect(failureCB) {
 	}).catch(function(error){
 		console.error(error);
 	});
-}
+}//End connect()
 
-// poll() waits n ms between gets to the server.  n is at 10 ms
-// for 10 tries, then 100 ms for 10 tries, then 1000 ms from then
-// on. n is reset to 10 ms if a message is actually received.
 function poll() {
   var msgs;
-  var pollWaitDelay = (function() {
-    var delay = 5000, counter = 1;
-
-
-    function reset() {
-      delay = 5000;
-      counter = 1;
-    }
-
-    function increase() {
-      counter += 1;
-      if (counter > 20) {
-        delay = 10000;
-      } else if (counter > 10) {
-        delay = 10000;
-      }                          // else leave delay at 10
-    }
-
-    function value() {
-      return delay;
-    }
-
-    return {reset: reset, increase: increase, value: value};
-  }());
-
-  // getLoop is defined and used immediately here.  It retrieves
-  // messages from the server and then schedules itself to run
-  // again after pollWaitDelay.value() milliseconds.
-  (function getLoop() {
-    get(function (response) {
-      var i, msgs = (response && response.msgs) || [];
-
-      // if messages property exists, then we are connected   
-      if (response.msgs && (status !== "connected")) {
-        // switch status to connected since it is now!
-        status = "connected";
-        connectedHandler();
-      }
-      if (msgs.length > 0) {           // we got messages
-        pollWaitDelay.reset();
-        for (i=0; i<msgs.length; i+=1) {
-	  console.log("The msg is: " + msgs[i]);	
-          handleMessage(msgs[i]);
-        }
-      } else {                         // didn't get any messages
-        pollWaitDelay.increase();
-      }
-
-      // now set timer to check again
-      setTimeout(getLoop, pollWaitDelay.value());
-    });
-  }());
-}
+  // get fetches messages from the server and then schedules itself to run
+  // again after x milliseconds untill x.
+	invoke(function(){	
+		get(function (response) {
+		var i, msgs = (response && response.msgs) || [];
+		// if messages property exists, then we are connected   
+		if (response.msgs && (status !== "connected")) {
+		// switch status to connected since it is now!
+		status = "connected";
+		connectedHandler();
+		}
+		if (msgs.length > 0) {           // we got messages
+		for (i=0; i<msgs.length; i+=1) {
+		  console.log("The msg is: " + msgs[i]);	
+		  handleMessage(msgs[i]);
+		}
+		}// didn't get any messages
+		})},
+		0, 3000,60000);
+}//End of poll()
 
 
 // This function is part of the polling setup to check for
@@ -157,15 +122,18 @@ function get(getResponseHandler) {
   }
 
   // For each signaling server in db,
-  // open XHR and request messages for my id
-	signalServerDb.signalServers.each(function(signalingServer){
-		var client = new XMLHttpRequest();
-		client.onreadystatechange = handler;
-		client.open("POST", "http://" + signalingServer.address + "/get");
-		client.send(JSON.stringify({"id":id}));
-	}).catch(function(error) {
-		console.error(error);
-	})
+  // open XHR and request messages for my id every x secconds
+		signalServerDb.signalServers.each(function(signalingServer){
+			var client = new XMLHttpRequest();
+			client.onreadystatechange = handler;
+			client.open("POST", "http://" + signalingServer.address + "/get");
+			var id = document.getElementById('key').value;
+			client.send(JSON.stringify({"id":id}));
+			console.log("Getting..." + Math.random());
+		}).catch(function(error) {
+			console.error(error);
+		})
+	//End invoke /get messages every interval secconds untill end. invoke(f,start,interval, end)
 }
 
 
@@ -204,6 +172,7 @@ function send(msg, responseHandler) {
 		var client = new XMLHttpRequest();
 		client.onreadystatechange = handler;
 		client.open("POST", "http://" + signalingServer.address + "/send");
+		var id = document.getElementById('key').value;
 		var sendData = {"id":id, "message":msg};
 		client.send(JSON.stringify(sendData));
 	}).catch(function(error){
@@ -217,3 +186,22 @@ return {
 };
 };
 
+function ok(){
+	console.log("OK " + Math.random());
+}
+
+//invoke(ok,0,2000, 80000);
+
+function invoke(f,start, interval, end) {
+	if(!start) start = 0; //Default to 0ms
+	if(arguments.length <= 2) //Single-invokation case
+		setTimeout(f, start);//Single invocation after tart ms.
+	else {			//Multiple invocation case
+		setTimeout(repeat, start); // Repetitions begin in start ms
+		function repeat() {	//Invoked by the timeout above
+			var h = setInterval(f, interval); // Invoke f every interval ms.
+			// And stop invoking after end ms, if end is defined
+			if (end) setTimeout(function() { clearInterval(h);}, end);
+		}
+	}
+}//End invoke

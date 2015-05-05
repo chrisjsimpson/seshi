@@ -294,19 +294,19 @@ function downloadFile(event) {
 		var video = document.getElementById('video');
 		var obj_url = window.URL.createObjectURL(file);
 		video.src = obj_url;
-		video.play();
+		//video.play();
 		} else {
 		window.open(url);
 		}
 		//Simply download file if on mobiles
 		if( window.screen.width < 700 )
 		{
-			var a = document.createElement("a");
-			document.body.appendChild(a);
-			a.style = "display: none";
-			a.href = url;
-			a.download = chunks[0].fileName;
-			a.click();
+		//	var a = document.createElement("a");
+		//	document.body.appendChild(a);
+		//	a.style = "display: none";
+		//	a.href = url;
+		//	a.download = chunks[0].fileName;
+		//	a.click();
 		}//End simply download if on a mobile.
 
             })//End db.chunks toArray using Dexie (.then follows)
@@ -372,6 +372,31 @@ function sendChunksToPeer(e) {
 function trythis(updates) {
     //console.log(updates[0].object.length);
 }
+
+//Event listner for adding Signaling server address
+var addSignalingServerBtn = document.getElementById('addSignalingServer');
+addSignalingServerBtn.addEventListener('click', addSignalingServer, false);
+
+function addSignalingServer(e) {
+
+	//Get signal server address
+	var signalingServerAddress = document.getElementById('signalingServerAddress');
+
+	signalServerDb.signalServers.add({address: signalingServerAddress.value,
+					 lastSuccessfulConnectTimestamp: null,
+					 lastConnectAttempTimestamp: null,
+					 numFailedConnectAttempts: null}).
+		then(function(){
+			alert('Inserted: ' + signalingServerAddress.value);
+		}).catch(function(error) {
+			console.error(error);
+		});//End insert new singalingServerAddress
+
+} //End addSignalingServer
+
+//End Event listner for adding Signaling server address
+
+
 
 function generateCode() {
 

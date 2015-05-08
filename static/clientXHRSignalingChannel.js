@@ -67,7 +67,6 @@ function connect(failureCB) {
 		 client.onreadystatechange = handler;
 		 client.open("GET", "http://" + signalingServer.address + "/connect?key=" + key);
 		 client.send();
-		for(var i=0;i<=99999999;i++) {}
 	}).catch(function(error){
 		console.error(error);
 	});

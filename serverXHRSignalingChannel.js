@@ -55,12 +55,12 @@ function connect(info) {
         connections[query.key] = {};
         thisconnection = connections[query.key];
         thisconnection.status = "waiting";
-        thisconnection.ids = [newID()];
+        thisconnection.ids = [123];
         webrtcResponse({"id":thisconnection.ids[0],
                         "status":thisconnection.status}, res);
       },
       connectSecondParty = function() {
-        thisconnection.ids[1] = newID(); 
+        thisconnection.ids[1] = 123; 
         partner[thisconnection.ids[0]] = thisconnection.ids[1];
         partner[thisconnection.ids[1]] = thisconnection.ids[0];
         messagesFor[thisconnection.ids[0]] = [];

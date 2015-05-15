@@ -736,19 +736,23 @@ function setStatus(str) {
 
 </script>
 
+<br />
 Upload friends QR code: <input type="file" id="readQrCode" value="Read QR code" />
 <br />
 Generate your connect code: <button id="Generate">Generate code</button>
+<div class="debug hide">
 <input id="qrlogo_text" type="text" value="Your friends SDP will display here." style="width:80%" /><br />
 <input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" style="width:80%" /><br />
 <input type="text" value="0" class="progressKnob" data-readOnly="true">
 <input id="qrlogo_debug_checkbox" type="text" />
+</div><!-- End progress log debug info -->
 <div id="qrcode"></div>
 
 <div id="qrcodeImage"></div>
 <canvas width="10" height="10" id="qrlogo_canvas"></canvas>
+<br />
 <div id="setup">
-  <p>Key:
+  <p>Or manually choose a Key:
     <input type="text" name="key" id="key" value="123"
            onkeyup="if (event.keyCode == 13) {
                       connect(); return false;}"/>
@@ -761,10 +765,10 @@ Generate your connect code: <button id="Generate">Generate code</button>
   </p>
 </div>
 
-<p>View data</p>
-<input type="text" name="boxId" id="boxId" value="myBoxID" /><button id="setBoxId">Set</button>
+<br /><input type="text" name="boxId" id="boxId" value="myBoxID" /><button id="setBoxId">Set</button>
+<hr />
 
-<p>Send data:</p>
+<p>Store data:</p>
 <input type="file" id="share" />
 
 <div id="scMessage" style="float:right;display:none">
@@ -774,6 +778,7 @@ Generate your connect code: <button id="Generate">Generate code</button>
 
 <br/>
 
+<div id="iceMessages" class="debug hide">
 <div style="width:30%;vertical-align:top">
   <p><b>Outgoing Messages</b>
      <br/>
@@ -790,6 +795,7 @@ Generate your connect code: <button id="Generate">Generate code</button>
                style="width:100%"></textarea>
   </p>
 </div>
+</div><!-- End iceMessages debug -->
 
 <hr />
 <p>Your files: <input type="button" id="showFiles" value="Show my files" /></p>

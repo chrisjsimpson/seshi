@@ -136,7 +136,7 @@ function requestFileFromConnectedPeer() {
 
                 //Update files list box
                 var filesInBox = document.getElementById('filesInBox');
-                var list = '<ul>';
+                var list = '<ul><audio id="audio"></audio>';
                 
                 for(var i=0;i<fileNames.length;i++)
                 {
@@ -154,7 +154,7 @@ function requestFileFromConnectedPeer() {
 			list += '<button class="shareFile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Generate QR Code</button>';
-			list += '<button class="downloadFileMobile" data-fileId="';
+			list += '<button class="loadFile">load</button><button id=play>play</button><button class="downloadFileMobile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Download file Mobile</button>';
 			list += '<button class="send" data-fileId="';

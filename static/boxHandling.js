@@ -1,4 +1,5 @@
 window.onload = function () { 
+
 //Event listner to set Boxid
   window.boxId = 'myBoxID'; //Default box id
   var elm = document.getElementById("setBoxId");

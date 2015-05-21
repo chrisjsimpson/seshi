@@ -1,5 +1,18 @@
 window.onload = function () { 
 
+		//Add event listener to delete all signalingServers
+		var deleteSigServersBtn = document.getElementById('deleteSignalingServers');
+		deleteSigServersBtn.addEventListener('click', deleteSignalingServers, false);
+
+		function deleteSignalingServers() {
+			console.log("here");
+			signalServerDb.delete()
+			.then(function() {
+				alert('Signaling servers deleted');
+				location.reload();
+				console.log(deleteCount + " signaling servers deleted.");
+				});
+		}
 //Event listner to set Boxid
   window.boxId = 'myBoxID'; //Default box id
   var elm = document.getElementById("setBoxId");
@@ -199,6 +212,7 @@ function requestFileFromConnectedPeer() {
 		}//End delete file
 
 
+
 		var shares = document.getElementsByClassName('shareFile');
 		function shareFile(e) {
 			//Get file id:
@@ -302,12 +316,12 @@ function downloadFile(event) {
 		//Simply download file if on mobiles
 		if( window.screen.width < 700 )
 		{
-		//	var a = document.createElement("a");
-		//	document.body.appendChild(a);
-		//	a.style = "display: none";
-		//	a.href = url;
-		//	a.download = chunks[0].fileName;
-		//	a.click();
+			var a = document.createElement("a");
+			document.body.appendChild(a);
+			a.style = "display: none";
+			a.href = url;
+			a.download = chunks[0].fileName;
+			a.click();
 		}//End simply download if on a mobile.
 
             })//End db.chunks toArray using Dexie (.then follows)

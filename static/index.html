@@ -716,6 +716,7 @@ function setStatus(str) {
       connectE = document.getElementById("connect"),
       callE = document.getElementById("call"),
       scMessageE = document.getElementById("scMessage");
+      hangUp = document.getElementById("hangup");
 
   switch (str) {
     case 'Waiting':
@@ -728,6 +729,7 @@ function setStatus(str) {
       statuslineE.style.display = "inline";
       connectE.style.display = "none";
       scMessageE.style.display = "inline-block";
+      hangUp.style.display = "inline-block";
       break;
     case 'Ready for call':
       statusE.innerHTML = "Ready for call";
@@ -771,6 +773,7 @@ Generate your connect code: <button id="Generate">Generate code</button>
     </span>
     <button id="call" style="display:none"
             onclick = "call()">Call</button>
+    <button id="hangup" onclick="dc.close()" style="display:none">Hang-up</button>
   </p>
 </div>
 

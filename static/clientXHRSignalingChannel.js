@@ -193,7 +193,7 @@ function ok(){
 invoke(connectedStatus, 0, 1000);
 
 function connectedStatus(){
-	if ( typeof dc=== 'undefined' || dc === null && dc.readyState !== 'connected') {
+	if ( typeof dc=== 'undefined' || dc === null || dc.readyState !== 'open') {
 		console.log("No yet connected.");
 		//Remove glow from logo
 		var logo = document.getElementById('logo');

@@ -1,3 +1,12 @@
 .glow {
 	box-shadow: 0 5px 15px rgba(121, 250, 0, 0.5), 0 5px 20px rgba(0,215,182,1);
 }
+
+#SyncMyData {
+	border: 2px dotted red;
+}
+
+body {
+	margin: 5px 20px; 
+}
+

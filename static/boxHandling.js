@@ -24,6 +24,43 @@ window.onload = function () {
        window.boxId = elm.value;
   }//End setBoxId
 
+
+//Event listener for SyncMyData Syncing user data
+var SyncMyData = document.getElementById('SyncMyData');
+SyncMyData.addEventListener('click', sendAllDataToPeer, false);
+function sendAllDataToPeer() {
+    db.transaction('r', db.chunks, function() {
+            db.chunks.each(function(chunk) {
+                //Transaction scope
+                        //Sending file meta...
+                        var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+                        var lengthOfMeta = JSON.stringify(meta).length;
+                        lengthOfMeta = zeroFill(lengthOfMeta, 64);
+                        var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
+                        var header = JSON.stringify(metaLength) + JSON.stringify(meta);
+                        var sendChunk = new Blob([header, chunk.chunk]);
+                        url = window.URL.createObjectURL(sendChunk);
+                        //Needs to be sent as an arrayBuffer
+                        var reader = new FileReader();
+                                reader.onload = function(file) {
+                                if( reader.readyState == FileReader.DONE ) {
+                                        for(var i=0;i<=99999999;i++) {}//Crude delay!
+                                        dc.send(result = file.target.result);
+                                }//End FileReader.DONE
+                        }//End reader.onload
+                        reader.readAsArrayBuffer(sendChunk);
+                        //End sending file meta
+            })//End db.chunks toArray using Dexie (.then follows)
+
+        }).then(function() {
+            //Transaction completed
+		console.log("All chunks (all files) sent to connected peer!");
+		alert("All chunks (all files) sent to peer");
+        }).catch (function (err) {
+            console.error(err);
+    });//End get fildIdChunks from fileId
+}//End SyncMyData sendAllDataToPeer
+
 //Event listener for QR code reader
 var readQrCodeBtn = document.getElementById('readQrCode');
 readQrCodeBtn.addEventListener("change", readQrCode, false);
@@ -343,10 +380,8 @@ function sendChunksToPeer(e) {
         var fileId = e.target.dataset.fileid;
 
     db.transaction('r', db.chunks, function() {
-        
             db.chunks.where("fileId").equals(fileId).each(function(chunk) {
                 //Transaction scope
-		
 			//Sending file meta...
 			var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
 			var lengthOfMeta = JSON.stringify(meta).length;
@@ -361,11 +396,6 @@ function sendChunksToPeer(e) {
                                 if( reader.readyState == FileReader.DONE ) {
 					for(var i=0;i<=99999999;i++) {}//Crude delay!
                                         dc.send(result = file.target.result);
-					/* 
-						Create array of chunks.
-						Then use http://stackoverflow.com/questions/6425062/passing-functions-to-settimeout-in-a-loop-always-the-last-value
-						to do the packets every few seconds
-					*/
                                 }//End FileReader.DONE
 
                         }//End reader.onload

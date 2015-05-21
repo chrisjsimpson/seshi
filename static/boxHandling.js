@@ -309,6 +309,7 @@ function downloadFile(event) {
 		var video = document.getElementById('video');
 		var obj_url = window.URL.createObjectURL(file);
 		video.src = obj_url;
+		video.play();
 		//video.play();
 		} else {
 		window.open(url);

@@ -128,7 +128,7 @@ function get(getResponseHandler) {
 			client.open("POST", "http://" + signalingServer.address + "/get");
 			var id = document.getElementById('key').value;
 			client.send(JSON.stringify({"id":id}));
-			console.log("Getting..." + Math.random());
+			//console.log("Getting..." + Math.random());
 		}).catch(function(error) {
 			console.error(error);
 		})
@@ -189,7 +189,22 @@ function ok(){
 	console.log("OK " + Math.random());
 }
 
-//invoke(ok,0,2000, 80000);
+//Check if connected every x secconds
+invoke(connectedStatus, 0, 1000);
+
+function connectedStatus(){
+	if ( typeof dc=== 'undefined' || dc === null && dc.readyState !== 'connected') {
+		console.log("No yet connected.");
+		//Remove glow from logo
+		var logo = document.getElementById('logo');
+		logo.className = '';
+	} else if (dc.readyState === 'open') {
+		console.log("We are connected.");
+		//Add glow to logo
+		var logo = document.getElementById('logo');
+		logo.className = 'glow';
+	}
+}
 
 function invoke(f,start, interval, end) {
 	if(!start) start = 0; //Default to 0ms

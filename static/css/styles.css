@@ -10,3 +10,6 @@ body {
 	margin: 5px 20px; 
 }
 
+.hide, .debug {
+	display:none;
+}

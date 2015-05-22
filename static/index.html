@@ -718,6 +718,7 @@ function setStatus(str) {
       callE = document.getElementById("call"),
       scMessageE = document.getElementById("scMessage");
       hangUp = document.getElementById("hangup");
+      syncMyData = document.getElementById('SyncMyData');
 
   switch (str) {
     case 'Waiting':
@@ -731,6 +732,7 @@ function setStatus(str) {
       connectE.style.display = "none";
       scMessageE.style.display = "inline-block";
       hangUp.style.display = "inline-block";
+      syncMyData.style.display = "inline-block";
       break;
     case 'Ready for call':
       statusE.innerHTML = "Ready for call";
@@ -747,25 +749,25 @@ function setStatus(str) {
 
 </script>
 
-<h1>Your data</h1>
+<h1>Store Your data</h1>
 
-Upload friends QR code: <input type="file" id="readQrCode" value="Read QR code" />
-<br />
-Generate your connect code: <button id="Generate">Generate code</button>
-<input type="text" value="0" class="progressKnob" data-readOnly="true">
-<hr />
-<div class="debug hide">
-<input id="qrlogo_text" type="text" value="Your friends SDP will display here." style="width:80%" /><br />
-<input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" style="width:80%" /><br />
-<input id="qrlogo_debug_checkbox" type="text" />
-</div><!-- End progress log debug info -->
-<div id="qrcode"></div>
+Box id: <input type="text" name="boxId" id="boxId" value="myBoxID" /><button id="setBoxId">Set</button><br /><br />
+Store data: <input type="file" id="share" />
 
-<div id="qrcodeImage"></div>
-<canvas width="10" height="10" id="qrlogo_canvas"></canvas>
-<br />
+<div id="scMessage" style="float:right;display:none">
+
+  <p>Response:  <span id="response"></span></p>
+</div>
+
+<h1>View Your Data</h1>
+<p>Your files: <button id="showFiles">Show my files</button> <button id="SyncMyData" style="display:none">Sync All My Data</button></p>
+<div id="filesInBox">
+
+</div><!-- End FilesInBox -->
+
+<h1>Create a Peer Connection</h1>
 <div id="setup">
-  <p>Or manually choose a Key:
+  <p>Choose a Key:
     <input type="text" name="key" id="key" value="123"
            onkeyup="if (event.keyCode == 13) {
                       connect(); return false;}"/>
@@ -776,21 +778,24 @@ Generate your connect code: <button id="Generate">Generate code</button>
     <button id="call" style="display:none"
             onclick = "call()">Call</button>
     <button id="hangup" onclick="dc.close()" style="display:none">Hang-up</button>
+	<input type="text" id="Generate" style="display:none" />
   </p>
 </div>
+<br />
+Or Upload friends QR code: <input type="file" id="readQrCode" value="Read QR code" />
+<br />
+<input type="text" value="0" class="progressKnob hide" data-readOnly="true">
+<div class="debug hide">
+<input id="qrlogo_text" type="text" value="Your friends SDP will display here." style="width:400px" /><br />
+<input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" style="width:600px" /><br />
+<input id="qrlogo_debug_checkbox" type="text" />
+</div><!-- End progress log debug info -->
+<div id="qrcode"></div>
 
-<br /><input type="text" name="boxId" id="boxId" value="myBoxID" /><button id="setBoxId">Set</button>
-<hr />
+<div id="qrcodeImage"></div>
+<canvas width="10" height="10" id="qrlogo_canvas"></canvas>
+<br />
 
-<p>Store data:</p>
-<input type="file" id="share" />
-
-<div id="scMessage" style="float:right;display:none">
-
-  <p>Response:  <span id="response"></span></p>
-</div>
-
-<br/>
 
 <div id="iceMessages" class="debug hide">
  <div class="outMessages"> 
@@ -808,13 +813,6 @@ Generate your connect code: <button id="Generate">Generate code</button>
 
 </div><!-- End iceMessages debug -->
 
-<hr />
-<p>Your files: <input type="button" id="showFiles" value="Show my files" /></p>
-<div id="filesInBox">
-
-</div><!-- End FilesInBox -->
-
-<hr />
 <div class="hide">
 <h4>Connect to peer</h4>
 UUID: <input type="text" name="uuid" value="" id="uuid" /> <br />
@@ -822,6 +820,7 @@ Peer SigSever address: <input type="text" name="peerSigServer" value="http://192
 <button onclick="connectToPeer(connectedToPeer)">Connect to peer</button>
 </div><!-- End hide Connect direct to peer (not fully implimented) -->
 
+<hr />
 <h1>Settings</h1>
 <h2>Add signaling servers</h2>
 <input type="text" name="signalServerAddress" id="signalingServerAddress" />

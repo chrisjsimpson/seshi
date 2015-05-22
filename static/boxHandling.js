@@ -205,7 +205,7 @@ function requestFileFromConnectedPeer() {
 			list += '<button class="shareFile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Generate QR Code</button>';
-			list += '<button class="loadFile">load</button><button id=play>play</button><button class="downloadFileMobile" data-fileId="';
+			list += '<button class="downloadFileMobile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Download file Mobile</button>';
 			list += '<button class="send" data-fileId="';
@@ -345,6 +345,7 @@ function downloadFile(event) {
 		if(chunks[0].fileType.indexOf('image') == -1) {
 		var video = document.getElementById('video');
 		var obj_url = window.URL.createObjectURL(file);
+		video.style.display = "inline-block";
 		video.src = obj_url;
 		video.play();
 		//video.play();

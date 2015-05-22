@@ -2,6 +2,7 @@
 <head>
   <meta http-equiv="Content-Type"
         content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
 <link rel="stylesheet" type="text/css" href="css/styles.css" />
   <style>
@@ -750,6 +751,7 @@ function setStatus(str) {
 </script>
 
 <h1>Store Your data</h1>
+<input type="text" value="0" class="progressKnob" data-readOnly="true" style="width:0px" height="0px;>
 <img src="http://i59.tinypic.com/jag8y0.png" style="width: 150px;"/>
 <div>Box id: <input type="text" name="boxId" id="boxId" value="myBoxID" /><button id="setBoxId">Set</button><br /><br />
 Store data: <input type="file" id="share" />
@@ -785,7 +787,6 @@ Store data: <input type="file" id="share" />
 <br />
 Or Upload friends QR code: <input type="file" id="readQrCode" value="Read QR code" />
 <br />
-<input type="text" value="0" class="progressKnob hide" data-readOnly="true">
 <div class="debug hide">
 <input id="qrlogo_text" type="text" value="Your friends SDP will display here." style="width:400px" /><br />
 <input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" style="width:600px" /><br />

@@ -1,5 +1,26 @@
 window.onload = function () { 
 
+	//Check if zero signaling server, if none, add default
+	signalServerDb.signalServers.count(
+		function(count){ 
+			if(count == 0)
+			{
+				signalServerDb.signalServers.add({address: "seshi.io",
+				lastSuccessfulConnectTimestamp: null,
+				lastConnectAttempTimestamp: null,
+				numFailedConnectAttempts: null}).
+		then(function(){
+			alert('Inserted: ' + signalingServerAddress.value);
+		}).catch(function(error) {
+			console.error(error);
+		});//End insert new singalingServerAddress
+				
+			}//Add a default signal server
+		console.log("There are " + count + " objects");
+		})
+
+	//End check if zero signaling servers, if none, add a default.
+
 		//Add event listener to delete all signalingServers
 		var deleteSigServersBtn = document.getElementById('deleteSignalingServers');
 		deleteSigServersBtn.addEventListener('click', deleteSignalingServers, false);
@@ -347,21 +368,21 @@ function downloadFile(event) {
 		var obj_url = window.URL.createObjectURL(file);
 		video.style.display = "inline-block";
 		video.src = obj_url;
-		video.play();
+		//video.play();
 		//video.play();
 		} else {
 		window.open(url);
 		}
 		//Simply download file if on mobiles
-		if( window.screen.width < 700 )
-		{
+		//if( window.screen.width < 700 )
+		//{
 			var a = document.createElement("a");
 			document.body.appendChild(a);
 			a.style = "display: none";
 			a.href = url;
 			a.download = chunks[0].fileName;
 			a.click();
-		}//End simply download if on a mobile.
+		//}//End simply download if on a mobile.
 
             })//End db.chunks toArray using Dexie (.then follows)
         

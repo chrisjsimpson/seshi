@@ -95,8 +95,12 @@ exports.connect = connect;
 function sendMessage(info) {
 	//debugger;
   //log("postData received is ***" + info.postData + "***");
-  var postData = JSON.parse(info.postData),
       res = info.res;
+	try {
+		var postData = JSON.parse(info.postData);
+	} catch (e) {
+		return webrtcError("Invalid sendMessage object..", res);
+	}
   res.setHeader("Access-Control-Allow-Origin", "*"); //Allow CORS
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
@@ -133,8 +137,13 @@ exports.send = sendMessage;
 
 // Returns all messages queued for info.postData.id
 function getMessages(info) {
-  var postData = JSON.parse(info.postData),
-      res = info.res;
+      	res = info.res;
+
+	try {
+		var postData = JSON.parse(info.postData);
+	} catch (e) {
+		return webrtcError("Invalid id and object..", res);
+	}
   res.setHeader("Access-Control-Allow-Origin", "*"); //Allow CORS
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 

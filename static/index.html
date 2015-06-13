@@ -264,7 +264,7 @@ function createPC() {
   if (stunuri) {
     // this is one of Google's public STUN servers
     //config.push({"url":"stun:stun.l.google.com:19302"});
-    //config.push({"url":"stun:178.62.83.184:3478"});
+    config.push({"url":"stun:178.62.83.184:3478"});
     config.push({"url":"turn:178.62.83.184:3478","username":"my_username","credential":"my_password"});
   }
   console.log("config = " + JSON.stringify(config));

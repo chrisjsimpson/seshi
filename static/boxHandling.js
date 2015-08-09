@@ -65,7 +65,7 @@ function sendAllDataToPeer() {
                         var reader = new FileReader();
                                 reader.onload = function(file) {
                                 if( reader.readyState == FileReader.DONE ) {
-                                        for(var i=0;i<=99999999;i++) {}//Crude delay!
+                                        //for(var i=0;i<=99999999;i++) {}//Crude delay!
                                         dc.send(result = file.target.result);
                                 }//End FileReader.DONE
                         }//End reader.onload

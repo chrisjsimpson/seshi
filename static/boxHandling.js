@@ -220,12 +220,23 @@ function requestFileFromConnectedPeer() {
                         list += '" onclick="scroll(0,0)">';
                         list += fileNames[i].fileName;
                         list += '</a> ';
-			list += '<button class="btn btn-success pull-right fileDownload play" data-fileId="';
+			/* Download button */
+			list += '<button class="btn pull-right fileDownload" data-fileId="';
 			list += fileNames[i].fileId;
-			list += '">Play / Download</button>';
+			list += '">Download</button>';
+			/* Play button */
+			list += '<button class="btn btn-success pull-right play" data-fileId="';
+			list += fileNames[i].fileId + '"';
+				/* Disable play button on non media */
+				if(!isPlayable(fileNames[i].fileName)) {
+					list += " disabled";
+				}
+			list += '>Play</button>';
+			/* Send button */
 			list += '<button class="btn btn-primary pull-right send" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Send</button>';
+			/* Delete button */
 			list += '<button class="btn btn-danger btn-sm pull-right deleteFile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Delete File</button>  ';
@@ -249,6 +260,17 @@ function requestFileFromConnectedPeer() {
                     var fileId = downloads[i];
                     //Add downloadFile event listener
                     fileId.addEventListener('click', downloadFile, false);
+                }//End add download event listener to each file link.
+
+
+                //Add event listeners to these files for playing
+                var downloads = document.getElementsByClassName('play');
+                for(var i=0;i<downloads.length;i++)
+                {
+                    //Get fileId
+                    var fileId = downloads[i];
+                    //Add downloadFile event listener
+                    fileId.addEventListener('click', playMedia, false);
                 }//End add download event listener to each file link.
                 
 		//Add event listeners for deleting a single file 
@@ -345,47 +367,18 @@ function downloadFile(event) {
                 for(var i=0;i<chunks.length; i++){
                     //console.log(found[i].chunk);
                     allChunksArray[i] = chunks[i].chunk
-			//Sending file meta...
-			var meta = {"fileId":chunks[i].fileId, "chunkNumber":chunks[i].chunkNumber, "numberOfChunks":chunks[i].numberOfChunks,"fileType":chunks[i].fileType,"fileName":chunks[i].fileName};
-			var lengthOfMeta = JSON.stringify(meta).length;
-			lengthOfMeta = zeroFill(lengthOfMeta, 64);
-			var sendChunk = new Blob([lengthOfMeta, JSON.stringify(meta), chunks[i].chunk]);
-			url = window.URL.createObjectURL(sendChunk);
-			var reader = new FileReader();
-				reader.onload = function(file) {
-				if( reader.readyState == FileReader.DONE ) {
-					result = file.target.result;
-				}//End FileReader.DONE
-		
-			}//End reader.onload
-			reader.readAsArrayBuffer(sendChunk);	
-			//End sending file meta
                 }//End put all chunks into all chunks array
 
                 var file = new Blob(allChunksArray, {type:chunks[0].fileType});
 		console.log(chunks[0].fileType);
                 url = window.URL.createObjectURL(file);
 		console.log("Data: " + url);
-		if(chunks[0].fileType.indexOf('image') == -1) {
-		var video = document.getElementById('video');
-		var obj_url = window.URL.createObjectURL(file);
-		video.style.display = "inline-block";
-		video.src = obj_url;
-		video.play();
-		//video.play();
-		} else {
-		window.open(url);
-		}
-		//Simply download file if on mobiles
-		//if( window.screen.width < 700 )
-		//{
-			var a = document.createElement("a");
-			document.body.appendChild(a);
-			a.style = "display: none";
-			a.href = url;
-			a.download = chunks[0].fileName;
-		//	a.click();
-		//}//End simply download if on a mobile.
+		var a = document.createElement("a");
+		document.body.appendChild(a);
+		a.style = "display: none";
+		a.href = url;
+		a.download = chunks[0].fileName;
+		a.click();
 
             })//End db.chunks toArray using Dexie (.then follows)
         
@@ -398,6 +391,80 @@ function downloadFile(event) {
     });//End get fildIdChunks from fileId
 
 }//End download file
+
+
+function playMedia() {
+    event.preventDefault();    
+    var fileId = event.target.getAttribute('data-fileid');
+
+    //Query IndexedDB to get the file
+    db.transaction('r', db.chunks, function() {
+        
+        
+        }).then(function() {
+            //Transaction completed
+            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                //Transaction scope
+                console.log("Found " + chunks.length + " chunks");
+                
+                var allChunksArray = [];
+                //Just get blob cunks
+                for(var i=0;i<chunks.length; i++){
+                	allChunksArray[i] = chunks[i].chunk
+                }//End put all chunks into all chunks array
+
+                var file = new Blob(allChunksArray, {type:chunks[0].fileType});
+		console.log(chunks[0].fileType);
+                url = window.URL.createObjectURL(file);
+		console.log("Data: " + url);
+
+		var video = document.getElementById('video');
+		var obj_url = window.URL.createObjectURL(file);
+		video.style.display = "inline-block";
+		video.src = obj_url;
+		video.play();
+		//Simply download file if on mobiles
+		if( window.screen.width < 700 )
+		{
+			var a = document.createElement("a");
+			document.body.appendChild(a);
+			a.style = "display: none";
+			a.href = url;
+			a.download = chunks[0].fileName;
+			a.click();
+		}//End simply download if on a mobile.
+
+            })//End db.chunks toArray using Dexie (.then follows)
+        }).catch (function (err) {
+            
+            console.error(err);
+    
+    });//End get fildIdChunks from fileId
+
+}//End playMedia()
+
+function isPlayable(fileName) {
+	/* Mp3 */
+	fileName = fileName.toLowerCase();
+	if (fileName.indexOf('mp3') > -1) {
+		return true;
+	}
+	/* Mp4 */
+	if (fileName.indexOf('mp4') > -1) {
+		return true;
+	}
+	/* webm */
+	if (fileName.indexOf('webm') > -1) {
+		return true;
+	}
+	
+	/* ogg */
+	if (fileName.indexOf('ogg') > -1) {
+		return true;
+	}
+
+	return false
+}
 
 
 function sendChunksToPeer(e) {

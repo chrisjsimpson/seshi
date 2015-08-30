@@ -197,12 +197,12 @@ function connectedStatus(){
 		console.log("No yet connected.");
 		//Remove glow from logo
 		var logo = document.getElementById('logo');
-		logo.className = '';
+		//logo.className = '';
 	} else if (dc.readyState === 'open') {
 		console.log("We are connected.");
 		//Add glow to logo
 		var logo = document.getElementById('logo');
-		logo.className = 'glow';
+		//logo.className = 'glow';
 	}
 }
 

@@ -37,7 +37,7 @@ window.onload = function () {
 //Event listner to set Boxid
   window.boxId = 'myBoxID'; //Default box id
   var elm = document.getElementById("setBoxId");
-  elm.addEventListener("click", setBoxId, false);
+  //elm.addEventListener("click", setBoxId, false);
 
   function setBoxId(event)
   {
@@ -84,7 +84,7 @@ function sendAllDataToPeer() {
 
 //Event listener for QR code reader
 var readQrCodeBtn = document.getElementById('readQrCode');
-readQrCodeBtn.addEventListener("change", readQrCode, false);
+//readQrCodeBtn.addEventListener("change", readQrCode, false);
 
 function readQrCode(evt) {
 
@@ -208,30 +208,33 @@ function requestFileFromConnectedPeer() {
 
                 //Update files list box
                 var filesInBox = document.getElementById('filesInBox');
-                var list = '<ul><audio id="audio"></audio>';
+                var list = '<ul class="list-group"><audio id="audio"></audio>';
                 
                 for(var i=0;i<fileNames.length;i++)
                 {
-                        list += '<li title="Download"><a class="fileDownload" href="';
+                        list += '<li title="Download" class="list-group-item"><a class="fileDownload" href="';
                         list += 'index.html?download=';
                         list += fileNames[i].fileId;
                         list += '" data-fileId="';
                         list += fileNames[i].fileId;
                         list += '" onclick="scroll(0,0)">';
                         list += fileNames[i].fileName;
-                        list += '</a></li>';
-			list += '<li><button class="deleteFile" data-fileId="';
+                        list += '</a> ';
+			list += '<button class="btn btn-success pull-right fileDownload play" data-fileId="';
 			list += fileNames[i].fileId;
-			list += '">Delete.</button>';
-			list += '<button class="shareFile" data-fileId="';
+			list += '">Play / Download</button>';
+			list += '<button class="btn btn-primary pull-right send" data-fileId="';
 			list += fileNames[i].fileId;
-			list += '">Generate QR Code</button>';
-			list += '<button class="downloadFileMobile" data-fileId="';
+			list += '">Send</button>';
+			list += '<button class="btn btn-danger btn-sm pull-right deleteFile" data-fileId="';
 			list += fileNames[i].fileId;
-			list += '">Download file Mobile</button>';
-			list += '<button class="send" data-fileId="';
-			list += fileNames[i].fileId;
-			list += '">Send</button></li>';
+			list += '">Delete File</button>  ';
+			//list += '<button class="shareFile" data-fileId="';
+			//list += fileNames[i].fileId;
+			//list += '">Generate QR Code</button>';
+			//list += '<button class="downloadFileMobile" data-fileId="';
+			//list += fileNames[i].fileId + '">';
+			//list += 'Download file Mobile</button>';
                 }
 
                 list += '</ul>';
@@ -368,7 +371,7 @@ function downloadFile(event) {
 		var obj_url = window.URL.createObjectURL(file);
 		video.style.display = "inline-block";
 		video.src = obj_url;
-		//video.play();
+		video.play();
 		//video.play();
 		} else {
 		window.open(url);
@@ -381,7 +384,7 @@ function downloadFile(event) {
 			a.style = "display: none";
 			a.href = url;
 			a.download = chunks[0].fileName;
-			a.click();
+		//	a.click();
 		//}//End simply download if on a mobile.
 
             })//End db.chunks toArray using Dexie (.then follows)

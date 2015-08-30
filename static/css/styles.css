@@ -13,3 +13,7 @@ body {
 .hide {
 	display:none;
 }
+
+#filesInBox button.btn {
+	margin-right: 9px;
+}

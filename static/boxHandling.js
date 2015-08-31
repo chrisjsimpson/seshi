@@ -526,7 +526,27 @@ function isPlayable(fileName) {
 	
 	// Presume playable 
 	return true
-}
+} //End isPlayable()
+
+function isImage(fileName) {
+
+	/* jpg */
+	        if (fileName.indexOf('.jpg') > -1) {
+                return true;
+        }
+	
+	/* jpeg */
+	        if (fileName.indexOf('.jpeg') > -1) {
+                return true;
+        }
+	
+	/* png */
+	        if (fileName.indexOf('.png') > -1) {
+                return true;
+        }
+
+	return false;
+}//End isImage(fileName)
 
 
 function sendChunksToPeer(e) {

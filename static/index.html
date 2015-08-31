@@ -32,12 +32,6 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="navbar-brand" href="#">Seshi.io</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
@@ -51,13 +45,14 @@
         <h1>Seshi makes sending files easy & free!</h1>
 	<ol class="well well-lg">
 		<li>Choose a file to send. Seshi will store it in your browser.</li>
-		<li>Choose a secrect key &amp; click 'connect'</li>
+		<li>Choose a secret key &amp; click 'connect'</li>
 		<li>Tell your friend the key, connect, and click the 'send' button'</li>
-		<li>That's it! No limmits, no email required, the file is sent <em>direct</em> to your friend</em></li> 
+		<li>That's it! No limits, no email required, the file is sent <em>direct</em> to your friend</em></li> 
 	</ol>
-        <p><input type="file" id="share" class="btn btn-primary btn-lg" role="button" name="Store Files" /></p>
-	<p>Choose a key: <input type="text" name="key" id="key" placeholder="e.g. S1TR*ogN{Pas^Wr2" /><button class="btn btn-sm btn-info">Generate a password</button><p/>
-	<p><span id="status"></span>
+        <p>Step one, upload a file: <input type="file" id="share" style="width:288px;"class="" name="Store Files" /></p>
+	<p>Choose a key: <input type="text" name="key" id="key" placeholder="e.g. S1TR*ogN{Pas^Wr2" /> 
+	<button class="btn btn-sm btn-info" id="generateKey">Or generate a password</button><p/>
+	<p id="status"></p>
 	    <button id="call" style="display:none" class="btn btn-primary btn-lg"
 		    onclick = "call()">Connect</button>
 	    <button id="hangup" onclick="dc.close()" style="display:none">Hang-up</button>
@@ -75,22 +70,32 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>Local Storage</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>What is Seshi?</h2>
+          <div class="well">
+	  <p> Seshi started out of an idea to create a truly decentralised file sharing tool which would put people back in control of their own content. I was frustrated by parts of the internet being branded a metaphorical highways for piracy and unimpressed by services being capable of creating peer to peer file sharing tools, but chosing to collect email addresses, and perform analytics on users data for re-marketing campaigns thus loosing sight of the potential for pure peer to peer technologies.</p>
+	  <p>Seshi is quite a geeky peice of tehnology, but it is nothing new. It's simply how its architected which makes it <em>different</em>. Seshi dosn't need Seshi.io in order to function, that is, the web server on which it runs is not required in order for people to connect to each other. You can, for example save the webpage locally and run it from there. Signalling is still needed of course (ie how do users find each other) and for this, finally a valid use case for QR codes is found. Seshi can generate QR codes containing your connection information which can be exchanged outside of the application (a so-called out of band communication). The codebase is split into two parts: Seshi Skin &amp; Seshi Signal, making it easier for developers to build their own interface whilst still plugging into Seshi's storage and p2p framework*.</p></div><!-- end well -->
+
+<p>*Seshi is not a framework, its codebase is a work-in-progress and an insult to good coding practises.</p>
         </div>
         <div class="col-md-4">
-          <h2>Media player built-in</h2>
+	 <div class="panel panel-primary">
+          <div class="panel-heading">
+             <h2 class="panel-title">Media player built-in</h2>
+	  </div>
+	  <div class="panel-body">
 	  <div align-"center" class="embed-responsive embed-responsive-16by9">
 	      <video id="video" preload="auto" class="thumbnail" controls></video>
 	  </div>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <p>Any file you store in Seshi can be played back to you right within your browser (if your browser supports it). You can, listen to your music, videos, and browse pictures.</p>
+	  <p>A cool feature is the ability to watch a film in sync with a friend. Distance shouldn't stop two people from sharing a film! &lt;3 </p>
+	 </div><!-- end panel body --> 
+         </div><!-- end panel -->
        </div>
         <div class="col-md-4">
           <h2>Send to a friend</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+	  <div class="well">
+          <p>The whole point of Seshi is to make it easy &amp; fast to send files between friends removing as many barriers as possible (no email size limits, no account needed or speed restictions). Your only limit is your browser and speed of your device. Seshi works with Chrome and Firefox, there's a few quirks with Firefox at the moment when playing back sound / video.<p>
+	  </div> <!-- end well -->
         </div>
       </div>
 
@@ -151,18 +156,6 @@
 
 <button id="SyncMyData" style="display:none">Sync All My Data</button></p>
 
-<h1>Create a Peer Connection ;)</h1>
-<div id="setup">
-  <p>Choose a Key:
-    <span id="statusline" style="display:none">Status:
-      <span id="status">Disconnected</span>
-    </span>
-    <button id="call" style="display:none"
-            onclick = "call()">Call</button>
-    <button id="hangup" onclick="dc.close()" style="display:none">Hang-up</button>
-	<input type="text" id="Generate" style="display:none" />
-  </p>
-</div>
 <div class="debug hide">
 <input id="qrlogo_text" type="text" value="Your friends SDP will display here." style="width:400px" /><br />
 <input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" style="width:600px" /><br />
@@ -207,6 +200,9 @@ Peer SigSever address: <input type="text" name="peerSigServer" value="http://192
   </div><!-- end inMessages  -->
 
 </div><!-- End iceMessages debug -->
+<span id="statusline" style="display:none">Status:
+      <span id="status">Disconnected</span>
+    </span>
 </body>
 
 <button onclick="showDebugInfo()">Show debug info</button>

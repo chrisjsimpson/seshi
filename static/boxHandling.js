@@ -21,6 +21,14 @@ window.onload = function () {
 
 	//End check if zero signaling servers, if none, add a default.
 
+		//Event listener for generating new key
+		var generateBtn = document.getElementById('generateKey');
+		generateBtn.addEventListener('click', generateNewKey, false);
+
+		function generateNewKey() {
+			document.getElementById('key').value = generateKey();
+		}
+
 		//Add event listener to delete all signalingServers
 		var deleteSigServersBtn = document.getElementById('deleteSignalingServers');
 		deleteSigServersBtn.addEventListener('click', deleteSignalingServers, false);
@@ -208,10 +216,38 @@ function requestFileFromConnectedPeer() {
 
                 //Update files list box
                 var filesInBox = document.getElementById('filesInBox');
-                var list = '<ul class="list-group"><audio id="audio"></audio>';
+                
+		var list = '<div class="container"><div class="row">';
                 
                 for(var i=0;i<fileNames.length;i++)
                 {
+			list += '<div class="col-xs-12 col-sm-4 col-md-3"><div class="thumbnail"><div class="caption">';
+
+			list += '<p>' + fileNames[i].fileName.substr(0,50) + '...</p>';
+			
+			list += '<p><button href="" class="label label-primary play" data-fileId="' + fileNames[i].fileId + '" ';
+					if(!isPlayable(fileNames[i].fileName)) {
+						list += ' title="Cannot play this filetype." disabled';
+					}
+			list += '>Play</button>  ';
+
+			list += '<button class="label label-info send" data-fileId="' + fileNames[i].fileId + '">Send</button>  ';
+
+			list += '<button class="label label-default fileDownload" data-fileId="' + fileNames[i].fileId + '">Download</button>  ';
+			
+			list += '<button class="label label-default deleteFile" data-fileId="' + fileNames[i].fileId + '">Delete</button></p>';
+		
+			if(isPlayable(fileNames[i].fileName)) {	
+				list += '<p><button class="label label-default">Play in-sync with a friend!</button></p>';
+			}
+			list += '<p> <a class="label label-success fileDownload" title="coming soon!" data-fileid="' + fileNames[i].fileId + '">Sell</a></p>'; 	
+
+			list += '</div>';
+		
+			list += '<img src="http://i57.tinypic.com/xqeyaw.jpg" alt="...">';
+
+			list += '</div></div>'
+		/*
                         list += '<li title="Download" class="list-group-item"><a class="fileDownload" href="';
                         list += 'index.html?download=';
                         list += fileNames[i].fileId;
@@ -220,23 +256,23 @@ function requestFileFromConnectedPeer() {
                         list += '" onclick="scroll(0,0)">';
                         list += fileNames[i].fileName;
                         list += '</a> ';
-			/* Download button */
+			/* Download button 
 			list += '<button class="btn pull-right fileDownload" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Download</button>';
-			/* Play button */
+			/* Play button 
 			list += '<button class="btn btn-success pull-right play" data-fileId="';
 			list += fileNames[i].fileId + '"';
-				/* Disable play button on non media */
+				/* Disable play button on non media 
 				if(!isPlayable(fileNames[i].fileName)) {
 					list += " disabled";
 				}
 			list += '>Play</button>';
-			/* Send button */
+			/* Send button 
 			list += '<button class="btn btn-primary pull-right send" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Send</button>';
-			/* Delete button */
+			/* Delete button 
 			list += '<button class="btn btn-danger btn-sm pull-right deleteFile" data-fileId="';
 			list += fileNames[i].fileId;
 			list += '">Delete File</button>  ';
@@ -246,6 +282,7 @@ function requestFileFromConnectedPeer() {
 			//list += '<button class="downloadFileMobile" data-fileId="';
 			//list += fileNames[i].fileId + '">';
 			//list += 'Download file Mobile</button>';
+			*/
                 }
 
                 list += '</ul>';
@@ -393,7 +430,7 @@ function downloadFile(event) {
 }//End download file
 
 
-function playMedia() {
+function playMedia(event) {
     event.preventDefault();    
     var fileId = event.target.getAttribute('data-fileid');
 
@@ -446,24 +483,49 @@ function playMedia() {
 function isPlayable(fileName) {
 	/* Mp3 */
 	fileName = fileName.toLowerCase();
-	if (fileName.indexOf('mp3') > -1) {
+	if (fileName.indexOf('.mp3') > -1) {
 		return true;
 	}
 	/* Mp4 */
-	if (fileName.indexOf('mp4') > -1) {
+	if (fileName.indexOf('.mp4') > -1) {
 		return true;
 	}
 	/* webm */
-	if (fileName.indexOf('webm') > -1) {
+	if (fileName.indexOf('.webm') > -1) {
 		return true;
 	}
 	
 	/* ogg */
-	if (fileName.indexOf('ogg') > -1) {
+	if (fileName.indexOf('.ogg') > -1) {
 		return true;
 	}
 
-	return false
+	/* ### Images ### */
+	
+	/* jpg */
+	        if (fileName.indexOf('.jpg') > -1) {
+                return false;
+        }
+	
+	/* jpeg */
+	        if (fileName.indexOf('.jpeg') > -1) {
+                return false;
+        }
+	
+	/* png */
+	        if (fileName.indexOf('.png') > -1) {
+                return false;
+        }
+
+	/* ### Documents ### */
+
+	/* pdf */
+	        if (fileName.indexOf('.pdf') > -1) {
+                return false;
+        }
+	
+	// Presume playable 
+	return true
 }
 
 

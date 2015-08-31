@@ -17,3 +17,31 @@ body {
 #filesInBox button.btn {
 	margin-right: 9px;
 }
+
+/* Thumbnails of files taken from: http://bootsnipp.com/snippets/featured/thumbnail-hover-without-javascript */
+.thumbnail {
+    position:relative;
+    overflow:hidden;
+}
+ 
+.caption {
+    position:absolute;
+    /*top:-100%; */
+    right:0;
+    background:rgba(6, 21, 35, 0.75);
+    width:100%;
+    height:100%;
+    padding:2%;
+    text-align:center;
+    color:#fff !important;
+    z-index:2;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+.thumbnail:hover .caption {
+    top:0%;
+}
+    

@@ -49,8 +49,20 @@
     <div class="jumbotron">
       <div class="container">
         <h1>Seshi makes sending files easy & free!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+	<ol class="well well-lg">
+		<li>Choose a file to send. Seshi will store it in your browser.</li>
+		<li>Choose a secrect key &amp; click 'connect'</li>
+		<li>Tell your friend the key, connect, and click the 'send' button'</li>
+		<li>That's it! No limmits, no email required, the file is sent <em>direct</em> to your friend</em></li> 
+	</ol>
         <p><input type="file" id="share" class="btn btn-primary btn-lg" role="button" name="Store Files" /></p>
+	<p>Choose a key: <input type="text" name="key" id="key" placeholder="e.g. S1TR*ogN{Pas^Wr2" /><button class="btn btn-sm btn-info">Generate a password</button><p/>
+	<p><span id="status"></span>
+	    <button id="call" style="display:none" class="btn btn-primary btn-lg"
+		    onclick = "call()">Connect</button>
+	    <button id="hangup" onclick="dc.close()" style="display:none">Hang-up</button>
+	<input type="text" id="Generate" style="display:none" />
+        <p><button id="connect" onclick="connect()" class="btn btn-primary btn-lg" role="button">Connect</button></p>
         <button id="showFiles" class="btn btn-primary btn-lg" href="#" role="button">View My Files</button>
 	
 	<div id="filesInBox"></div><!-- End FilesInBox -->
@@ -114,11 +126,12 @@
 <!-- load polyfill, local copy first for local testing -->
 <script src="adapter.js" type="text/javascript"></script>
 
-<!-- load QRcode reader -->
+<!-- load QRcode reader 
 <script type="text/javascript" src="qrlogoReader/common.js"></script>
 <script type="text/javascript" src="qrlogoReader/reedsolomon.js"></script>
 <script type="text/javascript" src="qrlogoReader/qrcodedecode.js"></script>
 <script type="text/javascript" src="qrlogoReader/qrdecode.js"></script>
+-->
 
 <!-- load XHR-based signaling channel that direct connects based
      on a key -->
@@ -141,9 +154,6 @@
 <h1>Create a Peer Connection ;)</h1>
 <div id="setup">
   <p>Choose a Key:
-    <input type="text" name="key" id="key" value="123" />
-                      
-    <button id="connect" onclick="connect()">Connect</button>
     <span id="statusline" style="display:none">Status:
       <span id="status">Disconnected</span>
     </span>

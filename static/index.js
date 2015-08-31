@@ -525,7 +525,7 @@ var sendStoreMsg = function(evt) {
                                 allChunksArray[i] = found[i].chunk
                             }
 
-                            alert(1);
+                            alert("Good job! File stored sucessfully.");
                             var pic = new Blob(allChunksArray, {type:found[0].fileType});
                             url = window.URL.createObjectURL(pic);
                             console.log("Data: " + url);
@@ -683,7 +683,8 @@ function setStatus(str) {
     case 'Waiting':
       statuslineE.style.display = "inline";
       statusE.innerHTML =
-        "Waiting for peer signaling connection";
+        "Sweet! Now send your friend this link: " + getShareLink();
+      statusE.className = 'alert alert-success';
       connectE.style.display = "none";
       break;
     case 'Connected':
@@ -694,7 +695,8 @@ function setStatus(str) {
       syncMyData.style.display = "inline-block";
       break;
     case 'Ready for call':
-      statusE.innerHTML = "Ready for call";
+      statusE.innerHTML = "You rock! Now press connect:";
+      statusE.className = 'alert alert-info';
       callE.style.display = "inline";
       break;
     case 'On call':
@@ -766,3 +768,7 @@ if (mediaPlaybackRequiresUserGesture()) {
   setSource();
 }
 
+function getShareLink() {
+	var key = document.getElementById('key').value;
+	return document.location.origin + '/?key=' + key;
+}

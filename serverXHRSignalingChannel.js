@@ -7,15 +7,9 @@ var connections = {},
 
 // queue the sending of a json response
 function webrtcResponse(response, res) {
-  /* log("replying with webrtc response " +
-      JSON.stringify(response)); */
+  log("replying with webrtc response " +
+      JSON.stringify(response));
   res.writeHead(200, {"Content-Type":"application/json"});
-
-  if(response.msgs != "" && typeof response.err != "string" && typeof response != "string")
-  {
-  	console.log("WebrtcResponse: \r\n" + JSON.stringify(response) + '\r\n');
-  }
-
   res.write(JSON.stringify(response));
   res.end();
 }
@@ -23,10 +17,9 @@ function webrtcResponse(response, res) {
 
 // send an error as the json WebRTC response
 function webrtcError(err, res) {
-  //log("replying with webrtc error:  " + err);
+  log("replying with webrtc error:  " + err);
   webrtcResponse({"err": err}, res);
 }
-
 
 // handle XML HTTP Request to connect using a given key
 function connect(info) {
@@ -36,8 +29,6 @@ function connect(info) {
 
   var query = info.query,
       thisconnection,
-     // res.writeHead("Access-Control-Allow-Origin", "*");
-     // res.writeHead("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
       newID = function() {
         // create large random number unlikely to be repeated
@@ -55,12 +46,12 @@ function connect(info) {
         connections[query.key] = {};
         thisconnection = connections[query.key];
         thisconnection.status = "waiting";
-        thisconnection.ids = [123];
+        thisconnection.ids = [newID()];
         webrtcResponse({"id":thisconnection.ids[0],
                         "status":thisconnection.status}, res);
       },
       connectSecondParty = function() {
-        thisconnection.ids[1] = 123; 
+        thisconnection.ids[1] = newID(); 
         partner[thisconnection.ids[0]] = thisconnection.ids[1];
         partner[thisconnection.ids[1]] = thisconnection.ids[0];
         messagesFor[thisconnection.ids[0]] = [];
@@ -70,11 +61,7 @@ function connect(info) {
                         "status":thisconnection.status}, res);
       };
 
-
-	console.log("The query was: ");
-	console.log(query);
-
-  //log("Request handler 'connect' was called.");
+  log("Request handler 'connect' was called.");
   if (query && query.key) {
     var thisconnection = connections[query.key] ||
                          {status:"new"};
@@ -93,8 +80,7 @@ exports.connect = connect;
 // Queues message in info.postData.message for sending to the
 // partner of the id in info.postData.id
 function sendMessage(info) {
-	//debugger;
-  //log("postData received is ***" + info.postData + "***");
+  log("postData received is ***" + info.postData + "***");
       res = info.res;
 	try {
 		var postData = JSON.parse(info.postData);
@@ -117,12 +103,12 @@ function sendMessage(info) {
     return;
   }
   if (typeof (partner[postData.id]) === "undefined") {
-    webrtcError("Invalid id " + postData.id, res);
+    webrtcError("Invalid id partner[postData.id] is undefinded " + postData.id, res);
     return;
   }
   if (typeof (messagesFor[partner[postData.id]]) ===
               "undefined") {
-    webrtcError("Invalid id " + postData.id, res);
+    webrtcError("Invalid id messagesFor[partner[postData.id]] " + postData.id, res);
     return;
   }
   messagesFor[partner[postData.id]].push(postData.message);
@@ -156,13 +142,13 @@ function getMessages(info) {
     return;
   }
   if (typeof (messagesFor[postData.id]) === "undefined") {
-    webrtcError("Invalid id " + postData.id, res);
+    webrtcError("Invalid id messagesFor[postData.id] is undefined in call to getMessages(info) " + postData.id, res);
     return;
   }
 
-  /* log("Sending messages ***" +
+  log("Sending messages ***" +
       JSON.stringify(messagesFor[postData.id]) + "*** to id " +
-      postData.id); */
+      postData.id); 
   webrtcResponse({'msgs':messagesFor[postData.id]}, res);
   messagesFor[postData.id] = [];
 }

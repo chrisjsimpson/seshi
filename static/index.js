@@ -17,6 +17,13 @@ var signalingChannel, key, id,
     fileMeta = {};
 
 
+// auto-connect signaling channel if key provided in URI
+if (queryparams && queryparams['key']) {
+document.getElementById("key").value = queryparams['key'];
+connect();
+}
+
+
 //Contacting potential signaling server to find existing friend
 function connectToPeer(getResponseHandler) {
         console.log("Trying to establish contact with existing peer.");

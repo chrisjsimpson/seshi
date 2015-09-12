@@ -530,6 +530,8 @@ function isPlayable(fileName) {
 
 function isImage(fileName) {
 
+	/* MY FIDDLE: http://jsfiddle.net/fua75hpv/80/ */
+
 	/* jpg */
 	        if (fileName.indexOf('.jpg') > -1) {
                 return true;

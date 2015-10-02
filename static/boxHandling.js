@@ -459,7 +459,12 @@ function playMedia(event) {
 		var obj_url = window.URL.createObjectURL(file);
 		video.style.display = "inline-block";
 		video.src = obj_url;
-		video.play();
+		video.addEventListener('canplay', function() {
+			if ( video.readyState == 4 ) 
+			{
+				video.play(); 
+			}
+		})
 		//Simply download file if on mobiles
 		if( window.screen.width < 700 )
 		{

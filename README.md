@@ -1,5 +1,5 @@
 # Seshi
-Seshi allows peers to store files in the browers, play them back &amp; share them with a friend . 
+Seshi allows peers to store files in the browser, play them back &amp; share them with a friend . 
 It is a web based peer to peer file sending program which combines webrtc with indexeddb. It's written in Javascript. 
 
 ## Why Seshi.io

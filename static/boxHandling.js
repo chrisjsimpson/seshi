@@ -168,8 +168,11 @@ function requestFileFromConnectedPeer() {
 /*********************************************************************/
 
 //Event listner for file downloading
-  var showFiles = document.getElementById('showFiles');
-  showFiles.addEventListener("click", showBoxFiles, false);
+  var showFiles = document.getElementsByClassName('showFiles');
+	for(var i=0;i<showFiles.length;i++)
+	{
+		showFiles[i].addEventListener("click", showBoxFiles, false);
+	}
 
   function showBoxFiles(event)
   {
@@ -224,12 +227,6 @@ function requestFileFromConnectedPeer() {
 			list += '<div class="col-xs-12 col-sm-4 col-md-3"><div class="thumbnail"><div class="caption">';
 
 			list += '<p>' + fileNames[i].fileName.substr(0,50) + '...</p>';
-			
-			list += '<p><button href="" class="label label-primary play" data-fileId="' + fileNames[i].fileId + '" ';
-					if(!isPlayable(fileNames[i].fileName)) {
-						list += ' title="Cannot play this filetype." disabled';
-					}
-			list += '>Play</button>  ';
 
 			list += '<button class="label label-info send" data-fileId="' + fileNames[i].fileId + '">Send</button>  ';
 
@@ -240,7 +237,6 @@ function requestFileFromConnectedPeer() {
 			if(isPlayable(fileNames[i].fileName)) {	
 				list += '<p><button class="label label-default">Play in-sync with a friend!</button></p>';
 			}
-			list += '<p> <a class="label label-success fileDownload" title="coming soon!" data-fileid="' + fileNames[i].fileId + '">Sell</a></p>'; 	
 
 			list += '</div>';
 		
@@ -288,6 +284,19 @@ function requestFileFromConnectedPeer() {
                 list += '</ul>';
                 console.log(list);
                 filesInBox.innerHTML = list;
+
+		//Add each file to playlist
+		playlistItems = '<h2 style="color:#e8e8e8">Playlist:</h2>'
+	                for(var i=0;i<fileNames.length;i++)
+			{
+				if(isPlayable(fileNames[i].fileName)) {
+					playlistItems += '<h4 class="playlistItem play" data-fileId="' + fileNames[i].fileId + '">' + fileNames[i].fileName + '</h4>';
+					//playlistItems += '<img src="http://i57.tinypic.com/xqeyaw.jpg" title="Seshi" />';
+				}
+			}
+		var playlist = document.getElementById('playlist');
+		playlist.innerHTML = playlistItems;
+		//End add each file to playlist
 
                 //Add event listeners to these files for downloading
                 var downloads = document.getElementsByClassName('fileDownload');
@@ -648,5 +657,29 @@ window.setTimeout( function() {
 
 document.getElementById('share').addEventListener('change', sendStoreMsg, false);
 document.getElementById('Generate').addEventListener('click', generateCode, false);
+
+
+/* Video */
+var video_player = document.getElementById("video_player"),
+links = video_player.getElementsByTagName('a');
+for (var i=0; i<links.length; i++) {
+	links[i].onclick = handler;
+}
+
+function handler(e) {
+	e.preventDefault();
+	videotarget = this.getAttribute("href");
+	filename = videotarget.substr(0, videotarget.lastIndexOf('.')) || videotarget;
+	video = document.querySelector("#video_player video");
+	video.removeAttribute("controls");
+	video.removeAttribute("poster");
+	source = document.querySelectorAll("#video_player video source");
+	source[0].src = filename + ".mp4";
+	source[1].src = filename + ".webm";
+	video.load();
+	video.play();    
+}
+
+/* End video */
 
 };

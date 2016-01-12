@@ -261,9 +261,12 @@ function onRemoteStreamRemoved(e) {}
 //data channel, save it, set up handlers, and send welcome
 // message
 function onDataChannelAdded(e) {
+    console.log("We are connected!");
+    sendMostRecentFile();
     dc = e.channel;
     setupDataHandlers();
 }
+
 
 //Set up the datachanner message handler
 function setupDataHandlers() {
@@ -402,6 +405,69 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
     }
 
 
+function zeroFill( number, width )
+{
+  width -= number.toString().length;
+  if ( width > 0 )
+  {
+    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+  }
+  return number + ""; // always return a string
+}//End zeroFill
+
+function sendChunksToPeer(e, fileId) {
+        //Get file id else defaults to most recent file added
+        if(typeof(e) == 'object')
+        {
+            var fileId = e.target.dataset.fileid;
+        }
+
+    db.transaction('r', db.chunks, function() {
+            db.chunks.where("fileId").equals(fileId).each(function(chunk) {
+                //Transaction scope
+                        //Sending file meta...
+                        var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+                        var lengthOfMeta = JSON.stringify(meta).length;
+                        lengthOfMeta = zeroFill(lengthOfMeta, 64);
+                        var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
+                        var header = JSON.stringify(metaLength) + JSON.stringify(meta);
+                        var sendChunk = new Blob([header, chunk.chunk]);
+                        url = window.URL.createObjectURL(sendChunk);
+                        //Needs to be sent as an arrayBuffer
+                        var reader = new FileReader();
+                                reader.onload = function(file) {
+                                if( reader.readyState == FileReader.DONE ) {
+                                        for(var i=0;i<=99999999;i++) {}//Crude delay!
+                                        dc.send(result = file.target.result);
+                                }//End FileReader.DONE
+
+                        }//End reader.onload
+                        reader.readAsArrayBuffer(sendChunk);
+
+                        //End sending file meta
+            })//End db.chunks toArray using Dexie (.then follows)
+
+        }).then(function() {
+            //Transaction completed
+        }).catch (function (err) {
+
+            console.error(err);
+
+    });//End get fildIdChunks from fileId
+
+} //End sendChunksToPeer
+
+
+
+function sendMostRecentFile() {
+	//Get most recently added file (stored in localstorage.getItem('lastItem'))
+	if(localStorage.getItem('lastItem'))
+	{
+	    fileId = localStorage.getItem('lastItem');
+	    sendChunksToPeer('send by fileId', fileId); //Send file direct to peer over DC
+	}//Only send last item if localStorage.getItem('lastItem') has a fileId
+}
+
 function sendFileToPeer(fileId) {
         //Presumes dc.send is already active
         console.log("Begin sending file: " + fileId + " to peer operations.");
@@ -420,7 +486,7 @@ function sendFileToPeer(fileId) {
 
         //Query for all chunks with given fileId.
         console.log("Querying and sending file to peer");
-         db.chunks.where('fileId').equals("0458f1bb-8d81-4917-8a92-48f518f2a76e").each(
+         db.chunks.where('fileId').equals(fileId).each(
                     function(boxChunks) {
 
                        
@@ -524,11 +590,15 @@ var sendStoreMsg = function(evt) {
                                 //console.log(found[i].chunk);
                                 allChunksArray[i] = found[i].chunk
                             }
-
+			    //Add this most recent file to 'lastItem' localstorage
+			    window.localStorage.setItem('lastItem', fileId)
                             alert("Good job! File stored sucessfully.");
                             var pic = new Blob(allChunksArray, {type:found[0].fileType});
                             url = window.URL.createObjectURL(pic);
                             console.log("Data: " + url);
+			    //Show box files 
+			    var showFiles = document.getElementById('showFiles');
+			    showFiles.click();
                             });
                     }).catch(function(error) {
                         //Transaction failed

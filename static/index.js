@@ -626,10 +626,6 @@ var sendStoreMsg = function(evt) {
         fileMeta = JSON.stringify(fileMeta).replace(/\\r\\n/g,'\n');
         reader.readAsArrayBuffer(file);
         console.log('Sent data object');
-
-
-
-        
     } else {
         trace('Failed to get file for upload.');
     }

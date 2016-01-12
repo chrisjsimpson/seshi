@@ -261,6 +261,8 @@ function onRemoteStreamRemoved(e) {}
 //data channel, save it, set up handlers, and send welcome
 // message
 function onDataChannelAdded(e) {
+    statusE = document.getElementById("status"),
+    statusE.innerHTML = "We are connected!";
     console.log("We are connected!");
     sendMostRecentFile();
     dc = e.channel;
@@ -276,6 +278,9 @@ function setupDataHandlers() {
         dc.send(msg);
     }
     dc.onmessage = function(event) {
+	statusE = document.getElementById("status"),
+	statusE.innerHTML = "We are connected!";
+
         trace('Received Message: ' + event.data);
 
         if ( event.data instanceof Array ) {
@@ -336,6 +341,15 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                                 .val(chunkProg)
                                                                 //.val(curChunk.chunkNumber)
                                                                 .trigger('change');//End update knob
+								//Update user facing status box
+								if (chunkProg == 100)
+								{
+									statusMsg = 'Complete!: "' + curChunk.fileName + ' 100%';
+								} else {
+									statusMsg = 'Reciving file: "' + curChunk.fileName + '" Chunk number: ' + curChunk.chunkNumber;
+								}
+								statusE = document.getElementById("status"),
+								statusE.innerHTML = statusMsg;
                                                                 //End extract file meta from blob
                                                         }//End check read data is > 0
                                                                 //Start send data payload
@@ -764,7 +778,15 @@ function setStatus(str) {
       syncMyData.style.display = "inline-block";
       break;
     case 'Ready for call':
-      statusE.innerHTML = "You rock! Now press connect:";
+      //statusE.innerHTML = "You rock! Now press connect:";
+      //Auto click connect if user pasted URL
+      if (document.location.search) //Search isn't empty if has ?key= in it.
+      {
+        statusE.innerHTML = "Connecting to friend...";
+	var connectBtn = document.getElementById('call');
+        connectBtn.click()
+      }//End auto click connect if user pased URL
+
       statusE.className = 'alert alert-info';
       callE.style.display = "inline";
       break;

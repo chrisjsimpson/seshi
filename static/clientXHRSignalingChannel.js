@@ -23,8 +23,8 @@ var id, status, doNothing = function(){},
 
 // Set up connection with signaling server
 function connect(failureCB) {
-  var failureCB = (typeof failureCB === 'function') ||
-                  function() {};
+  //var failureCB = (typeof failureCB === 'function') ||
+    //              function() {};
 
   // Handle connection response, which should be error or status
   //  of "connected" or "waiting"

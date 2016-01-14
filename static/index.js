@@ -5,10 +5,6 @@ function showDebugInfo() {
         }
 }//End showDebugInfo
 
-audiojs.events.ready(function() {
-        audiojs.createAll();
-      });
-
 var signalingChannel, key, id,
     weWaited = false,
     doNothing = function() {},

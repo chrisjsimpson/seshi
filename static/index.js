@@ -193,6 +193,7 @@ function onDataChannelAdded(e) {
     sendMostRecentFile();
     dc = e.channel;
     setupDataHandlers();
+    sendChat("Yolo! Seshi Init.");
 }
 
 
@@ -343,6 +344,23 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                 } 
                 };
     }
+
+function sendChat(msg) {
+	var cb = document.getElementById("chatbox"),
+	c = document.getElementById("chat");
+
+	//Display message locally, send it, and force chat window to 
+	// last line
+	msg = msg || c.value;
+	console.log("calling sendChat(" + msg + ")");
+	cb.value += "-> " + msg + "\n";
+	data.send({'chat':msg});
+	c.value = '';
+	cb.scrollTop = cb.scrollHeight;
+}
+
+
+
 
 
 function zeroFill( number, width )

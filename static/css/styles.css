@@ -18,6 +18,11 @@ body {
 	margin-right: 9px;
 }
 
+#chatbox {
+	min-height: 95px;
+	width: 50%;
+}
+
 /* Thumbnails of files taken from: http://bootsnipp.com/snippets/featured/thumbnail-hover-without-javascript */
 .thumbnail {
     position:relative;

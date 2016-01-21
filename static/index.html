@@ -75,6 +75,11 @@
 
 	<!-- End media player -->
 
+	<!-- chatbox -->
+	<textarea id="chatbox" placeholder="Chat window"></textarea><br />
+	<input type="text" name="chat" id="chat" placeholder="Message..." onkeyup="if (event.keyCode == 13) { sendChat(); return false;}" />
+	<!-- End chatbox -->
+
 	<!-- FilesInBox --><div id="filesInBox"></div><!-- End FilesInBox -->
     </div>
 

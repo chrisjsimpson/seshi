@@ -42,15 +42,16 @@
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-      <div class="container">
-        <h1>Seshi makes sending files easy & free!</h1>
-	<ol class="well well-lg">
+      <div class="container">	
+	<h1>Seshi</h1>
+        <p class="lead">Seshi is the quickest way to send and enjoy files between devices.</p>
+	<ol class="well well-lg hide">
 		<li>Choose a file to send. Seshi will store it in your browser.</li>
 		<li>Choose a secret key &amp; click 'connect'</li>
 		<li>Tell your friend the key, connect, and click the 'send' button'</li>
 		<li>That's it! No limits, no email required, the file is sent <em>direct</em> to your friend</em></li> 
 	</ol>
-        <p>Step one, upload a file: <input type="file" id="share" style="width:288px;"class="" name="Store Files" /></p>
+        <p>Store your file in Seshi: <input type="file" id="share" style="width:288px;"class="" name="Store Files" /></p>
 	<p>Type a key: <input type="text" name="key" id="key" placeholder="e.g. S1TR*ogN{Pas^Wr2" /> 
 	<button class="btn btn-sm btn-info" id="generateKey">Or generate a key</button><p/>
 	<p id="status"></p>
@@ -61,7 +62,6 @@
         <p><button id="connect" onclick="connect()" class="btn btn-primary btn-lg" role="button">Connect</button></p>
         <a href="#video_player" class="btn btn-primary btn-lg showFiles" href="#" role="button">View My Files</a>
 	
-	<input type="text" value="0" class="progressKnob" data-readOnly="true" style="width:0px" height="0px;" />
 	</p>
       </div>
 
@@ -76,7 +76,8 @@
 	<!-- End media player -->
 
 	<!-- chatbox -->
-	<textarea id="chatbox" placeholder="Chat window"></textarea><br />
+	<textarea id="chatbox" placeholder="Chat window"></textarea>
+	<input type="text" value="0" class="progressKnob" data-readOnly="true" style="width:0px" height="0px;" /><br />
 	<input type="text" name="chat" id="chat" placeholder="Message..." onkeyup="if (event.keyCode == 13) { sendChat(); return false;}" />
 	<!-- End chatbox -->
 

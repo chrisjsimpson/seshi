@@ -406,12 +406,20 @@ function sendChunksToPeer(e, fileId) {
 			var chunkProg = (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100;
 			uploadBar.style.width= chunkProg + "%";
 			uploadBar.attributes[3] = chunkProg;
+			//Set to zero on completion
+			if ( chunkProg >= 100 ) 
+			{
+				uploadBar.style.width="0%";
+				uploadBar.attributes[3] = 0;
+			}
 
                         //End sending file meta
             })//End db.chunks toArray using Dexie (.then follows)
 
         }).then(function() {
             //Transaction completed
+	    var uploadBar = document.getElementById('uploadProgress');
+	    uploadBar.innerHTML="<span style=\"color:black\">UploadComplete!</span>";
         }).catch (function (err) {
 
             console.error(err);

@@ -78,7 +78,14 @@
 	<!-- chatbox -->
 	<textarea id="chatbox" placeholder="Chat window"></textarea>
 	<input type="text" value="0" class="progressKnob" data-readOnly="true" style="width:0px" height="0px;" /><br />
-	<input type="text" name="chat" id="chat" placeholder="Message..." onkeyup="if (event.keyCode == 13) { sendChat(); return false;}" />
+	<input type="text" name="chat" id="chat" placeholder="Message..." onkeyup="if (event.keyCode == 13) { sendChat(); return false;}" /><br />
+		<!-- Upload progress bar -->
+		<div class="progress">
+			<div id="uploadProgress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+				Uploading
+			</div>
+		</div>
+		<!-- End Upload progress bar -->
 	<!-- End chatbox -->
 
 	<!-- FilesInBox --><div id="filesInBox"></div><!-- End FilesInBox -->

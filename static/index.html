@@ -57,7 +57,7 @@
 	<p id="status"></p>
 	    <button id="call" style="display:none" class="btn btn-primary btn-lg"
 		    onclick = "call()">Connect</button>
-	    <button id="hangup" onclick="dc.close()" style="display:none">Hang-up</button>
+	    <button id="hangup" onclick="dc.close()" style="display:none" class="btn btn-danger btn-sm">Disconnect</button>
 	<input type="text" id="Generate" style="display:none" />
         <p><button id="connect" onclick="connect()" class="btn btn-primary btn-lg" role="button">Connect</button></p>
         <a href="#video_player" class="btn btn-primary btn-lg showFiles" href="#" role="button">View My Files</a>
@@ -90,7 +90,7 @@
         <div class="col-md-4">
           <h2>What is Seshi?</h2>
           <div class="well">
-	  <p> Seshi started out of an idea to create a truly decentralised file sharing tool which would put people back in control of their own content. I was frustrated by parts of the internet being branded a metaphorical highways for piracy and unimpressed by services being capable of creating peer to peer file sharing tools, but chosing to collect email addresses, and perform analytics on users data for re-marketing campaigns thus loosing sight of the potential for pure peer to peer technologies.</p>
+	  <p> Seshi started out of an idea to create a truly decentralised file sharing tool which would put people back in control of their own content. I was frustrated by parts of the internet being branded metaphorical highways for piracy and unimpressed by services being capable of creating peer to peer file sharing tools, but chosing to collect email addresses, and perform analytics on users data for re-marketing campaigns (even in recruitment campaigns ) thus loosing sight of the potential for pure peer to peer technologies.</p>
 	  <p>Seshi is quite a geeky peice of tehnology, but it is nothing new. It's simply how its architected which makes it <em>different</em>. Seshi dosn't need Seshi.io in order to function, that is, the web server on which it runs is not required in order for people to connect to each other. You can, for example save the webpage locally and run it from there. Signalling is still needed of course (ie how do users find each other) and for this, finally a valid use case for QR codes is found. Seshi can generate QR codes containing your connection information which can be exchanged outside of the application (a so-called out of band communication). The codebase is split into two parts: Seshi Skin &amp; Seshi Signal, making it easier for developers to build their own interface whilst still plugging into Seshi's storage and p2p framework*.</p></div><!-- end well -->
 
 <p>*Seshi is not a framework, its codebase is a work-in-progress and an insult to good coding practises.</p>

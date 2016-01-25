@@ -206,13 +206,7 @@ return {
 function connectedStatus(){
 	if ( typeof dc=== 'undefined' || dc === null || dc.readyState !== 'open') {
 		console.log("No yet connected.");
-		//Remove glow from logo
-		var logo = document.getElementById('logo');
-		//logo.className = '';
 	} else if (dc.readyState === 'open') {
 		console.log("We are connected.");
-		//Add glow to logo
-		var logo = document.getElementById('logo');
-		//logo.className = 'glow';
 	}
 }

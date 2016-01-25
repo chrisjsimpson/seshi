@@ -276,14 +276,15 @@ function requestFileFromConnectedPeer() {
                 filesInBox.innerHTML = list;
 
 		//Add each file to playlist
-		playlistItems = '<h2 style="color:#e8e8e8">Playlist:</h2>'
+		playlistItems = '<h2>Playlist:</h2><ul>'
 	                for(var i=0;i<fileNames.length;i++)
 			{
 				if(isPlayable(fileNames[i].fileName)) {
-					playlistItems += '<h4 class="playlistItem play" data-fileId="' + fileNames[i].fileId + '">' + fileNames[i].fileName + '</h4>';
+					playlistItems += '<li class="playlistItem play" data-fileId="' + fileNames[i].fileId + '">' + fileNames[i].fileName + '</li>';
 					//playlistItems += '<img src="http://i57.tinypic.com/xqeyaw.jpg" title="Seshi" />';
 				}
 			}
+		playlistItems += '</ol>';
 		var playlist = document.getElementById('playlist');
 		playlist.innerHTML = playlistItems;
 		//End add each file to playlist

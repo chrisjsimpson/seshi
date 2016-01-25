@@ -10,18 +10,6 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-        </style>
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/main.css">
-
-        <script src="js/vendor/jquery-1.11.2.min.js"></script>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body>
@@ -30,46 +18,29 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="/">Seshi.io</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-        </div><!--/.navbar-collapse -->
-      </div>
-    </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">	
 	<h1>Seshi</h1>
-        <p class="lead">Seshi is the quickest way to send and enjoy files between devices.</p>
-	<ol class="well well-lg hide">
+        <p>Seshi is the quickest way to send and enjoy files between devices.</p>
+	<ol>
 		<li>Choose a file to send. Seshi will store it in your browser.</li>
 		<li>Choose a secret key &amp; click 'connect'</li>
 		<li>Tell your friend the key, connect, and click the 'send' button'</li>
 		<li>That's it! No limits, no email required, the file is sent <em>direct</em> to your friend</em></li> 
 	</ol>
-        <p>Store your file in Seshi: <input type="file" id="share" style="width:288px;"class="" name="Store Files" /></p>
+        <p>Store your file in Seshi: <input type="file" id="share" name="Store Files" /></p>
 	<p>Type a key: <input type="text" name="key" id="key" placeholder="e.g. S1TR*ogN{Pas^Wr2" /> 
-	<button class="btn btn-sm btn-info" id="generateKey">Or generate a key</button><p/>
+	<button id="generateKey">Or generate a key</button><p/>
 	<p id="status"></p>
-	    <button id="call" style="display:none" class="btn btn-primary btn-lg"
-		    onclick = "call()">Connect</button>
-	    <button id="hangup" onclick="dc.close()" style="display:none" class="btn btn-danger btn-sm">Disconnect</button>
+	    <button id="call" style="display:none" onclick = "call()">Connect</button>
+	    <button id="hangup" onclick="dc.close()" style="display:none">Disconnect</button>
 	<input type="text" id="Generate" style="display:none" />
-        <p><button id="connect" onclick="connect()" class="btn btn-primary btn-lg" role="button">Connect</button></p>
-        <a href="#video_player" class="btn btn-primary btn-lg showFiles" href="#" role="button">View My Files</a>
+        <p><button id="connect" onclick="connect()">Connect</button></p>
+        <a href="#video_player" class="showFiles" href="#" role="button">View My Files</a>
 	
-	</p>
-      </div>
-
 	<!-- Media player -->
 	   <figure id="video_player">
 	      <video id="video" controls></video>
 		<figcaption id="playlist">
-		<a class="play"><img src="http://i57.tinypic.com/xqeyaw.jpg" class="showFiles" alt="Seshi"></a>
 		</figcaption>
 	   </figure>
 
@@ -77,11 +48,11 @@
 
 	<!-- chatbox -->
 	<textarea id="chatbox" placeholder="Chat window"></textarea>
-	<input type="text" value="0" class="progressKnob" data-readOnly="true" style="width:0px" height="0px;" /><br />
+	<input type="text" value="0" data-readOnly="true" style="width:0px" height="0px;" /><br />
 	<input type="text" name="chat" id="chat" placeholder="Message..." onkeyup="if (event.keyCode == 13) { sendChat(); return false;}" /><br />
 		<!-- Upload progress bar -->
 		<div class="progress">
-			<div id="uploadProgress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+			<div id="uploadProgress">
 				Uploading
 			</div>
 		</div>
@@ -91,42 +62,23 @@
 	<!-- FilesInBox --><div id="filesInBox"></div><!-- End FilesInBox -->
     </div>
 
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
           <h2>What is Seshi?</h2>
-          <div class="well">
 	  <p> Seshi started out of an idea to create a truly decentralised file sharing tool which would put people back in control of their own content. I was frustrated by parts of the internet being branded metaphorical highways for piracy and unimpressed by services being capable of creating peer to peer file sharing tools, but chosing to collect email addresses, and perform analytics on users data for re-marketing campaigns (even in recruitment campaigns ) thus loosing sight of the potential for pure peer to peer technologies.</p>
-	  <p>Seshi is quite a geeky peice of tehnology, but it is nothing new. It's simply how its architected which makes it <em>different</em>. Seshi dosn't need Seshi.io in order to function, that is, the web server on which it runs is not required in order for people to connect to each other. You can, for example save the webpage locally and run it from there. Signalling is still needed of course (ie how do users find each other) and for this, finally a valid use case for QR codes is found. Seshi can generate QR codes containing your connection information which can be exchanged outside of the application (a so-called out of band communication). The codebase is split into two parts: Seshi Skin &amp; Seshi Signal, making it easier for developers to build their own interface whilst still plugging into Seshi's storage and p2p framework*.</p></div><!-- end well -->
+	  <p>Seshi is quite a geeky peice of tehnology, but it is nothing new. It's simply how its architected which makes it <em>different</em>. Seshi dosn't need Seshi.io in order to function, that is, the web server on which it runs is not required in order for people to connect to each other. You can, for example save the webpage locally and run it from there. Signalling is still needed of course (ie how do users find each other) and for this, finally a valid use case for QR codes is found. Seshi can generate QR codes containing your connection information which can be exchanged outside of the application (a so-called out of band communication). The codebase is split into two parts: Seshi Skin &amp; Seshi Signal, making it easier for developers to build their own interface whilst still plugging into Seshi's storage and p2p framework*.</p>
 
 <p>*Seshi is not a framework, its codebase is a work-in-progress and an insult to good coding practises.</p>
-        </div>
-        <div class="col-md-4">
-             <h2>Media player built-in</h2>
-          <div class="well">
+	<h2>Media player built-in</h2>
           <p>Any file you store in Seshi can be played back to you right within your browser (if your browser supports it). You can, listen to your music, videos, and browse pictures.</p>
 	  <p>A cool feature is the ability to watch a film in sync with a friend. Distance shouldn't stop two people from sharing a film! &lt;3 </p>
-         </div><!-- end well -->
-       </div>
-        <div class="col-md-4">
           <h2>Send to a friend</h2>
-	  <div class="well">
           <p>The whole point of Seshi is to make it easy &amp; fast to send files between friends removing as many barriers as possible (no email size limits, no account needed or speed restictions). Your only limit is your browser and speed of your device. Seshi works with Chrome and Firefox, there's a few quirks with Firefox at the moment when playing back sound / video.<p>
-	  </div> <!-- end well -->
-        </div>
-      </div>
 
-      <hr>
+      <hr />
 
       <footer>
         <p>&copy; Seshi 2015</p>
       </footer>
     </div> <!-- /container -->        
-	
-        <script src="js/vendor/bootstrap.min.js"></script>
-
-        <script src="js/main.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
@@ -138,28 +90,17 @@
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
         </script>
 
-<link rel="stylesheet" type="text/css" href="css/styles.css" />
-<div id="preview"></div>
-
 <!-- load Dexie.js for IndexedDB -->
 <script src="Dexie.js" type="text/javascript"></script>
 <script src="databaseSchema.js" type="text/javascript"></script>
 <!-- load polyfill, local copy first for local testing -->
 <script src="adapter.js" type="text/javascript"></script>
 
-<!-- load QRcode reader 
-<script type="text/javascript" src="qrlogoReader/common.js"></script>
-<script type="text/javascript" src="qrlogoReader/reedsolomon.js"></script>
-<script type="text/javascript" src="qrlogoReader/qrcodedecode.js"></script>
-<script type="text/javascript" src="qrlogoReader/qrdecode.js"></script>
--->
-
 <!-- load XHR-based signaling channel that direct connects based
      on a key -->
 <script src="clientXHRSignalingChannel.js"
         type="text/javascript"></script>
 <script src="qrcode.js"></script>
-<script src="jquery.knob.min.js"></script>
 <script src="index.js" type="text/javascript"></script>
 <script src="boxHandling.js"></script>
 

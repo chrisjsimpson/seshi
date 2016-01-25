@@ -218,10 +218,6 @@ function setupDataHandlers() {
         if(event.data instanceof ArrayBuffer || event.data.size){ //event.data.size is for Firefox(automatically transforms data to Blob type
             console.log('Recieved ArrayBuffer message');
             //Catch ArrayBuffer sent through the datachannel
-                //Enable progress knob
-                $(function() {
-                $(".progressKnob").knob();
-                });//End enable progress knob
             var blob = new Blob([event.data]);
 
 /* Change this to read the lengthOfMeta, which is always at the start of the blob and is 64 bytes long.
@@ -254,20 +250,8 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                                 message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
                                                                 message += " FileName: " + curChunk.fileName;
                                                                 chunkProgresTextBox.value = message;
-                                                                //Update knob
-                                                                $('.progressKnob').trigger(
-                                                                'configure',
-                                                                {
-                                                                    "max":100,
-                                                                    //"max":curChunk.numberOfChunks,
-                                                                    "cursor":false
-                                                                }
-                                                                );
-                                                                var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
-                                                                $('.progressKnob')
-                                                                .val(chunkProg)
-                                                                //.val(curChunk.chunkNumber)
-                                                                .trigger('change');//End update knob
+                                                                
+								var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
 								//Update user facing status box
 								if (chunkProg == 100)
 								{

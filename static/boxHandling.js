@@ -158,7 +158,7 @@ function requestFileFromConnectedPeer() {
     //Get list of files for given boxId.
     files = {
             fill:function(cb){
-                db.transaction("rw", db.chunks, function() {
+                db.transaction("r", db.chunks, function() {
                 var i = 0;
                 var sum = 0;
                 var count = 0;

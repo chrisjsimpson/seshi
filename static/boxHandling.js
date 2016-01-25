@@ -77,39 +77,6 @@ function sendAllDataToPeer() {
     });//End get fildIdChunks from fileId
 }//End SyncMyData sendAllDataToPeer
 
-//Event listener for QR code reader
-var readQrCodeBtn = document.getElementById('readQrCode');
-//readQrCodeBtn.addEventListener("change", readQrCode, false);
-
-function readQrCode(evt) {
-
-	var canvas = document.getElementById('qrlogo_canvas');
-	var ctx = canvas.getContext('2d');
-	var files = evt.target.files; // FileList object
-	var theFile = files[0];
-
-	var reader = new FileReader();
-
-	reader.onload = ( function(e) {
-		var img = new Image();
-		img.onload = function() {  
-			canvas.width = img.width;
-			canvas.height = img.height;
-			ctx.drawImage(img,0,0);
-		};
-		img.src = e.target.result; 
-		evt = null;
-		canvas_loader(evt, document.getElementById("qrlogo_canvas"), theFile , qrdecode_ondecode);
-	});
-
-	// Read in the image file as a data URL.
-	reader.readAsDataURL(theFile);
-	window.setTimeout(function() {
-		console.log("About to call clickCallBtn");
-		clickCallBtn();
-	}, 9000);
-	
-}//end readQrCode(e) 
 
 /*********************************************************************/
 
@@ -120,27 +87,7 @@ key.addEventListener("change", clickCallBtn, false);
 function clickCallBtn() {
 	console.log("Clicking call button");
 	document.getElementById('call').click();
-
-	//Request file download from peer.
-	window.setTimeout(function() {
-		console.log("Calling requestFileFromConnectedPeer()");
-		requestFileFromConnectedPeer();
-		}, 8000);
-	
 }//End clickCallBtn();
-
-function requestFileFromConnectedPeer() {
-	console.log("Called requestFileFromConnectedPeer.");
-	var seshpack = JSON.parse(document.getElementById('qrlogo_text').value);
-	
-	var fileId = seshpack.fileId; //Get fileID requested
-	var chunksNeeded = seshpack.numberOfChunks; //Get number of chunks to file.
-	
-	//Send request for file to already connected peer
-	var msg = {"requestFileId":fileId};
-	msg = JSON.stringify(msg);
-}//requestFileFromConnectedPeer()
-
 
 /*********************************************************************/
 
@@ -262,8 +209,6 @@ function requestFileFromConnectedPeer() {
 			});
 		}//End delete file
 
-
-
 		var shares = document.getElementsByClassName('shareFile');
 		function shareFile(e) {
 			//Get file id:
@@ -280,14 +225,6 @@ function requestFileFromConnectedPeer() {
 				console.log("Ready..");
 				var sessionId = document.getElementById('key').value;
 				var partnerInfo = {"sessionId": sessionId, "fileId": fileId,"numberOfChunks": numChunks};
-				//Make QR code 
-				var qrcode = new QRCode("qrcode");
-
-				function makeCode () {      
-				    qrcode.makeCode(JSON.stringify(partnerInfo));
-				}
-
-				makeCode();
 				//Auto connect
 				window.setTimeout(function() {
 						document.getElementById('connect').click();
@@ -491,29 +428,7 @@ function trythis(updates) {
     //console.log(updates[0].object.length);
 }
 
-function generateCode() {
-
-//Remove any existing code from display:
-if( document.getElementById('QrImg') ) {
-	document.getElementById('QrImg').remove() ;
-}
-var sessionId = document.getElementById('key').value;
-var partnerInfo = {"sessionId": sessionId};
-//Make QR code 
-var qrcode = new QRCode("qrcode");
-
-function makeCode () { 
-    qrcode.makeCode(JSON.stringify(partnerInfo));
-}
-makeCode();
-//Auto connect
-window.setTimeout( function() {
-		document.getElementById('connect').click();
-	       }, 8000);
-}//End generateCode 
-
 document.getElementById('share').addEventListener('change', sendStoreMsg, false);
-document.getElementById('Generate').addEventListener('click', generateCode, false);
 
 
 /* Video */

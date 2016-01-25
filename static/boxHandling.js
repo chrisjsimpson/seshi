@@ -560,31 +560,6 @@ function trythis(updates) {
     //console.log(updates[0].object.length);
 }
 
-//Event listner for adding Signaling server address
-var addSignalingServerBtn = document.getElementById('addSignalingServer');
-addSignalingServerBtn.addEventListener('click', addSignalingServer, false);
-
-function addSignalingServer(e) {
-
-	//Get signal server address
-	var signalingServerAddress = document.getElementById('signalingServerAddress');
-
-	signalServerDb.signalServers.add({address: signalingServerAddress.value,
-					 lastSuccessfulConnectTimestamp: null,
-					 lastConnectAttempTimestamp: null,
-					 numFailedConnectAttempts: null}).
-		then(function(){
-			alert('Inserted: ' + signalingServerAddress.value);
-		}).catch(function(error) {
-			console.error(error);
-		});//End insert new singalingServerAddress
-
-} //End addSignalingServer
-
-//End Event listner for adding Signaling server address
-
-
-
 function generateCode() {
 
 //Remove any existing code from display:

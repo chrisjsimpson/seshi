@@ -10,13 +10,13 @@ window.onload = function () {
 				lastConnectAttempTimestamp: null,
 				numFailedConnectAttempts: null}).
 		then(function(){
-			alert('Inserted: ' + signalingServerAddress.value);
+			console.log('Inserted default signaling server because there was none: ' + signalingServerAddress.value);
 		}).catch(function(error) {
 			console.error(error);
 		});//End insert new singalingServerAddress
 				
 			}//Add a default signal server
-		console.log("There are " + count + " objects");
+		console.log("There are " + count + " signaling server(s)");
 		})
 
 	//End check if zero signaling servers, if none, add a default.

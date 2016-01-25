@@ -71,7 +71,6 @@ function sendAllDataToPeer() {
         }).then(function() {
             //Transaction completed
 		console.log("All chunks (all files) sent to connected peer!");
-		alert("All chunks (all files) sent to peer");
         }).catch (function (err) {
             console.error(err);
     });//End get fildIdChunks from fileId
@@ -252,7 +251,7 @@ function clickCallBtn() {
     }//End files object
 
 
-files.fill(trythis);
+files.fill();
 
   }//End showBoxFiles()
 
@@ -423,10 +422,6 @@ function isImage(fileName) {
 	return false;
 }//End isImage(fileName)
 
-
-function trythis(updates) {
-    //console.log(updates[0].object.length);
-}
 
 document.getElementById('share').addEventListener('change', sendStoreMsg, false);
 

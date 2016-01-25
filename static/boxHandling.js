@@ -183,24 +183,18 @@ function requestFileFromConnectedPeer() {
                         files.readyState = 'DONE';
            }).then(function() {
 
-                         files.chunks.forEach(function(elm) {
-                                        //console.log(elm);
-                                    });
                 var fileNames = [];
                 fileNames = files.chunks;
                 console.log("There are currently " + fileNames.length + " files in boxId: " + window.boxId);
-
-                for(var i=0; i< fileNames.length;i++) {
-                    console.log(fileNames[i].fileId);
-                }
-
-                //Update files list box
+                
+		//Update files list box
                 var filesInBox = document.getElementById('filesInBox');
                 
 		var list = '<div class="container"><div class="row">';
                 
                 for(var i=0;i<fileNames.length;i++)
                 {
+                    	console.log(fileNames[i].fileId);
 			list += '<div class="col-xs-12 col-sm-4 col-md-3"><div class="thumbnail"><div class="caption">';
 
 			list += '<p>' + fileNames[i].fileName.substr(0,50) + '...</p>';
@@ -220,42 +214,6 @@ function requestFileFromConnectedPeer() {
 			list += '<img src="http://i57.tinypic.com/xqeyaw.jpg" alt="...">';
 
 			list += '</div></div>'
-		/*
-                        list += '<li title="Download" class="list-group-item"><a class="fileDownload" href="';
-                        list += 'index.html?download=';
-                        list += fileNames[i].fileId;
-                        list += '" data-fileId="';
-                        list += fileNames[i].fileId;
-                        list += '" onclick="scroll(0,0)">';
-                        list += fileNames[i].fileName;
-                        list += '</a> ';
-			/* Download button 
-			list += '<button class="btn pull-right fileDownload" data-fileId="';
-			list += fileNames[i].fileId;
-			list += '">Download</button>';
-			/* Play button 
-			list += '<button class="btn btn-success pull-right play" data-fileId="';
-			list += fileNames[i].fileId + '"';
-				/* Disable play button on non media 
-				if(!isPlayable(fileNames[i].fileName)) {
-					list += " disabled";
-				}
-			list += '>Play</button>';
-			/* Send button 
-			list += '<button class="btn btn-primary pull-right send" data-fileId="';
-			list += fileNames[i].fileId;
-			list += '">Send</button>';
-			/* Delete button 
-			list += '<button class="btn btn-danger btn-sm pull-right deleteFile" data-fileId="';
-			list += fileNames[i].fileId;
-			list += '">Delete File</button>  ';
-			//list += '<button class="shareFile" data-fileId="';
-			//list += fileNames[i].fileId;
-			//list += '">Generate QR Code</button>';
-			//list += '<button class="downloadFileMobile" data-fileId="';
-			//list += fileNames[i].fileId + '">';
-			//list += 'Download file Mobile</button>';
-			*/
                 }
 
                 list += '</ul>';

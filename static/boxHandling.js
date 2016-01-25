@@ -159,28 +159,16 @@ function requestFileFromConnectedPeer() {
     files = {
             fill:function(cb){
                 db.transaction("r", db.chunks, function() {
-                var i = 0;
-                var sum = 0;
-                var count = 0;
                 var id = '';
                 db.chunks.where('boxId').equals(window.boxId).each(
                     function(boxChunks) {
-                        //console.log(boxChunks.fileId);
-                       
                         if(id != boxChunks.fileId)
                         {
                             files.chunks[i] = {fileId:boxChunks.fileId, fileName: boxChunks.fileName};            
                             i++;
                         }
                         id = boxChunks.fileId;
-                        //console.log("Comparing: '" + files.chunks[sum].fileId + "' with: '" + boxChunks.fileId);
-                                //Check Array.observe exists
-                                if(typeof Array.observe != "undefined")
-                                {
-                                 Array.observe(files.chunks, trythis);
-                                }
                         })//End get fileList 
-                        files.readyState = 'DONE';
            }).then(function() {
 
                 var fileNames = [];
@@ -217,7 +205,6 @@ function requestFileFromConnectedPeer() {
                 }
 
                 list += '</ul>';
-                console.log(list);
                 filesInBox.innerHTML = list;
 
 		//Add each file to playlist
@@ -226,7 +213,6 @@ function requestFileFromConnectedPeer() {
 			{
 				if(isPlayable(fileNames[i].fileName)) {
 					playlistItems += '<li class="playlistItem play" data-fileId="' + fileNames[i].fileId + '">' + fileNames[i].fileName + '</li>';
-					//playlistItems += '<img src="http://i57.tinypic.com/xqeyaw.jpg" title="Seshi" />';
 				}
 			}
 		playlistItems += '</ol>';

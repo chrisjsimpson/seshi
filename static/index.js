@@ -740,62 +740,6 @@ function log(msg) {
   console.log(msg);
 }
 
-function setSource() {
-  log('set source');
-  var video = document.querySelector('video');
-
-db.transaction("rw", db.chunks, function() {
-            db.chunks.where("fileId").equals("fc6b3e65-4c8c-4c48-baa8-113f7d044da1").toArray(function(chunks) {
-                console.log("Found " + chunks.length + " chunks");
-                var allChunksArray = [];
-                //Just get blob cunks
-                for(var i=0;i<chunks.length; i++){
-                    //console.log(found[i].chunk);
-                    allChunksArray[i] = chunks[i].chunk
-                }//End put all chunks into all chunks array
-
-                window.file = new Blob(allChunksArray, {type:chunks[0].fileType});
-                
-                window.url = window.URL.createObjectURL(window.file);
-                console.log("Data: " + url);
-            })//End db.chunks toArray using Dexie (.then follows)
-}).then(function() {
-
- // video.src = '/download/anita-leker-med-kameran/anita-leker-med-kameran.' +
-   //           (video.canPlayType('video/mp4') ? 'mp4' : 'ogv');
-  video.src = window.url;
-              //(video.canPlayType('video/mp4') ? 'mp4' : 'ogv');
-})
-}
-
-function mediaPlaybackRequiresUserGesture() {
-  // test if play() is ignored when not called from an input event handler
-  var video = document.createElement('video');
-  video.play();
-  return video.paused;
-}
-
-function removeBehaviorsRestrictions() {
-  var video = document.querySelector('video');
-  log('call load()');
-  video.load();
-  window.removeEventListener('keydown', removeBehaviorsRestrictions);
-  window.removeEventListener('mousedown', removeBehaviorsRestrictions);
-  window.removeEventListener('touchstart', removeBehaviorsRestrictions);
-  log('wait 1 second');
-  setTimeout(setSource, 1000);
-}
-
-if (mediaPlaybackRequiresUserGesture()) {
-  log('wait for input event');
-  window.addEventListener('keydown', removeBehaviorsRestrictions);
-  window.addEventListener('mousedown', removeBehaviorsRestrictions);
-  window.addEventListener('touchstart', removeBehaviorsRestrictions);
-} else {
-  log('no user gesture required');
-  setSource();
-}
-
 function getShareLink() {
 	var key = document.getElementById('key').value;
 	return document.location.origin + '/?key=' + key;

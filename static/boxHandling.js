@@ -29,19 +29,6 @@ window.onload = function () {
 			document.getElementById('key').value = generateKey();
 		}
 
-		//Add event listener to delete all signalingServers
-		var deleteSigServersBtn = document.getElementById('deleteSignalingServers');
-		deleteSigServersBtn.addEventListener('click', deleteSignalingServers, false);
-
-		function deleteSignalingServers() {
-			console.log("here");
-			signalServerDb.delete()
-			.then(function() {
-				alert('Signaling servers deleted');
-				location.reload();
-				console.log(deleteCount + " signaling servers deleted.");
-				});
-		}
 //Event listner to set Boxid
   window.boxId = 'myBoxID'; //Default box id
   var elm = document.getElementById("setBoxId");

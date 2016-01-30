@@ -128,7 +128,6 @@ function clickCallBtn() {
                 
                 for(var i=0;i<fileNames.length;i++)
                 {
-                    	console.log(fileNames[i].fileId);
 			list += '<div class="col-xs-12 col-sm-4 col-md-3"><div class="thumbnail"><div class="caption">';
 
 			list += '<p>' + fileNames[i].fileName.substr(0,50) + '...</p>';

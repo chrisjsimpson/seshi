@@ -16,7 +16,7 @@ window.onload = function () {
 		});//End insert new singalingServerAddress
 				
 			}//Add a default signal server
-		console.log("There are " + count + " signaling server(s)");
+		console.log("There are/is " + count + " signaling server(s)");
 		})
 
 	//End check if zero signaling servers, if none, add a default.
@@ -117,7 +117,6 @@ function clickCallBtn() {
                         })//End get fileList 
            }).then(function() {
 
-                var fileNames = [];
                 fileNames = files.chunks;
                 console.log("There are currently " + fileNames.length + " files in boxId: " + window.boxId);
                 

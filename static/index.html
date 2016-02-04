@@ -102,6 +102,43 @@
 <script src="index.js" type="text/javascript"></script>
 <script src="boxHandling.js"></script>
 
+<script type="text/javascript">
+/* Get fileList worker */
+//Start worker on call to Seshi.getLocalFilesList()
+Seshi = {
+    init:(function(){console.log("🚀  Welcome to Seshi! 🚀\n🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉\nLet's rock the boat...\n\n\nType Seshi.help() for help.. \n\n\n")})(),
+    help:function(){console.log("#\n" +
+                        '# Usage:\n' + 
+                        '#  Seshi.help() -- This menu\n' +
+                        '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
+                        '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects'
+            )},
+    updateLocalFilesList: function() {
+                        /* 
+                        #   UpdateLocalFilesList 
+                        #   - Refreshes Seshi's list of local files cache -
+                        #   
+                        #   Calls a worker, defined in js/getLocalFilesList.js
+                        #   The worker queries IndexedDB for the latest list of files.
+                        #   This takes time (hence the cache)
+                        #   When done, the worker posts a message back to Seshi
+                        #   containing the most up-to-date list of files as an array 
+                        #   of objects. Seshi updates it's 'cache' of the latest file 
+                        #   list by Appending the list to Seshi.getLocalFileList. 
+                        */
+                        var LocalFilesListWorker= new Worker('js/getLocalFilesList.js');
+                        LocalFilesListWorker.postMessage({'cmd':'listFilesMeHearty'});
+                        //Act of response from worker (the list of files)
+                        LocalFilesListWorker.onmessage = function(event) {
+                        console.log("Updating list of local files. Type: Seshi.localFileList for updated list");
+                        Seshi.localFileList = event.data.fileList;;
+                        }
+                       },
+    localFileList:[],
+}//End Seshi :'(
+
+</script>
+
 </div>
 <div id="scMessage" style="float:right;display:none">
 
@@ -140,4 +177,5 @@
 
 <button onclick="showDebugInfo()">Show debug info</button>
 <p>A project of <a href="http://karmacomputing.co.uk">Karma Computing</a>.</p>
+<script src="js/getLocalFilesList.js"></script>
 </html>

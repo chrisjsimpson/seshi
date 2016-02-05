@@ -159,7 +159,7 @@ function createPC() {
   window.pc.onaddstream = onRemoteStreamAdded;
   window.pc.onremovestream = onRemoteStreamRemoved;
   window.pc.ondatachannel = onDataChannelAdded;
-
+  window.pc.oniceconnectionstatechange = onIceconnectionStateChanged;
   // wait for local media to be ready
   attachMediaIfReady();
 }
@@ -180,6 +180,11 @@ function onRemoteStreamAdded(e) {
   setStatus("On call");
 }
 
+// When browser alerts of change to Ice connection state
+function onIceconnectionStateChanged(e) {
+    console.log("Ice Connection State Change to: " + pc.iceConnectionState);
+}//End onIceconnectionStateChanged
+
 // Yes, we do nothing if the remote side removes the stream.
 function onRemoteStreamRemoved(e) {}
 
@@ -189,14 +194,16 @@ function onRemoteStreamRemoved(e) {}
 function onDataChannelAdded(e) {
     statusE = document.getElementById("status"),
     statusE.innerHTML = "We are connected!";
+    dc = e.channel;
     console.log("We are connected!");
     sendMostRecentFile();
-    dc = e.channel;
     setupDataHandlers();
     sendChat("Yolo! Seshi Init.");
-    //Request file listing from remote peer
-    msg = JSON.stringify({"cmd":"getRemoteFileList"});
-    dc.send(msg);
+    
+    e.channel.onopen = function(){
+        //Request file listing from remote peer
+        Seshi.sendLocalFileListToRemote();
+    }//Once datachannel is open, send over local file listing
 }
 
 
@@ -311,8 +318,11 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
         if(msg.cmd) {
             console.log("Interpreting command from remote peer..");
             switch (msg.cmd) {
-                case 'getRemoteFileList': //Request from peer to see filelist
+                case 'sendLocalFileListToRemote': //Request from peer to see filelist
                     Seshi.sendLocalFileListToRemote(); //Local peer sends its local file lsit to remote 
+                    break;
+                case 'recvRemoteFileList': //Receiving list of files from remote peer
+                    Seshi.recvRemoteFileList(msg);
                     break;
             }//Switch on comman requested by remote peer
         }//End check for command & control message from remote peer
@@ -334,7 +344,6 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
             // and force chat window to last line 
             console.log("received chat of '" + msg.chat + "'");
             cb.value += msg.chat + "\n"; 
-            rtt.value = "";
             cb.scrollTop = cb.scrollHeight; msg = msg.chat;
             } else if (msg.storeData) {
                 console.log("Received data store message.");
@@ -568,6 +577,7 @@ var sendStoreMsg = function(evt) {
                             var pic = new Blob(allChunksArray, {type:found[0].fileType});
                             url = window.URL.createObjectURL(pic);
                             console.log("Data: " + url);
+                            Seshi.updateLocalFilesList();//Update localFileList in localstorage
 			    //Show box files 
 			    var showFiles = document.getElementById('showFiles');
 			    showFiles.click();

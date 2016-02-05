@@ -194,6 +194,9 @@ function onDataChannelAdded(e) {
     dc = e.channel;
     setupDataHandlers();
     sendChat("Yolo! Seshi Init.");
+    //Request file listing from remote peer
+    msg = JSON.stringify({"cmd":"getRemoteFileList"});
+    dc.send(msg);
 }
 
 
@@ -301,7 +304,21 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
         }//End don't parse data message recived if already an object!
         cb = document.getElementById("chatbox");
         rtt = document.getElementById("rtt");
-    if(msg.rtt) {
+    
+
+        //Command & control
+        //Check for remote calls (ie file listing requests) risky!
+        if(msg.cmd) {
+            console.log("Interpreting command from remote peer..");
+            switch (msg.cmd) {
+                case 'getRemoteFileList': //Request from peer to see filelist
+                    Seshi.sendLocalFileListToRemote(); //Local peer sends its local file lsit to remote 
+                    break;
+            }//Switch on comman requested by remote peer
+        }//End check for command & control message from remote peer
+
+        //Realtime chat
+        if(msg.rtt) {
         // if real-time-text (per keypress) message, display in 
         // real-time window 
         console.log("received rtt of '" + msg.rtt + "'"); 

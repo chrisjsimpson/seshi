@@ -196,7 +196,7 @@ function onDataChannelAdded(e) {
     statusE.innerHTML = "We are connected!";
     dc = e.channel;
     console.log("We are connected!");
-    sendMostRecentFile();
+    //sendMostRecentFile();
     setupDataHandlers();
     sendChat("Yolo! Seshi Init.");
     

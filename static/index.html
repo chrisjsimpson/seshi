@@ -106,13 +106,23 @@
 /* Get fileList worker */
 //Start worker on call to Seshi.getLocalFilesList()
 Seshi = {
-    init:(function(){console.log("🚀  Welcome to Seshi! 🚀\n🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉\nLet's rock the boat...\n\n\nType Seshi.help() for help.. \n\n\n")})(),
+    init:(function(){console.log("🚀  Welcome to Seshi! 🚀\n\nLet's rock the boat...\n\n\nType Seshi.help() for help.. \n\n\n")})(),
     help:function(){console.log("#\n" +
                         '# Usage:\n' + 
                         '#  Seshi.help() -- This menu\n' +
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
-                        '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects'
-            )},
+                        '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects\n' +
+                        '#\n\n\n' +
+                        '#  ## The rest if Seshi is still being wrapped into the `Seshi.<call>` api ##\n' +
+                        '#  ## for better code quality and to help make building user interfaces a much cleaner experience. ##\n' + 
+                        '#      These will probably be named:\n' + 
+                        '#          > Seshi.call() -- For contacting signaling server(s)\n' + 
+                        '#          > Seshi.connect() -- Establish connection between peers\n' +
+                        '#          > Seshi.getRemoteFileList() -- Fetch list from peer of their local files.\n' + 
+                        '#          > Seshi.storeFile(fileObj)\n' +
+                        '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n' + 
+                        '#          > Seshi.status() -- Returns connection status. Either "connected" to peer or "disconnected".'
+            ); return "🚀 🚀  Keep calm & Seshi on! 🚀 🚀"},
     updateLocalFilesList: function() {
                         /* 
                         #   UpdateLocalFilesList 
@@ -126,7 +136,7 @@ Seshi = {
                         #   of objects. Seshi updates it's 'cache' of the latest file 
                         #   list by Appending the list to Seshi.getLocalFileList. 
                         */
-                        var LocalFilesListWorker= new Worker('js/getLocalFilesList.js');
+                        var LocalFilesListWorker= new Worker('js/workers/getLocalFilesList.js');
                         LocalFilesListWorker.postMessage({'cmd':'listFilesMeHearty'});
                         //Act of response from worker (the list of files)
                         LocalFilesListWorker.onmessage = function(event) {
@@ -135,6 +145,9 @@ Seshi = {
                         }
                        },
     localFileList:[],
+    remoteFileList:[],
+    getRemoteFileList:function() {
+    }
 }//End Seshi :'(
 
 </script>
@@ -177,5 +190,4 @@ Seshi = {
 
 <button onclick="showDebugInfo()">Show debug info</button>
 <p>A project of <a href="http://karmacomputing.co.uk">Karma Computing</a>.</p>
-<script src="js/getLocalFilesList.js"></script>
 </html>

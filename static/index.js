@@ -411,8 +411,6 @@ function sendChunksToPeer(e, fileId) {
 
                         }//End reader.onload
                         reader.readAsArrayBuffer(sendChunk);
-			//Update upload progress box
-			var uploadBar = document.getElementById('uploadProgress');
 			var chunkProg = (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100;
 			uploadBar.style.width= chunkProg + "%";
 			uploadBar.attributes[3] = chunkProg;

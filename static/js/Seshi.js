@@ -10,18 +10,23 @@ Seshi = {
                         '#  Seshi.help() -- This menu\n' +
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
                         '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects\n' +
+                        '#  Seshi.sendLocalFileListToRemote -- Sends local file list to remote peer\n' +
                         '#  Seshi.remoteFileList  -- Returns list of connected peers files (when connected)\n' +
+                        '#  Seshi.sendFileToPeer(fileId) -- Send a file to peer over DataChannel. Must specify local FileId\n'+
                         '#\n\n\n' +
                         '#  ## The rest if Seshi is still being wrapped into the `Seshi.<call>` api ##\n' +
                         '#  ## for better code quality and to help make building user interfaces a much cleaner experience. ##\n' + 
                         '#      These will probably be named:\n' + 
                         '#          > Seshi.call() -- For contacting signaling server(s)\n' + 
                         '#          > Seshi.connect() -- Establish connection between peers\n' +
-                        '#          > Seshi.getRemoteFileList() -- Fetch list from peer of their local files.\n' + 
                         '#          > Seshi.storeFile(fileObj)\n' +
                         '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n' + 
                         '#          > Seshi.status() -- Returns connection status. Either "connected" to peer or "disconnected".'
             ); return "🚀 🚀  Keep calm & Seshi on! 🚀 🚀"},
+    state:{
+                        iceConnectionState:function(){if (typeof pc == "undefined") { return undefined } else {return pc.iceConnectionState}},
+                        dataChannelState:function(){if (typeof dc == "undefined") { return undefined } else { return dc.readyState }}
+    },
     updateLocalFilesList: function() {
                         /* 
                         #   UpdateLocalFilesList() 
@@ -68,7 +73,46 @@ Seshi = {
         msg = {"cmd":"recvRemoteFileList", "data":localFileList, "reply":bool};
         msg = JSON.stringify(msg);
         dc.send(msg);
-    }
+    },
+    sendFileToPeer:function(fileId) {
+                        /* Sends given file (fieId) over Datachannel to connected peer */
+                        //Check Datachannel connection status
+                        if (typeof dc == "undefined" || dc.readyState != "open") {
+                            console.error("Seshi.sendFileToPeer(fileId) Tried to send file to peer but Datachannel is not open");
+                            return false;
+                        }//End check Datachannel is actually open
+
+                        db.transaction('r', db.chunks, function() {
+                            db.chunks.where("fileId").equals(fileId).each(function(chunk) {
+                            //Transaction scope
+                            //Sending file meta...
+                            var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+                            var lengthOfMeta = JSON.stringify(meta).length;
+                            lengthOfMeta = zeroFill(lengthOfMeta, 64);
+                            var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
+                            var header = JSON.stringify(metaLength) + JSON.stringify(meta);
+                            var sendChunk = new Blob([header, chunk.chunk]);
+                            //Needs to be sent as an arrayBuffer
+                            var reader = new FileReader();
+                            reader.onload = function(file) {
+                                if( reader.readyState == FileReader.DONE ) {
+                                        for(var i=0;i<=99999999;i++) {}//Crude delay!
+                                        dc.send(result = file.target.result);
+                                }//End FileReader.DONE
+                            }//End reader.onload
+                            reader.readAsArrayBuffer(sendChunk);
+                            //Update sendingFileProgress
+                            Seshi.sendingFileProgress.percentComplete= (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100;
+                            Seshi.sendingFileProgress.fileName = chunk.fileName;
+                            Seshi.sendingFileProgress.fileId = chunk.fileId;
+                            Seshi.sendingFileProgress.fileType = chunk.fileType;
+                            Seshi.sendingFileProgress.chunkNumber = chunk.chunkNumber;
+                            Seshi.sendingFileProgress.numberOfChunks = chunk.numberOfChunks;
+                            }).then(function(){
+                            Seshi.sendingFileProgress.allFileDataSent = true;
+                            })});
+    },
+    sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''}
 }//End Seshi :'(
 
 //Initalize local files list cache if empty

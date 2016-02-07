@@ -514,7 +514,7 @@ var sendStoreMsg = function(evt) {
                     var end = maxChunkSize;
                     //Create blob from ArrayBuffer
                     var blob = new Blob([reader.result], {type: window.fileType});
-                    reader.address = window.URL.createObjectURL(blob);
+                    reader.address = window.URL.createObjectURL(blob); //Rather than doing this, create new blob for each chunk as needed!
 
  
                         for(var i=0; i<= numChunksNeeded; i++)

@@ -104,6 +104,21 @@
 
 <script src="js/Seshi.js"></script>
 
+<script type="text/javascript">
+    //Impliment Seshi store file as web worker using Dexie
+    function callWorker(files) {
+        var worker = new Worker("js/workers/storeFileDexieWorker.js");
+        var msg = {
+                    "dataSource":"fileSystem",
+                    "data":files
+                  }
+        worker.postMessage(msg);
+    }
+</script>
+
+    <input type="file" multiple onchange="callWorker(this.files)" />
+<!-- End Seshi store using worker! -->
+
 </div>
 <div id="scMessage" style="float:right;display:none">
 

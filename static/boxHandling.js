@@ -106,18 +106,19 @@ function clickCallBtn() {
             fill:function(cb){
                 db.transaction("r", db.chunks, function() {
                 var id = '';
+                var i = 0;
                 db.chunks.where('boxId').equals(window.boxId).each(
                     function(boxChunks) {
                         if(id != boxChunks.fileId)
                         {
-                            files.chunks[i] = {fileId:boxChunks.fileId, fileName: boxChunks.fileName};            
+                            files.list[i] = {fileId:boxChunks.fileId, fileName: boxChunks.fileName};            
                             i++;
                         }
                         id = boxChunks.fileId;
                         })//End get fileList 
            }).then(function() {
 
-                fileNames = files.chunks;
+                fileNames = files.list;
                 console.log("There are currently " + fileNames.length + " files in boxId: " + window.boxId);
                 
 		//Update files list box
@@ -244,7 +245,7 @@ function clickCallBtn() {
                     console.log(err);
                 });
             },
-            chunks:[],
+            list:[],
             readyState:''
     }//End files object
 

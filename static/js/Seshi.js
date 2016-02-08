@@ -8,6 +8,7 @@ Seshi = {
     help:function(){console.log("#\n" +
                         '# Usage:\n' + 
                         '#  Seshi.help() -- This menu\n' +
+                        '#  Seshi.store({\'dataSource\':\'fileSystem || seshiChunk\',\'data\':this.files}) -- Store data into Seshi\'s Database\n' +
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
                         '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects\n' +
                         '#  Seshi.sendLocalFileListToRemote -- Sends local file list to remote peer\n' +
@@ -19,7 +20,6 @@ Seshi = {
                         '#      These will probably be named:\n' + 
                         '#          > Seshi.call() -- For contacting signaling server(s)\n' + 
                         '#          > Seshi.connect() -- Establish connection between peers\n' +
-                        '#          > Seshi.storeFile(fileObj)\n' +
                         '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n' + 
                         '#          > Seshi.status() -- Returns connection status. Either "connected" to peer or "disconnected".'
             ); return "🚀 🚀  Keep calm & Seshi on! 🚀 🚀"},
@@ -64,6 +64,28 @@ Seshi = {
             console.log("Replying back to peer with own local file listing...");
             Seshi.sendLocalFileListToRemote(reply=true);//Send own localFilesList back to remote peer that sent theirs
         }//End send back own local files list if havn't already sent it
+    },
+    store:function(dataSourceMsg) {
+                        /* Store() data into Seshi's Indexed DB
+                         #  
+                         # 'dataSourceMsg' should be given in the following format:
+                         #
+                         #  {
+                         #      "dataSource":"fileSystem || seshiChunk",
+                         #      "data":"File object || Seshi ArrayBuffer packet
+                         #  }
+                         #
+                         #  If dataSource is 'fileSystem' then 'data' should be a File 
+                         #  list object (https://developer.mozilla.org/en/docs/Web/API/FileList)
+                         #  each file in the file list object will then be chunked & stored 
+                         #  into Seshi's IndexedDB using the web worker storeFileDexieWorker.js
+                         #
+                         #  If dataSource is 'seshiChunk', it should be a Seshi chunk of type 
+                         #  arrayBuffer. Each chunk will be stored directly into Seshi's 
+                         #  IndexedDB using the web worker storeFileDexieWorker.js
+                        */
+                        var worker = new Worker("js/workers/storeFileDexieWorker.js");
+                        worker.postMessage(dataSourceMsg);
     },
     sendLocalFileListToRemote:function(bool) {
         console.log("Should send my file list now over datachannel to peer..");

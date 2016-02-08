@@ -28,20 +28,7 @@
 		<li>That's it! No limits, no email required, the file is sent <em>direct</em> to your friend</em></li> 
 	</ol>
         <p>Store your file in Seshi: </p>
-        <input type="file" multiple onchange="callWorker(this.files)" name="Store Files" />
-<script type="text/javascript">
-    //Impliment Seshi store file as web worker using Dexie
-    function callWorker(files) {
-        var worker = new Worker("js/workers/storeFileDexieWorker.js");
-        var msg = {
-                    "dataSource":"fileSystem",
-                    "data":files
-                  }
-        worker.postMessage(msg);
-    }
-</script>
-
-<!-- End Seshi store using worker! -->
+        <input type="file" multiple onchange="Seshi.store({'dataSource':'fileSystem','data':this.files})" name="Store Files" />
 
 	<p>Type a key: <input type="text" name="key" id="key" placeholder="e.g. S1TR*ogN{Pas^Wr2" /> 
 	<button id="generateKey">Or generate a key</button><p/>

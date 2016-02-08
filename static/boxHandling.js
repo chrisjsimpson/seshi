@@ -422,9 +422,6 @@ function isImage(fileName) {
 }//End isImage(fileName)
 
 
-document.getElementById('share').addEventListener('change', sendStoreMsg, false);
-
-
 /* Video */
 var video_player = document.getElementById("video_player"),
 links = video_player.getElementsByTagName('a');

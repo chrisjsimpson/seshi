@@ -84,9 +84,21 @@ Seshi = {
                          #  arrayBuffer. Each chunk will be stored directly into Seshi's 
                          #  IndexedDB using the web worker storeFileDexieWorker.js
                         */
-                        var worker = new Worker("js/workers/storeFileDexieWorker.js");
-                        worker.postMessage(dataSourceMsg);
+                        var StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
+                        StorageWorker.postMessage(dataSourceMsg); // Post data to worker for storage
+                        //Recieve proress message(s)
+                        StorageWorker.onmessage = function(event) {
+                            var progressData = event.data;
+                            //Update Seshi.storeProgess array with file storing progress updates, indexeded by fileId
+                            Seshi.storeProgress[progressData.fileId] = {
+                                "fileName":progressData.fileName,
+                                "currentChunk":progressData.currentChunk,
+                                "totalNumChunks":progressData.totalNumChunks,
+                                "complete":progressData.currentChunk == progressData.totalNumChunks ? true:false
+                                }
+                        }//End recieve storage progress update and update Seshi.storeProgress array with fileId's progress
     },
+    storeProgress:[],
     sendLocalFileListToRemote:function(bool) {
         console.log("Should send my file list now over datachannel to peer..");
         //Send most up to date file listing or cached version?? hmm.
@@ -134,10 +146,35 @@ Seshi = {
                             Seshi.sendingFileProgress.allFileDataSent = true;
                             })});
     },
-    sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''}
+    sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''},
+    addSignalingServer:function(signallingServerAddress){
+                            /* - Add a signaling server to Seshi - */
+                            signalServerDb.signalServers.add({address: signallingServerAddress,
+                            lastSuccessfulConnectTimestamp: null,
+                            lastConnectAttempTimestamp: null,
+                            numFailedConnectAttempts: null}).
+                            then(function(){
+                            console.log('Successfully Inserted signaling server "' + signallingServerAddress + '"');
+                            }).catch(function(error) {
+                            console.error(error);
+                            });//End insert new singalingServerAddress
+    },
+    signalingServers:{
+            list:[],
+            buildList:function(){
+                    signalServerDb.transaction('r', signalServerDb.signalServers, function()
+
+                    {signalServerDb.signalServers.each(function(signalServer) {
+                            Seshi.signalingServers.list.push(signalServer);
+                        })
+                    })
+                }
+    }
 }//End Seshi :'(
 
 //Initalize local files list cache if empty
 if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
     Seshi.updateLocalFilesList();
 }//Load localFilesList if empty
+//Populate signaling servers list (Seshi.signalingServers.list)
+Seshi.signalingServers.buildList();

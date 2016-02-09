@@ -12,7 +12,7 @@ var localFileListBuilder = {
 			if(localFileListBuilder.id != chunk.fileId)
 			{
 				var file = {
-						"fildId":chunk.fileId,
+						"fileId":chunk.fileId,
 						"boxId": chunk.boxId,
 						"fileName":chunk.fileName,
 						"fileType":chunk.fileType

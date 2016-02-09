@@ -38,6 +38,7 @@ Seshi = {
                         '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects\n' +
                         '#  Seshi.play(fileId, element) -- Playback a file (fileId) in your browser, attaching it as the src of (element) video or audio tag\n' + 
                         '#  Seshi.sendLocalFileListToRemote -- Send local filelist to peer. Peer automatically sends theirs back populating Seshi.remoteFileList\n' +
+                        '#  Seshi.download() -- Download a given fileId to the users local filesystem.\n' +
                         '#  Seshi.remoteFileList  -- Returns list of connected peers files (when connected)\n' +
                         '#  Seshi.sendFileToPeer(fileId) -- Send a file to peer over DataChannel. Must specify local FileId\n' +
                         '#  Seshi.setBoxId(boxName) -- Set Seshi.boxId , (similar to the folder concept, but more just a name to refer to a collection of files.\n' +

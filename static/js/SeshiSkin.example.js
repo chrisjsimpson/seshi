@@ -21,9 +21,9 @@ function displayFiles() {
                                     //Download action
                                     '<span data-id="' + fileList[i].fileId + '" onclick="download(event)">Download</span> /' +
                                     //Share action
-                                    '<span data-id="' + fileList[i].fileId + '" onclick="share(event)"> Send to peer</span>' +
+                                    '<span data-id="' + fileList[i].fileId + '" onclick="share(event)"> Send to peer</span> / ' +
                                     //Delete action
-                                    '<span data-id="' + fileList[i].fileId + '" onclick="delete(event)"> Delete file</span>' +
+                                    '<span data-id="' + fileList[i].fileId + '" onclick="deleteFile(event)"> Delete file</span>' +
                                     
                                 '</td>\n' +
                            '</tr>\n\n';
@@ -63,7 +63,7 @@ function refreshFileList() {
     window.setTimeout(displayFiles(), 5000);
 }
 
-function delete(fileId){
+function deleteFile(event){
         fileId = event.target.dataset.id;
         alert("Hold on! Seshi.delete not yet moved into api"); 
 }

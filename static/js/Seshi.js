@@ -31,6 +31,7 @@ Seshi = {
                         '# Usage:\n' + 
                         '#  Seshi.help() -- This menu\n' +
                         '#  Seshi.connectionStatus -- Returns object of peer connection state for iceConnectionState & dataChannelState\n'+
+                        '#  Seshi.generateKey -- Returns a key (string) to be used when setting up a peer connection. This getts passed to the signalingServer.\n' +
                         '#  Seshi.store({\'dataSource\':\'fileSystem || seshiChunk\',\'data\':this.files}) -- Store data into Seshi\'s Database\n' +
                         '#  Seshi.storeProgress -- Arrary indexed by fileId shows store progress e.g. for (var key in Seshi.storeProgress){Seshi.storeProgress[key];}\n'+
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
@@ -39,7 +40,7 @@ Seshi = {
                         '#  Seshi.remoteFileList  -- Returns list of connected peers files (when connected)\n' +
                         '#  Seshi.sendFileToPeer(fileId) -- Send a file to peer over DataChannel. Must specify local FileId\n' +
                         '#  Seshi.setBoxId(boxName) -- Set Seshi.boxId , (similar to the folder concept, but more just a name to refer to a collection of files.\n' +
-                        '#  Seshi.getBoxId() -- Returns the current Seshi.boxId name under which files will be stored.
+                        '#  Seshi.getBoxId() -- Returns the current Seshi.boxId name under which files will be stored.\n' + 
                         '#  Seshi.syncData() -- Send all data to connecteed peer. This may take a while!\n' + 
                         '#  Seshi.addSignalingServer("example.com")  -- Add the address of additional signaling server(s)\n' + 
                         '#\n\n\n' +
@@ -63,6 +64,19 @@ Seshi = {
                             } else { 
                                 return dc.readyState }
                         }
+    },
+    generateKey:function() {
+                        /* Generate connection key 
+                         * Used as key to pass to signaling server for connecting two peers
+                        */
+                        /* Cred: http://stackoverflow.com/a/1497512/885983 */
+                        var length = 8,
+                            charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                            retVal = "";
+                        for (var i = 0, n = charset.length; i < length; ++i) {
+                            retVal += charset.charAt(Math.floor(Math.random() * n));
+                        }
+                        return retVal;
     },
     updateLocalFilesList: function() {
                         /* 

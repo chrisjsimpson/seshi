@@ -1,11 +1,4 @@
 window.onload = function () { 
-		//Event listener for generating new key
-		var generateBtn = document.getElementById('generateKey');
-		generateBtn.addEventListener('click', generateNewKey, false);
-
-		function generateNewKey() {
-			document.getElementById('key').value = generateKey();
-		}
 
 /*********************************************************************/
 

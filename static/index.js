@@ -638,14 +638,3 @@ function getShareLink() {
 	var key = document.getElementById('key').value;
 	return document.location.origin + '/?key=' + key;
 }
-
-function generateKey() {
-    /* Cred: http://stackoverflow.com/a/1497512/885983 */
-    var length = 8,
-        charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-        retVal = "";
-    for (var i = 0, n = charset.length; i < length; ++i) {
-        retVal += charset.charAt(Math.floor(Math.random() * n));
-    }
-    return retVal;
-}

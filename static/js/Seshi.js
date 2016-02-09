@@ -45,7 +45,7 @@ Seshi = {
                         '#      These will probably be named:\n' + 
                         '#          > Seshi.call() -- For contacting signaling server(s)\n' + 
                         '#          > Seshi.connect() -- Establish connection between peers\n' +
-                        '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n' + 
+                        '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n' 
             ); return "🚀 🚀  Keep calm & Seshi on! 🚀 🚀"},
     connectionStatuus:{
                         iceConnectionState:(function(){

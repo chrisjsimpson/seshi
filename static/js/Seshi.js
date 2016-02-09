@@ -1,19 +1,44 @@
 Seshi = {
-    init:(function(){   /* 
+    welcome:(function(){   /* 
                         #   Seshi Init
                         #   - Display welcome message - 
                         */
-                        console.log("🚀  Welcome to Seshi! 🚀\n\nLet's rock the boat...\n\n\nType Seshi.help() for help.. \n\n\n");
+                        var welcomeMsg = "🚀  Welcome to Seshi! 🚀\n\nLet's rock the boat...\n\n\nType Seshi.help() for help.. \n\n\n";
+                        console.log(welcomeMsg);
+                        return welcomeMsg;
                     })(),
+    init:function(){
+                        /* Initialise Seshi
+                         *
+                         * > Checks for existing Signaling Servers, adds Seshi.io as default
+                         * > Updates local file list cache
+                        */
+                        
+                        //Initalize local files list cache if empty
+                        if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
+                            Seshi.updateLocalFilesList();
+                        }//Load localFilesList if empty
+                        //Populate signaling servers list (Seshi.signalingServers.list)
+                        Seshi.signalingServers.buildList();
+                        
+                        //Add default Seshi.io Signaling server if none present
+                        if ( Seshi.signalingServers.list.length == 0 ) {
+                            Seshi.addSignalingServer("seshi.io");
+                        }//End add default signaling server if none present
+                        return "It's 106 miles to Chicago; We got a full tank of gas; half a pack of cigarettes; its dark, and we're wearing sunglasses. Let's go!";
+    },
     help:function(){console.log("#\n" +
                         '# Usage:\n' + 
                         '#  Seshi.help() -- This menu\n' +
+                        '#  Seshi.connectionStatuus -- Returns object of peer connection state for iceConnectionState & dataChannelState\n'+
                         '#  Seshi.store({\'dataSource\':\'fileSystem || seshiChunk\',\'data\':this.files}) -- Store data into Seshi\'s Database\n' +
+                        '#  Seshi.storeProgress -- Arrary indexed by fileId shows store progress e.g. for (var key in Seshi.storeProgress){Seshi.storeProgress[key];}\n'+
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
                         '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects\n' +
-                        '#  Seshi.sendLocalFileListToRemote -- Sends local file list to remote peer\n' +
+                        '#  Seshi.sendLocalFileListToRemote -- Send local filelist to peer. Peer automatically sends theirs back populating Seshi.remoteFileList\n' +
                         '#  Seshi.remoteFileList  -- Returns list of connected peers files (when connected)\n' +
-                        '#  Seshi.sendFileToPeer(fileId) -- Send a file to peer over DataChannel. Must specify local FileId\n'+
+                        '#  Seshi.sendFileToPeer(fileId) -- Send a file to peer over DataChannel. Must specify local FileId\n' +
+                        '#  Seshi.addSignalingServer("example.com")  -- Add the address of additional signaling server(s)\n' + 
                         '#\n\n\n' +
                         '#  ## The rest if Seshi is still being wrapped into the `Seshi.<call>` api ##\n' +
                         '#  ## for better code quality and to help make building user interfaces a much cleaner experience. ##\n' + 
@@ -21,11 +46,20 @@ Seshi = {
                         '#          > Seshi.call() -- For contacting signaling server(s)\n' + 
                         '#          > Seshi.connect() -- Establish connection between peers\n' +
                         '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n' + 
-                        '#          > Seshi.status() -- Returns connection status. Either "connected" to peer or "disconnected".'
             ); return "🚀 🚀  Keep calm & Seshi on! 🚀 🚀"},
-    state:{
-                        iceConnectionState:function(){if (typeof pc == "undefined") { return undefined } else {return pc.iceConnectionState}},
-                        dataChannelState:function(){if (typeof dc == "undefined") { return undefined } else { return dc.readyState }}
+    connectionStatuus:{
+                        iceConnectionState:(function(){
+                            if (typeof pc == "undefined") { 
+                                return "Not Started. Use Seshi.connect() to begin a peer connection";
+                            } else {
+                                return pc.iceConnectionState}
+                        })(),
+                        dataChannelState:(function(){
+                            if (typeof dc == "undefined") { 
+                                return "Not Started. Use Seshi.call() after initiating peer connection with Seshi.connect()"; 
+                            } else { 
+                                return dc.readyState }
+                        })()
     },
     updateLocalFilesList: function() {
                         /* 
@@ -149,15 +183,21 @@ Seshi = {
     sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''},
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
-                            signalServerDb.signalServers.add({address: signallingServerAddress,
-                            lastSuccessfulConnectTimestamp: null,
-                            lastConnectAttempTimestamp: null,
-                            numFailedConnectAttempts: null}).
-                            then(function(){
-                            console.log('Successfully Inserted signaling server "' + signallingServerAddress + '"');
-                            }).catch(function(error) {
-                            console.error(error);
-                            });//End insert new singalingServerAddress
+                            //Check dosen't already exist
+                            signalServerDb.signalServers.where("address").equalsIgnoreCase("seshi.io").
+                                count(function(num){ 
+                                    if (num == 0) {//If entry dosn't already exist, add to indexedDB
+                                        signalServerDb.signalServers.add({address: signallingServerAddress,
+                                        lastSuccessfulConnectTimestamp: null,
+                                        lastConnectAttempTimestamp: null,
+                                        numFailedConnectAttempts: null}).
+                                        then(function(){
+                                        console.log('Successfully Inserted signaling server "' + signallingServerAddress + '"');
+                                        }).catch(function(error) {
+                                        console.error(error);
+                                        });//End insert new singalingServerAddress
+                                    }
+                                })
     },
     signalingServers:{
             list:[],
@@ -172,9 +212,4 @@ Seshi = {
     }
 }//End Seshi :'(
 
-//Initalize local files list cache if empty
-if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
-    Seshi.updateLocalFilesList();
-}//Load localFilesList if empty
-//Populate signaling servers list (Seshi.signalingServers.list)
-Seshi.signalingServers.buildList();
+Seshi.init();

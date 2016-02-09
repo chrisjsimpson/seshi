@@ -1,26 +1,4 @@
 window.onload = function () { 
-
-	//Check if zero signaling server, if none, add default
-	signalServerDb.signalServers.count(
-		function(count){ 
-			if(count == 0)
-			{
-				signalServerDb.signalServers.add({address: "seshi.io",
-				lastSuccessfulConnectTimestamp: null,
-				lastConnectAttempTimestamp: null,
-				numFailedConnectAttempts: null}).
-		then(function(){
-			console.log('Inserted default signaling server because there was none: ' + signalingServerAddress.value);
-		}).catch(function(error) {
-			console.error(error);
-		});//End insert new singalingServerAddress
-				
-			}//Add a default signal server
-		console.log("There are/is " + count + " signaling server(s)");
-		})
-
-	//End check if zero signaling servers, if none, add a default.
-
 		//Event listener for generating new key
 		var generateBtn = document.getElementById('generateKey');
 		generateBtn.addEventListener('click', generateNewKey, false);

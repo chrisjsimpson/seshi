@@ -166,40 +166,6 @@ files.fill();
 
   }//End showBoxFiles()
 
-function downloadFile(event) {
-    event.preventDefault();    
-    var fileId = event.target.getAttribute('data-fileid');
-    //Query IndexedDB to get the file
-    db.transaction('r', db.chunks, function() {
-            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
-                //Transaction scope
-                console.log("Found " + chunks.length + " chunks");
-                
-                var allChunksArray = [];
-                //Just get blob cunks
-                for(var i=0;i<chunks.length; i++){
-                    //console.log(found[i].chunk);
-                    allChunksArray[i] = chunks[i].chunk
-                }//End put all chunks into all chunks array
-
-                var file = new Blob(allChunksArray, {type:chunks[0].fileType});
-		        console.log(chunks[0].fileType);
-                url = window.URL.createObjectURL(file);
-                console.log("Data: " + url);
-                var a = document.createElement("a");
-                document.body.appendChild(a);
-                a.style = "display: none";
-                a.href = url;
-                a.download = chunks[0].fileName;
-                a.click();
-            })//End db.chunks toArray using Dexie (.then follows)
-        }).then(function() {
-            //Transaction completed
-        }).catch (function (err) {
-            console.error(err);
-    });//End get fildIdChunks from fileId
-}//End download file
-
 
 function isPlayable(fileName) {
 	/* Mp3 */

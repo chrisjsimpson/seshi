@@ -119,33 +119,6 @@ window.onload = function () {
 			});
 		}//End delete file
 
-		var shares = document.getElementsByClassName('shareFile');
-		function shareFile(e) {
-			//Get file id:
-			var fileId = e.target.dataset.fileid;
-			//Get number of chunks this file has
-			var numChunks = 0;
-			
-			db.chunks.where("fileId").equals(fileId).first(function(chunks) {
-			console.log("There are: " + chunks.numberOfChunks + " chunks to this file in total.");
-			var numChunks = chunks.numberOfChunks;
-			return numChunks;
-			//End query fileId's complete number of chunks from indexedDB
-			}).then(function(numChunks) {
-				console.log("Ready..");
-				var sessionId = document.getElementById('key').value;
-				var partnerInfo = {"sessionId": sessionId, "fileId": fileId,"numberOfChunks": numChunks};
-				//Auto connect
-				window.setTimeout(function() {
-						document.getElementById('connect').click();
-						}, 8000);
-			});
-		}//End shareFile	
-
-
-		for(i=0;i<shares.length;i++) {
-			shares[i].addEventListener('click', shareFile, false);
-		} 
 		
 		var sendButtons = document.getElementsByClassName('send');
 		for(i=0;i<sendButtons.length;i++) {

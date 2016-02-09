@@ -163,6 +163,7 @@ Seshi = {
     play:function(fileId, playerId) {
                         /* Playback requested fileId to user
                          * - Updates video or audio `src` attribute of playerId and starts playback -
+                         * TODO move Seshi.play to a streaming web worker!
                         */
                         //Query IndexedDB to get the file
                         db.transaction('r', db.chunks, function() {
@@ -197,8 +198,34 @@ Seshi = {
     download:function(fileId) {
                         /* Download 
                         * - Download a given fileId from Seshi's database to the system's filesystem boo.
+                        * TODO move Seshi.download job to a web worker!
                         */
-                        
+                        //Query IndexedDB to get the file
+                        db.transaction('r', db.chunks, function() {
+                            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                                console.log("Found " + chunks.length + " chunks");
+                                var allChunksArray = [];
+                                //Just get blob cunks without meta
+                                for(var i=0;i<chunks.length; i++){
+                                    allChunksArray[i] = chunks[i].chunk
+                                }//End put all chunks into all chunks array
+                                //Build file blob out of chunks and send to users browser for download.
+                                var file = new Blob(allChunksArray, {type:chunks[0].fileType});
+                                console.log(chunks[0].fileType);
+                                url = window.URL.createObjectURL(file);
+                                console.log("Data: " + url);
+                                var a = document.createElement("a");
+                                document.body.appendChild(a);
+                                a.style = "display: none";
+                                a.href = url;
+                                a.download = chunks[0].fileName;
+                                a.click();
+                            })//End db.chunks toArray using Dexie (.then follows)
+                        }).then(function() {
+                            //Transaction completed
+                        }).catch (function (err) {
+                            console.error(err);
+                        });//End get fildIdChunks from fileId
     },
     sendFileToPeer:function(fileId) {
                         /* Sends given file (fieId) over Datachannel to connected peer */

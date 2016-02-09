@@ -208,61 +208,6 @@ function downloadFile(event) {
 }//End download file
 
 
-function playMedia(event) {
-    event.preventDefault();    
-    var fileId = event.target.getAttribute('data-fileid');
-
-    //Query IndexedDB to get the file
-    db.transaction('r', db.chunks, function() {
-        
-        
-        }).then(function() {
-            //Transaction completed
-            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
-                //Transaction scope
-                console.log("Found " + chunks.length + " chunks");
-                
-                var allChunksArray = [];
-                //Just get blob cunks
-                for(var i=0;i<chunks.length; i++){
-                	allChunksArray[i] = chunks[i].chunk
-                }//End put all chunks into all chunks array
-
-                var file = new Blob(allChunksArray, {type:chunks[0].fileType});
-		console.log(chunks[0].fileType);
-                url = window.URL.createObjectURL(file);
-		console.log("Data: " + url);
-
-		var video = document.getElementById('video');
-		var obj_url = window.URL.createObjectURL(file);
-		video.style.display = "inline-block";
-		video.src = obj_url;
-		video.addEventListener('canplay', function() {
-			if ( video.readyState == 4 ) 
-			{
-				video.play(); 
-			}
-		})
-		//Simply download file if on mobiles
-		if( window.screen.width < 700 )
-		{
-			var a = document.createElement("a");
-			document.body.appendChild(a);
-			a.style = "display: none";
-			a.href = url;
-			a.download = chunks[0].fileName;
-			a.click();
-		}//End simply download if on a mobile.
-
-            })//End db.chunks toArray using Dexie (.then follows)
-        }).catch (function (err) {
-            
-            console.error(err);
-    
-    });//End get fildIdChunks from fileId
-
-}//End playMedia()
-
 function isPlayable(fileName) {
 	/* Mp3 */
 	fileName = fileName.toLowerCase();

@@ -19,7 +19,12 @@ function displayFiles() {
                                     //Playback action
                                     '<span data-id="' + fileList[i].fileId + '" onclick="play(event)">Play</span> / ' +
                                     //Download action
-                                    '<span data-id=' + fileList[i].fileId + '" onclick="download(event)">Download / Share' +
+                                    '<span data-id="' + fileList[i].fileId + '" onclick="download(event)">Download</span> /' +
+                                    //Share action
+                                    '<span data-id="' + fileList[i].fileId + '" onclick="share(event)"> Send to peer</span>' +
+                                    //Delete action
+                                    '<span data-id="' + fileList[i].fileId + '" onclick="delete(event)"> Delete file</span>' +
+                                    
                                 '</td>\n' +
                            '</tr>\n\n';
         }
@@ -35,6 +40,32 @@ function play(event) {
     console.log("My player implimentation...");
     fileId = event.target.dataset.id;
     Seshi.play(fileId, "mediaInput");
+}
+
+function download(event) {
+    fileId = event.target.dataset.id;
+    Seshi.download(fileId);
+}
+
+function share(event) {
+    //Check a peer is actually connect so we can send them the file
+    if (Seshi.connectionStatus.dataChannelState() == "open") {
+        fileId = event.target.dataset.id;
+        Seshi.sendFileToPeer(fileId)
+    } else { //Not connected to a peer!
+        alert("You need to be connected to a peer in order to send them a file. Click button <x> or / automatically show share box to user...");
+    }
+}
+
+function refreshFileList() {
+    Seshi.updateLocalFilesList();
+    alert("Refreshing file list..");
+    window.setTimeout(displayFiles(), 5000);
+}
+
+function delete(fileId){
+        fileId = event.target.dataset.id;
+        alert("Hold on! Seshi.delete not yet moved into api"); 
 }
 
 displayFiles();

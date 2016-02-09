@@ -30,7 +30,7 @@ Seshi = {
     help:function(){console.log("#\n" +
                         '# Usage:\n' + 
                         '#  Seshi.help() -- This menu\n' +
-                        '#  Seshi.connectionStatuus -- Returns object of peer connection state for iceConnectionState & dataChannelState\n'+
+                        '#  Seshi.connectionStatus -- Returns object of peer connection state for iceConnectionState & dataChannelState\n'+
                         '#  Seshi.store({\'dataSource\':\'fileSystem || seshiChunk\',\'data\':this.files}) -- Store data into Seshi\'s Database\n' +
                         '#  Seshi.storeProgress -- Arrary indexed by fileId shows store progress e.g. for (var key in Seshi.storeProgress){Seshi.storeProgress[key];}\n'+
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
@@ -38,6 +38,9 @@ Seshi = {
                         '#  Seshi.sendLocalFileListToRemote -- Send local filelist to peer. Peer automatically sends theirs back populating Seshi.remoteFileList\n' +
                         '#  Seshi.remoteFileList  -- Returns list of connected peers files (when connected)\n' +
                         '#  Seshi.sendFileToPeer(fileId) -- Send a file to peer over DataChannel. Must specify local FileId\n' +
+                        '#  Seshi.setBoxId(boxName) -- Set Seshi.boxId , (similar to the folder concept, but more just a name to refer to a collection of files.\n' +
+                        '#  Seshi.getBoxId() -- Returns the current Seshi.boxId name under which files will be stored.
+                        '#  Seshi.syncData() -- Send all data to connecteed peer. This may take a while!\n' + 
                         '#  Seshi.addSignalingServer("example.com")  -- Add the address of additional signaling server(s)\n' + 
                         '#\n\n\n' +
                         '#  ## The rest if Seshi is still being wrapped into the `Seshi.<call>` api ##\n' +
@@ -47,19 +50,19 @@ Seshi = {
                         '#          > Seshi.connect() -- Establish connection between peers\n' +
                         '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n' 
             ); return "🚀 🚀  Keep calm & Seshi on! 🚀 🚀"},
-    connectionStatuus:{
-                        iceConnectionState:(function(){
+    connectionStatus:{
+                        iceConnectionState:function(){
                             if (typeof pc == "undefined") { 
                                 return "Not Started. Use Seshi.connect() to begin a peer connection";
                             } else {
                                 return pc.iceConnectionState}
-                        })(),
-                        dataChannelState:(function(){
+                        },
+                        dataChannelState:function(){
                             if (typeof dc == "undefined") { 
                                 return "Not Started. Use Seshi.call() after initiating peer connection with Seshi.connect()"; 
                             } else { 
                                 return dc.readyState }
-                        })()
+                        }
     },
     updateLocalFilesList: function() {
                         /* 
@@ -209,7 +212,49 @@ Seshi = {
                         })
                     })
                 }
-    }
+    },
+    syncData:function(){
+            /* Send all data to connected peer 
+             * This is currently very intensive as it does not (yet) make use of the worker
+             * TODO ^above^
+            */
+            db.transaction('r', db.chunks, function() {
+                db.chunks.each(function(chunk) {//Transaction scope
+                    //Get file meta for chunk header...
+                    var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+                    var lengthOfMeta = JSON.stringify(meta).length;
+                    lengthOfMeta = zeroFill(lengthOfMeta, 64);
+                    var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
+                    var header = JSON.stringify(metaLength) + JSON.stringify(meta);
+                    var sendChunk = new Blob([header, chunk.chunk]);
+                    //Needs to be sent as an arrayBuffer
+                    var reader = new FileReader();
+                            reader.onload = function(file) {
+                            if( reader.readyState == FileReader.DONE ) {
+                                    for(var i=0;i<=99999999;i++) {}//Crude delay!
+                                    dc.send(result = file.target.result);
+                            }//End FileReader.DONE
+                    }//End reader.onload
+                    reader.readAsArrayBuffer(sendChunk);
+                })//End db.chunks toArray using Dexie
+            }).then(function() {
+                console.log("All chunks (all files) sent to connected peer!");//Transaction completed
+            }).catch (function (err) {
+                console.error(err);
+            });//End log errors from sending all data to peer
+},
+setBoxId:function(boxName) {
+            /* Set boxId
+            * A box is similar to the folder concept.
+            * Used to organise files stored in Seshi in some fashion
+            * e.g. Allow user to store files under a certain box name
+            * then query Seshi for files the key path of a given <boxId>
+            */
+            Seshi.boxId = boxName;
+            return "Seshi.boxId is now set to: " + Seshi.boxId;
+},
+getBoxId:function(){return Seshi.boxId;},
+boxId:'myBoxID'//Defaults to myBoxId
 }//End Seshi :'(
 
 Seshi.init();

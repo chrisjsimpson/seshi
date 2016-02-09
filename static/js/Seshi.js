@@ -36,6 +36,7 @@ Seshi = {
                         '#  Seshi.storeProgress -- Arrary indexed by fileId shows store progress e.g. for (var key in Seshi.storeProgress){Seshi.storeProgress[key];}\n'+
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
                         '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects\n' +
+                        '#  Seshi.play(fileId, element) -- Playback a file (fileId) in your browser, attaching it as the src of (element) video or audio tag\n' + 
                         '#  Seshi.sendLocalFileListToRemote -- Send local filelist to peer. Peer automatically sends theirs back populating Seshi.remoteFileList\n' +
                         '#  Seshi.remoteFileList  -- Returns list of connected peers files (when connected)\n' +
                         '#  Seshi.sendFileToPeer(fileId) -- Send a file to peer over DataChannel. Must specify local FileId\n' +
@@ -158,6 +159,46 @@ Seshi = {
         msg = {"cmd":"recvRemoteFileList", "data":localFileList, "reply":bool};
         msg = JSON.stringify(msg);
         dc.send(msg);
+    },
+    play:function(fileId, playerId) {
+                        /* Playback requested fileId to user
+                         * - Updates video or audio `src` attribute of playerId and starts playback -
+                        */
+                        //Query IndexedDB to get the file
+                        db.transaction('r', db.chunks, function() {
+                            //Transaction scope
+                            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                                    console.log("Found " + chunks.length + " chunks");
+                                    var allChunksArray = [];
+                                    //Just get blob cunks (without meta info)
+                                    for(var i=0;i<chunks.length; i++){
+                                        allChunksArray[i] = chunks[i].chunk
+                                    }//End put all chunks into all chunks array
+                                    var file = new Blob(allChunksArray, {type:chunks[0].fileType});
+                                    console.log(chunks[0].fileType);
+                                    url = window.URL.createObjectURL(file);
+                                    console.log("Data: " + url);
+                                    var video = document.getElementById(playerId);
+                                    var obj_url = window.URL.createObjectURL(file);
+                                    video.src = obj_url;
+                                    video.addEventListener('canplay', function() {
+                                        if ( video.readyState == 4 ) {
+                                            video.play();
+                                        }
+                                    })//End playback media when ready
+                                    //Simply download file if on mobiles
+                                    if( window.screen.width < 700 ) {
+                                        alert("We're working hard on mobile playback. Support Seshi with a pro account to fund development!");
+                                    }//End display mobile playback message.
+                            }).catch (function (err) {
+                                console.error(err);
+                            })});//End get file chunks from fileId and playback
+    },
+    download:function(fileId) {
+                        /* Download 
+                        * - Download a given fileId from Seshi's database to the system's filesystem boo.
+                        */
+                        
     },
     sendFileToPeer:function(fileId) {
                         /* Sends given file (fieId) over Datachannel to connected peer */

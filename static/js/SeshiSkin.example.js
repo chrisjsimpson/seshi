@@ -14,8 +14,13 @@ function displayFiles() {
         for (var i=0; i< fileList.length;i++) {
             tbodyContent += '<tr>\n' +
                                 '<td data-col="fileName" data-id="' + fileList[i].fileId + '"' +
-                                ' onclick="Seshi.play(' + fileList[i].fileId + '">' + fileList[i].fileName + '</td>\n' +
-                                '<td data-col="actions"> Play / Download / Share</td>\n' +
+                                ' onclick="play(event)">' + fileList[i].fileName + '</td>\n' +
+                                '<td data-col="actions">' +
+                                    //Playback action
+                                    '<span data-id="' + fileList[i].fileId + '" onclick="play(event)">Play</span> / ' +
+                                    //Download action
+                                    '<span data-id=' + fileList[i].fileId + '" onclick="download(event)">Download / Share' +
+                                '</td>\n' +
                            '</tr>\n\n';
         }
 
@@ -25,3 +30,11 @@ function displayFiles() {
     var fileTable = document.getElementById('fileTable');
     fileTable.innerHTML = tableOutput;
 }//End displayFiles
+
+function play(event) {
+    console.log("My player implimentation...");
+    fileId = event.target.dataset.id;
+    Seshi.play(fileId, "mediaInput");
+}
+
+displayFiles();

@@ -2,17 +2,6 @@ window.onload = function () {
 
 /*********************************************************************/
 
-//Event listener for when key is updated:
-var key = document.getElementById('key');
-key.addEventListener("change", clickCallBtn, false);
-
-function clickCallBtn() {
-	console.log("Clicking call button");
-	document.getElementById('call').click();
-}//End clickCallBtn();
-
-/*********************************************************************/
-
 //Event listner for file downloading
   var showFiles = document.getElementsByClassName('showFiles');
 	for(var i=0;i<showFiles.length;i++)

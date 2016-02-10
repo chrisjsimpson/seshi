@@ -17,6 +17,8 @@ body {
 
 #logo {
     width: 12em;
+    position: absolute;
+    background: rgb(184, 57, 51);
 }
 
 #hero {
@@ -29,7 +31,23 @@ body {
 
 #hero h1{
     text-align: center;
-    font-size:1.4em;
+    font-size: 1.3em;
+}
+
+nav {
+    position: absolute;
+    right: 0em;
+}
+
+nav ul li {
+    list-style-type:none;
+    display: inline;
+    padding-right: 1em;
+}
+
+nav ul li a {
+    text-decoration:none;
+    color: #000;
 }
 
 #fileUpload::-webkit-file-upload-button {
@@ -61,7 +79,27 @@ body {
 }
 
 #filesWrapper {
-    margin-top: 25%;
+    margin-top: 20%;
+}
+
+#player {
+    margin-top: 2em;
+}
+
+video {
+    display: block;
+    margin: 0 auto;
+}
+
+#chatbox {
+    display: block;
+    width: 100%;
+    height: 4em;
+}
+
+#chat {
+    width: 80%;
+    height:2em;
 }
 
 /* Small devices (landscape phones, 34em and up) */
@@ -80,10 +118,17 @@ body {
 @media (min-width: 75em) { 
 #logo {
     width: 30em;
+    background:none;
+}
+
+#splatter {
+    height: 8em;
+    background: #b83933;
 }
 
 #backgroundTexture {
     margin-top:-9%;
+    margin-top:-1%;
 }
 
 #hero {
@@ -105,6 +150,19 @@ body {
     padding-top: 5%;
     margin-top: 1em;
 }
+
+
+nav {
+    right: 14em;
+    top: 3.5em;
+}
+
+nav ul li {
+    padding: 0 1em;
+    font-size: 1.25em;
+    color:#fdfdfd;
+}
+
 
 } /* END Extra large devices (large desktops, 75em and up) */
 

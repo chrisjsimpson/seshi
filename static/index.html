@@ -32,8 +32,8 @@
            <h1>Store, Share, &amp; Stream files from your browser</h1>
            <input type="file" id="fileUpload" onchange="storeFile(this.files)" multiple />
     </div><!-- end hero -->
-    <div id="player">
-        <video id="mediaInput" controls></video>
+    <div id="player" ondblclick="smoothScroll('fileTable')">
+        <video id="mediaInput"  controls></video>
     </div><!-- end media player -->
 
     <div id="filesWrapper">

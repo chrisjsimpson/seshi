@@ -22,11 +22,10 @@ body {
 }
 
 #hero {
-    position: absolute;
-    bottom: 0em;
-    right: 0em;
-    top: 10%;
-    height: 9em;
+    background: rgba(214, 203, 203, 0.12); 
+    width: 17em;
+    margin: 0 auto;
+    padding-left: 1em;
 }
 
 #hero h1{
@@ -36,7 +35,7 @@ body {
 
 nav {
     position: absolute;
-    right: 0em;
+    right: -0.5em;
 }
 
 nav ul li {
@@ -61,14 +60,12 @@ nav ul li a {
     white-space: nowrap;
     -webkit-user-select: none;
     cursor: pointer;
-    font-size: 2em;
-    position: absolute;
     color: #fdfdfd;
     text-align: center;
     width: 100%;
-    line-height: 1.5em;
-    height: 1.5em;
-    margin-top: 1em;
+    display:block;
+    margin-top:1em;
+    font-size:2em;
 }
 
 #fileUpload::hover::before {
@@ -132,23 +129,16 @@ video {
 }
 
 #hero {
-    top: 32%;
-    left: 25%;
-    background: rgba(214, 203, 203, 0.12);
-    height: 15em;
-    width: 45em;
+    width: 39em;
+    margin-top:8em;
 }
 
 #hero h1 {
     font-size: 2em;
 }
 
-#fileUpload::before {
-    font-size: 2em;
-    height: 1em;
-    line-height:0em;
-    padding-top: 5%;
-    margin-top: 1em;
+input#fileUpload{
+    width: 46em;
 }
 
 
@@ -160,7 +150,14 @@ nav {
 nav ul li {
     padding: 0 1em;
     font-size: 1.25em;
+}
+
+nav ul li a {
     color:#fdfdfd;
+}
+
+#player {
+    margin-top: 
 }
 
 

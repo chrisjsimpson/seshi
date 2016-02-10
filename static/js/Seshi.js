@@ -35,6 +35,7 @@ Seshi = {
                         '#  Seshi.store({\'dataSource\':\'fileSystem || seshiChunk\',\'data\':this.files}) -- Store data into Seshi\'s Database\n' +
                         '#  Seshi.storeProgress -- Arrary indexed by fileId shows store progress e.g. for (var key in Seshi.storeProgress){Seshi.storeProgress[key];}\n'+
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
+                        '#  Seshi.deleteFile(fileId) -- Delete file from Seshi\n' +
                         '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects\n' +
                         '#  Seshi.play(fileId, element) -- Playback a file (fileId) in your browser, attaching it as the src of (element) video or audio tag\n' + 
                         '#  Seshi.sendLocalFileListToRemote -- Send local filelist to peer. Peer automatically sends theirs back populating Seshi.remoteFileList\n' +
@@ -101,6 +102,14 @@ Seshi = {
                         localStorage.setItem("localFilesList", JSON.stringify(event.data.fileList));
                         }
                        },
+    deleteFile:function(){
+                        /* Delete File From Seshi database given fileId */
+                      db.chunks.where("fileId").equals(fileId).delete()
+                      .then(function(deleteCount) {
+                        console.log("Deleted: " + deleteCount + " chunks. Of fileId: " + fileId );
+                        Seshi.updateLocalFilesList(); //Update local filelist cache
+                      });  
+    },
     localFileList:function() {
                         /* Returns cached local files list from localstorage as array of JSON objects */
                         return JSON.parse(localStorage.getItem('localFilesList'));

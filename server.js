@@ -101,8 +101,8 @@ function serveFile(filepath, info) {
     if (err) {log(err.message);
               noHandlerErr(filepath, res);
               return;}
-    var readBuffer = new Buffer(204800);
-    fs.read(fd, readBuffer, 0, 204800, 0,
+    var readBuffer = new Buffer(2048000);
+    fs.read(fd, readBuffer, 0, 2048000, 0,
       function(err, readBytes) {
         if (err) {log(err.message);
                   fs.close(fd);
@@ -112,9 +112,13 @@ function serveFile(filepath, info) {
         if (readBytes > 0) {
           res.writeHead(200,
                         {"Content-Type": contentType(filepath)});
+          if(contentType(filepath) != "image/png") {
           res.write(
             addQuery(readBuffer.toString('utf8', 0, readBytes),
                      query));
+          } else {//Otherwise presume binary png 
+          res.write(readBuffer);
+          }
         }
         res.end();
       });
@@ -132,6 +136,8 @@ function contentType(filepath) {
       case "js":  return ("application/javascript");
       case "css":  return ("text/css");
       case "txt":  return ("text/plain");
+      case "png":  return("image/png");
+      case "svg":  return ("image/svg+xml");
       default:  return ("text/html");
     }
   }

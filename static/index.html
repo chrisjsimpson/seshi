@@ -9,8 +9,8 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
     </head>
     <body>
 <!-- blank script section is placeholder for query params -->
@@ -19,10 +19,19 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-	<h1>Seshi</h1>
-    <button onclick="refreshFileList()">Refresh file list</button>
-    <div id="fileTable">
-    </div><!-- end fileTable -->
+    <img src="SeshiLogo.png" id="logo" />
+    <img src="background.svg" id="backgroundTexture" type="image/svg+xml"/>
+
+    <div id="hero">
+           <h1>Store, Share, &amp; Stream files from your browser</h1>
+           <input type="file" id="fileUpload" onchange="storeFile(this.files)" multiple />
+    </div><!-- end hero -->
+
+    <div id="filesWrapper">
+        <button onclick="refreshFileList()">Refresh file list</button>
+        <div id="fileTable">
+        </div><!-- end fileTable -->
+    </div><!-- end filesWrapper -->
     <div id="player">
         <video id="mediaInput" controls></video>
     </div><!-- end media player -->
@@ -34,8 +43,6 @@
 		<li>Tell your friend the key, connect, and click the 'send' button'</li>
 		<li>That's it! No limits, no email required, the file is sent <em>direct</em> to your friend</em></li> 
 	</ol>
-        <p>Store your file in Seshi: </p>
-        <input type="file" multiple onchange="Seshi.store({'dataSource':'fileSystem','data':this.files})" name="Store Files" />
 
 	<p>Type a key: <input type="text" name="key" id="key" placeholder="e.g. S1TR*ogN{Pas^Wr2" /> 
 	<button id="generateKey">Or generate a key</button><p/>
@@ -124,7 +131,7 @@
 <button id="SyncMyData" style="display:none">Sync All My Data</button></p>
 
 <div class="debug hide">
-<input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" style="width:600px" /><br />
+<input id="chunkInProgress" type="text" value="Details of chunk being transferd will appear here" /><br />
 </div><!-- End progress log debug info -->
 
 <hr />
@@ -134,13 +141,13 @@
  <b>Outgoing Messages</b>
      <br/>
      <textarea id="outmessages" rows="20"
-               style="width:450px;margin:0 15px;"></textarea>
+               style="width:50%;"></textarea>
  </div><!-- end outMessages -->
  <div class="inMessages">
   <b>Incoming Messages</b>
      <br/>
      <textarea id="inmessages" rows="20"
-               style="width:450px"></textarea>
+               style="width:50%"></textarea>
   </div><!-- end inMessages  -->
 
 </div><!-- End iceMessages debug -->
@@ -153,4 +160,5 @@
 
 <button onclick="showDebugInfo()">Show debug info</button>
 <p>A project of <a href="http://karmacomputing.co.uk">Karma Computing</a>.</p>
+<link href='https://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
 </html>

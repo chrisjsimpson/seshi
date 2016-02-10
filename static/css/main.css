@@ -4,6 +4,109 @@
    Author's custom styles
    ========================================================================== */
 
+body {
+    background: #f2f2f2;
+    font-family: 'Cabin', sans-serif;
+}
+
+#backgoundTexture {
+    position: absolute;
+    z-index: -9999;
+    left: 0em;
+}
+
+#logo {
+    width: 12em;
+}
+
+#hero {
+    position: absolute;
+    bottom: 0em;
+    right: 0em;
+    top: 10%;
+    height: 9em;
+}
+
+#hero h1{
+    text-align: center;
+    font-size:1.4em;
+}
+
+#fileUpload::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+#fileUpload::before {
+    content: 'Add files';
+    background: #b83933;
+    border: 1px solid #b83933;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    font-size: 2em;
+    position: absolute;
+    color: #fdfdfd;
+    text-align: center;
+    width: 100%;
+    line-height: 1.5em;
+    height: 1.5em;
+    margin-top: 1em;
+}
+
+#fileUpload::hover::before {
+    border-color: black;
+}
+
+#fileUpload:active::before {
+}
+
+#filesWrapper {
+    margin-top: 25%;
+}
+
+/* Small devices (landscape phones, 34em and up) */
+@media (min-width: 34em) { ... }
+/* END Small devices (landscape phones, 34em and up) */
+
+/* Medium devices (tablets, 48em and up) */
+@media (min-width: 48em) { ... }
+/* END Medium devices (tablets, 48em and up) */
+
+/* Large devices (desktops, 62em and up) */
+@media (min-width: 62em) { ... }
+/* END Large devices (desktops, 62em and up) */
+
+/* Extra large devices (large desktops, 75em and up) */
+@media (min-width: 75em) { 
+#logo {
+    width: 30em;
+}
+
+#backgroundTexture {
+    margin-top:-9%;
+}
+
+#hero {
+    top: 32%;
+    left: 25%;
+    background: rgba(214, 203, 203, 0.12);
+    height: 15em;
+    width: 45em;
+}
+
+#hero h1 {
+    font-size: 2em;
+}
+
+#fileUpload::before {
+    font-size: 2em;
+    height: 1em;
+    line-height:0em;
+    padding-top: 5%;
+    margin-top: 1em;
+}
+
+} /* END Extra large devices (large desktops, 75em and up) */
 
 
 

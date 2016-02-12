@@ -125,4 +125,3 @@ plugging into Seshi's storage and p2p framework*.
 * Use it / play with it here: http://seshi.io
 * The supporting paper for this project is in the root directory of this repository. (Seshi Paper - A vendor agnostic, browser based peer to peer file backup application developed using web standards.pdf) 
 
-*Seshi is not a framework, its codebase is a work-in-progress and an insult to good coding practises. Feel free to help.

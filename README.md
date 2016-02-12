@@ -22,7 +22,7 @@ All api calls are prefixed with `Seshi.<api call>`
 
 * [`.getBoxId()`](#getBoxId) - Get current Seshi.boxId
 
-* [`.generateKey`](#markdown-header-generateKey) - Return a key (string). Used when setting up a peer connection. This is used by the signalingServer.
+* [`.generateKey`](/#markdown-header-generateKey) - Return a key (string). Used when setting up a peer connection. This is used by the signalingServer.
 
 * [`.addSignalingServer("example.com")`](#addSignalingServer) - Add additional signaling server(s)
 
@@ -159,7 +159,7 @@ This api call is ***intensive*** because it looks at every chunk in the Data Sto
 
 > The implementation of this is subject to change to improve its speed. An index will probably be added on 'FileName' of each chunk to make this faster in the future.[^n]
 
-### generateKey
+## generateKey
 
 A key is needed for two peers to exchange their Candidate Addresses[^n] via a signalling server. A candidate address is **basically** an IP address & Port Number that a client *might* be able to be reached upon. This could be a local address, public IP address, Natted address, or the address of a TURN server to relay connections when a peer-to-peer connection cannot be established. See [^3]
 

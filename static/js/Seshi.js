@@ -31,7 +31,7 @@ Seshi = {
                         '# Usage:\n' + 
                         '#  Seshi.help() -- This menu\n' +
                         '#  Seshi.connectionStatus -- Returns object of peer connection state for iceConnectionState & dataChannelState\n'+
-                        '#  Seshi.generateKey -- Returns a key (string) to be used when setting up a peer connection. This getts passed to the signalingServer.\n' +
+                        '#  Seshi.generateKey() -- Returns a key (string) to be used when setting up a peer connection. This getts passed to the signalingServer.\n' +
                         '#  Seshi.store({\'dataSource\':\'fileSystem || seshiChunk\',\'data\':this.files}) -- Store data into Seshi\'s Database\n' +
                         '#  Seshi.storeProgress -- Arrary indexed by fileId shows store progress e.g. for (var key in Seshi.storeProgress){Seshi.storeProgress[key];}\n'+
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +

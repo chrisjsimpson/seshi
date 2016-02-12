@@ -22,7 +22,7 @@ All api calls are prefixed with `Seshi.<api call>`
 
 * [`.getBoxId()`](#getBoxId) - Get current Seshi.boxId
 
-* [`.generateKey`](#generateKey) - Return a key (string). Used when setting up a peer connection. This is used by the signalingServer.
+* [`.generateKey`](#markdown-header-generateKey) - Return a key (string). Used when setting up a peer connection. This is used by the signalingServer.
 
 * [`.addSignalingServer("example.com")`](#addSignalingServer) - Add additional signaling server(s)
 

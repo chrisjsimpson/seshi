@@ -137,6 +137,9 @@ function storeChunk(seshiChunk) {
                 numberOfChunks: seshiChunk.numberOfChunks,
                 chunkSize: seshiChunk.chunkSize,
                 chunk: seshiChunk.chunk
+            }).then(function(done){
+                console.log('Celebrate');
+                close();//Close worker thread upon storing the chunk.
             });
         //Post storage progress update to main thread
         /*postMessage({
@@ -147,9 +150,6 @@ function storeChunk(seshiChunk) {
                 "totalNumChunks":seshiChunk.numberOfChunks
         });*/
         console.log("Stored a chunk over RTCdatachannel inside worker");
-
-    //Close worker thread 
-    close();
 
 }//End storeChunk()
 

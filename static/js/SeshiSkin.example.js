@@ -64,10 +64,12 @@ function share(event) {
 function refreshFileList() {
     var fileTable = document.getElementById('fileTable');
         fileTable.innerHTML = 'Refreshing file list.. <br /><img src="/img/Ajax-loader.gif" />';
-    Seshi.updateLocalFilesList()
-        .then(function(complete){
-            displayFiles();   
-        });
+    
+    // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
+    Seshi.updateLocalFilesList().then( // .then() we know the .localFileList cache is updated, so we display the fresh list.
+            function(complete){
+                displayFiles();   
+            });
 
 }
 

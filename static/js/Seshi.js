@@ -241,7 +241,15 @@ Seshi = {
                         });//End get fildIdChunks from fileId
     },
     sendFileToPeer:function(fileId) {
-                        /* Sends given file (fieId) over Datachannel to connected peer */
+                        /* Sends given file (fieId) over Datachannel to connected peer
+                         * For each chunk found, send over data channel until 'last chunk'* has been sent.
+                         * The following comments require multipeer (TODO)
+                         *  > *Not all peers will have all chunks to the file, some may only have a subset. 
+                         *  > Close the connection? no. 
+                         *  > Exchange useful data: 
+                         *      Share known signaling servers, peer exchange, file lists (names), boxIds
+                        */
+                        
                         //Check Datachannel connection status
                         if (typeof dc == "undefined" || dc.readyState != "open") {
                             console.error("Seshi.sendFileToPeer(fileId) Tried to send file to peer but Datachannel is not open");

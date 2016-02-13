@@ -63,7 +63,7 @@ function share(event) {
 
 function refreshFileList() {
     var fileTable = document.getElementById('fileTable');
-        fileTable.innerHTML = 'Refreshing file list.. <br /><img src="https://en.wikipedia.org/wiki/Throbber#/media/File:Ajax-loader.gif" />';
+        fileTable.innerHTML = 'Refreshing file list.. <br /><img src="/img/Ajax-loader.gif" />';
     Seshi.updateLocalFilesList()
         .then(function(complete){
             displayFiles();   

@@ -112,7 +112,7 @@ function serveFile(filepath, info) {
         if (readBytes > 0) {
           res.writeHead(200,
                         {"Content-Type": contentType(filepath)});
-          if(contentType(filepath) != "image/png") {
+          if(contentType(filepath) != "image/png" && contentType(filepath) != "image/gif") {
           res.write(
             addQuery(readBuffer.toString('utf8', 0, readBytes),
                      query));
@@ -138,6 +138,7 @@ function contentType(filepath) {
       case "txt":  return ("text/plain");
       case "png":  return("image/png");
       case "svg":  return ("image/svg+xml");
+      case "gif":  return("image/gif");
       default:  return ("text/html");
     }
   }

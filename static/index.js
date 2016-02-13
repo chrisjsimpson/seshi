@@ -275,12 +275,26 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                         }//End check read data is > 0
                                                                 //Start send data payload
                                                                 var headerOffset = 81 + window.fileMetaLength;
-                                                                var chunkBlob = blob.slice(headerOffset); //Get chunk payload
+                                                                //var chunkBlob = blob.slice(headerOffset); //Get chunk payload
+                                                                var chunk = blob.slice(headerOffset); //Get chunk payload
                                                                 //Store chunkBlob into IndexedDB
-                                                                addChunkToDb(chunkBlob);
+                                                                //Use Seshi.store() API (should move file header parsing to this web worker also...)
+                                                                var storeReqObj = {
+                                                                    "dataSource"    : "seshiChunk",
+                                                                    "boxId"         : Seshi.getBoxId(),
+                                                                    "chunk"         : chunk,
+                                                                    "chunkNumber"   : window.curChunk.chunkNumber,
+                                                                    "chunkSize"     : window.curChunk.chunkSize,
+                                                                    "fileId"        : window.curChunk.fileId,
+                                                                    "fileName"      : window.curChunk.fileName,
+                                                                    "fileType"      : window.curChunk.fileType,
+                                                                    "numberOfChunks": window.curChunk.numberOfChunks
+                                                                };
+                                                                Seshi.store(storeReqObj);
+                                                                //addChunkToDb(chunkBlob);
                                                                 //Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing)
-                                                                var url = window.URL.createObjectURL(chunkBlob);
-                                                                console.log(url);
+                                                                //var url = window.URL.createObjectURL(chunkBlob);
+                                                                //console.log(url);
                                                                 //End send data chunk payload
                                                 }//End reader.readtState == DONE
                                         }//End reader.onload
@@ -291,7 +305,6 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                         }//End IF reading byte lenth of fileMeata
                 }//End get bytelength of fileMeta
                 reader2.readAsText(metaLength);
-
 
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))

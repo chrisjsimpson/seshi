@@ -439,14 +439,6 @@ function sendMostRecentFile() {
 }
 
 
-
-/* Inspect store */
-db.chunks.where('fileId').equals('b0d75183-cc10-4ddd-a326-81bea0adebcf').each(
-    function(file){
-        console.log(file.fileName);
-        
-        })
-
 function trace(text) {
   // This function is used for logging.
   if (text[text.length - 1] == '\n') {

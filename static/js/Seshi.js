@@ -94,13 +94,16 @@ Seshi = {
                         #   of objects. Seshi updates it's 'cache' of the latest file 
                         #   list by Appending the list to Seshi.getLocalFileList. 
                         */
-                        var LocalFilesListWorker= new Worker('js/workers/getLocalFilesList.js');
-                        LocalFilesListWorker.postMessage({'cmd':'listFilesMeHearty'});
-                        //Act of response from worker (the list of files)
-                        LocalFilesListWorker.onmessage = function(event) {
-                        console.log("Updating list of local files. Type: Seshi.localFileList for updated list");
-                        localStorage.setItem("localFilesList", JSON.stringify(event.data.fileList));
-                        }
+                        var promise = new Promise (function(resolve, reject) {
+                            var LocalFilesListWorker= new Worker('js/workers/getLocalFilesList.js');
+                            LocalFilesListWorker.postMessage({'cmd':'listFilesMeHearty'});
+                            //Act of response from worker (the list of files)
+                            LocalFilesListWorker.onmessage = function(event) {
+                                console.log("Updating list of local files. Type: Seshi.localFileList for updated list");
+                                resolve(localStorage.setItem("localFilesList", JSON.stringify(event.data.fileList)));
+                            }
+                        });
+                            return promise;
                        },
     deleteFile:function(){
                         /* Delete File From Seshi database given fileId */

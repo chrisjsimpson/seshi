@@ -1,4 +1,0 @@
-
-Storing in IndexedDB:
-
-FileId      -   FileName    -   ChunkNumber

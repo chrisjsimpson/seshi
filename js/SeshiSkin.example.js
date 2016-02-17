@@ -62,9 +62,15 @@ function share(event) {
 }
 
 function refreshFileList() {
-    Seshi.updateLocalFilesList();
-    alert("Refreshing file list..");
-    window.setTimeout(displayFiles(), 5000);
+    var fileTable = document.getElementById('fileTable');
+        fileTable.innerHTML = 'Refreshing file list.. <br /><img src="/img/Ajax-loader.gif" />';
+    
+    // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
+    Seshi.updateLocalFilesList().then( // .then() we know the .localFileList cache is updated, so we display the fresh list.
+            function(complete){
+                displayFiles();   
+            });
+
 }
 
 function storeFile(fileList){

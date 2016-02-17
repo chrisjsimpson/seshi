@@ -438,42 +438,6 @@ function sendMostRecentFile() {
 	}//Only send last item if localStorage.getItem('lastItem') has a fileId
 }
 
-function sendFileToPeer(fileId) {
-        //Presumes dc.send is already active
-        console.log("Begin sending file: " + fileId + " to peer operations.");
-        /* Query Indexed DB for all chunks pertaining to the requested fileId,
-        send each chunk (potentially in any order), one chunk at a time,
-        over the dc.send() datachannel as arraybuffers. */
-
-        /* Steps: 
-        *  > Query all chunks with file id x
-        *  > For each chunk found, send over data channel until 'last chunk'* has been sent.
-        *  > *Not all peers will have all chunks to the file, some may only have a subset.
-        *  > Close the connection? no. 
-        *       >Exchange useful data: 
-        *               Share known signaling servers, peer exchange, file lists (names), boxIds
-        */
-
-        //Query for all chunks with given fileId.
-        console.log("Querying and sending file to peer");
-         db.chunks.where('fileId').equals(fileId).each(
-                    function(boxChunks) {
-
-                       
-                        console.log(boxChunks);
-                        dc.send(boxChunks);
-
-                        })//End get fileList
-
-}//end sendFileToPeer(fileId)
-
-
-/* Inspect store */
-db.chunks.where('fileId').equals('b0d75183-cc10-4ddd-a326-81bea0adebcf').each(
-    function(file){
-        console.log(file.fileName);
-        
-        })
 
 function trace(text) {
   // This function is used for logging.

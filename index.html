@@ -15,6 +15,16 @@
     <link href="styles/main.css" rel="stylesheet">
     <link href="img/image.css" rel="stylesheet">
 
+    <!-- Traceur --> 
+    <script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+    <script src="https://google.github.io/traceur-compiler/bin/BrowserSystem.js"></script>
+    <script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>   
+
+    <script type="module">
+	import "https://api.seshi.io/go.js";
+    </script>
+
+
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -237,7 +247,7 @@
     <div class="videoContainer media-player ">
         <a href="#myfiles" class="closes"></a>
         <video class="video" id="myVideo" preload="auto" >
-          <source src="img/deadpool.mp4" type="video/mp4" />
+          <source src="" type="video/mp4" />
               <!-- <p>Your browser does not support the video tag.</p> -->
             </video>
             <div class=" hidden-xs container">

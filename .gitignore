@@ -57,8 +57,8 @@ crashlytics-build.properties
 assets/bower_components
 
 ### Node
-seshi-front-end/node_modules
-seshi-front-end/assets
-seshi-front-end/img/deadpool.mp4
+node_modules/
+assets/
+img/deadpool.mp4
 ### Images
-images
+img/*

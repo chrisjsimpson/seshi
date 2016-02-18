@@ -81,6 +81,189 @@ Seshi = {
                         }
                         return retVal;
     },
+    connect:function() {
+                        /* Connect()
+                         *
+                         * - Iniciate connection, send key to signal server and poll for recivers Ice Candidate messages -
+                        */
+                        var failureCB = (typeof failureCB === 'function') || function() {};
+                        // Handle connection response, which should be error or status
+                        //  of "connected" or "waiting"
+                          function handler() {
+                            if(this.readyState == this.DONE) {
+                              if(this.status == 200 && this.response != null) {
+                                var res = JSON.parse(this.response);
+                                if (res.err) {
+                                  failureCB("error:  " + res.err);
+                                  return;
+                                }
+                                // if no error, save status and server-generated id,
+                                // then start asynchronouse polling for messages
+                                id = res.id;
+                                status = res.status;
+                                Seshi.poll();
+                                // run user-provided handlers for waiting and connected
+                                // states
+                                if (status === "waiting") {
+                                    Seshi.onWaiting(); 
+                                } else {
+                                    Seshi.onConnected(); 
+                                }
+                                return;
+                               } else {
+                                        failureCB("HTTP error:  " + this.status);
+                                        return;
+                                      }
+                           }
+                       }//End handler
+                        // open XHR and send the connection request with the key
+                        var client = new XMLHttpRequest();
+                        client.onreadystatechange = handler;
+                        client.open("GET", "http://signal.seshi.io/connect?key=" + '123');
+                        client.send();
+    },
+    poll:function() {
+                        /* Poll()
+                        * - Poll signaling server for Ice candidates from peer -
+                        */
+                        var msgs;
+                        var pollWaitDelay = (function() {
+                        var delay = 10, counter = 1;
+
+                        function reset() {
+                          delay = 10;
+                          counter = 1;
+                        }
+
+                        function increase() {
+                          counter += 1;
+                          if (counter > 20) {
+                            delay = 1000;
+                          } else if (counter > 10) {
+                            delay = 100;
+                          }                          // else leave delay at 10
+                        }
+
+                        function value() {
+                          return delay;
+                        }
+
+                        return {reset: reset, increase: increase, value: value};
+                        }());
+                        //getLoop is defined and used immediately here.  It retrieves
+                        // messages from the server and then schedules itself to run
+                        // again after pollWaitDelay.value() milliseconds.
+                        (function getLoop() {
+                            Seshi.get(function (response) {
+                            var i, msgs = (response && response.msgs) || [];
+
+                            // if messages property exists, then we are connected   
+                            if (response.msgs && (status !== "connected")) {
+                                // switch status to connected since it is now!
+                                status = "connected";
+                                Seshi.onConnected();
+                                }
+                            if (msgs.length > 0) {           // we got messages
+                                pollWaitDelay.reset();
+                                for (i=0; i<msgs.length; i+=1) {
+                                    handleMessage(msgs[i]);
+                                }
+                            } else {                         // didn't get any messages
+                                pollWaitDelay.increase();
+                            }
+                          // now set timer to check again
+                          setTimeout(getLoop, pollWaitDelay.value());
+                        });
+                      }());
+    },
+    get:function(getResponseHandler) {
+                        /* get() 
+                        * This function is part of the polling setup to check for
+                        * messages om the other browser.  It is called by getLoop()
+                        * inside poll().
+                        */
+                        function handler() {
+                            if(this.readyState == this.DONE) {
+                                if(this.status == 200 && this.response != null) {
+                                    var res = JSON.parse(this.response);
+                                if (res.err) {
+                                    getResponseHandler("error:  " + res.err);
+                                    return;
+                                }
+                                getResponseHandler(res);
+                                return res;
+                            } else {
+                                getResponseHandler("HTTP error:  " + this.status);
+                                return;
+                          }
+                        }
+                      }
+                      // open XHR and request messages for my id
+                      var client = new XMLHttpRequest();
+                      client.onreadystatechange = handler;
+                      client.open("POST", "http://signal.seshi.io/get");
+                      client.send(JSON.stringify({"id":id}));
+    },
+    onConnected:function() {
+                        /* onConnected() handler */
+                        console.log("onConnected called");
+                        //Update UI with connecting / fire event..??
+                        // set up the RTC Peer Connection since we're connected
+                        Seshi.createPC();
+    },
+    createPC:function() {
+                        /* createPC()
+                        * Create RTC peer connection (called by Seshi.onConnected)
+                        *
+                        */
+                        var stunuri = true,
+                        turnuri = false,
+                        myfalse = function(v) {
+                            return ((v==="0")||(v==="false")||(!v)); },
+                        config = new Array();
+                        queryparams = '';
+
+                        // adjust config string based on any query params
+                        if (queryparams) {
+                            if ('stunuri' in queryparams) {
+                                stunuri = !myfalse(queryparams['stunuri']);
+                            }
+                            if ('turnuri' in queryparams) {
+                            turnuri = !myfalse(queryparams['turnuri']);
+                            };
+                        };
+
+                        if (stunuri) {
+                            // this is one of Google's public STUN servers
+                            //config.push({"url":"stun:stun.l.google.com:19302"});
+                            //config.push({"url":"stun:178.62.83.184:3478"});
+                            config.push({"url":"turn:178.62.83.184:3478","username":"my_username","credential":"my_password"});
+                        }
+                      console.log("config = " + JSON.stringify(config));
+                      window.pc = new RTCPeerConnection({iceServers:config});
+                      window.pc.onicecandidate = onIceCandidate;
+                      window.pc.onaddstream = onRemoteStreamAdded;
+                      window.pc.onremovestream = onRemoteStreamRemoved;
+                      window.pc.ondatachannel = onDataChannelAdded;
+                      window.pc.oniceconnectionstatechange = onIceconnectionStateChanged;
+    },
+    onWaiting: function() {
+                        console.log("status: Waiting"); //setStatus("Waiting");
+                        // weWaited will be used for auto-call
+                        weWaited = true;
+                        function gotPeerDescription(localSDPOffer) {
+                            console.log("The Local SDP is: " + localSDPOffer);
+                        }//End gotPeerDescription(localSDP)
+    },
+    call: function() {
+                        /* call()
+                        * - Can only bee called once connected (when both peers know how to find each other) 
+                        * - Create a datachannel connection between them
+                        */
+                        dc = pc.createDataChannel('chat');
+                        setupDataHandlers();
+                        pc.createOffer(gotDescription, doNothing, constraints);
+    },
     updateLocalFilesList: function() {
                         /* 
                         #   UpdateLocalFilesList() 

@@ -15411,6 +15411,35 @@ img::-moz-selection {
   background: transparent;
 }
 
+.col-xs-15 {
+  width: 20%;
+  float: left;
+}
+
+@media (min-width: 767px) {
+  .col-sm-15 {
+    width: 20%;
+    float: left;
+  }
+  .col-sm-2 {
+    width: 16.66667%;
+  }
+}
+
+@media (min-width: screen-sm-max) {
+  .col-md-15 {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-lg-15 {
+    width: 20%;
+    float: left;
+  }
+}
+
 /* Font Awesome overrides */
 /*!
  *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
@@ -17763,13 +17792,13 @@ img::-moz-selection {
   content: "";
 }
 
-.button--winona > span, .button--winona::after {
+.button--winona > span, .button--winona::after, .progress-button svg.checkmark path, .progress-button svg.cross path {
   padding: 1em 2em;
   transition: transform 0.3s, opacity 0.3s;
   transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-.button--tamaya::before, .button--tamaya::after {
+.button--tamaya::before, .button--tamaya::after, .loading.progress-button span, .success.progress-button span, .error.progress-button span {
   content: attr(data-text);
   position: absolute;
   width: 100%;
@@ -17782,13 +17811,13 @@ img::-moz-selection {
   transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-.button--rayen > span, .button--rayen::before {
+.button--rayen > span, .button--rayen::before, .success.progress-button button, .error.progress-button button {
   padding: 1em 2em;
   transition: transform 0.3s;
   transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 
-.button--pipaluk::before, .button--pipaluk::after {
+.button--pipaluk::before, .button--pipaluk::after, .loading.progress-button svg.progress-circle path, .success.progress-button svg.checkmark path, .error.progress-button svg.cross path {
   content: '';
   border-radius: inherit;
   position: absolute;
@@ -19553,7 +19582,7 @@ label {
 .myfiles {
   padding-left: 30px;
   padding-right: 30px;
-  padding-top: 70px;
+  padding-top: 20px;
   padding-bottom: 70px;
   margin-bottom: 0;
 }
@@ -19718,6 +19747,313 @@ a {
   color: #ff3333;
 }
 
+.icon-link {
+  width: 60px;
+  height: 60px;
+  background-color: #666;
+  line-height: 60px;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  margin: 0 auto;
+  margin-left: 40px;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.icon-link.fill.facebook {
+  background-color: #3b5998;
+}
+
+.icon-link.fill.facebook:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.facebook:hover .fa-facebook {
+  color: #3b5998;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.linkedin {
+  background-color: #007bb6;
+}
+
+.icon-link.fill.linkedin:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.linkedin:hover .fa-linkedin {
+  color: #007bb6;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.twitter {
+  background-color: #00aced;
+}
+
+.icon-link.fill.twitter:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.twitter:hover .fa-twitter {
+  color: #00aced;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.skype {
+  background-color: #009EE5;
+}
+
+.icon-link.fill.skype:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.skype:hover .fa-skype {
+  color: #009EE5;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.google-plus {
+  background-color: #dd4b39;
+}
+
+.icon-link.fill.google-plus:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.google-plus:hover .fa-google-plus {
+  color: #dd4b39;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.reddit {
+  background-color: #8bbbe3;
+}
+
+.icon-link.fill.reddit:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.reddit:hover .fa-reddit {
+  color: #8bbbe3;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.youtube {
+  background-color: #df1c31;
+}
+
+.icon-link.fill.youtube:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.youtube:hover .fa-youtube {
+  color: #df1c31;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.github {
+  background-color: #444;
+}
+
+.icon-link.fill.github:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.github:hover .fa-github {
+  color: #444;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.envelope {
+  background-color: #333;
+}
+
+.icon-link.fill.envelope:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.envelope:hover .fa-envelope {
+  color: #333;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.slack {
+  background-color: #78D4B6;
+}
+
+.icon-link.fill.slack:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.slack:hover .fa-slack {
+  color: #78D4B6;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.fill.whatsapp {
+  background-color: #25D366;
+}
+
+.icon-link.fill.whatsapp:hover {
+  background-color: #fff;
+}
+
+.icon-link.fill.whatsapp:hover .fa-whatsapp {
+  color: #25D366;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link.round {
+  border-radius: 50%;
+}
+
+.icon-link.round-corner {
+  border-radius: 50%;
+}
+
+.icon-link:hover {
+  -moz-transition: background-color 150ms ease-in-out;
+  -o-transition: background-color 150ms ease-in-out;
+  -webkit-transition: background-color 150ms ease-in-out;
+  transition: background-color 150ms ease-in-out;
+  background-color: #fff;
+}
+
+.icon-link:hover .fa-facebook {
+  color: #3b5998;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-linkedin {
+  color: #007bb6;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-twitter {
+  color: #00aced;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-skype {
+  color: #009EE5;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-google-plus {
+  color: #dd4b39;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-reddit {
+  color: #8bbbe3;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-youtube {
+  color: #df1c31;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-github {
+  color: #444;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-envelope {
+  color: #333;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-slack {
+  color: #78D4B6;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link:hover .fa-whatsapp {
+  color: #25D366;
+  -moz-transition: color 150ms ease-in-out;
+  -o-transition: color 150ms ease-in-out;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+
+.icon-link .fa {
+  color: #fff;
+  line-height: 60px;
+  font-size: 36px;
+}
+
+.icon-link .fa-slack {
+  font-size: 30px;
+}
+
 @media (min-width: 1200px) {
   .btn-send {
     margin-top: 20px;
@@ -19767,6 +20103,20 @@ a {
 }
 
 @media (max-width: 767px) {
+  .icon-link {
+    margin-left: 0;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+  }
+  .icon-link .fa {
+    color: #fff;
+    line-height: 45px;
+    font-size: 27px;
+  }
+  .icon-link .fa-slack {
+    font-size: 22.5px;
+  }
   .generateInput {
     margin-left: 0;
     margin: 0 auto;
@@ -19777,6 +20127,10 @@ a {
     padding-left: 30px;
     padding-right: 30px;
     font-size: 13px;
+  }
+  .btn-generate-key {
+    width: 180px;
+    margin-bottom: 35px;
   }
 }
 
@@ -22224,6 +22578,120 @@ a {
   }
 }
 
+@font-face {
+  font-weight: normal;
+  font-style: normal;
+  font-family: 'codropsicons';
+  src: url("../fonts/codropsicons.eot");
+  src: url("../fonts/codropsicons.eot?#iefix") format("embedded-opentype"), url("../fonts/codropsicons.woff") format("woff"), url("../fonts/codropsicons.ttf") format("truetype"), url("../fonts/codropsicons.svg#codropsicons") format("svg");
+}
+
+.button--winona > span, .button--winona::after, .progress-button svg.checkmark path, .progress-button svg.cross path {
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-width: 4;
+  transition: opacity 0.1s;
+}
+
+.button--tamaya::before, .button--tamaya::after, .loading.progress-button span, .success.progress-button span, .error.progress-button span {
+  opacity: 0;
+}
+
+.button--rayen > span, .button--rayen::before, .success.progress-button button, .error.progress-button button {
+  transition: background-color 0.3s, width 0.3s, border-width 0.3s;
+}
+
+.button--pipaluk::before, .button--pipaluk::after, .loading.progress-button svg.progress-circle path, .success.progress-button svg.checkmark path, .error.progress-button svg.cross path {
+  opacity: 1;
+  transition: stroke-dashoffset 0.3s;
+}
+
+.progress-button {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  width: 45%;
+  min-width: 250px;
+  margin: 10px;
+}
+
+.progress-button button {
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  width: 250px;
+  height: 70px;
+  border: 2px solid #1ecd97;
+  border-radius: 40px;
+  background: transparent;
+  color: #1ecd97;
+  letter-spacing: 1px;
+  font-size: 18px;
+  font-family: Montserrat, sans-serif;
+  transition: background-color 0.3s, color 0.3s, width 0.3s, border-width 0.3s, border-color 0.3s;
+}
+
+.progress-button button:hover {
+  background-color: #1ecd97;
+  color: #fff;
+}
+
+.progress-button button:focus {
+  outline: none;
+}
+
+.progress-button button span {
+  transition: opacity 0.3s 0.1s;
+}
+
+.progress-button svg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.progress-button svg path {
+  opacity: 0;
+  fill: none;
+}
+
+.progress-button svg.progress-circle path {
+  stroke: #1ecd97;
+  stroke-width: 5;
+}
+
+.loading.progress-button button {
+  width: 70px;
+  border-width: 5px;
+  border-color: #ddd;
+  background-color: transparent;
+  color: #fff;
+}
+
+.loading.progress-button span {
+  transition: opacity 0.15s;
+}
+
+.loading.elastic.progress-button button {
+  transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.6, -0.6, 0.75, 0.75), border-width 0.3s, border-color 0.3s;
+}
+
+.success.progress-button button {
+  border-color: #1ecd97;
+  background-color: #1ecd97;
+}
+
+.error.progress-button button {
+  border-color: #fb797e;
+  background-color: #fb797e;
+}
+
+.elastic.progress-button button {
+  transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.25, 0.25, 0.4, 1.6), border-width 0.3s, border-color 0.3s;
+}
+
 .videoContainer {
   position: relative;
   height: 5%;
@@ -22245,10 +22713,9 @@ a {
 }
 
 .video {
-  height: auto;
   width: 100%;
+  height: 100vh;
   margin: 0 auto;
-  margin-top: 30px;
 }
 
 .caption {

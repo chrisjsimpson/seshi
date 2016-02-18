@@ -52,7 +52,7 @@ var paths = {
 
     /* Output paths */
     stylesOutput: 'styles',
-    scriptsOutput: 'js/ui',
+    scriptsOutput: 'ui/ui',
     imagesOutput: 'images',
     fontsOutput: 'fonts'
 };
@@ -152,6 +152,6 @@ gulp.task('clean', function(cb) {
     del([paths.stylesOutput, paths.scriptsOutput, paths.imagesOutput, paths.fontsOutput], cb)
 });
 
-gulp.task('default', ['clean'], function() {
+gulp.task('default', function() {
     gulp.start('styles', 'scripts', 'fonts', 'watch');
 });

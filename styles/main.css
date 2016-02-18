@@ -15272,6 +15272,22 @@ footer {
   background: #222;
 }
 
+footer a {
+  color: #bbb;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+footer a:hover, footer a:focus {
+  text-decoration: none;
+  color: #ddd;
+}
+
+.copyright {
+  font-size: 14px;
+}
+
 @media (min-width: 767px) {
   .content-section {
     padding-top: 250px;

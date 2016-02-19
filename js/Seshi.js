@@ -54,6 +54,28 @@ Seshi = {
                         '#          > Seshi.connect() -- Establish connection between peers\n' +
                         '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n' 
             ); return "🚀 🚀  Keep calm & Seshi on! 🚀 🚀"},
+    connect: function() {
+                        /* Connect()
+                         *
+                         * Calls index.js Connect
+                         * Crude call to older code.. 
+                         *
+                         * Connect() is used to establish the signalling channel. 
+                         * Once established, call() can be executed to begin a datachannel connection.
+                         */
+                        connect();
+    },
+    call: function() {
+                        /* 
+                         * Call()
+                         * - Creates and sets up the datachannel 
+                         * (can only be done *after* a signalling channel is established
+                         * using connect()
+                         *
+                         * Crude call to older code.. 
+                         * */
+                         call();
+    },
     connectionStatus:{
                         iceConnectionState:function(){
                             if (typeof pc == "undefined") { 

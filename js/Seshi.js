@@ -1541,4 +1541,3 @@ function getShareLink() {
 	var key = document.getElementById('key').value;
 	return document.location.origin + '/?key=' + key;
 }
->>>>>>> callIndex.jsConnectFromseshiAmpi

@@ -19731,7 +19731,7 @@ a {
   color: #444;
 }
 
-.file-item .fa-arrow-down, .file-item .fa-trash {
+.file-item .fa-arrow-down, .file-item .fa-trash, .file-item .fa-times {
   width: 22px;
   height: 22px;
   color: #555;
@@ -19747,18 +19747,18 @@ a {
   cursor: pointer;
 }
 
-.file-item .fa-arrow-down:hover, .file-item .fa-trash:hover {
+.file-item .fa-arrow-down:hover, .file-item .fa-trash:hover, .file-item .fa-times:hover {
   color: #555;
   background: #aaa;
 }
 
-.file-item .fa-trash {
+.file-item .fa-trash, .file-item .fa-times {
   padding-top: 4px;
   padding-right: 4px;
   padding-left: 6px;
 }
 
-.file-item .fa-trash:hover {
+.file-item .fa-trash:hover, .file-item .fa-times:hover {
   background: #ccc;
   color: #ff3333;
 }
@@ -20068,6 +20068,73 @@ a {
 
 .icon-link .fa-slack {
   font-size: 30px;
+}
+
+.progress1 {
+  width: 100%;
+  height: 50px;
+}
+
+.progress-wrap {
+  background: #f80;
+  margin: 20px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-wrap .progress-bar1 {
+  background: #ddd;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.uploading.active .progress-bar1, .progress-bar1.active {
+  -webkit-animation: progress-bar-stripes 2s linear infinite;
+  -o-animation: progress-bar-stripes 2s linear infinite;
+  animation: progress-bar-stripes 2s linear infinite;
+}
+
+.uploading {
+  height: 10px;
+  width: 100%;
+  position: relative;
+  margin-top: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
+
+.uploading span {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  border-radius: 10px;
+}
+
+.uploading-item {
+  background: rgba(194, 227, 120, 0.8);
+}
+
+#percentupload {
+  margin-top: 2px;
+}
+
+.uploadbar {
+  z-index: 10;
+  width: 2%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 7px rgba(255, 255, 255, 0.7);
+}
+
+.progress-bar1 {
+  height: 34px;
+  width: 100%;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 @media (min-width: 1200px) {

@@ -43,7 +43,6 @@ function play(event) {
     fileId = event.target.dataset.id;
     Seshi.play(fileId, "mediaInput");
     //Scroll to media player
-    smoothScroll('player');
 }
 
 function download(event) {

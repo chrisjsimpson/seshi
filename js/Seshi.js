@@ -67,6 +67,19 @@ Seshi = {
                             } else { 
                                 return dc.readyState }
                         }
+                        
+    },
+    signalingStatus:'',
+    getSignalingStatus: function() {
+                        /* getSignalingStatus 
+                        * Simply return current status of signaling connection
+                        */
+                        return Seshi.signalingStatus;
+    },
+    setSignalingStatus: function(statusMsg) {
+                        /* setSignalingStatus()
+                         * Set signalling status (upon a change in signaling) */
+                        Seshi.signalingStatus = statusMsg;
     },
     generateKey:function() {
                         /* Generate connection key 
@@ -81,60 +94,146 @@ Seshi = {
                         }
                         return retVal;
     },
-    connect:function() {
-                        /* Connect()
-                         *
-                         * - Iniciate connection, send key to signal server and poll for recivers Ice Candidate messages -
+    connect: function() {
+                        /* Seshi.Connect()
+                        *   - Set up peer connection -
                         */
-                        var failureCB = (typeof failureCB === 'function') || function() {};
-                        // Handle connection response, which should be error or status
-                        //  of "connected" or "waiting"
-                          function handler() {
-                            if(this.readyState == this.DONE) {
-                              if(this.status == 200 && this.response != null) {
-                                var res = JSON.parse(this.response);
-                                if (res.err) {
-                                  failureCB("error:  " + res.err);
-                                  return;
-                                }
+                        var errorCB, scHandlers, handleMsg;
+
+                        // First, get the key used to connect
+                        key = document.getElementById("key").value;
+                        // This is the handler for all messages received on the
+                        // signaling channel.
+                        handleMsg = function (msg) {
+                        // First, we clean up the message and post it on-screen
+                        var msgE = document.getElementById("inmessages");
+                        var msgString = JSON.stringify(msg).replace(/\\r\\n/g,'\n');
+                        msgE.value = msgString + "\n" + msgE.value;
+
+                        // Then, we take action based on the kind of message
+                        if (msg.type === "offer") {
+                          pc.setRemoteDescription(new RTCSessionDescription(msg,
+                                            function(){console.log("Sucess setRemoteDescription offer on connect()..");},
+                                            function(){console.log("Failed setRemoteDescription offer on connect()...");}));
+                          answer();
+                        } else if (msg.type === "answer") {
+                          pc.setRemoteDescription(new RTCSessionDescription(msg,
+                                            function(){console.log("Sucess setRemoteDescription answer on connect..");},
+                                            function(){console.log("Failed setRemoteDescription answer on connect...");}));
+                        } else if (msg.type === "candidate") {
+                          pc.addIceCandidate(
+                            new RTCIceCandidate({sdpMLineIndex:msg.mlineindex,
+                                                 candidate:msg.candidate}),
+                                    function(){console.log("Add iceCandidate sucess on connect() call..");},
+                                    function(){console.log("error accing iceCanditation on connect() call..");});
+                        }
+                        };
+
+                        // handlers for signaling channel
+                        scHandlers = {
+                        'onWaiting' : function () {
+                          Seshi.setSignalingStatus("Waiting");
+                          // weWaited will be used for auto-call
+                          weWaited = true;
+                            //Get localDescription ready to send to Peer Signaling server
+                            //pc.createOffer
+                            function gotPeerDescription(localSDPOffer) {
+                                    console.log("The Local SDP is: " + localSDPOffer);
+                            }//End gotPeerDescription(localSDP)
+                            //pc.createOffer(gotPeerDescription);
+                        },
+                        'onConnected': function () {
+                          Seshi.setSignalingStatus("Connected");
+                          // set up the RTC Peer Connection since we're connected
+                          Seshi.createPC();
+                        },
+                        'onMessage': handleMsg
+                        };
+
+                        // Finally, create signaling channel
+                        signalingChannel = Seshi.createSignalingChannel(key, scHandlers);
+                        errorCB = function (msg) {
+                        document.getElementById("response").innerHTML = msg;
+                        };
+
+                        // and connect.
+                        signalingChannel.connect(errorCB);
+    },
+    createSignalingChannel:function(key, handlers) {
+                        /* Create signalling channel 
+                        * This function is called by Seshi.connect()
+                        * Takes handlers to manage connection events, and
+                        * Returns an object with two methods
+                        * connect() & send() <<-- Connect is not to be 
+                        * confused with Seshi.connect()
+                        */
+
+
+                        var id, status, doNothing = function(){},
+                        handlers = handlers || {},
+                        initHandler = function(h) {
+                            return ((typeof h === 'function') && h) || doNothing;
+                        },
+                        waitingHandler = initHandler(handlers.onWaiting),
+                        connectedHandler = initHandler(handlers.onConnected),
+                        messageHandler = initHandler(handlers.onMessage);
+
+
+                        // Set up connection with signaling server
+                        function connect(failureCB) {
+                                var failureCB = (typeof failureCB === 'function') ||
+                                          function() {};
+                            // Handle connection response, which should be error or status
+                            //  of "connected" or "waiting"
+                            function handler() {
+                                if(this.readyState == this.DONE) {
+                                    if(this.status == 200 && this.response != null) {
+                                        var res = JSON.parse(this.response);
+                                    if (res.err) {
+                                        failureCB("error:  " + res.err);
+                                        return;
+                                    }
+
                                 // if no error, save status and server-generated id,
                                 // then start asynchronouse polling for messages
                                 id = res.id;
                                 status = res.status;
-                                Seshi.poll();
+                                poll();
                                 // run user-provided handlers for waiting and connected
                                 // states
                                 if (status === "waiting") {
-                                    Seshi.onWaiting(); 
+                                  waitingHandler();
                                 } else {
-                                    Seshi.onConnected(); 
+                              connectedHandler();
                                 }
                                 return;
-                               } else {
-                                        failureCB("HTTP error:  " + this.status);
-                                        return;
-                                      }
-                           }
-                       }//End handler
-                        // open XHR and send the connection request with the key
-                        var client = new XMLHttpRequest();
-                        client.onreadystatechange = handler;
-                        client.open("GET", "http://signal.seshi.io/connect?key=" + '123');
-                        client.send();
-    },
-    poll:function() {
-                        /* Poll()
-                        * - Poll signaling server for Ice candidates from peer -
-                        */
-                        var msgs;
-                        var pollWaitDelay = (function() {
+                              } else {
+                                failureCB("HTTP error:  " + this.status);
+                                return;
+                              }
+                            }
+                          }
+
+                          // open XHR and send the connection request with the key
+                                 var client = new XMLHttpRequest();
+                                 client.onreadystatechange = handler;
+                                 client.open("GET", "http://signal.seshi.io/connect?key=" + key);
+                                 client.send();
+                    }//End connect()
+
+
+                    // poll() waits n ms between gets to the server.  n is at 10 ms
+                    // for 10 tries, then 100 ms for 10 tries, then 1000 ms from then
+                    // on. n is reset to 10 ms if a message is actually received.
+                    function poll() {
+                      var msgs;
+                      var pollWaitDelay = (function() {
                         var delay = 10, counter = 1;
 
                         function reset() {
                           delay = 10;
                           counter = 1;
                         }
-
                         function increase() {
                           counter += 1;
                           if (counter > 20) {
@@ -149,67 +248,111 @@ Seshi = {
                         }
 
                         return {reset: reset, increase: increase, value: value};
-                        }());
-                        //getLoop is defined and used immediately here.  It retrieves
-                        // messages from the server and then schedules itself to run
-                        // again after pollWaitDelay.value() milliseconds.
-                        (function getLoop() {
-                            Seshi.get(function (response) {
-                            var i, msgs = (response && response.msgs) || [];
+                      }());
 
-                            // if messages property exists, then we are connected   
-                            if (response.msgs && (status !== "connected")) {
-                                // switch status to connected since it is now!
-                                status = "connected";
-                                Seshi.onConnected();
-                                }
-                            if (msgs.length > 0) {           // we got messages
-                                pollWaitDelay.reset();
-                                for (i=0; i<msgs.length; i+=1) {
-                                    handleMessage(msgs[i]);
-                                }
-                            } else {                         // didn't get any messages
-                                pollWaitDelay.increase();
+                      // getLoop is defined and used immediately here.  It retrieves
+                      // messages from the server and then schedules itself to run
+                      // again after pollWaitDelay.value() milliseconds.
+                      (function getLoop() {
+                        get(function (response) {
+                          var i, msgs = (response && response.msgs) || [];
+
+                          // if messages property exists, then we are connected   
+                          if (response.msgs && (status !== "connected")) {
+                            // switch status to connected since it is now!
+                            status = "connected";
+                            connectedHandler();
+                          }
+                          if (msgs.length > 0) {           // we got messages
+                            pollWaitDelay.reset();
+                            for (i=0; i<msgs.length; i+=1) {
+                              handleMessage(msgs[i]);
                             }
+                          } else {                         // didn't get any messages
+                            pollWaitDelay.increase();
+                          }
+
                           // now set timer to check again
                           setTimeout(getLoop, pollWaitDelay.value());
                         });
                       }());
-    },
-    get:function(getResponseHandler) {
-                        /* get() 
-                        * This function is part of the polling setup to check for
-                        * messages om the other browser.  It is called by getLoop()
-                        * inside poll().
-                        */
-                        function handler() {
-                            if(this.readyState == this.DONE) {
-                                if(this.status == 200 && this.response != null) {
-                                    var res = JSON.parse(this.response);
-                                if (res.err) {
-                                    getResponseHandler("error:  " + res.err);
-                                    return;
-                                }
-                                getResponseHandler(res);
-                                return res;
-                            } else {
-                                getResponseHandler("HTTP error:  " + this.status);
-                                return;
+                    } //End poll()
+
+
+
+                    // This function is part of the polling setup to check for
+                    // messages from the other browser.  It is called by getLoop()
+                    // inside poll().
+                    function get(getResponseHandler) {
+
+                      // response should either be error or a JSON object.  If the
+                      // latter, send it to the user-provided handler.
+                      function handler() {
+                        if(this.readyState == this.DONE) {
+                          if(this.status == 200 && this.response != null) {
+                            var res = JSON.parse(this.response);
+                            if (res.err) {
+                              getResponseHandler("error:  " + res.err);
+                              return;
+                            }
+                            getResponseHandler(res);
+                            return res;
+                          } else {
+                            getResponseHandler("HTTP error:  " + this.status);
+                            return;
                           }
                         }
                       }
+
                       // open XHR and request messages for my id
                       var client = new XMLHttpRequest();
                       client.onreadystatechange = handler;
                       client.open("POST", "http://signal.seshi.io/get");
                       client.send(JSON.stringify({"id":id}));
-    },
-    onConnected:function() {
-                        /* onConnected() handler */
-                        console.log("onConnected called");
-                        //Update UI with connecting / fire event..??
-                        // set up the RTC Peer Connection since we're connected
-                        Seshi.createPC();
+                    }
+
+
+                    // Schedule incoming messages for asynchronous handling.
+                    // This is used by getLoop() in poll().
+                    function handleMessage(msg) {   // process message asynchronously
+                      setTimeout(function () {messageHandler(msg);}, 0);
+                    }
+
+
+                    // Send a message to the other browser on the signaling channel
+                    function send(msg, responseHandler) {
+                      var reponseHandler = responseHandler || function() {};
+
+                      // parse response and send to handler
+                      function handler() {
+                        if(this.readyState == this.DONE) {
+                          if(this.status == 200 && this.response != null) {
+                            var res = JSON.parse(this.response);
+                            if (res.err) {
+                              responseHandler("error:  " + res.err);
+                              return;
+                            }
+                            responseHandler(res);
+                            return;
+                          } else {
+                            responseHandler("HTTP error:  " + this.status);
+                            return;
+                          }
+                        }
+                      }
+
+                      // open XHR and send my id and message as JSON string
+                      var client = new XMLHttpRequest();
+                      client.onreadystatechange = handler;
+                      client.open("POST", "http://signal.seshi.io/send");
+                      var sendData = {"id":id, "message":msg};
+                      client.send(JSON.stringify(sendData));
+                    }
+
+                    return {
+                      connect:  connect,
+                      send:  send
+                    };
     },
     createPC:function() {
                         /* createPC()
@@ -241,19 +384,66 @@ Seshi = {
                         }
                       console.log("config = " + JSON.stringify(config));
                       window.pc = new RTCPeerConnection({iceServers:config});
-                      window.pc.onicecandidate = onIceCandidate;
-                      window.pc.onaddstream = onRemoteStreamAdded;
-                      window.pc.onremovestream = onRemoteStreamRemoved;
-                      window.pc.ondatachannel = onDataChannelAdded;
-                      window.pc.oniceconnectionstatechange = onIceconnectionStateChanged;
+                      window.pc.onicecandidate = Seshi.onIceCandidate;
+                      window.pc.onaddstream = Seshi.onRemoteStreamAdded;
+                      window.pc.onremovestream = Seshi.onRemoteStreamRemoved;
+                      window.pc.ondatachannel = Seshi.onDataChannelAdded;
+                      window.pc.oniceconnectionstatechange = Seshi.onIceconnectionStateChanged;
     },
-    onWaiting: function() {
-                        console.log("status: Waiting"); //setStatus("Waiting");
-                        // weWaited will be used for auto-call
-                        weWaited = true;
-                        function gotPeerDescription(localSDPOffer) {
-                            console.log("The Local SDP is: " + localSDPOffer);
-                        }//End gotPeerDescription(localSDP)
+    onIceCandidate: function(e) {
+                        /* onIceCandidate(e) 
+                        - When recived ice candidate from local browser,
+                        *  Send it to peer. 
+                        */
+                        if (e.candidate) {
+                            Seshi.send({type:  'candidate',
+                            mlineindex:  e.candidate.sdpMLineIndex,
+                            candidate:  e.candidate.candidate});
+                        }
+    },
+    onRemoteStreamAdded: function(e) {
+                        console.log("Remote stream was added!");
+    },
+    onIceconnectionStateChanged: function(e) {
+                        console.log("Ice Connection State Change to: " + pc.iceConnectionState);
+    },
+    onDataChannelAdded: function(e) {
+                        /* onDataChannelAdded(e) 
+                         *  - When datachannel comes up
+                        */
+                        statusE = document.getElementById("status"),
+                        statusE.innerHTML = "We are connected!";
+                        dc = e.channel;
+                        console.log("We are connected!");
+                        //sendMostRecentFile();
+                        Seshi.setupDataHandlers();
+                        sendChat("Yolo! Seshi Init.");
+
+                        e.channel.onopen = function(){
+                            //Request file listing from remote peer
+                            Seshi.sendLocalFileListToRemote();
+                        }//Once datachannel is open, send over local file listing
+
+    },
+    send: function() {
+                        /* send() 
+                        * - Send a message over the signalling channel (not peer to peer)
+                        */
+                        var handler = function (res) {
+                            document.getElementById("response").innerHTML = res;
+                            return;
+                        },
+
+                        // Get message if not passed in
+                        msg = msg || document.getElementById("message").value;
+
+                        // Clean it up and post it on-screen
+                        msgE = document.getElementById("outmessages");
+                        var msgString = JSON.stringify(msg).replace(/\\r\\n/g,'\n');
+                        msgE.value = msgString + "\n" + msgE.value;
+
+                        // and send on signaling channel
+                        signalingChannel.send(msg, handler);
     },
     call: function() {
                         /* call()
@@ -261,8 +451,170 @@ Seshi = {
                         * - Create a datachannel connection between them
                         */
                         dc = pc.createDataChannel('chat');
-                        setupDataHandlers();
-                        pc.createOffer(gotDescription, doNothing, constraints);
+                        Seshi.setupDataHandlers();
+                        pc.createOffer(Seshi.gotDescription, doNothing, constraints);
+    },
+    setupDataHandlers: function() {
+                        /* setupDataHandlers()
+                        * - Sets up the datachannal message & I/O handling
+                        *
+                        */
+    data.send = function(msg) {
+        msg = JSON.stringify(msg);
+        console.log("Sending: " + msg + " over data channel");
+        dc.send(msg);
+    }
+    dc.onmessage = function(event) {
+    statusE = document.getElementById("status"),
+    statusE.innerHTML = "We are connected!";
+
+        trace('Received Message: ' + event.data);
+
+        if ( event.data instanceof Array ) {
+                alert('Is array');
+        }
+
+        //Check if message is an array buffer (data)
+        if(event.data instanceof ArrayBuffer || event.data.size){ //event.data.size is for Firefox(automatically transforms data to Blob type
+            console.log('Recieved ArrayBuffer message');
+            //Catch ArrayBuffer sent through the datachannel
+            var blob = new Blob([event.data]);
+
+/* Change this to read the lengthOfMeta, which is always at the start of the blob and is 64 bytes long.
+We might need to reduce the size of the chunks for this to work over STCP!!!
+#########*/
+                //Get length of file meta (size specified is always a zerofilled 64byte long string at the begining of the blob
+                var metaLength = blob.slice(0,81);
+
+                //Read metaLength to get size in bytes of chunk fileMeta
+                var reader2 = new FileReader();
+                reader2.onload = function(file2) {
+                        if ( reader2.readyState == FileReader.DONE ) {
+                                result2 = file2.target.result;
+                                var fileMetaLengthObj = JSON.parse(result2);
+                                var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
+                                window.fileMetaLength = fileMetaLength;
+                                console.log("Meta length is:" + fileMetaLength);
+                                    //Split file meta from begining of chunk (all chunk payloads are 64512 bytes in length)
+                                    var chunkFileMeta = blob.slice(81, window.fileMetaLength + 81); //First get file type, chunk number etc
+                                        var reader = new FileReader();
+                                        reader.onload = function(file) {
+                                                if ( reader.readyState == FileReader.DONE ) {
+                                                        result = file.target.result;
+                                                        if ( result.length > 0 ) {
+                                                                window.curChunk = JSON.parse(result);
+                                                                //Update window with current chunk information
+                                                                var chunkProgresTextBox = document.getElementById('chunkInProgress');
+                                                                var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
+                                                                message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
+                                                                message += " FileName: " + curChunk.fileName;
+                                                                chunkProgresTextBox.value = message;
+
+                                var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
+                                //Update user facing status box
+                                if (chunkProg == 100)
+                                {
+                                    statusMsg = 'Complete!: "' + curChunk.fileName + ' 100%';
+                                } else {
+                                    statusMsg = 'Reciving file: "' + curChunk.fileName + '" Chunk number: ' + curChunk.chunkNumber;
+                                }
+                                statusE = document.getElementById("status"),
+                                statusE.innerHTML = statusMsg;
+                                                                //End extract file meta from blob
+                                                        }//End check read data is > 0
+                                                                //Start send data payload
+                                                                var headerOffset = 81 + window.fileMetaLength;
+                                                                var chunkBlob = blob.slice(headerOffset); //Get chunk payload
+                                                                //Store chunkBlob into IndexedDB
+                                                                addChunkToDb(chunkBlob);
+                                                                //Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing)
+                                                                var url = window.URL.createObjectURL(chunkBlob);
+                                                                console.log(url);
+                                                               //End send data chunk payload
+                                                }//End reader.readtState == DONE
+                                        }//End reader.onload
+                                        reader.readAsText(chunkFileMeta);
+                                        //End extract file meta from blob          
+
+
+                        }//End IF reading byte lenth of fileMeata
+                }//End get bytelength of fileMeta
+                reader2.readAsText(metaLength);
+
+
+        } else { //If not an ArrayBuffer , treat as control packet.
+            if(JSON.parse(event.data))
+            { 
+                fileMeta = JSON.parse(event.data);
+                console.log('Got file meta');
+            }
+        }//End determin if data message or control message.  
+
+
+
+        //Don't JSON.parse is data is already an object ;) 
+        if ( typeof event.data != "object" ) {
+                var msg = JSON.parse(event.data);
+        } else {
+                var msg = event.data;
+        }//End don't parse data message recived if already an object!
+        cb = document.getElementById("chatbox");
+        rtt = document.getElementById("rtt");
+
+
+        //Command & control
+        //Check for remote calls (ie file listing requests) risky!
+        if(msg.cmd) {
+            console.log("Interpreting command from remote peer..");
+            switch (msg.cmd) {
+                case 'sendLocalFileListToRemote': //Request from peer to see filelist
+                    Seshi.sendLocalFileListToRemote(); //Local peer sends its local file lsit to remote 
+                    break;
+                case 'recvRemoteFileList': //Receiving list of files from remote peer
+                    Seshi.recvRemoteFileList(msg);
+                    break;
+            }//Switch on comman requested by remote peer
+        }//End check for command & control message from remote peer
+
+        //Realtime chat
+        if(msg.rtt) {
+        // if real-time-text (per keypress) message, display in 
+        // real-time window 
+        console.log("received rtt of '" + msg.rtt + "'");
+        rtt.value = msg.rtt; msg = msg.rtt;
+        } else if (msg.requestFileId) {
+
+                console.log("Request for file recieved.");
+                //sendFileToPeer(msg.requestFileId);
+
+        } else if (msg.chat) {
+            // if full message, display in chat window,
+            // reset real-time window,
+            // and force chat window to last line 
+            console.log("received chat of '" + msg.chat + "'");
+            cb.value += msg.chat + "\n";
+            cb.scrollTop = cb.scrollHeight; msg = msg.chat;
+            } else if (msg.storeData) {
+                console.log("Received data store message.");
+                //console.log(blobURL);
+
+            } else {
+                console.log("received " + msg + "on data channel");
+                }
+                };
+    },
+    gotDescription: function(localDesc) {
+                        /* gotDescription() 
+                        *  Once browser has generated session description,
+                        * send this local description to the other browser along 
+                        * with any constraints.
+                        */
+                        console.log("Local Description type: " + localDesc.type);
+                        console.log("Local Description sdp: " + localDesc.sdp);
+                        pc.setLocalDescription(localDesc,
+                                    function(){console.log("Sucess setLocalDescription...");},
+                                    function(error){console.log("Failed setLocalDescription...");});
+                        Seshi.send(localDesc);
     },
     updateLocalFilesList: function() {
                         /* 
@@ -540,7 +892,23 @@ setBoxId:function(boxName) {
             return "Seshi.boxId is now set to: " + Seshi.boxId;
 },
 getBoxId:function(){return Seshi.boxId;},
-boxId:'myBoxID'//Defaults to myBoxId
+boxId:'myBoxID',//Defaults to myBoxId
+trace: function(text) {
+            /* trace() 
+            * logging with timestamp
+            */ 
+            if (text[text.length - 1] == '\n') {
+                text = text.substring(0, text.length - 1);
+            }
+            console.log((performance.now() / 1000).toFixed(3) + ": " + text);
+}
 }//End Seshi :'(
 
 Seshi.init();
+
+var signalingChannel, key, id,
+weWaited = false,
+doNothing = function() {},
+pc, dc, data = {},
+constraints = {},
+fileMeta = {};

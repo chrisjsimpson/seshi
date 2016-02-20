@@ -10,9 +10,17 @@ Seshi = {
     init:function(){
                         /* Initialise Seshi
                          *
+                         * > Create all Seshi.events
                          * > Checks for existing Signaling Servers, adds Seshi.io as default
                          * > Updates local file list cache
                         */
+
+                        //Create & register Seshi spesific events
+                        // - Custom Events triggered by Seshi useful to front-end UI development 
+                        // - The events are fired (dispatched) according to their individual case.
+                        console.log("Creating  event: peerConnectionEstablished");
+                        peerConnectionEstablished = new Event('peerConnectionEstablished');
+                        peerConnectionEstablished.initEvent('peerConnectionEstablished', true, true);
                         
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
@@ -503,8 +511,6 @@ function connect() {
       setStatus("Connected");
       // set up the RTC Peer Connection since we're connected
       createPC();
-      //Call after a few ticks (to allow for signaling channel to stabalize) then setup Datachannel
-      window.setTimeout(function(){ call();}, 3000);
     },
     'onMessage': handleMsg
   };
@@ -601,6 +607,10 @@ function onRemoteStreamAdded(e) {
 // When browser alerts of change to Ice connection state
 function onIceconnectionStateChanged(e) {
     console.log("Ice Connection State Change to: " + pc.iceConnectionState);
+    if ( pc.iceConnectionState == 'completed' || pc.iceConnectionState == 'connected') { 
+        //dispatch event peerConnectionEstablished since we now have a peer connection (TODO check datachannel state too!)
+        dispatchEvent(peerConnectionEstablished);
+    }
 }//End onIceconnectionStateChanged
 
 // Yes, we do nothing if the remote side removes the stream.

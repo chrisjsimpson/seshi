@@ -29,10 +29,10 @@ $(document).ready(function() {
 
 
 //Upload bar
-
+/*
 var myVar = setInterval(function() {
   myTimer()
-}, 1);
+}, 1); TODO use events, this runs once every millisecond (extreemly. cpu intensive :O ) 
 var count = 2;
 
 function myTimer() {
@@ -48,3 +48,4 @@ function myTimer() {
 
   }
 }
+*/

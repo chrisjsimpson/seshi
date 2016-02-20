@@ -17,7 +17,8 @@
 generateKeyBtn = document.getElementById('setKey');
 generateKeyBtn.addEventListener('click', createShareUrl, false);
 
-
+//Event: When we have a true Peer-to-Peer data connection established:
+window.addEventListener('peerConnectionEstablished', showConnected, false);
 
 function createShareUrl() {
     /* createShareUrl()
@@ -176,7 +177,7 @@ if (getQueryVariable("key")) {
 
     //Create replacement 'button' <<-- This is just to match UI, the user dosn't need to click it.
     var waitingBtn= document.createElement('button');
-    waitingBtn.id = 'connect';
+    waitingBtn.id = 'waiting';
     waitingBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
     waitingBTnText = document.createTextNode("Connecting..."); //Message shown to user on button
     waitingBtn.appendChild(waitingBTnText);
@@ -185,5 +186,26 @@ if (getQueryVariable("key")) {
     parentDiv.replaceChild(waitingBtn, generateKeyBtn); //Replace the old button with the new
 
 }//End show 'connecting' instead of generate key box if 'key' is in URI */
+
+
+function showConnected() {
+    //Get reference to 'connecting' UI button
+    if (targetBtn = document.getElementById('waiting')) {
+        
+    } else {
+        targetBtn = document.getElementById('connect');
+    }
+
+    //Create replacement 'button' <<-- This is just to match UI, the user dosn't need to click it.
+    var connectedBtn= document.createElement('button');
+    connectedBtn.id = 'connected';
+    connectedBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
+    connectedBtnText = document.createTextNode("Connected!"); //Message shown to user on button
+    connectedBtn.appendChild(connectedBtnText);
+
+    var parentDiv = targetBtn.parentNode; //Locate the parent node of the existing button.
+    parentDiv.replaceChild(connectedBtn, targetBtn); //Replace the old button with the new
+
+}//End showConnected
 
 displayFiles();

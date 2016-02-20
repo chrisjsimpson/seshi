@@ -49,6 +49,7 @@ function connect(failureCB) {
           waitingHandler();
         } else {
 	  connectedHandler();
+      call();
         }
         return;
       } else {

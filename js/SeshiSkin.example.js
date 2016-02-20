@@ -169,4 +169,21 @@ function deleteFile(event){
 }
 
 
+/* Show 'connecting' instead of generate key box if 'key' is in URI */
+if (getQueryVariable("key")) {
+    //Get reference to Generate Key button
+    generateKeyBtn = document.getElementById('setKey');
+
+    //Create replacement 'button' <<-- This is just to match UI, the user dosn't need to click it.
+    var waitingBtn= document.createElement('button');
+    waitingBtn.id = 'connect';
+    waitingBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
+    waitingBTnText = document.createTextNode("Connecting..."); //Message shown to user on button
+    waitingBtn.appendChild(waitingBTnText);
+
+    var parentDiv = generateKeyBtn.parentNode; //Locate the parent node of the existing button.
+    parentDiv.replaceChild(waitingBtn, generateKeyBtn); //Replace the old button with the new
+
+}//End show 'connecting' instead of generate key box if 'key' is in URI */
+
 displayFiles();

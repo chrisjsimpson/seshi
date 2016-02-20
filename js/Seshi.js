@@ -65,17 +65,6 @@ Seshi = {
                          */
                         connect();
     },
-    call: function() {
-                        /* 
-                         * Call()
-                         * - Creates and sets up the datachannel 
-                         * (can only be done *after* a signalling channel is established
-                         * using connect()
-                         *
-                         * Crude call to older code.. 
-                         * */
-                         call();
-    },
     connectionStatus:{
                         iceConnectionState:function(){
                             if (typeof pc == "undefined") { 

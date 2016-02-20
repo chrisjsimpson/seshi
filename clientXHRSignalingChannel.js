@@ -61,7 +61,7 @@ function connect(failureCB) {
   // open XHR and send the connection request with the key
 		 var client = new XMLHttpRequest();
 		 client.onreadystatechange = handler;
-		 client.open("GET", "http://signal.seshi.io/connect?key=" + 123);
+		 client.open("GET", "http://signal.seshi.io/connect?key=" + Seshi.getKey());
 		 client.send();
 }//End connect()
 

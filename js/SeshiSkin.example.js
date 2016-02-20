@@ -1,3 +1,10 @@
+//Event listeners
+
+//Generate Key button
+generateKeyBtn = document.getElementById('setKey');
+generateKeyBtn.addEventListener('click', createShareUrl, false);
+
+
 function displayFiles() {
     fileList = Seshi.localFileList();
     table = '<h2>Your files:</h2>\n<table>\n';
@@ -83,54 +90,52 @@ function deleteFile(event){
         Seshi.updateLocalFilesList();
 }
 
-function generateKey(keyBox) {
-    var key = Seshi.generateKey();
-    document.getElementById(keyBox).value = key;
+function createShareUrl() {
+    var key = Seshi.setKey();
+    var shareUrl = document.location.origin + '?key=' + key;
+    console.log("Generated share url: \n" + shareUrl);
+    //Replace generate key button with welcome message 
+    // & connect to signal server with key
+    replaceGenerateKeyBtn();
 }
 
-
-function smoothScroll(eID) {
-    function currentYPosition() {
-        // Firefox, Chrome, Opera, Safari
-        if (self.pageYOffset) return self.pageYOffset;
-        // Internet Explorer 6 - standards mode
-        if (document.documentElement && document.documentElement.scrollTop)
-            return document.documentElement.scrollTop;
-        // Internet Explorer 6, 7 and 8
-        if (document.body.scrollTop) return document.body.scrollTop;
-        return 0;
-    }
-
-    function elmYPosition(eID) {
-    var elm = document.getElementById(eID);
-    var y = elm.offsetTop;
-    var node = elm;
-    while (node.offsetParent && node.offsetParent != document.body) {
-        node = node.offsetParent;
-        y += node.offsetTop;
-    } return y;
-    }
-    var startY = currentYPosition();
-    var stopY = elmYPosition(eID);
-    var distance = stopY > startY ? stopY - startY : startY - stopY;
-    if (distance < 100) {
-        scrollTo(0, stopY); return;
-    }
-    var speed = Math.round(distance / 10);
-    if (speed >= 20) speed = 20;
-    var step = Math.round(distance / 25);
-    var leapY = stopY > startY ? startY + step : startY - step;
-    var timer = 0;
-    if (stopY > startY) {
-        for ( var i=startY; i<stopY; i+=step ) {
-            setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
-            leapY += step; if (leapY > stopY) leapY = stopY; timer++;
-        } return;
-    }
-    for ( var i=startY; i>stopY; i-=step ) {
-        setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
-        leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
-    }
+function connectToSignalServer() {
+    /* Connect established a signaling channell
+     * A signalling channel is between THREE nodes:
+     *   > Person A
+     *   > Signaling Server
+     *   > Person B
+     * The signaling server passes messages containing
+     * each person's connection information. 
+     *
+     * Once both persons have connection information for 
+     * eachother, they can connect directly forming a 
+     * peer-to-peer connection.
+     */
+     connect();
 }
+
+function replaceGenerateKeyBtn() {
+    /* This replaces the generate key button with a 'connecting' message
+     * note call connect() is automatically called by this function,
+     * so that the user dosn't have to click anything.
+     */
+
+    generateKeyBtn = document.getElementById('setKey');
+
+    var connectBtn = document.createElement('button');
+    connectBtn.id = 'connect';
+    connectBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
+    connectBTnText = document.createTextNode("Send your friend the key ->");
+    connectBtn.appendChild(connectBTnText); 
+
+    var parentDiv = generateKeyBtn.parentNode;
+    parentDiv.replaceChild(connectBtn, generateKeyBtn);
+
+    //send key to signaling server & wait for them to share their key with friend
+    connectToSignalServer();
+
+}
+
 
 displayFiles();

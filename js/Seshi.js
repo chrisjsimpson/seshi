@@ -116,7 +116,7 @@ Seshi = {
                             retVal += charset.charAt(Math.floor(Math.random() * n));
                         }
                         Seshi.key = retVal;
-                        return Seshi.getKey;
+                        return Seshi.getKey();
     },
     getKey: function() {
                         /* getKey()
@@ -133,7 +133,7 @@ Seshi = {
                         var errorCB, scHandlers, handleMsg;
 
                         // First, get the key used to connect
-                        key = document.getElementById("key").value;
+                        key = Seshi.getKey;
                         // This is the handler for all messages received on the
                         // signaling channel.
                         handleMsg = function (msg) {
@@ -992,7 +992,7 @@ function connect() {
   var errorCB, scHandlers, handleMsg;
 
   // First, get the key used to connect
-  key = document.getElementById("key").value;
+  key = Seshi.getKey();
   // This is the handler for all messages received on the
   // signaling channel.
   handleMsg = function (msg) {
@@ -1505,21 +1505,17 @@ function setStatus(str) {
       callE = document.getElementById("call"),
       scMessageE = document.getElementById("scMessage");
       hangUp = document.getElementById("hangup");
-      syncMyData = document.getElementById('SyncMyData');
 
   switch (str) {
     case 'Waiting':
       statusE.innerHTML =
         "Sweet! Now send your friend this link: " + getShareLink();
-      statusE.className = 'alert alert-success';
-      connectE.style.display = "none";
       break;
     case 'Connected':
-      statuslineE.style.display = "inline";
-      connectE.style.display = "none";
-      scMessageE.style.display = "inline-block";
-      hangUp.style.display = "inline-block";
-      syncMyData.style.display = "inline-block";
+      //statuslineE.style.display = "inline";
+      //connectE.style.display = "none";
+      //scMessageE.style.display = "inline-block";
+      //hangUp.style.display = "inline-block";
       break;
     case 'Ready for call':
       //statusE.innerHTML = "You rock! Now press connect:";
@@ -1548,6 +1544,6 @@ function log(msg) {
 }
 
 function getShareLink() {
-	var key = document.getElementById('key').value;
+	var key = Seshi.getKey();
 	return document.location.origin + '/?key=' + key;
 }

@@ -236,7 +236,7 @@
                                 <i class="fa fa-chevron-down"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Disconnect </a></li>
+                                    <li><a id="hangup" href="#">Disconnect </a></li>
                                     <!-- <li><a href="#">Di<span class="glyphicon glyphicon-log-out pull-right"></span></a></li> -->
                                 </ul>
                             </div>
@@ -256,8 +256,6 @@
             </video>
             <div class=" hidden-xs container">
             <div class="control">
-
-
                     <div class="btnPlay" title="Play/Pause video"><span class="icon-play"></span></div>
                     <div class="time-position"><span id="time-position">0:00</span></div>
                     <div class="full-width col-offset-btn">
@@ -270,9 +268,6 @@
 
                     </div>
 
-                    <!-- <div class="hidden-xs volume" title="Set volume">
-                        <span class="volumeBar"></span>
-                    </div> -->
                     <div class="float-right">
                         <div class="timeduration"><span id="duration"></span></div>
 
@@ -281,11 +276,11 @@
                     </div>
 
 
-            </div>
-        </div>
-    </div>
+                </div><!-- End ? -->
+            </div><!-- End ? -->
+        </div><!-- End ? -->
 
-</div>
+    </div><?!-- End ? -->
 <div id="mask"></div>
 
         </div>
@@ -308,6 +303,35 @@
   </div>
 
                   <div class="chat">
+                        <div id="debug">
+                            Status:
+                            <input type="text" id="status"><br/>
+                            StatusLine: 
+                            <input type="text" id="statusline"><br/>
+                            Signaling Channel messages:
+                            <input type="text" id="scMessage"><br/>
+                            Call ready (datachannel):
+                            <input type="button" id="call" /><br/>
+                            Out messages:
+                            <textarea id="outmessages">
+                                Messages to peer, via signaling server (NOT p2p)
+                            </textarea><br />
+                            In messages:
+                            <textarea id="inmessages">
+                                Messages from peer, via signaling server (NOT p2p)
+                            </textarea><br />
+                            <hr />
+                            Signaling channel messaging: <br />
+                            From peer over signalling channel:<input type="text" id="response" /><br />
+                            <hr />
+                            Peer to Peer Chat (YES p2p)
+                            <textarea id="chatbox"></textarea><br /><!-- to use real chatchbox -->
+                            <input type="text" id="chat" placeholder="Message.." /><br />
+
+
+
+                        </div><!-- End debug -->
+
                     <div class="chat-header clearfix">
                         <div class="people-list" id="people-list">
                           <div class="search">

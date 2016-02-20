@@ -37,9 +37,6 @@
             <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                 <ul class="nav navbar-nav">
                     <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                    <!-- <li class="hidden">
-                        <a class="page-scroll" href="#page-top"></a>
-                    </li> -->
                     <li>
                         <a class="page-scroll" href="#page-top">Add Files</a>
                     </li>
@@ -69,15 +66,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        <!-- <h1 class="brand-heading">Grayscale</h1>
-                        <p class="intro-text">A free, responsive, one page Bootstrap theme.<br>Created originally by Start Bootstrap.</p>
-                        <a href="#about" class="btn btn-circle page-scroll pulse">
-                            <i class="fa fa-angle-double-down"></i>
-                        </a> -->
-
                         <h4>Store, Share, & Stream files from your browser</h4>
-
-                         <!-- <div class="upload-drop-zone" id="drop-zone"> -->
                              <div>
                                  <span class=" fileUpload btn btn-default btn-upload">
                                      <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
@@ -86,31 +75,7 @@
                                          or drag files to upload
                                      </div>
                                  </span>
-                                 <!-- <span class="visible-sm fileUpload btn btn-default btn-upload-mobile">
-                                     <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
-                                     <span><i class="fa fa-plus"></i> Click to Add Files</span>
-                                 </span> -->
-
-
                              </div>
-                        <!-- </div> -->
-                        <br>
-                        <!-- <div class="row generate-key">
-                            <div class="col-sm-3">
-
-                                <button onclick="generateKey('Generate')" class="button button--antiman button--round-l button--text-medium btn-generate-key">
-                                    <i class="fa fa-key"></i><span>Generate Key</span></button>
-                            </div>
-                            <div class="col-md-6">
-                                <input id="key" type="text" class=" generateInput form-control" placeholder="Press generate key (to be removed)">
-                            </div>
-                            <div class="col-md-3">
-
-                                <button onclick="connect()" class="button button--naira button--border-medium button--round-l button--text-thick button--inverted button--naira-up btn-connect">
-                                    <i class="button__icon fa fa-paper-plane"></i><span>Connect</span></button>
-                            </div>
-
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -121,9 +86,6 @@
                 <div class="row generate-key">
                     <div class="container">
                     <div class="col-xs-12 col-sm-4">
-                        <!-- <button id="generateKey" onclick="generateKey('key')" class="btn btn-primary">
-                            Generate Key
-                        </button> -->
                         <button onclick="generateKey('Generate')" class="button button--antiman button--round-l button--text-medium btn-generate-key">
                             <i class="fa fa-key fa-fw"></i><span>Generate Key</span></button>
                     </div>
@@ -150,10 +112,6 @@
                         </div>
                     </div>
 
-                    <!-- <div class="col-sm-3">
-                        <button class="button button--naira button--border-medium button--round-l button--text-thick button--inverted button--naira-up btn-connect">
-                            <i class="button__icon fa fa-paper-plane"></i><span>Email</span></button>
-                    </div> -->
                 </div>
 
                 <div class="col-md-5 filecard filewell ">
@@ -341,14 +299,14 @@
                 <h2>Chat</h2>
 
                 <div class="clearfix">
-  <!-- <div class="people-list col-md-4" id="people-list">
+  <div class="people-list col-md-4" id="people-list">
     <div class="search">
-      <input type="text" placeholder="search" />
+      <input type="text" placeholder="search contacts" />
       <i class="fa fa-search"></i>
     </div>
 
     </ul>
-  </div> -->
+  </div>
 
                   <div class="chat">
                     <div class="chat-header clearfix">
@@ -452,12 +410,9 @@
 
                     <div class="row">
                         <div class="col-md-5 col-sm-12">
-                            <div id="map-canvas"></div>
-                            <!-- <form action="#">
-                                <div class="row">
-                                    <input class="form-control">
-                                </div>
-                            </form> -->
+                            <div id="map-canvas">
+                                <img src="http://placehold.it/350x350?text=GMap">
+                            </div>
                         </div>
                         <div class="col-md-7">
                             <div class="row contact-seshi">
@@ -482,16 +437,8 @@
         </div>
     </section>
 
-
-
-    <!-- Map Section -->
-    <!-- <div id="map"></div> -->
-
     <!-- Footer -->
     <footer>
-        <!-- <div class="container text-center">
-            <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> SESHI</p>
-        </div> -->
         <div class="container">
             <div class="row">
                 <div class="col-md-2">
@@ -572,9 +519,6 @@
                     </div>
                     <p class="copyright">&copy; <script>document.write(new Date().getFullYear())</script> SESHI. All Rights Reserved</p>
                 </div>
-                <!-- <div class="col-md-4 col-sm-12">
-
-                </div> -->
             </div>
         </div>
     </footer>
@@ -585,38 +529,10 @@
 
     <!--responsive -->
 
-    <script>
-
-function initMap() {
-  var myLatLng = {lat: 54.976944, lng: -1.607170};
-
-  var map = new google.maps.Map(document.getElementById('map-canvas'), {
-   zoom: 15,
-    center: myLatLng
-  });
-
-  var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map,
-    icon: 'img/marker2.png'
-  });
-}
-    </script>
-    <script>
-    // $('.closes').on('click', function(){
-    //     video[0].pause();
-    // })
-    </script>
-
 <!-- fonts -->
 <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 <link href='https://fonts.googleapis.com/css?family=Signika:300, 700' rel='stylesheet' type='text/css'>
-
-<script async defer
-   src="https://maps.googleapis.com/maps/api/js?&signed_in=true&callback=initMap"></script>
-    <script src="http://code.jquery.com/color/jquery.color-2.1.0.js"></script>
-
 
     <!--UI scripts -->
     <script src="ui/ui/main.min.js"></script>

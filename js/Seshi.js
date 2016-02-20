@@ -103,7 +103,8 @@ Seshi = {
                          * Set signalling status (upon a change in signaling) */
                         Seshi.signalingStatus = statusMsg;
     },
-    generateKey:function() {
+    key:'', //Connection key for two connecting peers
+    setKey: function() {
                         /* Generate connection key 
                          * Used as key to pass to signaling server for connecting two peers
                         */
@@ -114,7 +115,16 @@ Seshi = {
                         for (var i = 0, n = charset.length; i < length; ++i) {
                             retVal += charset.charAt(Math.floor(Math.random() * n));
                         }
-                        return retVal;
+                        Seshi.key = retVal;
+                        return Seshi.getKey;
+    },
+    getKey: function() {
+                        /* getKey()
+                         * - Returns the current connection key 
+                         */
+                        return Seshi.key;
+    },
+    generateKey:function() {
     },
     connect: function() {
                         /* Seshi.Connect()

@@ -1,8 +1,85 @@
-//Event listeners
+/* Event listeners:
+ * - For a cleaner UI developer experience by
+ *   avoiding inline Javascript e.g: onclick="example()"
+ *
+ * Rather than interfere with the UI like this,
+ * attach event listeners to the UI components which 
+ * trigger events. 
+ * For example:
+ *
+ * When user clicks generate key button, register an 
+ * event which responds to this action & call the
+ * function responsible for generating a share url.
+ * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+*/
 
-//Generate Key button
+//Event: When user clicks generate Key button 
 generateKeyBtn = document.getElementById('setKey');
 generateKeyBtn.addEventListener('click', createShareUrl, false);
+
+
+
+function createShareUrl() {
+    /* createShareUrl()
+     * - Creates a share url when user clicks 'generate key' button &
+     *   automatically sends this key to the signaling server.
+     *   
+    */
+    
+    //Generate a new key for the user
+    var key = Seshi.setKey(); 
+
+    //Build share url:
+    var shareUrl = document.location.origin + '?key=' + key;
+    console.log("Generated share url: \n" + shareUrl);
+    
+    //send this key to signaling server
+    connectToSignalServer();
+    
+    //Update UI: Replace the generate key button s message telling user 
+    //what to do next:
+    replaceGenerateKeyBtn();
+
+}//End createShareUrl()
+
+
+function connectToSignalServer() {
+    /* Send key to signal server to create signaling channel
+     * 
+     * A signalling channel is between THREE nodes:
+     *   > Person A
+     *   > Signaling Server
+     *   > Person B
+     * The signaling server passes messages containing
+     * each person's connection information. 
+     *
+     * Once both persons have connection information for 
+     * eachother, they can connect directly forming a 
+     * peer-to-peer connection.
+     */
+     connect(); //Defined in Seshi.js (TODO attach this to seshi api)
+}//End connectToSignalServer()
+
+
+function replaceGenerateKeyBtn() {
+    /* Replaces the generate key button with a 'connecting' message
+     * Note, this function presumes that the key has already been
+     * sent to the signaling server (connectToSignalServer()).
+     */
+
+    //Get reference to Generate Key button
+    generateKeyBtn = document.getElementById('setKey');
+
+    //Create replacement 'button' <<-- This is just to match UI, the user dosn't need to click it.
+    var connectBtn = document.createElement('button');
+    connectBtn.id = 'connect';
+    connectBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
+    connectBTnText = document.createTextNode("Send your friend the key ->"); //Message shown to user on button
+    connectBtn.appendChild(connectBTnText);
+
+    var parentDiv = generateKeyBtn.parentNode; //Locate the parent node of the existing button.
+    parentDiv.replaceChild(connectBtn, generateKeyBtn); //Replace the old button with the new
+}//replaceGenerateKeyBtn()
 
 
 function displayFiles() {
@@ -44,6 +121,7 @@ function displayFiles() {
     var fileTable = document.getElementById('fileTable');
     fileTable.innerHTML = tableOutput;
 }//End displayFiles
+
 
 function play(event) {
     console.log("My player implimentation...");
@@ -88,53 +166,6 @@ function deleteFile(event){
         alert("Deleting file...(refresh file list)");
         Seshi.deleteFile(fileId);
         Seshi.updateLocalFilesList();
-}
-
-function createShareUrl() {
-    var key = Seshi.setKey();
-    var shareUrl = document.location.origin + '?key=' + key;
-    console.log("Generated share url: \n" + shareUrl);
-    //Replace generate key button with welcome message 
-    // & connect to signal server with key
-    replaceGenerateKeyBtn();
-}
-
-function connectToSignalServer() {
-    /* Connect established a signaling channell
-     * A signalling channel is between THREE nodes:
-     *   > Person A
-     *   > Signaling Server
-     *   > Person B
-     * The signaling server passes messages containing
-     * each person's connection information. 
-     *
-     * Once both persons have connection information for 
-     * eachother, they can connect directly forming a 
-     * peer-to-peer connection.
-     */
-     connect();
-}
-
-function replaceGenerateKeyBtn() {
-    /* This replaces the generate key button with a 'connecting' message
-     * note call connect() is automatically called by this function,
-     * so that the user dosn't have to click anything.
-     */
-
-    generateKeyBtn = document.getElementById('setKey');
-
-    var connectBtn = document.createElement('button');
-    connectBtn.id = 'connect';
-    connectBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
-    connectBTnText = document.createTextNode("Send your friend the key ->");
-    connectBtn.appendChild(connectBTnText); 
-
-    var parentDiv = generateKeyBtn.parentNode;
-    parentDiv.replaceChild(connectBtn, generateKeyBtn);
-
-    //send key to signaling server & wait for them to share their key with friend
-    connectToSignalServer();
-
 }
 
 

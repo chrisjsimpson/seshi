@@ -439,11 +439,12 @@ var signalingChannel, key, id,
 
 
 // auto-connect signaling channel if key provided in URI
-if (queryparams && queryparams['key']) {
-document.getElementById("key").value = queryparams['key'];
-connect();
-}
+//
 
+if(getQueryVariable("key")) {
+    Seshi.key = getQueryVariable("key");
+    connect();
+}//End auto-connect is key is in URI
 
 
 function connectedToPeer(e) {
@@ -1022,4 +1023,16 @@ function log(msg) {
 function getShareLink() {
 	var key = Seshi.getKey();
 	return document.location.origin + '/?key=' + key;
+}
+
+function getQueryVariable(variable)
+{
+       //Credit: https://css-tricks.com/snippets/javascript/get-url-variables/
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
 }

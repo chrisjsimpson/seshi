@@ -503,6 +503,8 @@ function connect() {
       setStatus("Connected");
       // set up the RTC Peer Connection since we're connected
       createPC();
+      //Call after a few ticks (to allow for signaling channel to stabalize) then setup Datachannel
+      window.setTimeout(function(){ call();}, 3000);
     },
     'onMessage': handleMsg
   };

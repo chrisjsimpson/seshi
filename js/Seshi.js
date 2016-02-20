@@ -121,6 +121,14 @@ Seshi = {
                          */
                         return Seshi.key;
     },
+    getShareUrl: function() {
+                        /* getShareURL
+                         * - Returns the share url that the user needs to send to 
+                         *   their friend / other device
+                         */
+                        var shareUrl =  document.location.origin + '?key=' + Seshi.getKey();
+                        return shareUrl;
+    },
     updateLocalFilesList: function() {
                         /* 
                         #   UpdateLocalFilesList() 

@@ -41,6 +41,8 @@ function createShareUrl() {
     //what to do next:
     replaceGenerateKeyBtn();
 
+    //Update Whatsapp share button
+    updateWhatsAppShareBtn();
 }//End createShareUrl()
 
 
@@ -82,6 +84,12 @@ function replaceGenerateKeyBtn() {
     parentDiv.replaceChild(connectBtn, generateKeyBtn); //Replace the old button with the new
 }//replaceGenerateKeyBtn()
 
+
+function updateWhatsAppShareBtn() {
+    var whatsAppShareBtn = document.getElementsByClassName('whatsapp');
+    //Update href with share url
+    whatsAppShareBtn[0].href = 'whatsapp://send?text=' + Seshi.getShareUrl();
+}//End updateWhatsAppShareBtn
 
 function displayFiles() {
     fileList = Seshi.localFileList();

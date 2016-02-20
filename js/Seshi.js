@@ -575,6 +575,7 @@ function createPC() {
   window.pc.onremovestream = onRemoteStreamRemoved;
   window.pc.ondatachannel = onDataChannelAdded;
   window.pc.oniceconnectionstatechange = onIceconnectionStateChanged;
+  window.pc.onsignalingstatechange = onSignalingStateChanged;
   // wait for local media to be ready
   attachMediaIfReady();
 }
@@ -620,6 +621,15 @@ function onDataChannelAdded(e) {
         Seshi.sendLocalFileListToRemote();
     }//Once datachannel is open, send over local file listing
 }
+
+//When our browser detects a Signaling State Change,
+//check to see if it is 'stable'
+//if so, execute call() to create a datachannel
+function onSignalingStateChanged() {
+
+    console.log("Signaling State Changed to: " + pc.signalingState);
+
+}//End onSignalingStateChanged()
 
 
 //Set up the datachanner message handler

@@ -15187,7 +15187,7 @@ a:hover, a:focus {
 #chat {
   color: #777;
   padding: 50px;
-  padding-top: 100px;
+  padding-top: 70px !important;
 }
 
 #howitworks {
@@ -19755,12 +19755,16 @@ a {
 .file-item .fa-trash, .file-item .fa-times {
   padding-top: 4px;
   padding-right: 4px;
-  padding-left: 6px;
+  padding-left: 5px;
 }
 
 .file-item .fa-trash:hover, .file-item .fa-times:hover {
   background: #ccc;
   color: #ff3333;
+}
+
+.fa-times {
+  padding-left: 5px;
 }
 
 .icon-link {
@@ -20135,6 +20139,53 @@ a {
   padding: 12px;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+/* Display name */
+.displayname {
+  width: 100%;
+  height: auto;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.profile-input {
+  transition: all .3s ease-in-out;
+  position: relative;
+}
+
+input[id="display-name"] {
+  border-width: 0;
+  border-bottom: 1px solid #aaa;
+  color: #bbb;
+  background: transparent;
+  padding-bottom: 2px;
+  padding-right: 16px;
+  width: 170px;
+  margin-left: 16px;
+  transition: all .3s ease-in-out;
+}
+
+input[id="display-name"]:focus {
+  outline: none;
+  color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+input[id="display-name"]:focus + .edit-btn {
+  color: #fff;
+}
+
+.edit-btn {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  top: 5px;
+  right: 0;
+  color: #aaa;
+  transition: all .3s ease-in-out;
 }
 
 @media (min-width: 1200px) {

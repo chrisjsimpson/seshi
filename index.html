@@ -120,33 +120,30 @@
 
                 <div class="row generate-key">
                     <div class="container">
-                    <div class="col-xs-12 col-sm-4">
+                    <div class="col-sm-12">
                         <!-- <button id="generateKey" onclick="generateKey('key')" class="btn btn-primary">
                             Generate Key
                         </button> -->
-                        <button onclick="generateKey('Generate')" class="button button--antiman button--round-l button--text-medium btn-generate-key">
-                            <i class="fa fa-key fa-fw"></i><span>Generate Key</span></button>
+                        <!-- <button onclick="generateKey('Generate')" class="button button--antiman button--round-l button--text-medium btn-generate-key">
+                            <i class="fa fa-key fa-fw"></i><span>Generate Key</span></button> -->
+                            <h5>Send connection key to your friend </h5>
                     </div>
 
-
-                        <div class="col-xs-15 col-sm-2">
-                            <a class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
-                        </div>
-                        <div class="col-xs-15 col-sm-2">
-                            <a class="icon-link round-corner skype fill"><i class="fa fa-skype"></i></a>
+                        <div class="col-xs-3 col-sm-4">
+                            <a onclick="generateKey('Generate')" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
                         </div>
                         <!-- <div class="col-md-2">
                             <a class="round-corner slack"></a>
                         </div> -->
-                        <div class="col-xs-15 col-sm-2">
-                            <a class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
+                        <div class="col-xs-3 col-sm-4">
+                            <a onclick="generateKey('Generate')" class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
                         </div>
 
-                        <div class="col-xs-15 col-sm-2">
-                            <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
+                        <div class="col-xs-3 col-sm-4">
+                            <a onclick="generateKey('Generate')" class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
                         </div>
-                        <div class="col-xs-15 visible-xs">
-                            <a class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
+                        <div class="col-xs-3 visible-xs">
+                            <a onclick="generateKey('Generate')" class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
                         </div>
                     </div>
 
@@ -156,8 +153,25 @@
                     </div> -->
                 </div>
 
-                <div class="col-md-5 filecard filewell ">
+                <div class="row">
+                    <div class="col-sm-5 col-offset-sm-7">
+                        <div class="displayname">
+                            <span>Display name: </span>
+                            <span class="profile-input">
+                                <input type="text" id="display-name">
+                                <span class="edit-btn"><i class="fa fa-pencil-square-o"></i></span>
+                            </span>
+                        </div>
+                        <!-- <button class="btn btn-default" id="refreshList">Refresh List</button> -->
 
+                    </div>
+                </div>
+
+
+                <div class="col-md-5 filecard filewell ">
+                    <ul class="list-group" id="myfilelist">
+                      <li>Test</li>
+                    </ul>
                     <ul class="list-group myfilelist">
                         <div class="list-group-item row header-title">
                             <input class="col-xs-1 col-sm-1 checkall" type="checkbox">
@@ -294,7 +308,7 @@
     <div class="videoContainer media-player ">
         <a href="#myfiles" class="closes"></a>
         <video class="video" id="myVideo" preload="auto" >
-          <source src="img/deadpool.mp4" type="video/mp4" />
+          <source src="img/ironman.mp4" type="video/mp4" />
               <!-- <p>Your browser does not support the video tag.</p> -->
             </video>
             <div class=" hidden-xs container">
@@ -489,10 +503,10 @@
 
     <!-- Footer -->
     <footer>
-        <!-- <div class="container text-center">
+        <div class="container text-center">
             <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> SESHI</p>
-        </div> -->
-        <div class="container">
+        </div>
+        <!-- <div class="container">
             <div class="row">
                 <div class="col-md-2">
                     <ul>
@@ -559,7 +573,7 @@
 
                 </div>
             </div>
-            <!-- end of row-->
+
             <div class="row">
                 <div class="col-md-12">
                     <hr>
@@ -572,11 +586,9 @@
                     </div>
                     <p class="copyright">&copy; <script>document.write(new Date().getFullYear())</script> SESHI. All Rights Reserved</p>
                 </div>
-                <!-- <div class="col-md-4 col-sm-12">
 
-                </div> -->
             </div>
-        </div>
+        </div> -->
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- Custom Theme JavaScript -->
@@ -602,10 +614,46 @@ function initMap() {
   });
 }
     </script>
+
     <script>
-    // $('.closes').on('click', function(){
-    //     video[0].pause();
-    // })
+    //Pretend localFilelist object
+// var fileList = [
+// {
+// id:'hfd4u54f7gg878978',
+// fileName:'Times are a changing - Bob Dylan',
+// type:'audio/mp3',
+// size:'1234'
+// },
+// {
+// id:'49gflieonnnvcoiiu',
+// fileName:'Presentation on WebRTC.ppt',
+// type:'application/vnd.oasis.opendocument.presentation',
+// size:'4543'
+// }
+// ];
+//
+// //displayFiles() called when button is pressed (see event listener below)
+// function displayFile() {
+// var listItems = [];
+//
+//
+//     for (i=0; i<fileList.length;i++) {
+//         listItems += '<li>' +
+//                 '<span class="fileName">' + fileList[i].fileName + '</span>\n' +
+//                 '<span class="fileType">' + fileList[i].type + '</span>\n' +
+//               '</li>\n';
+//           }
+//
+// var myFilesList = document.getElementById('myfilelist');
+//
+// myFilesList.innerHTML = listItems;
+// }//End displayFiles()
+//
+//
+// //Event listener for clicking button, which called displayFiles
+// var refreshListBtn = document.getElementById('refreshList');
+// refreshListBtn.addEventListener("click", displayFile, false);
+
     </script>
 
 <!-- fonts -->

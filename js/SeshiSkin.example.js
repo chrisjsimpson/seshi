@@ -47,6 +47,9 @@ function createShareUrl() {
 
     //Update Whatsapp share button
     updateWhatsAppShareBtn();
+
+    //Copy to cliboard 
+    new Clipboard('.copy');
 }//End createShareUrl()
 
 

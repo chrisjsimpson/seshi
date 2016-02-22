@@ -94,8 +94,8 @@
                             <a class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
                         </div>
 
-                        <div class="col-xs-3 col-sm-3">
-                            <a class="icon-link round-corner copy fill"><i class="fa fa-copy fa-inverse"></i></a>
+                        <div class="col-xs-3 col-sm-3" data-clipboard-target="#connectionStatus">
+                            <a class="icon-link round-corner copy fill" data-clipboard-text="the key.."><i class="fa fa-copy"></i></a>
                         </div>
 
                         <div class="col-xs-3 col-sm-3">
@@ -538,6 +538,23 @@
             </div>
         </div>
     </footer>
+    
+    
+    <div id="statsFornerds" style="height:200px;margin-top:50px;color:black;"><!-- TODO move to styles & hide by default -->
+        In:
+        <textarea id="message"></textarea>
+        Out:
+        <textarea id="outmessages"></textarea>
+        Response:
+        <textarea id="response"></textarea>
+        Inmessages:
+        <textarea id="inmessages"></textarea>
+        Chatbox:
+        <textarea id="chatbox"></textarea>
+        Chat:
+        <textarea id="chat"></textarea>
+    </div><!-- end statsFornerds -->
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- Custom Theme JavaScript -->
 
@@ -570,21 +587,10 @@
     <script src="boxHandling.js"></script>
 
     <script src="js/Seshi.js"></script>
+    <!-- clipboardjs -->
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.5/clipboard.min.js"></script>
     <script src="js/SeshiSkin.example.js"></script>
-    <div id="statsFornerds" style="height:200px;margin-top:50px;color:black;"><!-- TODO move to styles & hide by default -->
-        In:
-        <textarea id="message"></textarea>
-        Out:
-        <textarea id="outmessages"></textarea>
-        Response:
-        <textarea id="response"></textarea>
-        Inmessages:
-        <textarea id="inmessages"></textarea>
-        Chatbox:
-        <textarea id="chatbox"></textarea>
-        Chat:
-        <textarea id="chat"></textarea>
-    </div><!-- end statsFornerds -->
+
 </body>
 
 </html>

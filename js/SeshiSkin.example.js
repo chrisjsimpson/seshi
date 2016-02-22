@@ -48,8 +48,16 @@ function createShareUrl() {
     //Update Whatsapp share button
     updateWhatsAppShareBtn();
 
-    //Copy to cliboard 
-    new Clipboard('.copy');
+    //Clipboard
+    var copyIcon = document.getElementsByClassName('fa-copy')
+    //Set data-shareurl
+    copyIcon[0].dataset.shareurl = Seshi.getShareUrl();
+    new Clipboard('.fa-copy', {
+        text: function(trigger) {
+            return trigger.getAttribute('data-shareurl');
+        }
+    });
+
 }//End createShareUrl()
 
 

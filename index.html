@@ -46,11 +46,12 @@
                     <li>
                         <a class="page-scroll" href="#myfiles">Share</a>
                     </li>
-                    <li>
-                        <a class="page-scroll" href="#chat">Chat</a>
-                    </li>
+
                     <li class="hidden-xs">
                         <a class="page-scroll" href="#howitworks">How it works</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#subscribe">Subscribe</a>
                     </li>
 
                     <li>
@@ -167,11 +168,11 @@
                     </div>
                 </div>
 
-
-                <div class="col-md-5 filecard filewell ">
-                    <ul class="list-group" id="myfilelist">
+                <div class="col-md-5">
+                <div class=" filecard filewell ">
+                    <!-- <ul class="list-group" id="myfilelist">
                       <li>Test</li>
-                    </ul>
+                    </ul> -->
                     <ul class="list-group myfilelist">
                         <div class="list-group-item row header-title">
                             <input class="col-xs-1 col-sm-1 checkall" type="checkbox">
@@ -269,17 +270,19 @@
                         </li>
                     </ul>
                 </div>
+            </div>
                 <div class="col-md-2">
                     <div class="row">
-                        <button class="button button--naira button--border-medium button--round-l button--text-thick button--inverted button--naira-up btn-send">
+                        <button disabled class="button button--naira button--border-medium button--round-l button--text-thick button--inverted button--naira-up btn-send">
                         <i class="button__icon  send fa fa-long-arrow-right hidden-xs hidden-sm"></i><i class="button__icon  send fa fa-arrow-down visible-xs visible-sm"></i><span>Send</span></button>
                     </div>
                     <div class="row">
-                        <button class=" button button--naira button--border-medium button--round-l button--text-thick button--inverted button--naira-up btn-receive">
+                        <button disabled class=" button button--naira button--border-medium button--round-l button--text-thick button--inverted button--naira-up btn-receive">
                         <i class="button__icon receive fa fa-long-arrow-left hidden-xs hidden-sm "></i><i class="button__icon receive fa fa-arrow-up visible-xs visible-sm"></i><span>Receive</span></button>
                     </div>
                 </div>
-                <div class="col-md-5 filecard filewell receive-well">
+                <div class="col-md-5">
+                <div class=" filecard filewell receive-well">
 
                     <ul class="list-group myfilelist">
                         <div class="list-group-item row header-title">
@@ -300,6 +303,96 @@
                     </ul>
                     <p> Disconnected </p>
                 </div>
+
+                <div class="row">
+                    <div class="btn-group chatbox">
+                        <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
+                            Chat: <i>Offline</i> <span class="caret caret-up"></span>
+                        </button>
+                        <div id="chatup" class="dropdown-menu drop-up" style="">
+                            <div class="chat">
+                              <div class="chat-header clearfix">
+                                  <!-- <div class="people-list" id="people-list">
+                                    <div class="search">
+                                      <input type="text" placeholder="Enter your display name" />
+                                      <i class="fa fa-arrow-right"></i>
+                                    </div>
+
+                                    </ul>
+                                  </div> -->
+                                <div class="chat-about">
+                                  <div class="chat-with">Connected to: Chris</div>
+                                </div>
+                              </div>
+
+                             <div class="chat-history">
+                                <ul>
+                                  <li class="clearfix">
+                                    <div class="message-data align-right">
+                                      <span class="message-data-time" >10:10 AM, Today</span> &nbsp; &nbsp;
+                                      <span class="message-data-name" >Anthony</span> <i class="fa fa-circle me"></i>
+
+                                    </div>
+                                    <div class="message other-message float-right">
+                                       Hi
+                                    </div>
+                                  </li>
+
+                                  <li>
+                                    <div class="message-data align-left">
+                                      <span class="message-data-name"><i class="fa fa-circle online"></i> Chris</span>
+                                      <span class="message-data-time">10:12 AM, Today</span>
+                                    </div>
+                                    <div class="message my-message">
+                                      Hi Anthony, how are you? How is the mockups coming along?
+                                    </div>
+                                  </li>
+
+                                  <li class="clearfix">
+                                    <div class="message-data align-right">
+                                      <span class="message-data-time" >10:14 AM, Today</span> &nbsp; &nbsp;
+                                      <span class="message-data-name" >Anthony</span> <i class="fa fa-circle me"></i>
+
+                                    </div>
+                                    <div class="message other-message float-right">
+                                      Almost done
+                                    </div>
+                                  </li>
+
+                                  <li>
+                                    <div class="message-data align-left">
+
+                                      <span class="message-data-name"><i class="fa fa-circle online"></i> Chris</span>
+                                      <span class="message-data-time">10:20 AM, Today</span>
+                                    </div>
+                                    <div class="message my-message">
+                                      Great! Can't wait to see it
+                                    </div>
+                                  </li>
+
+
+                                </ul>
+
+                              </div> <!-- end chat-history -->
+
+                              <div class="chat-message clearfix">
+                              <div class="col-xs-9">
+                                <textarea name="message-to-send" id="message-to-send" placeholder ="Type your message" rows="3"></textarea>
+                            </div>
+                            <div class="col-xs-3">
+                                <button class="button button--wapasha button--round-s btn-chat-send align-right">Send</button>
+                            </div>
+                              </div> <!-- end chat-message -->
+
+                        </div> <!-- end chat -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <!-- <div class="col-md-5">
+
+                </div> -->
             </div>
     <!--Media Player -->
 
@@ -348,110 +441,23 @@
         </div>
     </header>
 
-    <!-- About Section -->
-    <section id="chat" class="content-section text-center">
+    <!-- How it works -->
+    <section id="howitworks" class="content-section text-center hidden-xs">
         <div class="row">
-            <div>
-                <h2>Chat</h2>
-
-                <div class="clearfix">
-  <!-- <div class="people-list col-md-4" id="people-list">
-    <div class="search">
-      <input type="text" placeholder="search" />
-      <i class="fa fa-search"></i>
-    </div>
-
-    </ul>
-  </div> -->
-
-                  <div class="chat">
-                    <div class="chat-header clearfix">
-                        <div class="people-list" id="people-list">
-                          <div class="search">
-                            <input type="text" placeholder="Enter your display name" />
-                            <i class="fa fa-arrow-right"></i>
-                          </div>
-
-                          </ul>
-                        </div>
-                      <div class="chat-about">
-                        <div class="chat-with">Connected to: Chris</div>
-                      </div>
-                    </div> <!-- end chat-header -->
-
-                   <div class="chat-history">
-                      <ul>
-                        <li class="clearfix">
-                          <div class="message-data align-right">
-                            <span class="message-data-time" >10:10 AM, Today</span> &nbsp; &nbsp;
-                            <span class="message-data-name" >Anthony</span> <i class="fa fa-circle me"></i>
-
-                          </div>
-                          <div class="message other-message float-right">
-                             Hi
-                          </div>
-                        </li>
-
-                        <li>
-                          <div class="message-data align-left">
-                            <span class="message-data-name"><i class="fa fa-circle online"></i> Chris</span>
-                            <span class="message-data-time">10:12 AM, Today</span>
-                          </div>
-                          <div class="message my-message">
-                            Hi Anthony, how are you? How is the mockups coming along?
-                          </div>
-                        </li>
-
-                        <li class="clearfix">
-                          <div class="message-data align-right">
-                            <span class="message-data-time" >10:14 AM, Today</span> &nbsp; &nbsp;
-                            <span class="message-data-name" >Anthony</span> <i class="fa fa-circle me"></i>
-
-                          </div>
-                          <div class="message other-message float-right">
-                            Almost done
-                          </div>
-                        </li>
-
-                        <li>
-                          <div class="message-data align-left">
-
-                            <span class="message-data-name"><i class="fa fa-circle online"></i> Chris</span>
-                            <span class="message-data-time">10:20 AM, Today</span>
-                          </div>
-                          <div class="message my-message">
-                            Great! Can't wait to see it
-                          </div>
-                        </li>
-
-
-                      </ul>
-
-                    </div> <!-- end chat-history -->
-
-                    <div class="chat-message clearfix">
-                    <div class="col-xs-10">
-                      <textarea name="message-to-send" id="message-to-send" placeholder ="Type your message" rows="3"></textarea>
-                  </div>
-                  <div class="col-xs-2">
-                      <button class="button button--wapasha button--round-s btn-chat-send align-right">Send</button>
-                  </div>
-                    </div> <!-- end chat-message -->
-
-              </div> <!-- end chat -->
-
-</div> <!-- end container -->
+            <div class="col-lg-12">
+                <h2>How it works</h2>
+                <img class="img-responsive" src="img/seshi-diagram.jpg">
 
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="howitworks" class="content-section text-center hidden-xs">
+    <section id="subscribe" class="content-section text-center">
         <div class="row">
             <div class="col-lg-12">
-                <h2>How it works</h2>
-                <img class="img-responsive" src="img/seshi-diagram.jpg">
+                <h2>Subscribe</h2>
+                <h5></h5>
 
             </div>
         </div>

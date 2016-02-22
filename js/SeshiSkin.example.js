@@ -13,9 +13,14 @@
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 */
 
-//Event: When user clicks generate Key button 
-generateKeyBtn = document.getElementById('setKey');
-generateKeyBtn.addEventListener('click', createShareUrl, false);
+//Event: When user clicks any of the share buttons, generatee a share URL 
+shareBtns = document.getElementsByClassName('icon-link');
+//Attach createShareUrl event listener to each share url button
+for(var i=0;i<shareBtns.length;i++)
+{
+       shareBtns[i].addEventListener('click', createShareUrl, false);
+}//End attach createShareUrl event listener to each share url button
+
 
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('peerConnectionEstablished', showConnected, false);
@@ -31,8 +36,7 @@ function createShareUrl() {
     var key = Seshi.setKey(); 
 
     //Build share url:
-    var shareUrl = document.location.origin + '?key=' + key;
-    console.log("Generated share url: \n" + shareUrl);
+    console.log("Generated share url: \n" + Seshi.getShareUrl());
     
     //send this key to signaling server
     connectToSignalServer();
@@ -71,13 +75,13 @@ function replaceGenerateKeyBtn() {
      */
 
     //Get reference to Generate Key button
-    generateKeyBtn = document.getElementById('setKey');
+    generateKeyBtn = document.getElementById('connectionStatus');
 
     //Create replacement 'button' <<-- This is just to match UI, the user dosn't need to click it.
-    var connectBtn = document.createElement('button');
-    connectBtn.id = 'connect';
-    connectBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
-    connectBTnText = document.createTextNode("Send your friend the key ->"); //Message shown to user on button
+    var connectBtn = document.createElement('p');
+    connectBtn.id = 'connectionStatus';
+    connectBtn.className = '' ;
+    connectBTnText = document.createTextNode("Send your friend the key:\n " + Seshi.getShareUrl()); //Message shown to user on button
     connectBtn.appendChild(connectBTnText);
 
     var parentDiv = generateKeyBtn.parentNode; //Locate the parent node of the existing button.
@@ -181,11 +185,11 @@ function deleteFile(event){
 /* Show 'connecting' instead of generate key box if 'key' is in URI */
 if (getQueryVariable("key")) {
     //Get reference to Generate Key button
-    generateKeyBtn = document.getElementById('setKey');
+    generateKeyBtn = document.getElementById('connectionStatus');
 
     //Create replacement 'button' <<-- This is just to match UI, the user dosn't need to click it.
     var waitingBtn= document.createElement('button');
-    waitingBtn.id = 'waiting';
+    waitingBtn.id = 'connectionStatus';
     waitingBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
     waitingBTnText = document.createTextNode("Connecting..."); //Message shown to user on button
     waitingBtn.appendChild(waitingBTnText);
@@ -198,16 +202,16 @@ if (getQueryVariable("key")) {
 
 function showConnected() {
     //Get reference to 'connecting' UI button
-    if (targetBtn = document.getElementById('waiting')) {
+    if (targetBtn = document.getElementById('connectionStatus')) {
         
     } else {
         targetBtn = document.getElementById('connect');
     }
 
     //Create replacement 'button' <<-- This is just to match UI, the user dosn't need to click it.
-    var connectedBtn= document.createElement('button');
-    connectedBtn.id = 'connected';
-    connectedBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
+    var connectedBtn= document.createElement('p');
+    connectedBtn.id = 'connectionStatus';
+    connectedBtn.className = '';
     connectedBtnText = document.createTextNode("Connected!"); //Message shown to user on button
     connectedBtn.appendChild(connectedBtnText);
 

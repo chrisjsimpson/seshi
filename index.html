@@ -90,27 +90,29 @@
                             <h5>Send connection key to your friend </h5>
                     </div>
 
-                        <div class="col-xs-3 col-sm-4">
-                            <a onclick="generateKey('Generate')" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
-                        </div>
-                        <!-- <div class="col-md-2">
-                            <a class="round-corner slack"></a>
-                        </div> -->
-                        <div class="col-xs-3 col-sm-4">
-                            <a onclick="generateKey('Generate')" class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
+                        <div class="col-xs-3 col-sm-3">
+                            <a class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
                         </div>
 
-                        <div class="col-xs-3 col-sm-4">
-                            <a onclick="generateKey('Generate')" class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
+                        <div class="col-xs-3 col-sm-3">
+                            <a class="icon-link round-corner copy fill"><i class="fa fa-copy fa-inverse"></i></a>
+                        </div>
+
+                        <div class="col-xs-3 col-sm-3">
+                            <a class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
+                        </div>
+
+                        <div class="col-xs-3 col-sm-3">
+                            <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
                         </div>
                         <div class="col-xs-3 visible-xs">
-                            <a onclick="generateKey('Generate')" class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
+                            <a class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="row">
+                <div class="row" id="fileBoxes">
                     <div class="col-sm-5 col-offset-sm-7">
                         <div class="displayname">
                             <span>Display name: </span>
@@ -257,7 +259,7 @@
                             </div>
                         </div>
                     </ul>
-                    <p> Disconnected </p>
+                    <p id="connectionStatus"> Disconnected </p>
                 </div>
 
                 <div class="row">
@@ -569,7 +571,20 @@
 
     <script src="js/Seshi.js"></script>
     <script src="js/SeshiSkin.example.js"></script>
-
+    <div id="statsFornerds">
+        In:
+        <textarea id="message"></textarea>
+        Out:
+        <textarea id="outmessages"></textarea>
+        Response:
+        <textarea id="response"></textarea>
+        Inmessages:
+        <textarea id="inmessages"></textarea>
+        Chatbox:
+        <textarea id="chatbox"></textarea>
+        Chat:
+        <textarea id="chat"></textarea>
+    </div><!-- end statsFornerds -->
 </body>
 
 </html>

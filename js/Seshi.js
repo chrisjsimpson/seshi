@@ -126,7 +126,7 @@ Seshi = {
                          * - Returns the share url that the user needs to send to 
                          *   their friend / other device
                          */
-                        var shareUrl =  document.location.origin + '?key=' + Seshi.getKey();
+                        var shareUrl =  document.location.origin + '?key=' + Seshi.getKey() + '#fileBoxes';
                         return shareUrl;
     },
     updateLocalFilesList: function() {
@@ -628,8 +628,8 @@ function onRemoteStreamRemoved(e) {}
 //data channel, save it, set up handlers, and send welcome
 // message
 function onDataChannelAdded(e) {
-    statusE = document.getElementById("status"),
-    statusE.innerHTML = "We are connected!";
+    //statusE = document.getElementById("status"),
+    //statusE.innerHTML = "We are connected!";
     dc = e.channel;
     console.log("We are connected!");
     //sendMostRecentFile();
@@ -660,8 +660,8 @@ function setupDataHandlers() {
         dc.send(msg);
     }
     dc.onmessage = function(event) {
-	statusE = document.getElementById("status"),
-	statusE.innerHTML = "We are connected!";
+	//statusE = document.getElementById("status"),
+	//statusE.innerHTML = "We are connected!";
 
         trace('Received Message: ' + event.data);
 
@@ -1004,8 +1004,8 @@ function setStatus(str) {
 
   switch (str) {
     case 'Waiting':
-      statusE.innerHTML =
-        "Sweet! Now send your friend this link: " + getShareLink();
+      //statusE.innerHTML = "Sweet! Now send your friend this link: " + getShareLink();
+      console.log("Sweet! Now send your friend this link: " + getShareLink() + " status: waiting");
       break;
     case 'Connected':
       //statuslineE.style.display = "inline";
@@ -1018,17 +1018,20 @@ function setStatus(str) {
       //Auto click connect if user pasted URL
       if (document.location.search) //Search isn't empty if has ?key= in it.
       {
-        statusE.innerHTML = "Connecting to friend...";
-	var connectBtn = document.getElementById('call');
-        connectBtn.click()
+        //statusE.innerHTML = "Connecting to friend...";
+        console.log("Connecting to friend...");
+	    //var connectBtn = document.getElementById('call');
+        //connectBtn.click()
+        //call();
       }//End auto click connect if user pased URL
 
-      statusE.className = 'alert alert-info';
-      callE.style.display = "inline";
+      //statusE.className = 'alert alert-info';
+      //callE.style.display = "inline";
       break;
     case 'On call':
-      statusE.innerHTML = "On call";
-      callE.style.display = "none";
+      console.log("On call");
+      //statusE.innerHTML = "On call";
+      //callE.style.display = "none";
       break;
     default:
   }

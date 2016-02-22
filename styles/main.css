@@ -15184,10 +15184,10 @@ a:hover, a:focus {
   padding-bottom: 0;
 }
 
-#chat {
+#subscribe {
   color: #777;
   padding: 50px;
-  padding-top: 100px;
+  padding-top: 70px !important;
 }
 
 #howitworks {
@@ -17924,6 +17924,14 @@ img::-moz-selection {
   border-color: #fff;
 }
 
+.button.disabled, .button[disabled], fieldset[disabled] .button {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
 .button {
   float: auto;
   min-width: 100px;
@@ -19321,7 +19329,7 @@ li {
 }
 
 .chat {
-  background: #ddd;
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   color: #434651;
   margin: 0 auto;
@@ -19329,8 +19337,6 @@ li {
 }
 
 .chat .chat-header {
-  padding: 20px;
-  padding-top: 30px;
   border-bottom: 2px solid white;
 }
 
@@ -19347,7 +19353,8 @@ li {
 .chat .chat-header .chat-with {
   font-weight: bold;
   font-size: 18px;
-  padding: 26px;
+  padding: 19px;
+  padding-top: 12px;
 }
 
 .chat .chat-header .chat-num-messages {
@@ -19363,10 +19370,13 @@ li {
 }
 
 .chat .chat-history {
-  padding: 30px 30px 20px;
+  padding: 20px 20px 20px;
   border-bottom: 2px solid white;
   overflow-y: scroll;
-  height: 400px;
+  height: 180px;
+}
+
+.chat .chat-history ul {
   padding-left: 0;
 }
 
@@ -19381,12 +19391,12 @@ li {
 
 .chat .chat-history .message {
   color: white;
-  padding: 18px 20px;
-  line-height: 26px;
-  font-size: 16px;
+  padding: 5px 9px;
+  line-height: 19px;
+  font-size: 14px;
   border-radius: 2px;
   margin-bottom: 30px;
-  width: 45%;
+  width: 65%;
   position: relative;
 }
 
@@ -19409,27 +19419,32 @@ li {
 }
 
 .chat .chat-history .other-message {
-  background: #94C2ED;
+  background: #2299e3;
+  text-align: right;
 }
 
 .chat .chat-history .other-message:after {
-  border-bottom-color: #94C2ED;
+  border-bottom-color: #2299e3;
   left: 93%;
 }
 
 .chat .chat-message {
-  padding: 30px;
-  padding-left: 10px;
+  padding: 10px;
+  padding-bottom: 0;
+  padding-left: 0;
+  height: 75px;
 }
 
 .chat .chat-message textarea {
-  width: 100%;
   border: none;
   padding: 10px 15px;
   font: 15px "Signika", Arial, sans-serif;
   margin-bottom: 10px;
   border-radius: 5px;
   resize: none;
+  line-height: 9px;
+  width: 95%;
+  float: left;
 }
 
 .chat .chat-message .fa-file-o, .chat .chat-message .fa-file-image-o {
@@ -19445,12 +19460,17 @@ li {
   text-transform: uppercase;
   border: none;
   cursor: pointer;
+  line-height: 15px;
   font-weight: bold;
-  background: #fff .chat .chat-message .button;
+  bottom: 14px;
+  min-width: 50px !important;
+  width: 70px;
+  padding: 0.9em;
+  left: 14px;
 }
 
-.chat .chat-message .button :hover {
-  color: #75b1e8;
+.chat .chat-message .button:hover {
+  color: #eee;
 }
 
 .online, .offline, .me {
@@ -19467,7 +19487,7 @@ li {
 }
 
 .me {
-  color: #94C2ED;
+  color: #2299e3;
 }
 
 .align-left {
@@ -19496,44 +19516,75 @@ li {
   color: #555;
 }
 
-@media (max-width: 1200px) {
-  .chat .chat-message .button {
-    left: 26px;
-    bottom: 4px;
-  }
+.caret-up {
+  /* Safari */
+  -webkit-transform: rotate(-180deg);
+  /* Firefox */
+  -moz-transform: rotate(-180deg);
+  /* IE */
+  -ms-transform: rotate(-180deg);
+  /* Opera */
+  -o-transform: rotate(-180deg);
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=6);
 }
 
-@media (max-width: 767px) {
-  #chat {
-    padding: 20px;
-  }
-  .chat .chat-header {
-    padding: 4px;
-    padding-top: 5px;
+.drop-up {
+  top: auto !important;
+  bottom: 100% !important;
+}
+
+#chatup {
+  left: -107px;
+  width: 360px;
+  height: 317px;
+  padding: 0;
+}
+
+@media (min-width: 480px) {
+  #chatup {
+    left: -161px;
+    width: 470px;
   }
   .chat .chat-header .chat-with {
     padding: 12px;
-  }
-  .chat .chat-history .message {
-    color: white;
-    padding: 18px 20px;
-    line-height: 26px;
-    font-size: 16px;
-    border-radius: 2px;
-    margin-bottom: 30px;
-    width: 90%;
-    position: relative;
   }
   .chat .chat-message {
     padding-top: 10px;
     padding-left: 0;
   }
   .chat .chat-message .button {
-    left: 49px;
-    bottom: 4px;
-    min-width: 80px !important;
-    width: 87px;
-    padding-left: 24px;
+    min-width: 50px !important;
+    width: 67px;
+    width: 80px;
+    left: 12px;
+    padding: 0.9em;
+    text-align: center;
+  }
+  .chat .chat-message textarea {
+    width: 95%;
+    float: left;
+  }
+}
+
+@media (min-width: 992px) {
+  #chatup {
+    left: -107px;
+    width: 360px;
+  }
+  .chat .chat-header .chat-with {
+    padding: 12px;
+  }
+  .chat .chat-message {
+    padding-top: 10px;
+    padding-left: 0;
+  }
+  .chat .chat-message .button {
+    min-width: 50px !important;
+    width: 77px;
+    padding: 0.9em;
+    left: 14px;
+    text-align: center;
   }
   .chat .chat-message textarea {
     width: 95%;
@@ -19588,6 +19639,7 @@ label {
 .filecard {
   min-height: 20px;
   margin-bottom: 20px;
+  padding: 0 15px;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
   border-radius: 4px;
@@ -19666,7 +19718,7 @@ label {
   font-size: 14px;
   text-align: left;
   color: #000;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.85);
 }
 
 .dropdown-menu > li > a {
@@ -19755,12 +19807,16 @@ a {
 .file-item .fa-trash, .file-item .fa-times {
   padding-top: 4px;
   padding-right: 4px;
-  padding-left: 6px;
+  padding-left: 5px;
 }
 
 .file-item .fa-trash:hover, .file-item .fa-times:hover {
   background: #ccc;
   color: #ff3333;
+}
+
+.fa-times {
+  padding-left: 5px;
 }
 
 .icon-link {
@@ -20102,7 +20158,7 @@ a {
   margin-top: 6px;
   background: rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.6);
-  border-radius: 10px;
+  border-radius: 9px;
 }
 
 .uploading span {
@@ -20135,6 +20191,53 @@ a {
   padding: 12px;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+/* Display name */
+.displayname {
+  width: 100%;
+  height: auto;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.profile-input {
+  transition: all .3s ease-in-out;
+  position: relative;
+}
+
+input[id="display-name"] {
+  border-width: 0;
+  border-bottom: 1px solid #aaa;
+  color: #bbb;
+  background: transparent;
+  padding-bottom: 2px;
+  padding-right: 16px;
+  width: 170px;
+  margin-left: 16px;
+  transition: all .3s ease-in-out;
+}
+
+input[id="display-name"]:focus {
+  outline: none;
+  color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+input[id="display-name"]:focus + .edit-btn {
+  color: #fff;
+}
+
+.edit-btn {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  top: 5px;
+  right: 0;
+  color: #aaa;
+  transition: all .3s ease-in-out;
 }
 
 @media (min-width: 1200px) {
@@ -20207,8 +20310,8 @@ a {
     font-size: 19px;
   }
   .myfiles {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
     font-size: 13px;
   }
   .btn-generate-key {

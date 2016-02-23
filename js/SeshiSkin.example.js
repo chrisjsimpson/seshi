@@ -150,7 +150,7 @@ function displayFiles() {
 function play(event) {
     console.log("My player implimentation...");
     fileId = event.target.dataset.id;
-    Seshi.play(fileId, "mediaInput");
+    Seshi.play(fileId, "testPlayback");
     //Scroll to media player
 }
 
@@ -269,7 +269,7 @@ function updateLocalFileListDisplay() {
         //Filetype
         list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="visible-xs fa fa-film"></i><span class="hidden-xs">Video<span></span></span></label>';
         //Play button
-        list += '<div class="col-xs-1 "><a href="#overlay"><i class="fa fa-play"></i></a></div>';
+        list += '<div class="col-xs-1 "><span><i onclick="play(event)"data-id="' + fileId + '" class="fa fa-play"></i></span></div>';
         //Download button
         list += '<div class="col-xs-1 "><i class="fa fa-arrow-down"></i></div>';
         //Delete button

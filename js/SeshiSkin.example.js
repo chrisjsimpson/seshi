@@ -232,6 +232,29 @@ function showConnected() {
 }//End showConnected
 
 
+
+
+
+function getFileTypeIcon(mimeType) {
+
+    switch(mimeType) {
+        case 'audio/mp3':
+        case 'audio/ogg':
+             return 'fa-music';
+        case 'video/mp4':
+             return 'fa-film';
+        case 'image/jpeg':
+             return 'fa-picture-o';
+        case 'application/pdf':
+             return 'fa-file-pdf-o';
+        default:
+             return mimeType;
+    }
+
+}//End getFileTypeIcon(mimeType)
+
+
+
 /* Update local files list UI */
 function updateLocalFileListDisplay() {
     var files = Seshi.localFileList()
@@ -258,7 +281,8 @@ function updateLocalFileListDisplay() {
     for(var i=0;i<files.length;i++) {
 
         var fileId = files[i].fileId;
-        var fileName = files[i].fileName
+        var fileName = files[i].fileName;
+        var mimeType = files[i].fileType;
 
         //Open <li>
         list += '<li class="list-group-item file-item row">\n';
@@ -267,7 +291,7 @@ function updateLocalFileListDisplay() {
         //Checkbox label & file name
         list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
         //Filetype
-        list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="visible-xs fa fa-film"></i><span class="hidden-xs">Video<span></span></span></label>';
+        list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="fa ' + getFileTypeIcon(mimeType) + '"></i></label>';
         //Play button
         list += '<div class="col-xs-1 "><a href="#overlay"><i onclick="play(event)"data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
         //Download button

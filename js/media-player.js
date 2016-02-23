@@ -38,7 +38,7 @@ $(document).ready(function(){
 		.on('click', function() {
 			$('.btnPlay').find('.icon-play').addClass('icon-pause').removeClass('icon-play');
 			$(this).unbind('click');
-			video[0].play();
+			//video.play();
 		});
 	});
 
@@ -178,7 +178,7 @@ $(document).ready(function(){
 			percentage = 0;
 		}
 		$('.timeBar').css('width',percentage+'%');
-		video[0].currentTime = maxduration * percentage / 100;
+		video.currentTime = maxduration * percentage / 100;
 	};
 
 	//VOLUME BAR

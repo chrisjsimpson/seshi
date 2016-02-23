@@ -20382,8 +20382,8 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (max-width: 767px) {
-  .message-app-card .keycontainer, .copyclipboard-card .keycontainer {
-    padding-right: 8px;
+  .message-app-card .keycontainer {
+    padding-right: 12px;
   }
 }
 

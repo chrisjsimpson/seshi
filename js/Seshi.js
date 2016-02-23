@@ -18,10 +18,15 @@ Seshi = {
                         //Create & register Seshi spesific events
                         // - Custom Events triggered by Seshi useful to front-end UI development 
                         // - The events are fired (dispatched) according to their individual case.
-                        console.log("Creating  event: peerConnectionEstablished");
+
+                        //Fired when a datachannel is established between both peers
                         peerConnectionEstablished = new Event('peerConnectionEstablished');
                         peerConnectionEstablished.initEvent('peerConnectionEstablished', true, true);
-                        
+
+                        //Fired when the datachannel recieves a file listing from their connected peer
+                        gotRemoteFileList = new Event('gotRemoteFileList');
+                        gotRemoteFileList.initEvent('gotRemoteFileList', true, true);
+
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
                             Seshi.updateLocalFilesList();
@@ -170,6 +175,8 @@ Seshi = {
         console.log("Received list of files from connected peer.");
         //Attach remote peers file listing to Seshi.remoteFileList object
         Seshi.remoteFileList = JSON.parse(remoteFileList.data);
+        //Dispatch event telling any UI there's a (potentially) updated file listing from their peer
+        dispatchEvent(gotRemoteFileList);
         msg = JSON.stringify({'chat':'SeshiBOT: Sucesfully recived your list of files, ta!\nSending mine now..'});
         dc.send(msg);
         if (!remoteFileList.reply) 
@@ -700,11 +707,11 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                         if ( result.length > 0 ) {
                                                                 window.curChunk = JSON.parse(result);
                                                                 //Update window with current chunk information
-                                                                var chunkProgresTextBox = document.getElementById('chunkInProgress');
+                                                                //var chunkProgresTextBox = document.getElementById('chunkInProgress');
                                                                 var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
                                                                 message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
                                                                 message += " FileName: " + curChunk.fileName;
-                                                                chunkProgresTextBox.value = message;
+                                                                //chunkProgresTextBox.value = message;
                                                                 
 								var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
 								//Update user facing status box
@@ -714,7 +721,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
 								} else {
 									statusMsg = 'Reciving file: "' + curChunk.fileName + '" Chunk number: ' + curChunk.chunkNumber;
 								}
-								statusE = document.getElementById("status"),
+							    statusE = document.getElementById("status"),
 								statusE.innerHTML = statusMsg;
                                                                 //End extract file meta from blob
                                                         }//End check read data is > 0

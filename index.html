@@ -483,7 +483,7 @@
                     <div class="col-sm-8">
                         <span class="profile-input">
                             <input type="email" value="" name="EMAIL" class="subscribe-email" id="mce-EMAIL" placeholder="email address" required>
-                            <span class="edit-btn"><i class="fa fa-envelope"></i></span>
+                            <span class="email-btn"><i class="fa fa-envelope"></i></span>
                         </span>
 
                     </div>
@@ -644,7 +644,8 @@
 
     <script>
 
-function initMap() {
+function initMap(e) {
+    e.preventDefault();
   var myLatLng = {lat: 54.976944, lng: -1.607170};
 
   var map = new google.maps.Map(document.getElementById('map-canvas'), {

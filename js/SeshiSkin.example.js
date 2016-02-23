@@ -296,9 +296,9 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Filetype
         list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="fa ' + getFileTypeIcon(mimeType) + '"></i></label>';
         //Play button
-        list += '<div class="col-xs-1 "><a href="#overlay"><i onclick="play(event)"data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
+        list += '<div class="col-xs-1 "><a href="#overlay"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
         //Download button
-        list += '<div class="col-xs-1 "><i class="fa fa-arrow-down"></i></div>';
+        list += '<div class="col-xs-1 "><i onclick="download(event)" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         //Delete button
         list += '<div class="col-xs-1 hidden-xs"><i class="fa fa-trash  "></i></div>';
         //Close </li>

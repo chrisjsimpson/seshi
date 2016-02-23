@@ -86,27 +86,32 @@
 
                 <div class="row generate-key">
                     <div class="container">
-                    <div class="col-sm-12">
-                            <h5>Send connection key to your friend </h5>
-                    </div>
 
-                        <div class="col-xs-3 col-sm-3">
-                            <a class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
+                    <div class="col-75 col-80 message-app-card" >
+                        <h6>Send connection key to a friend </h6>
+                        <div class="keycontainer">
+                        <div class="col-xs-3 col-sm-4">
+                            <a onclick="generateKey('Generate')" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
                         </div>
 
-                        <div class="col-xs-3 col-sm-3" data-clipboard-target="#connectionStatus">
-                            <a class="icon-link round-corner copy fill" data-clipboard-text="the key.."><i class="fa fa-copy"></i></a>
-                        </div>
-
-                        <div class="col-xs-3 col-sm-3">
+                        <div class="col-xs-3 col-sm-4">
                             <a class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
                         </div>
 
-                        <div class="col-xs-3 col-sm-3">
+                        <div class="col-xs-3 col-sm-4">
                             <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
                         </div>
-                        <div class="col-xs-3 visible-xs">
-                            <a class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
+                            <div class="col-xs-3 visible-xs">
+                                <a onclick="generateKey('Generate')" class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="col-xs-3 col-sm-3 copyclipboard-card">
+                            <h6>or copy key </h6>
+                            <div class="keycontainer">
+                                <a onclick="generateKey('Generate')" class="icon-link round-s clipboard fill"><i class="fa fa-clipboard"></i></a>
+                            </div>
                         </div>
                     </div>
 
@@ -404,8 +409,35 @@
     <section id="subscribe" class="content-section text-center">
         <div class="row">
             <div class="col-lg-12">
-                <h2>Subscribe</h2>
-                <h5></h5>
+                <h2>Subscribe to Seshi Pro</h2>
+                <h5>Be an early adopter and get on board now</h5>
+                <!-- Begin MailChimp Signup Form -->
+                <!-- <link href="//cdn-images.mailchimp.com/embedcode/slim-10_7.css" rel="stylesheet" type="text/css"> -->
+                <style type="text/css">
+                	#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
+                	/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+                	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+                </style>
+                <div id="mc_embed_signup">
+                <form action="//seshi.us12.list-manage.com/subscribe/post?u=8204eaf20b0f40b94827a1fee&amp;id=16f463e678" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                    <div id="mc_embed_signup_scroll">
+                    <div class="col-sm-8">
+                        <span class="profile-input">
+                            <input type="email" value="" name="EMAIL" class="subscribe-email" id="mce-EMAIL" placeholder="email address" required>
+                            <span class="edit-btn"><i class="fa fa-envelope"></i></span>
+                        </span>
+
+                    </div>
+                    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                    <div class="col-sm-4 ">
+                        <button type="submit"  name="Subscribe" id="mc-embedded-subscribe" class="button button--round-s btn-subscribe">Subscribe</button>
+                    </div>
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_8204eaf20b0f40b94827a1fee_16f463e678" tabindex="-1" value=""></div>
+                    </div>
+                </form>
+                </div>
+
+<!--End mc_embed_signup-->
 
             </div>
         </div>

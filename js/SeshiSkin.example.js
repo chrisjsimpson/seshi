@@ -49,10 +49,10 @@ function createShareUrl() {
     updateWhatsAppShareBtn();
 
     //Clipboard
-    var copyIcon = document.getElementsByClassName('fa-copy')
+    var copyIcon = document.getElementsByClassName('fa-clipboard')
     //Set data-shareurl
     copyIcon[0].dataset.shareurl = Seshi.getShareUrl();
-    new Clipboard('.fa-copy', {
+    new Clipboard('.fa-clipboard', {
         text: function(trigger) {
             return trigger.getAttribute('data-shareurl');
         }

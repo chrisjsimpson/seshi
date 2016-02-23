@@ -276,17 +276,13 @@ function updateLocalFileListDisplay() {
         list += '<div class="col-xs-1 hidden-xs"><i class="fa fa-trash  "></i></div>';
         //Close </li>
         list += '</li>';
-        console.log(fileId);
-        console.log(fileName);
     }//End loop through each local file list (cached) and build list items
-    console.log(list);
     //Update display with local files list
     var localFileList = document.getElementById('localFileList');//Get reference to local file list
     var numFilesInList = localFileList.children.length;
     
     for(var i=1; i < numFilesInList; i++) //Remove all current items from local file list
     {  //Note that we start at index 1, so as not to delete the table header. 
-       console.log("Tryinig to remove: " + i);
        localFileList.removeChild(localFileList.children[1]);
     }//End remove all current items in list ready for replacement
 

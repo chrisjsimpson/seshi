@@ -26,7 +26,7 @@ for(var i=0;i<shareBtns.length;i++)
 window.addEventListener('peerConnectionEstablished', showConnected, false);
 
 //Event: Recieved file listing of connected peer
-window.addEventListener('gotRemoteFileList', updateRemoteFilelistDisplay, false); 
+window.addEventListener('gotRemoteFileList', function(){updateFileListDisplay(Seshi.remoteFileList, 'remoteFileList');}, false); 
 
 function createShareUrl() {
     /* createShareUrl()
@@ -259,8 +259,8 @@ function getFileTypeIcon(mimeType) {
 
 
 /* Update local files list UI */
-function updateLocalFileListDisplay() {
-    var files = Seshi.localFileList()
+function updateFileListDisplay(fileListObj, targetElm) {
+    var files = fileListObj;
 
     console.log("There are " + files.length + " local files");
 
@@ -305,7 +305,7 @@ function updateLocalFileListDisplay() {
         list += '</li>';
     }//End loop through each local file list (cached) and build list items
     //Update display with local files list
-    var localFileList = document.getElementById('localFileList');//Get reference to local file list
+    var localFileList = document.getElementById(targetElm);//Get reference to local file list
     var numFilesInList = localFileList.children.length;
     
     for(var i=1; i < numFilesInList; i++) //Remove all current items from local file list
@@ -318,66 +318,5 @@ function updateLocalFileListDisplay() {
 }//updateLocalFileListDisplay()
 
 
-updateLocalFileListDisplay();
+updateFileListDisplay(Seshi.localFileList(), 'localFileList');
 
-
-function updateRemoteFilelistDisplay() {
-
-    var files = Seshi.remoteFileList; 
-
-    console.log("There are " + files.length + " local files");
-
-    var list = '<div class="list-group-item row header-title">' +
-                               '<input class="col-xs-1 col-sm-1 checkall" type="checkbox">' +
-                                '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
-                                '<div class="col-xs-3 col-sm-2 ">Type</div>' +
-                                '<div class="col-xs-2 col-sm-2"></div>' +
-                                '<div class="col-xs-1 col-sm-1 dropdown">' +
-                                    '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
-                                    '<i class="fa fa-chevron-down"></i>' +
-                                    '</a>' +
-                                    '<ul class="dropdown-menu">' +
-                                        '<li><a href="#">Download </a></li>' +
-                                        '<li class="divider"></li>' +
-                                        '<li><a href="#">Delete</a></li>' +
-                                    '</ul>' +
-                                '</div>' +
-                            '</div>';
-    //Loop through each
-    for(var i=0;i<files.length;i++) {
-
-        var fileId = files[i].fileId;
-        var fileName = files[i].fileName;
-        var mimeType = files[i].fileType;
-
-        //Open <li>
-        list += '<li class="list-group-item file-item row">\n';
-        //Checkbox
-        list += '<input class="col-xs-1" type="checkbox" id="' + fileId + '">\n';
-        //Checkbox label & file name
-        list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
-        //Filetype
-        list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="fa ' + getFileTypeIcon(mimeType) + '"></i></label>';
-        //Play button
-        list += '<div class="col-xs-1 "><a href="#overlay"><i onclick="play(event)"data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
-        //Download button
-        list += '<div class="col-xs-1 "><i class="fa fa-arrow-down"></i></div>';
-        //Delete button
-        list += '<div class="col-xs-1 hidden-xs"><i class="fa fa-trash  "></i></div>';
-        //Close </li>
-        list += '</li>';
-    }//End loop through each local file list (cached) and build list items
-    //Update display with local files list
-    var localFileList = document.getElementById('remoteFileList');//Get reference to local file list
-    var numFilesInList = localFileList.children.length;
-    
-    for(var i=1; i < numFilesInList; i++) //Remove all current items from local file list
-    {  //Note that we start at index 1, so as not to delete the table header. 
-       localFileList.removeChild(localFileList.children[1]);
-    }//End remove all current items in list ready for replacement
-
-    //Update table with local file list:
-    localFileList.innerHTML = list;
-
-
-}//End updateRemoteFilelistDisplay()

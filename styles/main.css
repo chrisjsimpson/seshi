@@ -18939,7 +18939,7 @@ img::-moz-selection {
 }
 
 .button--antiman::before {
-  border: 2px solid #fff;
+  border: 2px solid #ddd;
   opacity: 0;
   transform: scale3d(1.2, 1.2, 1);
 }
@@ -22876,6 +22876,59 @@ input[id="display-name"]:focus + .edit-btn {
 
 .elastic.progress-button button {
   transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.25, 0.25, 0.4, 1.6), border-width 0.3s, border-color 0.3s;
+}
+
+.subscribe-email {
+  height: 60px;
+  width: 80%;
+  font-size: 25px;
+  outline: none;
+}
+
+.btn-subscribe {
+  width: 180px;
+  min-height: 35px;
+  font-size: 18px;
+  color: #fff;
+  font-family: 'Montserrat';
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-right: 50px;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  background: #6ca354;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-subscribe:hover {
+  background: #86BB71;
+}
+
+input[id="mce-EMAIL"] {
+  border-width: 0;
+  border-bottom: 2px solid #777;
+  color: #555;
+  background: transparent;
+  padding-bottom: 2px;
+  padding-right: 16px;
+  margin-left: 16px;
+  transition: all .3s ease-in-out;
+}
+
+input[id="mce-EMAIL"]:focus {
+  outline: none;
+  color: #333;
+  border-bottom: 2px solid #555;
+}
+
+input[id="mce-EMAIL"]:focus + .edit-btn {
+  color: #333;
+}
+
+@media (max-width: 767px) {
+  .btn-subscribe {
+    margin-top: 20px;
+  }
 }
 
 .videoContainer {

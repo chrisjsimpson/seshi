@@ -19699,8 +19699,8 @@ label {
 }
 
 .myfiles {
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
   padding-top: 20px;
   padding-bottom: 70px;
   margin-bottom: 0;
@@ -23340,17 +23340,6 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 #overlay:target + #mask {
   display: block;
   opacity: 1;
-}
-
-#mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 500;
-  width: 100%;
-  height: 100%;
-  display: none;
 }
 
 .closes {

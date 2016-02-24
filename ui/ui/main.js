@@ -11809,6 +11809,12 @@ $('.navbar-collapse ul li a').click(function() {
     $('.navbar-toggle:visible').click();
 });
 
+//Prevent char box from close when clicked inside
+
+$('.drop-up').click(function(e) {
+       e.stopPropagation();
+   });
+
 // Google Maps Scripts
 // When the window has finished loading create our google map below
 google.maps.event.addDomListener(window, 'load', init);

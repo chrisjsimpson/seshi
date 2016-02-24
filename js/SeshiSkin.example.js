@@ -299,7 +299,11 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Download button
         list += '<div class="col-xs-1 "><i onclick="download(event)" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         //Delete button
-        list += '<div class="col-xs-1 hidden-xs"><i onclick="deleteFile(event)" data-id="' + fileId + '" class="fa fa-trash  "></i></div>';
+        if (targetElm != 'remoteFileList' ) 
+        {
+            list += '<div class="col-xs-1 hidden-xs"><i onclick="deleteFile(event)" data-id="' + fileId + '" class="fa fa-trash  "></i></div>';
+        }//End if targetElm != 'remoteFileList'
+
         //Close </li>
         list += '</li>';
     }//End loop through each local file list (cached) and build list items

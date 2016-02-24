@@ -231,6 +231,10 @@ function showConnected() {
     var parentDiv = targetBtn.parentNode; //Locate the parent node of the existing button.
     parentDiv.replaceChild(connectedBtn, targetBtn); //Replace the old button with the new
 
+    //Enable Send / Recieve buttons:
+    var receiveBtn = document.getElementById('receiveBtn').disabled = false;
+    var sendBtn = document.getElementById('sendBtn').disabled = false;
+
 }//End showConnected
 
 

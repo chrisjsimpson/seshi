@@ -21,9 +21,6 @@ $(document).ready(function(){
 		$('.duration').text(timeFormat(video[0].duration));
 		updateVolume(0, 0.7);
 
-		//start to get video buffering data
-		setTimeout(startBuffer, 150);
-
 		//bind video events
 		$('.videoContainer')
 		.hover(function() {
@@ -41,18 +38,6 @@ $(document).ready(function(){
 			//video.play();
 		});
 	});
-
-	//display video buffering bar
-	var startBuffer = function() {
-		var currentBuffer = video[0].buffered.end(0);
-		var maxduration = video[0].duration;
-		var perc = 100 * currentBuffer / maxduration;
-		$('.bufferBar').css('width',perc+'%');
-
-		if(currentBuffer < maxduration) {
-			setTimeout(startBuffer, 500);
-		}
-	};
 
 	//display current video play time
 	video.on('timeupdate', function() {

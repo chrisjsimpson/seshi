@@ -27,6 +27,10 @@ Seshi = {
                         gotRemoteFileList = new Event('gotRemoteFileList');
                         gotRemoteFileList.initEvent('gotRemoteFileList', true, true);
 
+                        //Fired when the storage worker reports it has stored from more chunks of a file(s)
+                        storeFilesProgressUpdate = new Event('storeFilesProgressUpdate');
+                        storeFilesProgressUpdate.initEvent('storeFilesProgressUpdate', true, true);
+
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
                             Seshi.updateLocalFilesList();
@@ -216,6 +220,7 @@ Seshi = {
                                 "totalNumChunks":progressData.totalNumChunks,
                                 "complete":progressData.currentChunk == progressData.totalNumChunks ? true:false
                                 }
+                            dispatchEvent(storeFilesProgressUpdate);//Dispact/fire progress update event
                         }//End recieve storage progress update and update Seshi.storeProgress array with fileId's progress
     },
     storeProgress:[],

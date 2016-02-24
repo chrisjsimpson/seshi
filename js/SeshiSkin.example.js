@@ -28,6 +28,9 @@ window.addEventListener('peerConnectionEstablished', showConnected, false);
 //Event: Recieved file listing of connected peer
 window.addEventListener('gotRemoteFileList', function(){updateFileListDisplay(Seshi.remoteFileList, 'remoteFileList');}, false); 
 
+//Event: Storage worker has stored more chunks of a file(s)
+window.addEventListener('storeFilesProgressUpdate', updateStoreProgressDisplay, false);
+
 function createShareUrl() {
     /* createShareUrl()
      * - Creates a share url when user clicks 'generate key' button &
@@ -264,10 +267,11 @@ function getFileTypeIcon(mimeType) {
 /* Update local files list UI */
 function updateFileListDisplay(fileListObj, targetElm) {
     var files = fileListObj;
+    var fileListHeaderId = 'localFilesBoxHeader';
 
     console.log("There are " + files.length + " local files");
 
-    var list = '<div class="list-group-item row header-title">' +
+    var list = '<div class="list-group-item row header-title" id="' + fileListHeaderId + '" >' +
                                '<input class="col-xs-1 col-sm-1 checkall" type="checkbox">' +
                                 '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
                                 '<div class="col-xs-3 col-sm-2 ">Type</div>' +
@@ -327,3 +331,50 @@ function updateFileListDisplay(fileListObj, targetElm) {
 
 updateFileListDisplay(Seshi.localFileList(), 'localFileList');
 
+
+
+function updateStoreProgressDisplay() {
+
+    //Loop through each item in Seshi.storeProgress & update the display accordingly
+    for ( var fileId in Seshi.storeProgress) {
+        console.log("key: " + fileId);
+        Seshi.storeProgress[fileId];
+        var fileName = Seshi.storeProgress[fileId].fileName;
+        var valueNow = parseInt(Seshi.storeProgress[fileId].currentChunk / (Seshi.storeProgress[fileId].totalNumChunks / 100));
+
+        //Delete progress bar if reached 100%
+        if ( valueNow >= 100 ) {
+                document.getElementById('storingFileId-' + fileId).remove();
+                refreshFileList();
+        }//End Delete progress bar if reached 100%
+
+        var output = '' +
+                '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">' +
+                    //Filename  
+                '   <div class="col-xs-4 col-sm-3">' + fileName + '</div> ' +
+                    //Progress bar
+                '   <div class="col-xs-5  col-sm-6">' +
+                '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
+                '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' + 
+                '                </div>' +
+                '   </div>' +
+                    //Percentage complete
+                '   <div class="col-xs-1 col-sm-1">' +
+                '       <div id="percentupload">' + valueNow + '%</div>' +
+                '        </div>' +
+                    //Cancell button
+                '   <div class="col-xs-1 col-sm-1">' +
+                '       <i class="fa fa-times "></i>' +
+                '   </div>'
+                '       <div class="col-xs-1 col-sm-1"></div>' +
+                '</li>';
+        //Delete existing progress bar if already present:
+        if ( rmProgressBar = document.getElementById('storingFileId-' + fileId)) 
+        {
+             rmProgressBar.remove();
+        }//End Delete existing progress bar if already present
+         
+        var localFileListBox = document.getElementById('localFilesBoxHeader'); //LocalfileList header
+        localFileListBox.insertAdjacentHTML('afterend', output);
+    }//End loop through each item in Seshi.storeProgress & update the display accordingly
+}//End updateStoreProgressDisplay()

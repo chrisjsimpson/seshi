@@ -295,13 +295,13 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Filetype
         list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="fa ' + getFileTypeIcon(mimeType) + '"></i></label>';
         //Play button
-        list += '<div class="col-xs-1 "><a href="#overlay"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
+        list += '<div class="col-xs-1 "><a href="#overlay" title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
         //Download button
-        list += '<div class="col-xs-1 "><i onclick="download(event)" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
+        list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         //Delete button
         if (targetElm != 'remoteFileList' ) 
         {
-            list += '<div class="col-xs-1 hidden-xs"><i onclick="deleteFile(event)" data-id="' + fileId + '" class="fa fa-trash  "></i></div>';
+            list += '<div class="col-xs-1 hidden-xs"><i title="Delete" onclick="deleteFile(event)" data-id="' + fileId + '" class="fa fa-trash  "></i></div>';
         }//End if targetElm != 'remoteFileList'
 
         //Close </li>

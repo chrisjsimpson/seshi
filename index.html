@@ -17,6 +17,9 @@
 
     <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 
+    <!-- <link rel="stylesheet" href="https://cdn.plyr.io/1.5.14/plyr.css"> -->
+
+
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -79,7 +82,7 @@
                     </div>
                 </div>
             </div>
-
+        <div id="hideall"> <!--hide wrapper -->
             <div class="row myfiles" id="myfiles">
                 <h3> File Share</h3>
 
@@ -288,7 +291,21 @@
 
                 </div> -->
             </div>
+
+    </div> <!--hide wrapper -->
+
     <!--Media Player -->
+
+    <div class="plyr">
+            <button class="btn btn-hide"><span>Hide</span></button>
+    <video controls>
+        <!-- Audio files -->
+        <source src="img/deadpool.mp4" type="video/mp4">
+
+    </video>
+
+    </div>
+
 
 <div id="overlay">
 
@@ -318,9 +335,11 @@
                     </div>
 
 
-                </div><!-- End ? -->
-            </div><!-- End ? -->
-        </div><!-- End ? -->
+                </div>
+            </div>
+
+
+        </div>
 
     </div><!-- End ? -->
 <div id="mask"></div>
@@ -463,13 +482,26 @@ function initMap(e) {
 }
     </script>
 
+    <script>
+$(".btn-hide").click(function() {
+    $("#hideall").fadeToggle();
+    if($(this).text() == 'show'){
+           $(this).text('hide');
+       } else {
+           $(this).text('show');
+       }
+})
 
+    </script>
 
 
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Signika:300, 700' rel='stylesheet' type='text/css'>
+
+    <!--Video player -->
+    <script src="js/plyr/plyr.js"></script>
 
     <!--UI scripts -->
     <script src="ui/ui/main.min.js"></script>

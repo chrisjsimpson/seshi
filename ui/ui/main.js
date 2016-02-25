@@ -11835,6 +11835,11 @@ $("#copyclipboard").click(function () {
 
 // Google Maps Scripts
 // When the window has finished loading create our google map below
+
+//pyr plugin
+
+
+
 google.maps.event.addDomListener(window, 'load', init);
 
 function initMap() {

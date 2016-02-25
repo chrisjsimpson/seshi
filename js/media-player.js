@@ -4,6 +4,24 @@ http://www.inwebson.com/html5/custom-html5-video-controls-with-jquery/
 
 I really wanted to learn how to skin html5 video.
 */
+
+plyr.setup();
+
+(function(d, p){
+var a = new XMLHttpRequest(),
+    b = d.body;
+a.open('GET', p, true);
+a.send();
+a.onload = function() {
+    var c = d.createElement('div');
+    c.setAttribute('hidden', '');
+    c.innerHTML = a.responseText;
+    b.insertBefore(c, b.childNodes[0]);
+};
+})(document, 'https://cdn.plyr.io/1.5.14/sprite.svg');
+
+
+
 $(document).ready(function(){
 	//INITIALIZE
 	var video = $('#myVideo');

@@ -162,7 +162,7 @@ Seshi = {
                         });
                             return promise;
                        },
-    deleteFile:function(){
+    deleteFile:function(fileId){
                         /* Delete File From Seshi database given fileId */
                       db.chunks.where("fileId").equals(fileId).delete()
                       .then(function(deleteCount) {

@@ -27,6 +27,10 @@ for(var i=0;i<shareBtns.length;i++)
 var sendBtn = document.getElementById('sendBtn');
 sendBtn.addEventListener('click', sendSelectedFiles, false);
 
+//Event: When user uses drop down menu to delete selected (checkbox items)
+var multiDeleteBtn = document.getElementById('multiDeleteLocalFiles');
+multiDeleteBtn.addEventListener('click', deleteSelectedFiles, false);
+
 
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('peerConnectionEstablished', showConnected, false);
@@ -118,46 +122,6 @@ function updateWhatsAppShareBtn() {
     whatsAppShareBtn[0].href = 'whatsapp://send?text=' + Seshi.getShareUrl();
 }//End updateWhatsAppShareBtn
 
-function displayFiles() {
-    fileList = Seshi.localFileList();
-    table = '<h2>Your files:</h2>\n<table>\n';
-    theader = '<thead>\n' +
-               '<tr class="header-row">\n' +
-                    '<th class="fileName" class="ascending">Name</th>\n' +
-                    '<th class="actions">Actions</th>\n' +
-               '</thead>\n';
-
-    tbodyStart = '<tbody>';
-    tbodyContent = '';
-
-        //Loop over local files list to create table body
-        for (var i=0; i< fileList.length;i++) {
-            tbodyContent += '<tr>\n' +
-                                '<td data-col="fileName" data-id="' + fileList[i].fileId + '"' +
-                                ' onclick="play(event)">' + fileList[i].fileName + '</td>\n' +
-                                '<td data-col="actions">' +
-                                    //Playback action
-                                    '<span data-id="' + fileList[i].fileId + '" onclick="play(event)">Play</span> / ' +
-                                    //Download action
-                                    '<span data-id="' + fileList[i].fileId + '" onclick="download(event)">Download</span> /' +
-                                    //Share action
-                                    '<span data-id="' + fileList[i].fileId + '" onclick="share(event)"> Send to peer</span> / ' +
-                                    //Play in sync action
-                                    '<span data-id="' + fileList[i].fileId + '" onclick="playInSync(event)"> Play in-sync with friend!</span> / ' +
-                                    //Delete action
-                                    '<span data-id="' + fileList[i].fileId + '" onclick="deleteFile(event)"> Delete file</span>' +
-                                    
-                                '</td>\n' +
-                           '</tr>\n\n';
-        }
-
-    tbodyEnd = '</tbody>';
-    tableOutput = table + theader + tbodyStart + tbodyContent + tbodyEnd + '</table>';
-    //Update filetable
-    var fileTable = document.getElementById('fileTable');
-    fileTable.innerHTML = tableOutput;
-}//End displayFiles
-
 
 function play(event) {
     console.log("My player implimentation...");
@@ -182,16 +146,16 @@ function share(event) {
 }
 
 function refreshFileList() {
-    var fileTable = document.getElementById('localFileList');
-        fileTable.innerHTML = 'Refreshing file list.. <br /><img src="/img/Ajax-loader.gif" />';
+    //Show loading throbber icon whilst refreshing file list
+    var throbber = 'Refreshing file list.. <br /><img src="/img/Ajax-loader.gif" />';
+    document.getElementById('localFilesBoxHeader').insertAdjacentHTML('afterend', throbber);
     
     // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
     Seshi.updateLocalFilesList().then( // .then() we know the .localFileList cache is updated, so we display the fresh list.
             function(complete){
                 updateFileListDisplay(Seshi.localFileList(), 'localFileList');   
             });
-
-}
+}//End refreshFileList()
 
 function storeFile(fileList){
     Seshi.store({'dataSource':'fileSystem','data':fileList});
@@ -276,25 +240,9 @@ function getFileTypeIcon(mimeType) {
 function updateFileListDisplay(fileListObj, targetElm) {
     var files = fileListObj;
     var fileListHeaderId = 'localFilesBoxHeader';
-
+    var list = '';
     console.log("There are " + files.length + " local files");
 
-    var list = '<div class="list-group-item row header-title" id="' + fileListHeaderId + '" >' +
-                               '<input class="col-xs-1 col-sm-1 checkall" type="checkbox">' +
-                                '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
-                                '<div class="col-xs-3 col-sm-2 ">Type</div>' +
-                                '<div class="col-xs-2 col-sm-2"></div>' +
-                                '<div class="col-xs-1 col-sm-1 dropdown">' +
-                                    '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
-                                    '<i class="fa fa-chevron-down"></i>' +
-                                    '</a>' +
-                                    '<ul class="dropdown-menu">' +
-                                        '<li><a href="#">Download </a></li>' +
-                                        '<li class="divider"></li>' +
-                                        '<li><a href="#">Delete</a></li>' +
-                                    '</ul>' +
-                                '</div>' +
-                            '</div>';
     //Loop through each
     for(var i=0;i<files.length;i++) {
 
@@ -333,7 +281,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
     }//End remove all current items in list ready for replacement
 
     //Update table with local file list:
-    localFileList.innerHTML = list;
+    document.getElementById('localFilesBoxHeader').insertAdjacentHTML('afterend', list);
 }//updateLocalFileListDisplay()
 
 
@@ -401,9 +349,36 @@ function sendSelectedFiles() {
 
     //Get list of files user has selected for sending
     var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox'); 
+    //Only send if datachannel is open!
+    if (Seshi.connectionStatus.iceConnectionState() == "connected") 
+    {
+        for(var i=0; i< localFileCheckBoxes.length; i++) {
+            if (localFileCheckBoxes[i].checked == true) 
+            {
+                Seshi.sendFileToPeer(localFileCheckBoxes[i].dataset.id); //Send over dataChannel
+            }//End only send if file's checkbox it checked.
+        }//Loop though each localfile checkbox & send file over datachannel if checked
 
-    console.log(localFileCheckBoxes);
+        //Unckeck all files after sending to prevent user resending same files accidentally
+        for(var i=0; i< localFileCheckBoxes.length; i++) {
+            localFileCheckBoxes[i].checked = false;
+        }//End Unckeck all files after sending to prevent user resending same files accidentally
+    }//End only send if datachannel is open
 }//End sendSelectedFiles()
+
+
+function deleteSelectedFiles() {
+
+    var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox'); 
+    for(var i=0; i< localFileCheckBoxes.length; i++) {
+        //Check file is selected before deleting
+        if (localFileCheckBoxes[i].checked == true)
+        {
+            Seshi.deleteFile(localFileCheckBoxes[i].dataset.id);
+        }//End check file is selected before deleting
+    }//Wns loop through all selected files, deleting them if selected
+    refreshFileList();
+}//End deleteSelectedFiles()
 
 
 function smoothScroll(eID) {

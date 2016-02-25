@@ -107,6 +107,11 @@ function storeFiles(fileList) {
                                     "currentChunk":currentChunkNumTransactionScope,
                                     "totalNumChunks":numChunksNeeded,
                             });
+                            //Exit if storage is complete
+                            if(currentChunkNumTransactionScope == numChunksNeeded) 
+                            {
+                                close(); //Exit worker on completion
+                            }//End exit if storage is complete                  
                         }).catch(function(error) {
                             console.err(error);
                         })})
@@ -117,7 +122,7 @@ function storeFiles(fileList) {
             }//End reader.onload
             reader.readAsArrayBuffer(currentFile);
     }//End loop through each file, chunk and store it.
-
+    
 }//End storeFiles(fileList)
 
 uuid = function()

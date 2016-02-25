@@ -218,7 +218,8 @@ Seshi = {
                                 "fileName":progressData.fileName,
                                 "currentChunk":progressData.currentChunk,
                                 "totalNumChunks":progressData.totalNumChunks,
-                                "complete":progressData.currentChunk == progressData.totalNumChunks ? true:false
+                                "complete":progressData.currentChunk == progressData.totalNumChunks ? true:false,
+                                "UIdone":false
                                 }
                             dispatchEvent(storeFilesProgressUpdate);//Dispact/fire progress update event
                         }//End recieve storage progress update and update Seshi.storeProgress array with fileId's progress

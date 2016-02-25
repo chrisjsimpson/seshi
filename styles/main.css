@@ -20322,7 +20322,6 @@ input[id="display-name"]:focus + .edit-btn {
   height: 111px;
   /* margin-bottom: 20px; */
   padding: 10px;
-  padding-top: 2px;
   background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid #e3e3e3;
   border-radius: 4px;
@@ -20346,7 +20345,7 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 .copyclipboard-card {
-  width: 25%;
+  width: 30%;
 }
 
 .copyclipboard-card .keycopy {
@@ -20384,7 +20383,7 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (min-width: 480px) {
-  .message-app-card h6, .copyclipboard-card h6 {
+  .copyclipboard-card h6 {
     font-size: 12px;
     letter-spacing: 0.7px;
   }
@@ -20397,7 +20396,11 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (min-width: 768px) {
-  .message-app-card .keycontainer, .copyclipboard-card .keycontainer {
+  .copyclipboard-card {
+    width: 23%;
+    padding-top: 3px;
+  }
+  .copyclipboard-card .keycontainer {
     padding-right: 44px;
   }
 }

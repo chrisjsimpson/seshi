@@ -147,7 +147,7 @@ function share(event) {
 
 function refreshFileList() {
     //Show loading throbber icon whilst refreshing file list
-    var throbber = 'Refreshing file list.. <br /><img src="/img/Ajax-loader.gif" />';
+    var throbber = '<img src="/img/Ajax-loader.gif" />';
     document.getElementById('localFilesBoxHeader').insertAdjacentHTML('afterend', throbber);
     
     // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.

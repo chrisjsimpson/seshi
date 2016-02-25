@@ -15060,6 +15060,7 @@ p {
 
 .navbar-custom .navbar-brand {
   font-weight: 700;
+  padding: 18px 15px;
 }
 
 .navbar-custom .navbar-brand:focus {
@@ -15165,11 +15166,6 @@ a:hover, a:focus {
   font-weight: 400;
 }
 
-#about {
-  background-color: #444;
-  padding: 50px;
-}
-
 @media (min-width: 767px) {
   .navbar {
     padding: 20px 0;
@@ -15198,7 +15194,7 @@ a:hover, a:focus {
   padding: 50px 0;
   text-align: center;
   color: #fff;
-  background: linear-gradient(rgba(17, 57, 143, 0.55), rgba(10, 31, 77, 0.8)), url("../img/polygon.jpg") no-repeat center center fixed;
+  background: linear-gradient(rgba(17, 57, 143, 0.55), rgba(10, 31, 77, 0.8)), url("../img/polygon.jpg") no-repeat center center;
   /* fallback for old browsers */
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -15454,6 +15450,8 @@ ul.banner-social-buttons {
 
 footer {
   padding: 50px 0;
+  padding-top: 20px;
+  height: 40px;
 }
 
 footer p {
@@ -23073,6 +23071,73 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   #subscribe {
     padding: 17px;
     padding-bottom: 30px;
+  }
+}
+
+/*pages imports */
+.page-wrap {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -60px;
+}
+
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+
+.footer, .page-wrap:after {
+  height: 60px;
+}
+
+#about {
+  background-color: #eee;
+  padding: 50px;
+  min-height: 80vh;
+  color: #222;
+  text-transform: none;
+}
+
+#about p {
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .navbar-custom .navbar-brand {
+    font-weight: 700;
+  }
+  .navbar-custom .navbar-brand:focus {
+    outline: none;
+  }
+  .navbar-custom .navbar-brand .navbar-toggle {
+    padding: 4px 6px;
+    font-size: 16px;
+    color: #fff;
+  }
+  .navbar-custom .navbar-brand .navbar-toggle:focus, .navbar-custom .navbar-brand .navbar-toggle:active {
+    outline: none;
+  }
+  .navbar-custom a {
+    color: #fff;
+  }
+  .navbar-custom .nav {
+    padding-right: 30px;
+  }
+  .navbar-custom .nav li {
+    border-bottom: 2px solid transparent;
+  }
+  .navbar-custom .nav li a {
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 4px;
+  }
+  .navbar-custom .nav li a:hover, .navbar-custom .nav li a:focus, .navbar-custom .nav li a.active {
+    outline: none;
+    color: #eee;
+    background-color: transparent;
+    border-bottom: 2px solid #fff;
   }
 }
 

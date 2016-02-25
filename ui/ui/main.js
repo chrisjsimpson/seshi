@@ -11809,7 +11809,7 @@ $('.navbar-collapse ul li a').click(function() {
     $('.navbar-toggle:visible').click();
 });
 
-//Prevent char box from close when clicked inside
+//Prevent chat box from close when clicked inside
 
 $('.drop-up').click(function(e) {
        e.stopPropagation();

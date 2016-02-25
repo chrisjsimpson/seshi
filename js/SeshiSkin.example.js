@@ -361,8 +361,21 @@ function sendSelectedFiles() {
 
     //Get list of files user has selected for sending
     var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox'); 
+    //Only send if datachannel is open!
+    if (Seshi.connectionStatus.iceConnectionState() == "connected") 
+    {
+        for(var i=0; i< localFileCheckBoxes.length; i++) {
+            if (localFileCheckBoxes[i].checked == true) 
+            {
+                Seshi.sendFileToPeer(localFileCheckBoxes[i].dataset.id); //Send over dataChannel
+            }//End only send if file's checkbox it checked.
+        }//Loop though each localfile checkbox & send file over datachannel if checked
 
-    console.log(localFileCheckBoxes);
+        //Unckeck all files after sending to prevent user resending same files accidentally
+        for(var i=0; i< localFileCheckBoxes.length; i++) {
+            localFileCheckBoxes[i].checked = false;
+        }//End Unckeck all files after sending to prevent user resending same files accidentally
+    }//End only send if datachannel is open
 }//End sendSelectedFiles()
 
 

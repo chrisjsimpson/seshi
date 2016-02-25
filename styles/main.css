@@ -23531,6 +23531,7 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 .plyr audio {
   width: 100%;
   height: auto;
+  margin-top: -1vh;
   vertical-align: middle;
 }
 

@@ -11815,6 +11815,24 @@ $('.drop-up').click(function(e) {
        e.stopPropagation();
    });
 
+
+//send key expand
+
+$("#copyclipboard").click(function () {
+    // $(".message-app-card").show();
+    $(".copyclipboard-card ").animate({
+        width: '100%'
+    });
+    $(".keycopy").animate({
+        width: '25%'
+    });
+    $(".keycopy .copied").replaceWith("<h6> Copied! </h6>")
+
+    $(".message-app-card").animate({
+                   width: '73%'
+               }).show().fadeIn().delay('1000');
+});
+
 // Google Maps Scripts
 // When the window has finished loading create our google map below
 google.maps.event.addDomListener(window, 'load', init);

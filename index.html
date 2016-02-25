@@ -86,32 +86,42 @@
                 <div class="row generate-key">
                     <div class="container" id="shareButtonsRow">
 
-                    <div class="col-75 col-80 message-app-card" >
-                        <h6>Send connection key to a friend </h6>
-                        <div class="keycontainer">
-                        <div class="col-xs-3 col-sm-4">
-                            <a onclick="generateKey('Generate')" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
-                        </div>
-
-                        <div class="col-xs-3 col-sm-4">
-                            <a class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
-                        </div>
-
-                        <div class="col-xs-3 col-sm-4">
-                            <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
-                        </div>
-                            <div class="col-xs-3 visible-xs">
-                                <a onclick="generateKey('Generate')" class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
-                            </div>
-                        </div>
-                        </div>
-
-                        <div class="col-xs-3 col-sm-3 copyclipboard-card">
-                            <h6>or copy key </h6>
+                    <div class="copyclipboard-card">
+                        <div class="keycopy">
+                            <h6 class="copied">copy key </h6>
                             <div class="keycontainer">
-                                <a onclick="generateKey('Generate')" class="icon-link round-s clipboard fill"><i class="fa fa-clipboard"></i></a>
+                                <div id="copyclipboard" onclick="generateKey('Generate')" class="icon-link round-s clipboard fill"><i class="fa fa-clipboard"></i></div>
                             </div>
                         </div>
+
+                        <div class="col-75 col-80 message-app-card" >
+                            <h6>Send the connection key to a friend </h6>
+                            <div class="keycontainer">
+                            <div class="col-xs-3 col-sm-4">
+                                <a target="_blank" href="http://twitter.com" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
+                            </div>
+
+                            <div class="col-xs-3 col-sm-4">
+                                <a target="_blank" href="http://facebook.com" class="icon-link round-corner facebook fill"><i class="fa fa-facebook"></i></a>
+                            </div>
+
+                            <div class="col-xs-3 col-sm-4">
+                                <a href="#" class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
+                            </div>
+
+                            <!-- <div class="col-xs-3 col-sm-4">
+                                <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
+                            </div> -->
+                                <div class="col-xs-3 visible-xs">
+                                    <a onclick="generateKey('Generate')" class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+
+
+
+
                     </div>
 
                 </div>
@@ -312,7 +322,7 @@
             </div><!-- End ? -->
         </div><!-- End ? -->
 
-    </div><?!-- End ? -->
+    </div><!-- End ? -->
 <div id="mask"></div>
 
         </div>
@@ -454,10 +464,12 @@ function initMap(e) {
     </script>
 
 
-<!-- fonts -->
-<link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-<link href='https://fonts.googleapis.com/css?family=Signika:300, 700' rel='stylesheet' type='text/css'>
+
+
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Signika:300, 700' rel='stylesheet' type='text/css'>
 
     <!--UI scripts -->
     <script src="ui/ui/main.min.js"></script>

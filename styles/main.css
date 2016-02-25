@@ -23036,7 +23036,6 @@ input[id="mce-EMAIL"] {
   padding-bottom: 2px;
   padding-right: 16px;
   padding-left: 16px;
-  margin-left: 16px;
   transition: all .3s ease-in-out;
 }
 
@@ -23064,7 +23063,16 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 
 @media (max-width: 767px) {
   .btn-subscribe {
-    margin-top: 20px;
+    margin-top: 25px;
+  }
+  .subscribe-email {
+    height: 60px;
+    width: 100%;
+    font-size: 22px;
+  }
+  #subscribe {
+    padding: 17px;
+    padding-bottom: 30px;
   }
 }
 

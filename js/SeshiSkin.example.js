@@ -22,6 +22,12 @@ for(var i=0;i<shareBtns.length;i++)
 }//End attach createShareUrl event listener to each share url button
 
 
+//Event: When user clicks 'send' button, check which files are marked,
+//send them over the datachannel
+var sendBtn = document.getElementById('sendBtn');
+sendBtn.addEventListener('click', sendSelectedFiles, false);
+
+
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('peerConnectionEstablished', showConnected, false);
 
@@ -299,7 +305,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Open <li>
         list += '<li class="list-group-item file-item row">\n';
         //Checkbox
-        list += '<input class="col-xs-1" type="checkbox" id="' + fileId + '">\n';
+        list += '<input class="col-xs-1 localFileCheckBox" type="checkbox" data-id="' + fileId + '">\n';
         //Checkbox label & file name
         list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
         //Filetype
@@ -339,47 +345,66 @@ function updateStoreProgressDisplay() {
 
     //Loop through each item in Seshi.storeProgress & update the display accordingly
     for ( var fileId in Seshi.storeProgress) {
-        console.log("key: " + fileId);
-        Seshi.storeProgress[fileId];
-        var fileName = Seshi.storeProgress[fileId].fileName;
-        var valueNow = parseInt(Seshi.storeProgress[fileId].currentChunk / (Seshi.storeProgress[fileId].totalNumChunks / 100));
+        if(Seshi.storeProgress[fileId].UIdone == false)
+        { 
+            Seshi.storeProgress[fileId];
+            var fileName = Seshi.storeProgress[fileId].fileName;
+            var valueNow = parseInt((Seshi.storeProgress[fileId].currentChunk + 1) / Seshi.storeProgress[fileId].totalNumChunks * 100);
+            var complete = Seshi.storeProgress[fileId].complete;
 
-        //Delete progress bar if reached 100%
-        if ( valueNow >= 100 ) {
-                document.getElementById('storingFileId-' + fileId).remove();
-                refreshFileList();
-        }//End Delete progress bar if reached 100%
+            var output = '' +
+                    '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">' +
+                        //Filename  
+                    '   <div class="col-xs-4 col-sm-3">' + fileName + '</div> ' +
+                        //Progress bar
+                    '   <div class="col-xs-5  col-sm-6">' +
+                    '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
+                    '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' + 
+                    '                </div>' +
+                    '   </div>' +
+                        //Percentage complete
+                    '   <div class="col-xs-1 col-sm-1">' +
+                    '       <div id="percentupload">' + valueNow + '%</div>' +
+                    '        </div>' +
+                        //Cancell button
+                    '   <div class="col-xs-1 col-sm-1">' +
+                    '       <i class="fa fa-times "></i>' +
+                    '   </div>'
+                    '       <div class="col-xs-1 col-sm-1"></div>' +
+                    '</li>';
 
-        var output = '' +
-                '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">' +
-                    //Filename  
-                '   <div class="col-xs-4 col-sm-3">' + fileName + '</div> ' +
-                    //Progress bar
-                '   <div class="col-xs-5  col-sm-6">' +
-                '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
-                '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' + 
-                '                </div>' +
-                '   </div>' +
-                    //Percentage complete
-                '   <div class="col-xs-1 col-sm-1">' +
-                '       <div id="percentupload">' + valueNow + '%</div>' +
-                '        </div>' +
-                    //Cancell button
-                '   <div class="col-xs-1 col-sm-1">' +
-                '       <i class="fa fa-times "></i>' +
-                '   </div>'
-                '       <div class="col-xs-1 col-sm-1"></div>' +
-                '</li>';
-        //Delete existing progress bar if already present:
-        if ( rmProgressBar = document.getElementById('storingFileId-' + fileId)) 
-        {
-             rmProgressBar.remove();
-        }//End Delete existing progress bar if already present
-         
-        var localFileListBox = document.getElementById('localFilesBoxHeader'); //LocalfileList header
-        localFileListBox.insertAdjacentHTML('afterend', output);
+             //If complete, check for existing progress bar and delete it
+             //If not, replace any existing progress bar to the list
+             if(complete) {
+                    if (document.getElementById('storingFileId-' + fileId)) {
+                        document.getElementById('storingFileId-' + fileId).remove();
+                    }
+                    //Set UI complete flag
+                    Seshi.storeProgress[fileId].UIdone = true;
+                    refreshFileList();
+             } else { //End if complete
+                    //If not complete:
+                    if (document.getElementById('storingFileId-' + fileId)) {
+                        document.getElementById('storingFileId-' + fileId).remove();
+                    }
+                    document.getElementById('localFilesBoxHeader').insertAdjacentHTML('afterend', output);
+             }//End if not complete
+         }//End check Seshi.storeProgress[fileId].UIdone == false before proceeding (prevents itterating over already completed UI updates.
     }//End loop through each item in Seshi.storeProgress & update the display accordingly
 }//End updateStoreProgressDisplay()
+
+
+
+
+
+function sendSelectedFiles() {
+
+    //Get list of files user has selected for sending
+    var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox'); 
+
+    console.log(localFileCheckBoxes);
+}//End sendSelectedFiles()
+
 
 function smoothScroll(eID) {
     function currentYPosition() {

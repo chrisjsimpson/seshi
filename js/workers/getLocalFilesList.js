@@ -24,6 +24,7 @@ var localFileListBuilder = {
 			})
 		}).then(function() {
 			self.postMessage({'type':'data', 'fileList':localFileListBuilder.list});
+            close(); //Close the worker
 		})
 	}
 }

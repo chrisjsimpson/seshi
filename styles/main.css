@@ -20317,8 +20317,9 @@ input[id="display-name"]:focus + .edit-btn {
   transition: all .3s ease-in-out;
 }
 
-.message-app-card, .copyclipboard-card {
+.copyclipboard-card {
   min-height: 25px;
+  height: 111px;
   /* margin-bottom: 20px; */
   padding: 10px;
   padding-top: 2px;
@@ -20331,7 +20332,7 @@ input[id="display-name"]:focus + .edit-btn {
   margin: 0 auto;
 }
 
-.message-app-card h6, .copyclipboard-card h6 {
+.copyclipboard-card h6 {
   font-size: 9px;
   letter-spacing: 0.5px;
   color: #222;
@@ -20339,8 +20340,18 @@ input[id="display-name"]:focus + .edit-btn {
   padding: 12px 0;
 }
 
+.message-app-card {
+  display: none;
+  width: 0%;
+}
+
 .copyclipboard-card {
-  margin-left: 1.5%;
+  width: 20%;
+}
+
+.copyclipboard-card .keycopy {
+  width: 100%;
+  float: left;
 }
 
 @media (min-width: 1200px) {

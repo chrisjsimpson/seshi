@@ -234,31 +234,35 @@ Seshi = {
         msg = JSON.stringify(msg);
         dc.send(msg);
     },
-    generatObjectUrl:function(fileId) {
+    generateObjectUrl:function(fileId) {
                         /* generatObjectUrl(fileId)
                          *
                          * - Generate a blob url for a given fileId
+                         * Returns promise
                         */
-                        //Query IndexedDB to get the file
-                        db.transaction('r', db.chunks, function() {
-                            //Transaction scope
-                            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
-                                    console.log("Found " + chunks.length + " chunks");
-                                    var allChunksArray = [];
-                                    //Just get blob cunks (without meta info)
-                                    for(var i=0;i<chunks.length; i++){
-                                        allChunksArray[i] = chunks[i].chunk
-                                    }//End put all chunks into all chunks array
-                                    var file = new Blob(allChunksArray, {type:chunks[0].fileType});
-                                    console.log(chunks[0].fileType);
-                                    url = window.URL.createObjectURL(file);
-                                    console.log("Data: " + url);
-                                    return url;
-                                    })//Assemble all chunks into array
-                                    //Simply download file if on mobiles
-                            }).catch (function (err) {
-                                console.error(err);
-                            })//End get file chunks from fileId and generate object url.
+                        var promise = new Promise (function(resolve, reject) {
+                            //Query IndexedDB to get the file
+                            db.transaction('r', db.chunks, function() {
+                                //Transaction scope
+                                db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                                            console.log("Found " + chunks.length + " chunks");
+                                            var allChunksArray = [];
+                                            //Just get blob cunks (without meta info)
+                                            for(var i=0;i<chunks.length; i++){
+                                                allChunksArray[i] = chunks[i].chunk
+                                            }//End put all chunks into all chunks array
+                                            var file = new Blob(allChunksArray, {type:chunks[0].fileType});
+                                            console.log(chunks[0].fileType);
+                                            url = window.URL.createObjectURL(file);
+                                            console.log("Data: " + url);
+                                            resolve(url); //Resolve promise
+                                        })//Assemble all chunks into array
+                                        //Simply download file if on mobiles
+                                }).catch (function (err) {
+                                    console.error(err);
+                                })//End get file chunks from fileId and generate object url.
+                        });//End promise 
+                        return promise;
     },
     play:function(fileId, playerId) {
                         /* Playback requested fileId to user

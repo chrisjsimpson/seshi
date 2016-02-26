@@ -23435,33 +23435,6 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   }
 }
 
-#overlay a {
-  color: #ddd;
-}
-
-#overlay {
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  position: fixed;
-  top: 0;
-  z-index: 2000;
-  display: none;
-  transition: all 0.2s ease;
-}
-
-#overlay:target {
-  display: block;
-  opacity: 1;
-}
-
-#overlay:target + #mask {
-  display: block;
-  opacity: 1;
-}
-
 .closes {
   display: block;
   position: absolute;
@@ -23478,16 +23451,6 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   font-weight: bold;
   z-index: 5000;
   border-radius: 40px;
-}
-
-#open-overlay {
-  padding: 10px 5px;
-  background: blue;
-  color: white;
-  text-decoration: none;
-  display: inline-block;
-  margin: 20px;
-  border-radius: 10px;
 }
 
 @keyframes plyr-progress {

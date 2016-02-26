@@ -126,10 +126,25 @@ function updateWhatsAppShareBtn() {
 function play(event) {
     console.log("My player implimentation...");
     fileId = event.target.dataset.id;
-    Seshi.play(fileId, "myVideo");
-    var mediaSrcAddress = Seshi.generatObjectUrl(fileId);
-    //Scroll to media player
-}
+
+    Seshi.generateObjectUrl(fileId).then(
+            function(mediaSrcAddress){
+                //Play using plyr
+                //Settings:
+                var options = {
+                               'controls':["restart", "rewind", "play", "fast-forward", "current-time", "duration", "mute", "volume", "captions", "fullscreen"]
+                                }
+                var player = plyr.setup()[0]; //
+                player.source({
+                                type:       'audio',
+                                title:      'Example title',
+                                sources: [{
+                                    src: mediaSrcAddress,
+                                    type:     'audio/mp3'
+                                }]});
+                player.play(); //Play the chosen media
+            });
+}//End play()
 
 function download(event) {
     fileId = event.target.dataset.id;
@@ -260,7 +275,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Filetype
         list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="fa ' + getFileTypeIcon(mimeType) + '"></i></label>';
         //Play button
-        list += '<div class="col-xs-1 "><a href="#overlay" title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
+        list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
         //Download button
         list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         //Delete button

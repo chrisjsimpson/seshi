@@ -31,6 +31,9 @@ sendBtn.addEventListener('click', sendSelectedFiles, false);
 var multiDeleteBtn = document.getElementById('multiDeleteLocalFiles');
 multiDeleteBtn.addEventListener('click', deleteSelectedFiles, false);
 
+//Event: When user uses drop down menu to dowload selected local files (checkboxes)
+var multiDownloadBtn = document.getElementById('multiDownloadLocalFiles');
+multiDownloadBtn.addEventListener('click', function(){ downloadSelectedFiles(); }, false);
 
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('peerConnectionEstablished', showConnected, false);
@@ -406,6 +409,16 @@ function deleteSelectedFiles() {
     refreshFileList();
 }//End deleteSelectedFiles()
 
+function downloadSelectedFiles() {
+    var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox'); 
+    for(var i=0; i< localFileCheckBoxes.length; i++) {
+        //Check file is selected before downloading
+        if (localFileCheckBoxes[i].checked == true)
+        {
+            Seshi.download(localFileCheckBoxes[i].dataset.id);            
+        }//Only downlod selected files
+    }//End loop though local files list checking for selected files for download
+}//End downloadSelectedFiles()
 
 function smoothScroll(eID) {
     function currentYPosition() {

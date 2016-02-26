@@ -11839,7 +11839,6 @@ $("#copyclipboard").click(function () {
 //pyr plugin
 
 
-
 google.maps.event.addDomListener(window, 'load', init);
 
 function initMap() {

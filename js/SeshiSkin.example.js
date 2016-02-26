@@ -44,6 +44,10 @@ window.addEventListener('gotRemoteFileList', function(){updateFileListDisplay(Se
 //Event: Storage worker has stored more chunks of a file(s)
 window.addEventListener('storeFilesProgressUpdate', updateStoreProgressDisplay, false);
 
+//Event: sendFileProgressUpdate recived
+window.addEventListener('sendFileProgressUpdate', updateSendFileProgessDisplay, false);
+
+
 function createShareUrl() {
     /* createShareUrl()
      * - Creates a share url when user clicks 'generate key' button &
@@ -191,15 +195,15 @@ function share(event) {
     }
 }
 
-function refreshFileList() {
+function refreshFileList(listId) {
     //Show loading throbber icon whilst refreshing file list
     var throbber = '<img src="/img/Ajax-loader.gif" />';
-    document.getElementById('localFilesBoxHeader').insertAdjacentHTML('afterend', throbber);
+    document.getElementById(listId).insertAdjacentHTML('afterend', throbber);
 
     // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
     Seshi.updateLocalFilesList().then( // .then() we know the .localFileList cache is updated, so we display the fresh list.
             function(complete){
-                updateFileListDisplay(Seshi.localFileList(), 'localFileList');
+                updateFileListDisplay(Seshi.localFileList(), listId);
             });
 }//End refreshFileList()
 
@@ -212,7 +216,7 @@ function storeFile(fileList){
 function deleteFile(event){
         fileId = event.target.dataset.id;
         Seshi.deleteFile(fileId);
-        refreshFileList();
+        refreshFileList('header-localFileList');
 }
 
 
@@ -282,12 +286,11 @@ function getFileTypeIcon(mimeType) {
 
 
 
-/* Update local files list UI */
+/* Update files list UI */
 function updateFileListDisplay(fileListObj, targetElm) {
     var files = fileListObj;
-    var fileListHeaderId = 'localFilesBoxHeader';
-
-    var list = '<div class="list-group-item row header-title" id="' + fileListHeaderId + '" >' +
+    
+    var list = '<div class="list-group-item row header-title" id="header-' + targetElm + '" >' +
                                '<input class="col-xs-1 col-sm-1 checkall" type="checkbox">' +
                                 '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
                                 '<div class="col-xs-3 col-sm-2 ">Type</div>' +
@@ -356,7 +359,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
     multiDownloadBtn.addEventListener('click', function(){ downloadSelectedFiles(); }, false);
     /* Reattach events */
 
-}//updateLocalFileListDisplay()
+}//updateFileListDisplay()
 
 
 updateFileListDisplay(Seshi.localFileList(), 'localFileList');
@@ -403,7 +406,7 @@ function updateStoreProgressDisplay() {
                     }
                     //Set UI complete flag
                     Seshi.storeProgress[fileId].UIdone = true;
-                    refreshFileList();
+                    refreshFileList('header-localFileList');
              } else { //End if complete
                     //If not complete:
                     if (document.getElementById('storingFileId-' + fileId)) {
@@ -416,15 +419,12 @@ function updateStoreProgressDisplay() {
 }//End updateStoreProgressDisplay()
 
 
-
-
-
 function sendSelectedFiles() {
 
     //Get list of files user has selected for sending
     var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox');
     //Only send if datachannel is open!
-    if (Seshi.connectionStatus.iceConnectionState() == "connected")
+    if (Seshi.connectionStatus.iceConnectionState() == "connected" || Seshi.connectionStatus.iceConnectionState() == 'completed')
     {
         for(var i=0; i< localFileCheckBoxes.length; i++) {
             if (localFileCheckBoxes[i].checked == true)
@@ -451,7 +451,7 @@ function deleteSelectedFiles() {
             Seshi.deleteFile(localFileCheckBoxes[i].dataset.id);
         }//End check file is selected before deleting
     }//Wns loop through all selected files, deleting them if selected
-    refreshFileList();
+    refreshFileList('header-localFileList');
 }//End deleteSelectedFiles()
 
 function downloadSelectedFiles() {
@@ -464,6 +464,61 @@ function downloadSelectedFiles() {
         }//Only downlod selected files
     }//End loop though local files list checking for selected files for download
 }//End downloadSelectedFiles()
+
+
+
+function updateSendFileProgessDisplay() {
+//Called upon sendFileProgressUpdate event being fired
+    console.log(Seshi.sendingFileProgress);
+        var fileId = Seshi.sendingFileProgress.fileId;
+        var fileName = Seshi.sendingFileProgress.fileName;
+        var fileType = Seshi.sendingFileProgress.fileType;
+        var chunkNumber = Seshi.sendingFileProgress.chunkNumber;
+        var numberOfChunks = Seshi.sendingFileProgress.numberOfChunks;
+        var valueNow = parseInt((chunkNumber + 1) / numberOfChunks * 100);
+        var complete = Seshi.sendingFileProgress.allFileDataSent;
+
+    var output = '' +
+            '<li class="list-group-item file-item uploading-item row" id="sendingFileId-' + fileId + '">' +
+                //Filename
+            '   <div class="col-xs-4 col-sm-3">' + fileName + '</div> ' +
+                //Progress bar
+            '   <div class="col-xs-5  col-sm-6">' +
+            '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
+            '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' +
+            '                </div>' +
+            '   </div>' +
+                //Percentage complete
+            '   <div class="col-xs-1 col-sm-1">' +
+            '       <div id="percentupload">' + valueNow + '%</div>' +
+            '        </div>' +
+                //Cancell button
+            '   <div class="col-xs-1 col-sm-1">' +
+            '       <i class="fa fa-times "></i>' +
+            '   </div>'
+            '       <div class="col-xs-1 col-sm-1"></div>' +
+            '</li>';
+
+     //If complete, check for existing progress bar and delete it
+     //If not, replace any existing progress bar to the list
+     if(complete) {
+            if (document.getElementById('sendingFileId-' + fileId)) {
+                document.getElementById('sendingFileId-' + fileId).remove();
+            }
+            //Set UI complete flag
+            Seshi.sendingFileProgress.UIdone = true;
+            refreshFileList('header-remoteFileList');
+     } else { //End if complete
+            //If not complete:
+            if (document.getElementById('sendingFileId-' + fileId)) {
+                document.getElementById('sendingFileId-' + fileId).remove();
+            }
+            document.getElementById('header-remoteFileList').insertAdjacentHTML('afterend', output);
+     }//End if not complete
+}//End updateSendFileProgessDisplay()
+
+
+
 
 function smoothScroll(eID) {
     function currentYPosition() {

@@ -238,7 +238,12 @@ Seshi = {
                         /* generatObjectUrl(fileId)
                          *
                          * - Generate a blob url for a given fileId
-                         * Returns promise
+                         * Returns promise, which when resolved returns
+                         * an object:
+                         *  {
+                         *      objectURL: 'blob url of object',
+                         *      mimetype:  'mp3/example'
+                         *  }
                         */
                         var promise = new Promise (function(resolve, reject) {
                             //Query IndexedDB to get the file
@@ -252,10 +257,15 @@ Seshi = {
                                                 allChunksArray[i] = chunks[i].chunk
                                             }//End put all chunks into all chunks array
                                             var file = new Blob(allChunksArray, {type:chunks[0].fileType});
+                                            var fileName = chunks[0].fileName;
                                             console.log(chunks[0].fileType);
                                             url = window.URL.createObjectURL(file);
                                             console.log("Data: " + url);
-                                            resolve(url); //Resolve promise
+                                            resolve(
+                                                {   objectURL:url, //A blob url
+                                                    fileName: fileName, 
+                                                    mimeType: chunks[0].fileType //e.g. audio/ogg
+                                                }); //Resolve promise
                                         })//Assemble all chunks into array
                                         //Simply download file if on mobiles
                                 }).catch (function (err) {

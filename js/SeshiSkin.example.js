@@ -128,19 +128,29 @@ function play(event) {
     fileId = event.target.dataset.id;
 
     Seshi.generateObjectUrl(fileId).then(
-            function(mediaSrcAddress){
+            function(objectInfo){
                 //Play using plyr
                 //Settings:
                 var options = {
                                'controls':["restart", "rewind", "play", "fast-forward", "current-time", "duration", "mute", "volume", "captions", "fullscreen"]
                                 }
                 var player = plyr.setup()[0]; //
+                //Music or Audio?
+                if (objectInfo.mimeType.includes('audio'))
+                {
+                        mediaType = 'audio';
+                } else if (objectInfo.mimeType.includes('video')) {
+                        mediaType = 'video';
+                } else {
+                        mediaType = 'video';//Default to video (why?)
+                }//End music or audio check
+
                 player.source({
-                                type:       'audio',
-                                title:      'Example title',
+                                type:       mediaType,
+                                title:      objectInfo.fileName,
                                 sources: [{
-                                    src: mediaSrcAddress,
-                                    type:     'audio/mp3'
+                                    src: objectInfo.objectURL,
+                                    type:     objectInfo.mimeType
                                 }]});
                 player.play(); //Play the chosen media
             });

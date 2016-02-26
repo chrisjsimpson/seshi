@@ -31,6 +31,10 @@ Seshi = {
                         storeFilesProgressUpdate = new Event('storeFilesProgressUpdate');
                         storeFilesProgressUpdate.initEvent('storeFilesProgressUpdate', true, true);
 
+                        //Fired when sending file progress update occurs (sending chunk-by-chunk over datachannel)
+                        sendFileProgressUpdate = new Event('sendFileProgressUpdate');
+                        sendFileProgressUpdate.initEvent('sendFileProgressUpdate', true, true);
+
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
                             Seshi.updateLocalFilesList();
@@ -383,8 +387,10 @@ Seshi = {
                             Seshi.sendingFileProgress.fileType = chunk.fileType;
                             Seshi.sendingFileProgress.chunkNumber = chunk.chunkNumber;
                             Seshi.sendingFileProgress.numberOfChunks = chunk.numberOfChunks;
+                            dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                             }).then(function(){
                             Seshi.sendingFileProgress.allFileDataSent = true;
+                            dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event //Final invocation
                             })});
     },
     sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''},

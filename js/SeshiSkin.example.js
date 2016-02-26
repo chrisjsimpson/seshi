@@ -198,7 +198,7 @@ function share(event) {
 function refreshFileList(listId) {
     //Show loading throbber icon whilst refreshing file list
     var throbber = '<img src="/img/Ajax-loader.gif" />';
-    document.getElementById(listId).insertAdjacentHTML('afterend', throbber);
+    document.getElementById('header-' + listId).insertAdjacentHTML('afterend', throbber);
 
     // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
     Seshi.updateLocalFilesList().then( // .then() we know the .localFileList cache is updated, so we display the fresh list.
@@ -216,7 +216,7 @@ function storeFile(fileList){
 function deleteFile(event){
         fileId = event.target.dataset.id;
         Seshi.deleteFile(fileId);
-        refreshFileList('header-localFileList');
+        refreshFileList('localFileList');
 }
 
 
@@ -406,7 +406,7 @@ function updateStoreProgressDisplay() {
                     }
                     //Set UI complete flag
                     Seshi.storeProgress[fileId].UIdone = true;
-                    refreshFileList('header-localFileList');
+                    refreshFileList('localFileList');
              } else { //End if complete
                     //If not complete:
                     if (document.getElementById('storingFileId-' + fileId)) {
@@ -451,7 +451,7 @@ function deleteSelectedFiles() {
             Seshi.deleteFile(localFileCheckBoxes[i].dataset.id);
         }//End check file is selected before deleting
     }//Wns loop through all selected files, deleting them if selected
-    refreshFileList('header-localFileList');
+    refreshFileList('localFileList');
 }//End deleteSelectedFiles()
 
 function downloadSelectedFiles() {
@@ -507,7 +507,7 @@ function updateSendFileProgessDisplay() {
             }
             //Set UI complete flag
             Seshi.sendingFileProgress.UIdone = true;
-            refreshFileList('header-remoteFileList');
+            refreshFileList('remoteFileList');
      } else { //End if complete
             //If not complete:
             if (document.getElementById('sendingFileId-' + fileId)) {

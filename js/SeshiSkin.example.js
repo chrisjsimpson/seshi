@@ -127,6 +127,7 @@ function play(event) {
     console.log("My player implimentation...");
     fileId = event.target.dataset.id;
     Seshi.play(fileId, "myVideo");
+    var mediaSrcAddress = Seshi.generatObjectUrl(fileId);
     //Scroll to media player
 }
 

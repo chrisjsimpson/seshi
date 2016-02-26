@@ -28,7 +28,7 @@ $(".btn-hide").click(function() {
     //  $(".btn-hide").text(txt);
     $(this).text(function(i, text){
          return text === "Hide" ? "Show" : "Hide";
-     })
+     });
      $("#hideall").fadeToggle();
 })
 

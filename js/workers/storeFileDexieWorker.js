@@ -44,7 +44,8 @@ self.onmessage = function(msg) {
             storeFiles(storeRequest.data);
             break;
         case "seshiChunk":
-            storeChunk(storeRequest.data);
+            console.log("caught seshiChunk store req");
+            storeChunk(storeRequest);
             break;
     }//End switch to determine data input source
 
@@ -124,6 +125,38 @@ function storeFiles(fileList) {
     }//End loop through each file, chunk and store it.
     
 }//End storeFiles(fileList)
+
+
+function storeChunk(seshiChunk) {
+
+    console.log("Recived req to store chunk in webworker.");
+    console.log(seshiChunk);
+
+    //Store chunk into Seshi's indexedDB
+    db.chunks.add({
+                fileId: seshiChunk.fileId,
+                boxId: 'myBoxID',
+                fileName: seshiChunk.fileName,
+                fileType: seshiChunk.fileType,
+                chunkNumber: seshiChunk.chunkNumber,
+                numberOfChunks: seshiChunk.numberOfChunks,
+                chunkSize: seshiChunk.chunkSize,
+                chunk: seshiChunk.chunk
+            }).then(function(done){
+                console.log('Celebrate');
+                close();//Close worker thread upon storing the chunk.
+            });
+        //Post storage progress update to main thread
+        /*postMessage({
+                "type":"storageProgressUpdate",
+                "fileId":seshiChunk.fileId,
+                "fileName":seshiChunk.fileName,
+                "currentChunk":seshiChunk.chunkNumber,
+                "totalNumChunks":seshiChunk.numberOfChunks
+        });*/
+        console.log("Stored a chunk over RTCdatachannel inside worker");
+
+}//End storeChunk()
 
 uuid = function()
 {   /* Credit http://stackoverflow.com/a/2117523 */

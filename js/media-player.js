@@ -24,15 +24,12 @@ a.onload = function() {
 
 $(".btn-hide").click(function() {
 
-    var txt = $("#hideall").is(':visible') ? 'Show' : 'Hide';
-     $(".btn-hide").text(txt);
+    // var txt = $("#hideall").is(':visible') ? 'Hide' : 'Show';
+    //  $(".btn-hide").text(txt);
+    $(this).text(function(i, text){
+         return text === "Hide" ? "Show" : "Hide";
+     });
      $("#hideall").fadeToggle();
-    // if($(this).text() == 'show'){
-    //        $(this).text('hide');
-    //    }
-    //    } else {
-    //        $(this).text('show');
-    //    }
 })
 
 //if audio player CSS change

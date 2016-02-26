@@ -23782,3 +23782,34 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 .plyr--fullscreen-enabled [data-plyr='fullscreen'] {
   display: inline-block;
 }
+
+@media (max-width: 991px) {
+  .btn-hide {
+    display: none;
+  }
+  .plyr {
+    position: fixed;
+    bottom: 0;
+    width: 53%;
+    z-index: 1;
+  }
+  .plyr video {
+    min-height: 23vh;
+    border: 1px solid #fff;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+@media (max-width: 767px) {
+  .plyr {
+    width: 72%;
+  }
+}
+
+/*Mobile */
+@media (max-width: 480px) {
+  .plyr {
+    width: 100%;
+  }
+}

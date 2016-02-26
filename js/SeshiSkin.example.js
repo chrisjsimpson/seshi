@@ -296,9 +296,9 @@ function updateFileListDisplay(fileListObj, targetElm) {
                                     '<i class="fa fa-chevron-down"></i>' +
                                     '</a>' +
                                     '<ul class="dropdown-menu">' +
-                                        '<li><a href="#">Download </a></li>' +
+                                        '<li><a id="multiDownloadLocalFiles">Download </a></li>' +
                                         '<li class="divider"></li>' +
-                                        '<li><a href="#">Delete</a></li>' +
+                                        '<li><a id="multiDeleteLocalFiles">Delete</a></li>' +
                                     '</ul>' +
                                 '</div>' +
                             '</div>';
@@ -344,6 +344,17 @@ function updateFileListDisplay(fileListObj, targetElm) {
 
     //Update table with local file list:
     localFileList.innerHTML = list;
+
+    /* Reattach events to filelist header DOH this is bad....*/
+    //Event: When user uses drop down menu to delete selected (checkbox items)
+    var multiDeleteBtn = document.getElementById('multiDeleteLocalFiles');
+    multiDeleteBtn.addEventListener('click', deleteSelectedFiles, false);
+
+    //Event: When user uses drop down menu to dowload selected local files (checkboxes)
+    var multiDownloadBtn = document.getElementById('multiDownloadLocalFiles');
+    multiDownloadBtn.addEventListener('click', function(){ downloadSelectedFiles(); }, false);
+    /* Reattach events */
+
 }//updateLocalFileListDisplay()
 
 

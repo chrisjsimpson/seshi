@@ -295,12 +295,12 @@
     </div> <!--hide wrapper -->
 
     <!--Media Player -->
-
+    <button class="btn btn-hide"><span>Hide</span></button>
     <div class="plyr">
-            <button class="btn btn-hide"><span>Hide</span></button>
-    <video controls>
+
+    <video id="video" controls poster="/img/seethrough.png">
         <!-- Audio files -->
-        <source src="img/ironman.mp4" type="video/mp4">
+        <source src="img/beatcalls.mp4" type="audio/mp3">
 
     </video>
 
@@ -481,19 +481,6 @@ function initMap(e) {
   });
 }
     </script>
-
-    <script>
-$(".btn-hide").click(function() {
-    $("#hideall").fadeToggle();
-    if($(this).text() == 'show'){
-           $(this).text('hide');
-       } else {
-           $(this).text('show');
-       }
-})
-
-    </script>
-
 
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">

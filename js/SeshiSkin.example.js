@@ -285,7 +285,24 @@ function getFileTypeIcon(mimeType) {
 function updateFileListDisplay(fileListObj, targetElm) {
     var files = fileListObj;
     var fileListHeaderId = 'localFilesBoxHeader';
-    var list = '';
+
+    var list = '<div class="list-group-item row header-title" id="' + fileListHeaderId + '" >' +
+                               '<input class="col-xs-1 col-sm-1 checkall" type="checkbox">' +
+                                '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
+                                '<div class="col-xs-3 col-sm-2 ">Type</div>' +
+                                '<div class="col-xs-2 col-sm-2"></div>' +
+                                '<div class="col-xs-1 col-sm-1 dropdown">' +
+                                    '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
+                                    '<i class="fa fa-chevron-down"></i>' +
+                                    '</a>' +
+                                    '<ul class="dropdown-menu">' +
+                                        '<li><a href="#">Download </a></li>' +
+                                        '<li class="divider"></li>' +
+                                        '<li><a href="#">Delete</a></li>' +
+                                    '</ul>' +
+                                '</div>' +
+                            '</div>';
+
     console.log("There are " + files.length + " local files");
 
     //Loop through each
@@ -326,7 +343,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
     }//End remove all current items in list ready for replacement
 
     //Update table with local file list:
-    document.getElementById('localFilesBoxHeader').insertAdjacentHTML('afterend', list);
+    localFileList.innerHTML = list;
 }//updateLocalFileListDisplay()
 
 

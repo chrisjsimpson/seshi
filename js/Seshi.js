@@ -795,10 +795,6 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                                     "numberOfChunks": window.curChunk.numberOfChunks
                                                                 };
                                                                 Seshi.store(storeReqObj);
-                                                                //addChunkToDb(chunkBlob);
-                                                                //Create ObjectURL to recieved chunk (pointless!! It's only a chunk...testing)
-                                                                //var url = window.URL.createObjectURL(chunkBlob);
-                                                                //console.log(url);
                                                                 //End send data chunk payload
                                                 }//End reader.readtState == DONE
                                         }//End reader.onload
@@ -966,31 +962,6 @@ function trace(text) {
 }
 
 
-function addChunkToDb(blob) {
-        //Add chunks to indexedDB
-        db.transaction("rw", db.chunks, function() {
-        var test = blob;
-        console.log("Storing chunk number: " + window.curChunk.chunkNumber);
-        db.chunks
-            .add({
-                boxId: window.boxId,
-                chunk: blob,
-                chunkNumber: window.curChunk.chunkNumber,
-                chunkSize: window.curChunk.chunkSize,
-                fileId: window.curChunk.fileId,
-                fileName: window.curChunk.fileName,
-                fileType: window.curChunk.fileType,
-                numberOfChunks: window.curChunk.numberOfChunks
-            });
-        }).then(function() {
-        //Transaction completed
-        console.log('Time to show file back to user/recipricant..?');
-    }).catch(function(error) {
-        //Transaction failed
-        console.log(error);
-    });
-
-}//End addChunkToDb
 
 
 

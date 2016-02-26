@@ -21,13 +21,18 @@ a.onload = function() {
 })(document, 'https://cdn.plyr.io/1.5.14/sprite.svg');
 
 //hide all
+
 $(".btn-hide").click(function() {
-    $("#hideall").fadeToggle();
-    if($(this).text() == 'show'){
-           $(this).text('hide');
-       } else {
-           $(this).text('show');
-       }
+
+    var txt = $("#hideall").is(':visible') ? 'Show' : 'Hide';
+     $(".btn-hide").text(txt);
+     $("#hideall").fadeToggle();
+    // if($(this).text() == 'show'){
+    //        $(this).text('hide');
+    //    }
+    //    } else {
+    //        $(this).text('show');
+    //    }
 })
 
 //if audio player CSS change

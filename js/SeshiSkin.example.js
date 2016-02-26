@@ -3,17 +3,17 @@
  *   avoiding inline Javascript e.g: onclick="example()"
  *
  * Rather than interfere with the UI like this,
- * attach event listeners to the UI components which 
- * trigger events. 
+ * attach event listeners to the UI components which
+ * trigger events.
  * For example:
  *
- * When user clicks generate key button, register an 
+ * When user clicks generate key button, register an
  * event which responds to this action & call the
  * function responsible for generating a share url.
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 */
 
-//Event: When user clicks any of the share buttons, generatee a share URL 
+//Event: When user clicks any of the share buttons, generatee a share URL
 shareBtns = document.getElementsByClassName('icon-link');
 //Attach createShareUrl event listener to each share url button
 for(var i=0;i<shareBtns.length;i++)
@@ -36,7 +36,7 @@ multiDeleteBtn.addEventListener('click', deleteSelectedFiles, false);
 window.addEventListener('peerConnectionEstablished', showConnected, false);
 
 //Event: Recieved file listing of connected peer
-window.addEventListener('gotRemoteFileList', function(){updateFileListDisplay(Seshi.remoteFileList, 'remoteFileList');}, false); 
+window.addEventListener('gotRemoteFileList', function(){updateFileListDisplay(Seshi.remoteFileList, 'remoteFileList');}, false);
 
 //Event: Storage worker has stored more chunks of a file(s)
 window.addEventListener('storeFilesProgressUpdate', updateStoreProgressDisplay, false);
@@ -45,19 +45,19 @@ function createShareUrl() {
     /* createShareUrl()
      * - Creates a share url when user clicks 'generate key' button &
      *   automatically sends this key to the signaling server.
-     *   
+     *
     */
-    
+
     //Generate a new key for the user
-    var key = Seshi.setKey(); 
+    var key = Seshi.setKey();
 
     //Build share url:
     console.log("Generated share url: \n" + Seshi.getShareUrl());
-    
+
     //send this key to signaling server
     connectToSignalServer();
-    
-    //Update UI: Replace the generate key button s message telling user 
+
+    //Update UI: Replace the generate key button s message telling user
     //what to do next:
     replaceGenerateKeyBtn();
 
@@ -79,16 +79,16 @@ function createShareUrl() {
 
 function connectToSignalServer() {
     /* Send key to signal server to create signaling channel
-     * 
+     *
      * A signalling channel is between THREE nodes:
      *   > Person A
      *   > Signaling Server
      *   > Person B
      * The signaling server passes messages containing
-     * each person's connection information. 
+     * each person's connection information.
      *
-     * Once both persons have connection information for 
-     * eachother, they can connect directly forming a 
+     * Once both persons have connection information for
+     * eachother, they can connect directly forming a
      * peer-to-peer connection.
      */
      connect(); //Defined in Seshi.js (TODO attach this to seshi api)
@@ -139,8 +139,24 @@ function play(event) {
                 if (objectInfo.mimeType.includes('audio'))
                 {
                         mediaType = 'audio';
+                        $('#hideall').css('position', 'relative');
+                        $('.plyr').css({
+                            'position': 'fixed',
+                            'bottom': '0',
+                            'width': '100%',
+                            'z-index':'1001'
+                                });
+                            $('.btn-hide').hide();
                 } else if (objectInfo.mimeType.includes('video')) {
                         mediaType = 'video';
+                        $('#hideall').css('position', 'absolute');
+                        $('.plyr').css({
+                            'position': 'relative',
+                            'width': '100%',
+                            'z-index':'1'
+                                });
+                            $('.btn-hide').show();
+
                 } else {
                         mediaType = 'video';//Default to video (why?)
                 }//End music or audio check
@@ -175,11 +191,11 @@ function refreshFileList() {
     //Show loading throbber icon whilst refreshing file list
     var throbber = '<img src="/img/Ajax-loader.gif" />';
     document.getElementById('localFilesBoxHeader').insertAdjacentHTML('afterend', throbber);
-    
+
     // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
     Seshi.updateLocalFilesList().then( // .then() we know the .localFileList cache is updated, so we display the fresh list.
             function(complete){
-                updateFileListDisplay(Seshi.localFileList(), 'localFileList');   
+                updateFileListDisplay(Seshi.localFileList(), 'localFileList');
             });
 }//End refreshFileList()
 
@@ -217,7 +233,7 @@ if (getQueryVariable("key")) {
 function showConnected() {
     //Get reference to 'connecting' UI button
     if (targetBtn = document.getElementById('connectionStatus')) {
-        
+
     } else {
         targetBtn = document.getElementById('connect');
     }
@@ -289,7 +305,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Download button
         list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         //Delete button
-        if (targetElm != 'remoteFileList' ) 
+        if (targetElm != 'remoteFileList' )
         {
             list += '<div class="col-xs-1 hidden-xs"><i title="Delete" onclick="deleteFile(event)" data-id="' + fileId + '" class="fa fa-trash  "></i></div>';
         }//End if targetElm != 'remoteFileList'
@@ -300,9 +316,9 @@ function updateFileListDisplay(fileListObj, targetElm) {
     //Update display with local files list
     var localFileList = document.getElementById(targetElm);//Get reference to local file list
     var numFilesInList = localFileList.children.length;
-    
+
     for(var i=1; i < numFilesInList; i++) //Remove all current items from local file list
-    {  //Note that we start at index 1, so as not to delete the table header. 
+    {  //Note that we start at index 1, so as not to delete the table header.
        localFileList.removeChild(localFileList.children[1]);
     }//End remove all current items in list ready for replacement
 
@@ -320,7 +336,7 @@ function updateStoreProgressDisplay() {
     //Loop through each item in Seshi.storeProgress & update the display accordingly
     for ( var fileId in Seshi.storeProgress) {
         if(Seshi.storeProgress[fileId].UIdone == false)
-        { 
+        {
             Seshi.storeProgress[fileId];
             var fileName = Seshi.storeProgress[fileId].fileName;
             var valueNow = parseInt((Seshi.storeProgress[fileId].currentChunk + 1) / Seshi.storeProgress[fileId].totalNumChunks * 100);
@@ -328,12 +344,12 @@ function updateStoreProgressDisplay() {
 
             var output = '' +
                     '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">' +
-                        //Filename  
+                        //Filename
                     '   <div class="col-xs-4 col-sm-3">' + fileName + '</div> ' +
                         //Progress bar
                     '   <div class="col-xs-5  col-sm-6">' +
                     '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
-                    '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' + 
+                    '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' +
                     '                </div>' +
                     '   </div>' +
                         //Percentage complete
@@ -374,12 +390,12 @@ function updateStoreProgressDisplay() {
 function sendSelectedFiles() {
 
     //Get list of files user has selected for sending
-    var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox'); 
+    var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox');
     //Only send if datachannel is open!
-    if (Seshi.connectionStatus.iceConnectionState() == "connected") 
+    if (Seshi.connectionStatus.iceConnectionState() == "connected")
     {
         for(var i=0; i< localFileCheckBoxes.length; i++) {
-            if (localFileCheckBoxes[i].checked == true) 
+            if (localFileCheckBoxes[i].checked == true)
             {
                 Seshi.sendFileToPeer(localFileCheckBoxes[i].dataset.id); //Send over dataChannel
             }//End only send if file's checkbox it checked.
@@ -395,7 +411,7 @@ function sendSelectedFiles() {
 
 function deleteSelectedFiles() {
 
-    var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox'); 
+    var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox');
     for(var i=0; i< localFileCheckBoxes.length; i++) {
         //Check file is selected before deleting
         if (localFileCheckBoxes[i].checked == true)
@@ -450,4 +466,3 @@ function smoothScroll(eID) {
         leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
     }
 }
-

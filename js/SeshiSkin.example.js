@@ -157,6 +157,7 @@ function play(event) {
                 } else if (objectInfo.mimeType.includes('video')) {
                         mediaType = 'video';
                         $('#hideall').css('position', 'absolute');
+                        $("#hideall").hide();
                         $('.plyr').css({
                             'position': 'relative',
                             'width': '100%',
@@ -454,12 +455,12 @@ function deleteSelectedFiles() {
 }//End deleteSelectedFiles()
 
 function downloadSelectedFiles() {
-    var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox'); 
+    var localFileCheckBoxes = document.getElementsByClassName('localFileCheckBox');
     for(var i=0; i< localFileCheckBoxes.length; i++) {
         //Check file is selected before downloading
         if (localFileCheckBoxes[i].checked == true)
         {
-            Seshi.download(localFileCheckBoxes[i].dataset.id);            
+            Seshi.download(localFileCheckBoxes[i].dataset.id);
         }//Only downlod selected files
     }//End loop though local files list checking for selected files for download
 }//End downloadSelectedFiles()

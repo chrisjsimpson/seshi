@@ -317,6 +317,20 @@ Seshi = {
                                 console.error(err);
                             })});//End get file chunks from fileId and playback
     },
+    playInSyncRequest:function(fileId) {
+
+                            msg = {"cmd":"playInSync", "fileId":fileId}; 
+                            msg = JSON.stringify(msg);
+                            //Send request of datachannel
+                            dc.send(msg); 
+    },
+    playInSync:function(playInSyncRequest) {
+                            /* playInSync()
+                             * - Play the requested file ASAP (in sync!)
+                             */
+                            //Play file
+                            Seshi.play(playInSyncRequest.fileId, "video");
+    },
     download:function(fileId) {
                         /* Download 
                         * - Download a given fileId from Seshi's database to the system's filesystem boo.
@@ -938,6 +952,9 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                     break;
                 case 'requestFilesById': //Receiving request from peer to pull files from their peer.
                     Seshi.sendRequestedFilesToPeer(msg);
+                    break;
+                case 'playInSync': //Play file in sync with connected peer DUDE.
+                    Seshi.playInSync(msg);
                     break;
             }//Switch on comman requested by remote peer
         }//End check for command & control message from remote peer

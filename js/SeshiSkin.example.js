@@ -35,6 +35,10 @@ multiDeleteBtn.addEventListener('click', deleteSelectedFiles, false);
 var multiDownloadBtn = document.getElementById('multiDownloadLocalFiles');
 multiDownloadBtn.addEventListener('click', function(){ downloadSelectedFiles(); }, false);
 
+//Event: When user requests to 'Receive' (pull) a file to their device
+var multiPullBtn = document.getElementById('receiveBtn');
+multiPullBtn.addEventListener('click', pullSelectedFiles, false);
+
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('onPeerConnectionEstablished', showConnected, false);
 
@@ -336,11 +340,12 @@ function updateFileListDisplay(fileListObj, targetElm) {
         var fileId = files[i].fileId;
         var fileName = files[i].fileName;
         var mimeType = files[i].fileType;
+        var checkBoxClass = targetElm == 'localFileList' ? 'localFileCheckBox' : 'remoteFileCheckBox';
 
         //Open <li>
         list += '<li class="list-group-item file-item row">\n';
         //Checkbox
-        list += '<input class="col-xs-1 localFileCheckBox" type="checkbox" data-id="' + fileId + '">\n';
+        list += '<input class="col-xs-1 ' + checkBoxClass + '" type="checkbox" data-id="' + fileId + '">\n';
         //Checkbox label & file name
         list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
         //Filetype
@@ -487,6 +492,29 @@ function downloadSelectedFiles() {
 }//End downloadSelectedFiles()
 
 
+
+function pullSelectedFiles() {
+    var remoteFileCheckBoxes = document.getElementsByClassName('remoteFileCheckBox');
+    var requestedFiles = [];
+    for(var i=0; i< remoteFileCheckBoxes.length; i++) {
+        //Check file is selected before collecting
+        if (remoteFileCheckBoxes[i].checked == true)
+        {
+            requestedFiles.push(
+                    {
+                        fileId: remoteFileCheckBoxes[i].dataset.id,
+                        requestType:'ALL'
+                    });
+        }//Only collect files wanting to be pulled
+    }//End loop though remote files list checking for selected files the user wants
+
+    //Send pull request if not empty:
+    if(requestedFiles.length > 0) 
+    {
+        Seshi.requestFilesFromPeer(requestedFiles);
+    }//End send pull request to peer
+
+}//End pullSelectedFiles()
 
 function updateSendFileProgessDisplay() {
 //Called upon sendFileProgressUpdate event being fired

@@ -511,6 +511,7 @@ Seshi = {
                                         break;
                                     case 'RANGE':
                                         console.log("Request for RANGE of chunks..");
+                                        break;
                                     default:
                                         Seshi.sendFileToPeer(filesRequested[i]);
                                 }//End work our request type (ALL/CHUNK/RANGE) and act accordinly

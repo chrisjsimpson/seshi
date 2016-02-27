@@ -144,16 +144,16 @@ function storeChunk(seshiChunk) {
                 chunk: seshiChunk.chunk
             }).then(function(done){
                 console.log('Celebrate');
+                //Post storage progress update to main thread
+                postMessage({
+                        "type":"storageProgressUpdate",
+                        "fileId":seshiChunk.fileId,
+                        "fileName":seshiChunk.fileName,
+                        "currentChunk":seshiChunk.chunkNumber,
+                        "totalNumChunks":seshiChunk.numberOfChunks
+                });
                 close();//Close worker thread upon storing the chunk.
             });
-        //Post storage progress update to main thread
-        postMessage({
-                "type":"storageProgressUpdate",
-                "fileId":seshiChunk.fileId,
-                "fileName":seshiChunk.fileName,
-                "currentChunk":seshiChunk.chunkNumber,
-                "totalNumChunks":seshiChunk.numberOfChunks
-        });
         console.log("Stored a chunk over RTCdatachannel inside worker");
 
 }//End storeChunk()

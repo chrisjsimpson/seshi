@@ -20349,7 +20349,6 @@ input[id="display-name"]:focus + .edit-btn {
 
 .message-app-card {
   display: none;
-  width: 0%;
 }
 
 .copyclipboard-card {
@@ -20367,8 +20366,9 @@ input[id="display-name"]:focus + .edit-btn {
 
 @media (min-width: 1200px) {
   .btn-send {
-    margin-top: 20px;
-    width: 140px;
+    margin-top: 50px;
+    width: 120px;
+    margin-bottom: 40px;
   }
   .btn-receive {
     margin-top: 10px;
@@ -20391,6 +20391,12 @@ input[id="display-name"]:focus + .edit-btn {
   }
   .fa-long-arrow-left, .fa-long-arrow-right {
     display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .btn-receive {
+    margin-right: 18%;
   }
 }
 

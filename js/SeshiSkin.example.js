@@ -183,8 +183,8 @@ function play(event) {
                             $('.btn-hide').hide();
                 } else if (objectInfo.mimeType.includes('video')) {
                         mediaType = 'video';
-                        // $('#hideall').css('position', 'absolute');
-                        // $("#hideall").hide();
+                        $('#hideall').css('position', 'absolute');
+                        $("#hideall").hide();
                         if ($(window).width() < 992) {
                         // $('.plyr').css({
                         //     'position': 'relative',
@@ -192,9 +192,7 @@ function play(event) {
                         //     'z-index':'1'
                         //         });
                             $('.btn-hide').hide();
-                            $('#hideall').css('position', 'relative');
                         } else {
-                            $('#hideall').css('position', 'absolute');
                             $('.btn-hide').show();
                         }
 

@@ -146,6 +146,23 @@ Seshi = {
                         var shareUrl =  document.location.origin + '?key=' + Seshi.getKey() + '#fileBoxes';
                         return shareUrl;
     },
+    displayName: '',
+    setDisplayName: function(name) {
+                        /* setDisplayName(name)
+                         *
+                         * - Set device / user display name
+                         *   Used in chat window & to distinguish devices/users
+                         */
+                         Seshi.displayName = name;
+    },
+    getDisplayName: function() {
+                        /* getDisplayName()
+                         *
+                         * - Returns the local peers display name
+                         *   returns empty string if not set.
+                         */
+                         return Seshi.displayName;
+    },
     updateLocalFilesList: function() {
                         /* 
                         #   UpdateLocalFilesList() 
@@ -189,8 +206,8 @@ Seshi = {
         Seshi.remoteFileList = JSON.parse(remoteFileList.data);
         //Dispatch event telling any UI there's a (potentially) updated file listing from their peer
         dispatchEvent(gotRemoteFileList);
-        msg = JSON.stringify({'chat':'SeshiBOT: Sucesfully recived your list of files, ta!\nSending mine now..'});
-        dc.send(msg);
+        msgRemoteFileList = JSON.stringify({'chat':'SeshiBOT: Sucesfully recived your list of files, ta!\nSending mine now..'});
+        dc.send(msgRemoteFileList);
         if (!remoteFileList.reply) 
         {   
             console.log("Replying back to peer with own local file listing...");
@@ -238,9 +255,9 @@ Seshi = {
         //Send most up to date file listing or cached version?? hmm.
         //Prepare file list message to send to remote peer
         localFileList = JSON.stringify(Seshi.localFileList());
-        msg = {"cmd":"recvRemoteFileList", "data":localFileList, "reply":bool};
-        msg = JSON.stringify(msg);
-        dc.send(msg);
+        msgSendLocalFileList = {"cmd":"recvRemoteFileList", "data":localFileList, "reply":bool};
+        msgSendLocalFileList = JSON.stringify(msgSendLocalFileList);
+        dc.send(msgSendLocalFileList);
     },
     generateObjectUrl:function(fileId) {
                         /* generatObjectUrl(fileId)
@@ -975,7 +992,19 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
             // reset real-time window,
             // and force chat window to last line 
             console.log("received chat of '" + msg.chat + "'");
-            cb.value += msg.chat + "\n"; 
+            //cb.value += msg.chat + "\n"; 
+            ////TODO Move to SeshiSkinExample to keep seperate from API:
+            var remoteChatMsg = 
+                '<li class="clearfix">' +
+                '    <div class="message-data align-right">' + 
+                '    <span class="message-data-time">10:14 AM, Today</span>' +
+                '    <span class="message-data-name">Anthony</span>' +
+                '    <i class="fa fa-circle me"></i></div>' +
+                '    <div class="message other-message float-right">' +
+                                msg.chat +
+                '    </div>' +
+                '</li>';
+            cb.insertAdjacentHTML('beforeend', remoteChatMsg); 
             cb.scrollTop = cb.scrollHeight; msg = msg.chat;
             } else if (msg.storeData) {
                 console.log("Received data store message.");
@@ -989,13 +1018,29 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
 
 function sendChat(msg) {
 	var cb = document.getElementById("chatbox"),
-	c = document.getElementById("chat");
+	//c = document.getElementById("chat");
+    c = document.getElementById("message-to-send");
 
 	//Display message locally, send it, and force chat window to 
 	// last line
 	msg = msg || c.value;
 	console.log("calling sendChat(" + msg + ")");
-	cb.value += "-> " + msg + "\n";
+	//cb.value += "-> " + msg + "\n";
+    //TODO Move (below) to SeshiSkinExample to keep seperate from API:
+    var localChatMsg = 
+            '<li>' +
+            '<div class="message-data align-left">' +
+            '    <span class="message-data-name">' +
+            '        <i class="fa fa-circle online"></i> Chris' +
+            '    </span>' +
+            '<span class="message-data-time">10:20 AM, Today</span>' +
+            '</div>' +
+            '    <div class="message my-message">' +
+                                msg + 
+            '    </div>' +
+            '</li>';
+    cb.insertAdjacentHTML('beforeend', localChatMsg);
+
 	data.send({'chat':msg});
 	c.value = '';
 	cb.scrollTop = cb.scrollHeight;

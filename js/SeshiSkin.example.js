@@ -39,6 +39,10 @@ multiDownloadBtn.addEventListener('click', function(){ downloadSelectedFiles(); 
 var multiPullBtn = document.getElementById('receiveBtn');
 multiPullBtn.addEventListener('click', pullSelectedFiles, false);
 
+//Event: Chat, when user clicks the send message button, send message
+var sendMsg = document.getElementById('sendMsg');
+sendMsg.addEventListener('click', function(){sendChat()}); 
+
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('onPeerConnectionEstablished', showConnected, false);
 
@@ -290,6 +294,9 @@ function showConnected() {
     //Enable Send / Recieve buttons:
     var receiveBtn = document.getElementById('receiveBtn').disabled = false;
     var sendBtn = document.getElementById('sendBtn').disabled = false;
+
+    //Enable chat button
+        //change colour?
 
 }//End showConnected
 

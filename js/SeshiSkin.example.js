@@ -52,7 +52,7 @@ window.addEventListener('sendFileProgressUpdate', updateSendFileProgessDisplay, 
 
 
 function peerConnectionBroken() {
-    /* Called by event listener when sendFileProgressUpdate event is fired 
+    /* Called by event listener when sendFileProgressUpdate event is fired
      *  Used to display a break in Datachannel connection.
      * */
     alert("Doh we broke the internet!");
@@ -170,12 +170,17 @@ function play(event) {
                         mediaType = 'video';
                         $('#hideall').css('position', 'absolute');
                         $("#hideall").hide();
-                        $('.plyr').css({
-                            'position': 'relative',
-                            'width': '100%',
-                            'z-index':'1'
-                                });
+
+                        if ($(window).width() < 992) {
+                        // $('.plyr').css({
+                        //     'position': 'relative',
+                        //     'width': '100%',
+                        //     'z-index':'1'
+                        //         });
+                            $('.btn-hide').hide();
+                        } else {
                             $('.btn-hide').show();
+                        }
 
                 } else {
                         mediaType = 'video';//Default to video (why?)
@@ -301,7 +306,7 @@ function getFileTypeIcon(mimeType) {
 /* Update files list UI */
 function updateFileListDisplay(fileListObj, targetElm) {
     var files = fileListObj;
-    
+
     var list = '<div class="list-group-item row header-title" id="header-' + targetElm + '" >' +
                                '<input class="col-xs-1 col-sm-1 checkall" type="checkbox">' +
                                 '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +

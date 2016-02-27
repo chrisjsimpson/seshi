@@ -183,7 +183,11 @@ function play(event) {
                         }
 
                 } else {
-                        mediaType = 'video';//Default to video (why?)
+                        $('.plyr').hide();
+                        $('.btn-hide').hide();
+                        // mediaType = 'video';
+                        //Default to video (why?)
+
                 }//End music or audio check
 
                 player.source({

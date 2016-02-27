@@ -31,7 +31,7 @@
     var defaults = {
         enabled:                true,
         debug:                  false,
-        autoplay:               false,
+        autoplay:               true,
         loop:                   false,
         seekTime:               10,
         volume:                 5,

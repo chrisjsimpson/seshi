@@ -24,11 +24,8 @@ a.onload = function() {
 
 $(".btn-hide").click(function() {
 
-    // var txt = $("#hideall").is(':visible') ? 'Hide' : 'Show';
-    //  $(".btn-hide").text(txt);
-    $(this).text(function(i, text){
-         return text === "Hide" ? "Show" : "Hide";
-     });
+    var txt = $("#hideall").is(':visible') ? 'Hide' : 'Show';
+     $(".btn-hide").text(txt);
      $("#hideall").fadeToggle();
 })
 

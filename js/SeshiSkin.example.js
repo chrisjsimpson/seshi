@@ -41,6 +41,8 @@ multiPullBtn.addEventListener('click', pullSelectedFiles, false);
 
 //Event: Chat- user sets their display name by hitting <enter> key
 var displayNameInput = document.getElementById('display-name');
+  // Set display name if already set
+  displayNameInput.value = Seshi.getDisplayName();
 displayNameInput.addEventListener('keydown', setDisplayName, false);//If user presses enter key
 displayNameInput.addEventListener('blur', setDisplayName, false);//User leaves focus of input
 

@@ -20437,7 +20437,6 @@ input[id="display-name"]:focus + .edit-btn {
   }
   #hideall {
     position: absolute;
-    z-index: 1000;
     width: 100%;
   }
   .generateInput {

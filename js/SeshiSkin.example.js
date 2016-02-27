@@ -48,7 +48,7 @@ displayNameInput.addEventListener('blur', setDisplayName, false);//User leaves f
 
 //Event: Chat, when user clicks the send message button, send message
 var sendMsg = document.getElementById('sendMsg');
-sendMsg.addEventListener('click', function(){sendChat()}); 
+sendMsg.addEventListener('click', function(){sendChat()});
 
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('onPeerConnectionEstablished', showConnected, false);
@@ -183,9 +183,8 @@ function play(event) {
                             $('.btn-hide').hide();
                 } else if (objectInfo.mimeType.includes('video')) {
                         mediaType = 'video';
-                        $('#hideall').css('position', 'absolute');
-                        $("#hideall").hide();
-
+                        // $('#hideall').css('position', 'absolute');
+                        // $("#hideall").hide();
                         if ($(window).width() < 992) {
                         // $('.plyr').css({
                         //     'position': 'relative',
@@ -195,6 +194,7 @@ function play(event) {
                             $('.btn-hide').hide();
                             $('#hideall').css('position', 'relative');
                         } else {
+                            $('#hideall').css('position', 'absolute');
                             $('.btn-hide').show();
                         }
 

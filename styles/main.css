@@ -22888,7 +22888,8 @@ input[id="display-name"]:focus + .edit-btn {
   border-width: 2px;
   margin: 0 auto;
   margin-bottom: 70px;
-  font-size: 16px;
+  font-size: 20px;
+  letter-spacing: 1.5px;
 }
 
 .btn-upload:hover, .btn-upload:active, .btn-upload:focus {

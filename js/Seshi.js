@@ -427,6 +427,46 @@ Seshi = {
                     })
                 }
     },
+    requestFilesFromPeer:function(filesRequested) {
+                            /* requestFilesFromPeer(filesRequested)
+                             * 
+                             * - Request files from peer (we can see them in 
+                             *   Seshi.remoteFileList, now we want to request to
+                             *   pull them from our peer to our own device!
+                             *
+                             * Requires datachannel to be open! 
+                             * 
+                             * To check dataChannel is open use: 
+                             * Seshi.connectionStatus.dataChannelState() == 'open'
+                             * 
+                             * Arguments:
+                             * `filesRequested` should be an array of 
+                             *   objects in the following format:
+                             * [
+                             *  {
+                             *      fileId: 'xyz123',
+                             *      requestType:'ALL || 'CHUNK' || 'RANGE'
+                             *  },
+                             *  {
+                             *      fileId: 'anotherFileIdExample',
+                             *      requestType: 'ALL'
+                             *  }
+                             * ]
+                             *
+                             * You can use this to request an entire file from a peer
+                             * or TODO a single chunk, or range of chunks. 
+                             *
+                             */
+                            
+                            //Stringify requested files object 
+                            var filesRequested = JSON.stringify(filesRequested);
+                            //Send command over DataChannel to peer
+                            msg = {"cmd":"requestFilesById", "data":filesRequested};
+                                   msg = JSON.stringify(msg);
+                                           dc.send(msg);
+                            //Happy dance we've done a full cirlce & re-implimented a crude FTP in Javascript
+                            // go figure! 
+    },
     sendRequestedFilesToPeer:function(filesRequested){
                             /* sendRequestedFilesToPeer(files)
                              * - Respond to peer request to PULL files from their connected peer
@@ -443,17 +483,38 @@ Seshi = {
                              *
                              * [
                              *  {
-                             *      'fileId': 'xyz123',
-                             *      'requestType':'ALL || 'CHUNK' || 'RANGE'
+                             *      fileId: 'xyz123',
+                             *      requestType:'ALL || 'CHUNK' || 'RANGE'
                              *  },
                              *  {
-                             *      'fileId: 'anotherFileIdExample',
-                             *      'requestType: 'ALL'
+                             *      fileId: 'anotherFileIdExample',
+                             *      requestType: 'ALL'
                              *  }
                              * ]
                              */
                              
                             console.log(filesRequested);
+                            //Work out what they want
+                            var filesRequested = JSON.parse(filesRequested.data);
+                            
+                            //Loop though each request sending the file to the peer as requested
+                            for (var i=0;i<filesRequested.length;i++) 
+                            {
+                                //Work our request type:
+                                switch(filesRequested[i].requestType) 
+                                {
+                                    case 'ALL':
+                                        Seshi.sendFileToPeer(filesRequested[i].fileId);
+                                        break;
+                                    case 'CHUNK':
+                                        console.log("Request for single chunk..");
+                                        break;
+                                    case 'RANGE':
+                                        console.log("Request for RANGE of chunks..");
+                                    default:
+                                        Seshi.sendFileToPeer(filesRequested[i]);
+                                }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
+                            }//End loop through each request sending the file to thhe peer as requested
     },
     syncData:function(){
             /* Send all data to connected peer 

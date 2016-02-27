@@ -20364,6 +20364,10 @@ input[id="display-name"]:focus + .edit-btn {
   display: none;
 }
 
+#hideall {
+  position: relative;
+}
+
 @media (min-width: 1200px) {
   .btn-send {
     margin-top: 50px;

@@ -173,7 +173,7 @@ function play(event) {
                 if (objectInfo.mimeType.includes('audio'))
                 {
                         mediaType = 'audio';
-                        $('#hideall').css('position', 'relative');
+                        // $('#hideall').css('position', 'relative');
                         $('.plyr').css({
                             'position': 'fixed',
                             'bottom': '0',

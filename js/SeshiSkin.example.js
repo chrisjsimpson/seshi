@@ -229,6 +229,11 @@ function refreshFileList(listId) {
     Seshi.updateLocalFilesList().then( // .then() we know the .localFileList cache is updated, so we display the fresh list.
             function(complete){
                 updateFileListDisplay(Seshi.localFileList(), listId);
+                //If peer connection is established, resend new local file list to peer
+                if(Seshi.connectionStatus.dataChannelState() == 'open')
+                {
+                    Seshi.sendLocalFileListToRemote();
+                }//End if peer connection is established, resend new local file list to peer.
             });
 }//End refreshFileList()
 

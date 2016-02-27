@@ -15039,9 +15039,9 @@ h5, .h5,
 h6, .h6 {
   margin: 0 0 35px;
   text-transform: uppercase;
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 p {
@@ -15053,13 +15053,14 @@ p {
 .main-header h4 {
   font-size: 22px;
   font-weight: 400;
+  letter-spacing: 1px;
 }
 
 .navbar-custom {
   margin-bottom: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
-  font-family: "Montserrat","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
   background-color: rgba(3, 13, 36, 0.6);
 }
 
@@ -15348,7 +15349,7 @@ footer a:hover, footer a:focus {
 
 .btn {
   text-transform: uppercase;
-  font-family: "Montserrat","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: 400;
   -webkit-transition: all .3s ease-in-out;
   -moz-transition: all .3s ease-in-out;
@@ -19650,7 +19651,7 @@ label {
 .btn-generate-key {
   width: 190px;
   color: #000;
-  font-family: 'Montserrat';
+  font-family: 'Source Sans Pro';
   text-transform: uppercase;
   margin-top: 0;
   margin-right: 50px;
@@ -19671,7 +19672,7 @@ label {
 .btn-connect, .btn-send, .btn-receive {
   margin: 0 auto;
   text-transform: uppercase;
-  font-family: 'Montserrat';
+  font-family: 'Source Sans Pro';
   width: 140px;
   color: #fff;
   border-color: #fff;
@@ -22984,7 +22985,7 @@ input[id="display-name"]:focus + .edit-btn {
   color: #1ecd97;
   letter-spacing: 1px;
   font-size: 18px;
-  font-family: Montserrat, sans-serif;
+  font-family: Source Sans Pro, sans-serif;
   transition: background-color 0.3s, color 0.3s, width 0.3s, border-width 0.3s, border-color 0.3s;
 }
 
@@ -23061,7 +23062,7 @@ input[id="display-name"]:focus + .edit-btn {
   min-height: 35px;
   font-size: 18px;
   color: #fff;
-  font-family: 'Montserrat';
+  font-family: 'Source Sans Pro';
   text-transform: uppercase;
   margin-top: 0;
   margin-right: 50px;

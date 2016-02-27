@@ -23,10 +23,13 @@ a.onload = function() {
 //hide all
 
 $(".btn-hide").click(function() {
-
-    var txt = $("#hideall").is(':visible') ? 'Hide' : 'Show';
-     $(".btn-hide").text(txt);
      $("#hideall").fadeToggle();
+    // var txt = $("#hideall").is(':visible') ? 'Hide' : 'Show';
+    if ($("#hideall").is(':visible') ) {
+        $('.btn-hide').find('i').toggleClass('fa-eye-slash')
+    }
+    //  $(".btn-hide").text(txt);
+
 })
 
 //if audio player CSS change

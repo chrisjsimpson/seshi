@@ -11828,9 +11828,8 @@ $("#copyclipboard").click(function () {
     });
     $(".keycopy .copied").replaceWith("<h6> Copied! </h6>")
 
-    $(".message-app-card").animate({
-                   width: '73%'
-               }).show().fadeIn().delay('1000');
+    $(".message-app-card").fadeIn();
+
 });
 
 // Google Maps Scripts

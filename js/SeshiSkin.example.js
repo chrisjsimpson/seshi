@@ -194,6 +194,7 @@ function play(event) {
                         //         });
                             $('.btn-hide').show();
                         } else {
+                            $('#hideall').css('position', 'relative');
                             $('.btn-hide').hide();
                         }
 

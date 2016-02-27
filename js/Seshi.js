@@ -146,14 +146,14 @@ Seshi = {
                         var shareUrl =  document.location.origin + '?key=' + Seshi.getKey() + '#fileBoxes';
                         return shareUrl;
     },
-    displayName: '',
     setDisplayName: function(name) {
                         /* setDisplayName(name)
                          *
                          * - Set device / user display name
                          *   Used in chat window & to distinguish devices/users
                          */
-                         Seshi.displayName = name;
+                         //Set display name in local storage
+                         localStorage.setItem("displayName", name);
                          trace("Set display name to: " + Seshi.getDisplayName());
     },
     getDisplayName: function() {
@@ -162,7 +162,11 @@ Seshi = {
                          * - Returns the local peers display name
                          *   returns empty string if not set.
                          */
-                         return Seshi.displayName;
+                         if(!localStorage.getItem("displayName")){
+                            return ''; //Display name is not set
+                         } else {
+                            return localStorage.getItem("displayName")
+                         }
     },
     updateLocalFilesList: function() {
                         /* 

@@ -146,6 +146,23 @@ Seshi = {
                         var shareUrl =  document.location.origin + '?key=' + Seshi.getKey() + '#fileBoxes';
                         return shareUrl;
     },
+    displayName: '',
+    setDisplayName: function(name) {
+                        /* setDisplayName(name)
+                         *
+                         * - Set device / user display name
+                         *   Used in chat window & to distinguish devices/users
+                         */
+                         Seshi.displayName = name;
+    },
+    getDisplayName: function() {
+                        /* getDisplayName()
+                         *
+                         * - Returns the local peers display name
+                         *   returns empty string if not set.
+                         */
+                         return Seshi.displayName;
+    },
     updateLocalFilesList: function() {
                         /* 
                         #   UpdateLocalFilesList() 

@@ -222,7 +222,7 @@
                                 </div>
                               </div>
 
-                             <div class="chat-history">
+                             <div class="chat-history" id="chatbox">
                                 <ul>
                                   <li class="clearfix">
                                     <div class="message-data align-right">
@@ -274,7 +274,8 @@
 
                               <div class="chat-message clearfix">
                               <div class="col-xs-9">
-                                <textarea name="message-to-send" id="message-to-send" placeholder ="Type your message" rows="3"></textarea>
+                                  <textarea name="message-to-send" id="message-to-send" onkeyup="if (event.keyCode == 13) { sendChat(); return false;}" 
+                                      placeholder ="Type your message" rows="3"></textarea>
                             </div>
                             <div class="col-xs-3">
                                 <button class="button button--wapasha button--round-s btn-chat-send align-right">Send</button>
@@ -421,7 +422,7 @@
         Inmessages:
         <textarea id="inmessages"></textarea>
         Chatbox:
-        <textarea id="chatbox"></textarea>
+        <!-- <textarea id="chatbox"></textarea> -->
         Chat:
         <textarea id="chat"></textarea>
         <textarea id="status"></textarea>

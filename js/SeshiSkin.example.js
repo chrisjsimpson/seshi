@@ -412,7 +412,7 @@ function updateStoreProgressDisplay() {
                     if (document.getElementById('storingFileId-' + fileId)) {
                         document.getElementById('storingFileId-' + fileId).remove();
                     }
-                    document.getElementById('localFilesBoxHeader').insertAdjacentHTML('afterend', output);
+                    document.getElementById('header-localFileList').insertAdjacentHTML('afterend', output);
              }//End if not complete
          }//End check Seshi.storeProgress[fileId].UIdone == false before proceeding (prevents itterating over already completed UI updates.
     }//End loop through each item in Seshi.storeProgress & update the display accordingly

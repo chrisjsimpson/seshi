@@ -24,7 +24,7 @@ a.onload = function() {
 
 $(".btn-hide").click(function() {
 
-    var txt = $("#hideall").is(':visible') ? 'Show' : 'Hide';
+    var txt = $("#hideall").is(':visible') ? 'Hide' : 'Show';
      $(".btn-hide").text(txt);
      $("#hideall").fadeToggle();
 })

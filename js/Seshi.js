@@ -20,8 +20,12 @@ Seshi = {
                         // - The events are fired (dispatched) according to their individual case.
 
                         //Fired when a datachannel is established between both peers
-                        peerConnectionEstablished = new Event('peerConnectionEstablished');
-                        peerConnectionEstablished.initEvent('peerConnectionEstablished', true, true);
+                        onPeerConnectionEstablished = new Event('onPeerConnectionEstablished');
+                        onPeerConnectionEstablished.initEvent('onPeerConnectionEstablished', true, true);
+
+                        //Fired when a datachannel is BROKEN between both peers
+                        onPeerConnectionBroken = new Event('onPeerConnectionBroken');
+                        onPeerConnectionBroken.initEvent('onPeerConnectionBroken', true, true);
 
                         //Fired when the datachannel recieves a file listing from their connected peer
                         gotRemoteFileList = new Event('gotRemoteFileList');
@@ -675,9 +679,13 @@ function onRemoteStreamAdded(e) {
 function onIceconnectionStateChanged(e) {
     console.log("Ice Connection State Change to: " + pc.iceConnectionState);
     if ( pc.iceConnectionState == 'completed' || pc.iceConnectionState == 'connected') { 
-        //dispatch event peerConnectionEstablished since we now have a peer connection (TODO check datachannel state too!)
-        dispatchEvent(peerConnectionEstablished);
-    }
+        //dispatch event onPeerConnectionEstablished since we now have a peer connection (TODO check datachannel state too!)
+        dispatchEvent(onPeerConnectionEstablished);
+    }//End if iceConnectionState == Completed
+
+    if (pc.iceConnectionState == 'disconnected' || pc.iceConnectionState == 'failed') {
+        dispatchEvent(onPeerConnectionBroken);
+    }//End if iceConnection state is disconnected or failed, dispatch onPeerConnectionEstablished event
 }//End onIceconnectionStateChanged
 
 // Yes, we do nothing if the remote side removes the stream.

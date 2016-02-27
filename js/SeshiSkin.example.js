@@ -36,7 +36,10 @@ var multiDownloadBtn = document.getElementById('multiDownloadLocalFiles');
 multiDownloadBtn.addEventListener('click', function(){ downloadSelectedFiles(); }, false);
 
 //Event: When we have a true Peer-to-Peer data connection established:
-window.addEventListener('peerConnectionEstablished', showConnected, false);
+window.addEventListener('onPeerConnectionEstablished', showConnected, false);
+
+//Event: Peer-to-Peer data connection is BROKEN :'( :
+window.addEventListener('onPeerConnectionBroken', peerConnectionBroken, false);
 
 //Event: Recieved file listing of connected peer
 window.addEventListener('gotRemoteFileList', function(){updateFileListDisplay(Seshi.remoteFileList, 'remoteFileList');}, false);
@@ -46,6 +49,15 @@ window.addEventListener('storeFilesProgressUpdate', updateStoreProgressDisplay, 
 
 //Event: sendFileProgressUpdate recived
 window.addEventListener('sendFileProgressUpdate', updateSendFileProgessDisplay, false);
+
+
+function peerConnectionBroken() {
+    /* Called by event listener when sendFileProgressUpdate event is fired 
+     *  Used to display a break in Datachannel connection.
+     * */
+    alert("Doh we broke the internet!");
+
+}//End peerConnectionBroken()
 
 
 function createShareUrl() {

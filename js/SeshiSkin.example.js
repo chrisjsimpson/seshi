@@ -182,6 +182,7 @@ function play(event) {
                         //     'z-index':'1'
                         //         });
                             $('.btn-hide').hide();
+                            $('#hideall').css('position', 'relative');
                         } else {
                             $('.btn-hide').show();
                         }
@@ -514,7 +515,7 @@ function pullSelectedFiles() {
     }//End loop though remote files list checking for selected files the user wants
 
     //Send pull request if not empty:
-    if(requestedFiles.length > 0) 
+    if(requestedFiles.length > 0)
     {
         Seshi.requestFilesFromPeer(requestedFiles);
     }//End send pull request to peer

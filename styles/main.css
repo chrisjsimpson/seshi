@@ -20327,7 +20327,7 @@ input[id="display-name"]:focus + .edit-btn {
 
 .copyclipboard-card {
   min-height: 25px;
-  height: 111px;
+  height: 115px;
   /* margin-bottom: 20px; */
   padding: 10px;
   background-color: rgba(255, 255, 255, 0.8);
@@ -20402,7 +20402,7 @@ input[id="display-name"]:focus + .edit-btn {
 
 @media (min-width: 480px) {
   .copyclipboard-card h6 {
-    font-size: 12px;
+    font-size: 12.5px;
     letter-spacing: 0.7px;
   }
 }

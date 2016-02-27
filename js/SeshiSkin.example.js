@@ -185,15 +185,15 @@ function play(event) {
                         mediaType = 'video';
                         $('#hideall').css('position', 'absolute');
                         $("#hideall").hide();
-                        if ($(window).width() < 992) {
-                        // $('.plyr').css({
-                        //     'position': 'relative',
-                        //     'width': '100%',
-                        //     'z-index':'1'
-                        //         });
-                            $('.btn-hide').hide();
-                        } else {
+                        if ($(window).width() > 992) {
+                        $('.plyr').css({
+                            'position': 'relative',
+                            'width': '100%',
+                            'z-index':'1'
+                                });
                             $('.btn-hide').show();
+                        } else {
+                            $('.btn-hide').hide();
                         }
 
                 } else {

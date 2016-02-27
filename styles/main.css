@@ -15153,7 +15153,7 @@ p {
 }
 
 a {
-  color: #219AB3;
+  color: #334F93;
   -webkit-transition: all .2s ease-in-out;
   -moz-transition: all .2s ease-in-out;
   transition: all .2s ease-in-out;
@@ -15161,7 +15161,7 @@ a {
 
 a:hover, a:focus {
   text-decoration: none;
-  color: #2199b2;
+  color: #334f92;
 }
 
 .light {
@@ -15356,37 +15356,37 @@ footer a:hover, footer a:focus {
 }
 
 .btn-default {
-  color: #219AB3;
+  color: #334F93;
   background-color: rgba(255, 255, 255, 0);
-  border-color: #219AB3;
+  border-color: #334F93;
 }
 
 .btn-default:focus, .btn-default.focus {
-  color: #219AB3;
+  color: #334F93;
   background-color: rgba(230, 230, 230, 0);
-  border-color: #0d3d47;
+  border-color: #121c34;
 }
 
 .btn-default:hover {
-  color: #219AB3;
+  color: #334F93;
   background-color: rgba(230, 230, 230, 0);
-  border-color: #176e7f;
+  border-color: #233766;
 }
 
 .btn-default:active, .btn-default.active,
 .open > .btn-default.dropdown-toggle {
-  color: #219AB3;
+  color: #334F93;
   background-color: rgba(230, 230, 230, 0);
-  border-color: #176e7f;
+  border-color: #233766;
 }
 
 .btn-default:active:hover, .btn-default:active:focus, .btn-default:active.focus, .btn-default.active:hover, .btn-default.active:focus, .btn-default.active.focus,
 .open > .btn-default.dropdown-toggle:hover,
 .open > .btn-default.dropdown-toggle:focus,
 .open > .btn-default.dropdown-toggle.focus {
-  color: #219AB3;
+  color: #334F93;
   background-color: rgba(212, 212, 212, 0);
-  border-color: #0d3d47;
+  border-color: #121c34;
 }
 
 .btn-default:active, .btn-default.active,
@@ -15399,19 +15399,19 @@ fieldset[disabled] .btn-default:hover,
 fieldset[disabled] .btn-default:focus,
 fieldset[disabled] .btn-default.focus {
   background-color: rgba(255, 255, 255, 0);
-  border-color: #219AB3;
+  border-color: #334F93;
 }
 
 .btn-default .badge {
   color: rgba(255, 255, 255, 0);
-  background-color: #219AB3;
+  background-color: #334F93;
 }
 
 .btn-default:hover, .btn-default:focus {
-  border: 1px solid #219AB3;
+  border: 1px solid #334F93;
   outline: none;
   color: #777;
-  background-color: #219AB3;
+  background-color: #334F93;
 }
 
 ul.banner-social-buttons {

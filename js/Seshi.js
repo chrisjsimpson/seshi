@@ -427,6 +427,34 @@ Seshi = {
                     })
                 }
     },
+    sendRequestedFilesToPeer:function(filesRequested){
+                            /* sendRequestedFilesToPeer(files)
+                             * - Respond to peer request to PULL files from their connected peer
+                             *   `filesRequested` is an array of objects containing fileIds and the
+                             *   parts of the file that the user is requesting (request type)
+                             *   
+                             *   The request type defaults to send 'ALL' chunks
+                             *
+                             * TODO requestType can be set to only request certain chunks,
+                             * a single chunk, or a range of chunks. This is useful for
+                             * a broken download for example, or syncing accross many peers.
+                             *
+                             * The format of the `filesRequested` argument should be:
+                             *
+                             * [
+                             *  {
+                             *      'fileId': 'xyz123',
+                             *      'requestType':'ALL || 'CHUNK' || 'RANGE'
+                             *  },
+                             *  {
+                             *      'fileId: 'anotherFileIdExample',
+                             *      'requestType: 'ALL'
+                             *  }
+                             * ]
+                             */
+                             
+                            console.log(filesRequested);
+    },
     syncData:function(){
             /* Send all data to connected peer 
              * This is currently very intensive as it does not (yet) make use of the worker
@@ -845,6 +873,9 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                     break;
                 case 'recvRemoteFileList': //Receiving list of files from remote peer
                     Seshi.recvRemoteFileList(msg);
+                    break;
+                case 'requestFilesById': //Receiving request from peer to pull files from their peer.
+                    Seshi.sendRequestedFilesToPeer(msg);
                     break;
             }//Switch on comman requested by remote peer
         }//End check for command & control message from remote peer

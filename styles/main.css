@@ -15052,7 +15052,7 @@ p {
 
 .main-header h4 {
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 1px;
 }
 
@@ -19425,7 +19425,7 @@ li {
   padding: 20px 20px 20px;
   border-bottom: 2px solid white;
   overflow-y: scroll;
-  height: 180px;
+  height: 182px;
 }
 
 .chat .chat-history ul {
@@ -19447,7 +19447,7 @@ li {
   line-height: 19px;
   font-size: 14px;
   border-radius: 2px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   width: 65%;
   position: relative;
 }
@@ -19484,7 +19484,7 @@ li {
   padding: 10px;
   padding-bottom: 0;
   padding-left: 0;
-  height: 75px;
+  height: 93px;
 }
 
 .chat .chat-message textarea {
@@ -19494,7 +19494,7 @@ li {
   margin-bottom: 10px;
   border-radius: 5px;
   resize: none;
-  line-height: 9px;
+  line-height: 17px;
   width: 95%;
   float: left;
 }
@@ -19514,7 +19514,7 @@ li {
   cursor: pointer;
   line-height: 15px;
   font-weight: bold;
-  bottom: 14px;
+  bottom: 2px;
   min-width: 50px !important;
   width: 70px;
   padding: 0.9em;
@@ -19587,9 +19587,9 @@ li {
 }
 
 #chatup {
-  left: -107px;
+  left: -117px;
   width: 360px;
-  height: 310px;
+  height: 340px;
   padding: 0;
 }
 
@@ -19601,9 +19601,13 @@ li {
   .chat .chat-header .chat-with {
     padding: 12px;
   }
+  .chat .chat-history {
+    height: 188px;
+  }
   .chat .chat-message {
     padding-top: 10px;
     padding-left: 0;
+    height: 97px;
   }
   .chat .chat-message .button {
     min-width: 50px !important;
@@ -20289,11 +20293,12 @@ a {
 
 input[id="display-name"] {
   border-width: 0;
-  border-bottom: 1px solid #aaa;
-  color: #bbb;
-  background: transparent;
+  border-bottom: 1px solid #ccc;
+  color: #ccc;
+  background: rgba(255, 255, 255, 0.3);
   padding-bottom: 2px;
   padding-right: 16px;
+  padding-left: 6px;
   width: 170px;
   margin-left: 16px;
   transition: all .3s ease-in-out;
@@ -20315,8 +20320,8 @@ input[id="display-name"]:focus + .edit-btn {
   height: 16px;
   line-height: 16px;
   top: 5px;
-  right: 0;
-  color: #aaa;
+  right: 6px;
+  color: #ccc;
   transition: all .3s ease-in-out;
 }
 
@@ -20335,11 +20340,11 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 .copyclipboard-card h6 {
-  font-size: 9px;
+  font-size: 10.5px;
   letter-spacing: 0.5px;
   color: #222;
   margin: 0 auto;
-  padding: 12px 0;
+  padding: 11px 0;
 }
 
 .message-app-card {
@@ -23070,11 +23075,13 @@ input[id="display-name"]:focus + .edit-btn {
   margin: 0 auto;
   margin-bottom: 15px;
   background: #6ca354;
+  border-bottom: 2px solid darkgreen;
   transition: all 0.2s ease-in-out;
 }
 
-.btn-subscribe:hover {
+.btn-subscribe:hover, .btn-subscribe:focus {
   background: #86BB71;
+  border-bottom: 2px solid #6ca354;
 }
 
 input[id="mce-EMAIL"] {

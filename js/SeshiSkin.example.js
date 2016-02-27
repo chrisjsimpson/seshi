@@ -173,7 +173,7 @@ function play(event) {
                 if (objectInfo.mimeType.includes('audio'))
                 {
                         mediaType = 'audio';
-                        $('#hideall').css('position', 'relative');
+                        // $('#hideall').css('position', 'relative');
                         $('.plyr').css({
                             'position': 'fixed',
                             'bottom': '0',
@@ -186,7 +186,7 @@ function play(event) {
 
                         $("#hideall").hide();
                         if ($(window).width() > 992) {
-                          $('#hideall').css('position', 'absolute');
+                          // $('#hideall').css('position', 'absolute');
                         // $('.plyr').css({
                         //     'position': 'relative',
                         //     'width': '100%',
@@ -194,14 +194,14 @@ function play(event) {
                         //         });
                             $('.btn-hide').show();
                         } else {
-                            $('#hideall').css('position', 'relative');
+
                             $('.btn-hide').hide();
                         }
 
                 } else {
-                        $('.plyr').hide();
-                        $('.btn-hide').hide();
-                        // mediaType = 'video';
+                        // $('.plyr').hide();
+                        // $('.btn-hide').hide();
+                        mediaType = 'video';
                         //Default to video (why?)
 
                 }//End music or audio check

@@ -154,6 +154,7 @@ Seshi = {
                          *   Used in chat window & to distinguish devices/users
                          */
                          Seshi.displayName = name;
+                         trace("Set display name to: " + Seshi.getDisplayName());
     },
     getDisplayName: function() {
                         /* getDisplayName()
@@ -206,7 +207,9 @@ Seshi = {
         Seshi.remoteFileList = JSON.parse(remoteFileList.data);
         //Dispatch event telling any UI there's a (potentially) updated file listing from their peer
         dispatchEvent(gotRemoteFileList);
-        msgRemoteFileList = JSON.stringify({'chat':'SeshiBOT: Sucesfully recived your list of files, ta!\nSending mine now..'});
+        msgRemoteFileList = JSON.stringify({'chat':'Sucesfully recived your list of files, ta!\nSending mine now..',
+                                            'remoteDisplayName':'SeshiBOT'
+                                            });
         dc.send(msgRemoteFileList);
         if (!remoteFileList.reply) 
         {   
@@ -998,7 +1001,9 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                 '<li class="clearfix">' +
                 '    <div class="message-data align-right">' + 
                 '    <span class="message-data-time">10:14 AM, Today</span>' +
-                '    <span class="message-data-name">Anthony</span>' +
+                '    <span class="message-data-name">' + 
+                     msg.remoteDisplayName+ 
+                '    </span>' +
                 '    <i class="fa fa-circle me"></i></div>' +
                 '    <div class="message other-message float-right">' +
                                 msg.chat +
@@ -1031,7 +1036,8 @@ function sendChat(msg) {
             '<li>' +
             '<div class="message-data align-left">' +
             '    <span class="message-data-name">' +
-            '        <i class="fa fa-circle online"></i> Chris' +
+            '        <i class="fa fa-circle online"></i> ' + 
+                        Seshi.getDisplayName() +
             '    </span>' +
             '<span class="message-data-time">10:20 AM, Today</span>' +
             '</div>' +
@@ -1041,7 +1047,7 @@ function sendChat(msg) {
             '</li>';
     cb.insertAdjacentHTML('beforeend', localChatMsg);
 
-	data.send({'chat':msg});
+	data.send({'chat':msg, 'remoteDisplayName':Seshi.getDisplayName()});
 	c.value = '';
 	cb.scrollTop = cb.scrollHeight;
 }

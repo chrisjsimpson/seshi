@@ -39,6 +39,11 @@ multiDownloadBtn.addEventListener('click', function(){ downloadSelectedFiles(); 
 var multiPullBtn = document.getElementById('receiveBtn');
 multiPullBtn.addEventListener('click', pullSelectedFiles, false);
 
+//Event: Chat- user sets their display name by hitting <enter> key
+var displayNameInput = document.getElementById('display-name');
+displayNameInput.addEventListener('keydown', setDisplayName, false);//If user presses enter key
+displayNameInput.addEventListener('blur', setDisplayName, false);//User leaves focus of input
+
 //Event: Chat, when user clicks the send message button, send message
 var sendMsg = document.getElementById('sendMsg');
 sendMsg.addEventListener('click', function(){sendChat()}); 
@@ -580,6 +585,13 @@ function updateSendFileProgessDisplay() {
 }//End updateSendFileProgessDisplay()
 
 
+
+function setDisplayName(e) {
+    if(e.keyCode == 13 || e.type == 'blur') {
+        var displayName = document.getElementById('display-name').value;
+        Seshi.setDisplayName(displayName);
+    }//End if enter key pressed, set display name
+}//End setDisplayName()
 
 
 function smoothScroll(eID) {

@@ -15233,7 +15233,7 @@ a:hover, a:focus {
 #subscribe {
   color: #777;
   padding: 50px;
-  padding-top: 70px !important;
+  padding-top: 120px !important;
 }
 
 #howitworks {
@@ -15255,6 +15255,7 @@ a:hover, a:focus {
   background-size: cover;
   -o-background-size: cover;
   padding: 40px;
+  padding-top: 100px;
   margin: 0 auto;
 }
 

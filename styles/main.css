@@ -23812,7 +23812,7 @@ input[id="mce-EMAIL"]:focus + .email-btn {
     position: fixed;
     bottom: 0;
     width: 53%;
-    z-index: 1;
+    z-index: 1001;
   }
   .plyr video {
     min-height: 23vh;

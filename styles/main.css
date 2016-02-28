@@ -20442,11 +20442,6 @@ input[id="display-name"]:focus + .edit-btn {
     z-index: 1000;
     outline: none;
   }
-  #hideall {
-    position: absolute;
-    z-index: 1000;
-    width: 100%;
-  }
   .generateInput {
     width: 80%;
     margin: 0 auto;

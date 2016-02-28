@@ -197,7 +197,7 @@ function play(event) {
                           $('.plyr').css({
                               'position': 'fixed',
                               'bottom': '0',
-                              'width': '52%',
+                              'width': '62%',
                               'z-index':'1001'
                                   });
                           $("#hideall").css('position', 'relative');
@@ -214,7 +214,7 @@ function play(event) {
                             $('.plyr').css({
                                 'position': 'fixed',
                                 'bottom': '0',
-                                'width': '50%',
+                                'width': '100%',
                                 'z-index':'1001'
                                     });
                             }

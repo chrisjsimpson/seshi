@@ -185,15 +185,39 @@ function play(event) {
                         mediaType = 'video';
 
                         if ($(window).width() > 992) {
+                          $('.plyr').css({
+                              'position': 'relative',
+                              'width': '100%',
+                              'z-index':'1'
+                                  });
                           $("#hideall").css('position':'absolute');
                           $("#hideall").hide();
                             $('.btn-hide').show();
-                        } else if (($(window).width() < 992) ){
+                        } else if ($(window).width() < 992) {
+                          $('.plyr').css({
+                              'position': 'fixed',
+                              'bottom': '0',
+                              'width': '52%',
+                              'z-index':'1001'
+                                  });
                           $("#hideall").css('position':'relative');
                             $("#hideall").show();
                             $('.btn-hide').hide();
-                        } else {};
-
+                        }  else if ($(window).width() < 768) {
+                          $('.plyr').css({
+                              'position': 'fixed',
+                              'bottom': '0',
+                              'width': '72%',
+                              'z-index':'1001'
+                                  });
+                          }   else if ($(window).width() < 480) {
+                            $('.plyr').css({
+                                'position': 'fixed',
+                                'bottom': '0',
+                                'width': '50%',
+                                'z-index':'1001'
+                                    });
+                            }
                 } else {
                         // $('.plyr').hide();
                         // $('.btn-hide').hide();

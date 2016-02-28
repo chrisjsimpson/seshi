@@ -186,12 +186,11 @@ function play(event) {
 
                         if ($(window).width() > 992) {
                           $("#hideall").hide();
-
                             $('.btn-hide').show();
-                        } else {
+                        } else if (($(window).width() < 992) ){
                             $("#hideall").show();
                             $('.btn-hide').hide();
-                        }
+                        } else {};
 
                 } else {
                         // $('.plyr').hide();

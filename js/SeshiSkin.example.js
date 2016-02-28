@@ -65,6 +65,9 @@ window.addEventListener('storeFilesProgressUpdate', updateStoreProgressDisplay, 
 //Event: sendFileProgressUpdate recived
 window.addEventListener('sendFileProgressUpdate', updateSendFileProgessDisplay, false);
 
+//Event: displayName of remote user is recived
+window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
+
 
 function peerConnectionBroken() {
     /* Called by event listener when sendFileProgressUpdate event is fired
@@ -624,6 +627,24 @@ function setDisplayName(e) {
         Seshi.setDisplayName(displayName);
     }//End if enter key pressed, set display name
 }//End setDisplayName()
+
+
+
+function showRemoteDisplayName() {
+    /* Called automatically when onGotRemoteDisplayName event is fired
+     *
+     * Updated UI with the 'Chatting to <user/device> message
+    *
+    */
+    //Get reference to connected peers display name (remote peer)
+    var displayNameBox = document.getElementById('remoteDisplayName');
+    //Update value with the remote's display name (which could be anything...)
+    displayNameBox.innerHTML = Seshi.getRemoteDisplayName();
+
+}//End showRemoteDisplayName()
+
+
+
 
 
 function smoothScroll(eID) {

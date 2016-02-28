@@ -39,6 +39,10 @@ Seshi = {
                         sendFileProgressUpdate = new Event('sendFileProgressUpdate');
                         sendFileProgressUpdate.initEvent('sendFileProgressUpdate', true, true);
 
+                        //Fired when we have recived the display name of the connected device
+                        onGotRemoteDisplayName = new Event('onGotRemoteDisplayName');
+                        onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName');
+
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
                             Seshi.updateLocalFilesList();
@@ -192,6 +196,8 @@ Seshi = {
                          */
                          //Store in localstorage ofr persistance
                          localStorage.setItem('remoteDisplayName', msg.remoteDisplayName);
+                         //Fire event to let UI layer no we've got remotes' display name
+                         dispatchEvent(onGotRemoteDisplayName);
     },
     getRemoteDisplayName: function() {
                           /* getRemoteDisplayName()

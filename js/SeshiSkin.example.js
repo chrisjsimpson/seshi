@@ -184,10 +184,9 @@ function play(event) {
                 } else if (objectInfo.mimeType.includes('video')) {
                         mediaType = 'video';
 
-
                         if ($(window).width() > 992) {
                           $("#hideall").hide();
-                        
+
                             $('.btn-hide').show();
                         } else {
                             $("#hideall").show();

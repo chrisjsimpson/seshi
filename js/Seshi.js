@@ -41,7 +41,7 @@ Seshi = {
 
                         //Fired when we have recived the display name of the connected device
                         onGotRemoteDisplayName = new Event('onGotRemoteDisplayName');
-                        onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName');
+                        onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName', true, true);
 
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {

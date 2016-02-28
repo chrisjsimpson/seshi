@@ -168,6 +168,43 @@ Seshi = {
                             return localStorage.getItem("displayName")
                          }
     },
+    sendLocalDisplayName:function() {
+                        /* sendLocalDisplayName()
+                         *
+                         * - Send local display name to remote peer
+                         *   over datachannel as SeshiBot message
+                         */
+                         //Build sendLocalDisplayName message
+                         var displayNameMsg = {
+                             'cmd':'remoteDisplayName',
+                             'remoteDisplayName':Seshi.getDisplayName()
+                         };
+
+                         //Send over datachannel
+                         displayNameMsg = JSON.stringify(displayNameMsg);
+                         dc.send(displayNameMsg);
+    },
+    setRemoteDisplayName: function(msg) {
+                        /* setRemoteDisplayName()
+                         *
+                         * - Receive remote peers display name from
+                         *   over datachannel in form of SeshiBot message
+                         */
+                         //Store in localstorage ofr persistance
+                         localStorage.setItem('remoteDisplayName', msg.remoteDisplayName);
+    },
+    getRemoteDisplayName: function() {
+                          /* getRemoteDisplayName()
+                           *
+                           * - Returns the remote users display name (if set)
+                           *   returns empty string if not set
+                           */
+                          if (!localStorage.getItem('remoteDisplayName')) {
+                                return '';
+                          } else {
+                                return localStorage.getItem('remoteDisplayName');
+                          }
+    },
     updateLocalFilesList: function() {
                         /* 
                         #   UpdateLocalFilesList() 
@@ -265,6 +302,9 @@ Seshi = {
         msgSendLocalFileList = {"cmd":"recvRemoteFileList", "data":localFileList, "reply":bool};
         msgSendLocalFileList = JSON.stringify(msgSendLocalFileList);
         dc.send(msgSendLocalFileList);
+
+        //Also send along local display name so user has some vauge idea who they might be connected to
+        Seshi.sendLocalDisplayName();
     },
     generateObjectUrl:function(fileId) {
                         /* generatObjectUrl(fileId)
@@ -830,7 +870,8 @@ function onDataChannelAdded(e) {
     //sendMostRecentFile();
     setupDataHandlers();
     sendChat("Yolo! Seshi Init.");
-    
+
+   
     e.channel.onopen = function(){
         //Request file listing from remote peer
         Seshi.sendLocalFileListToRemote();
@@ -976,6 +1017,9 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                     break;
                 case 'requestFilesById': //Receiving request from peer to pull files from their peer.
                     Seshi.sendRequestedFilesToPeer(msg);
+                    break;
+                case 'remoteDisplayName': //Receiving remote's display name 
+                    Seshi.setRemoteDisplayName(msg);
                     break;
                 case 'playInSync': //Play file in sync with connected peer DUDE.
                     Seshi.playInSync(msg);

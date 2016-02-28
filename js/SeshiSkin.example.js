@@ -173,7 +173,7 @@ function play(event) {
                 if (objectInfo.mimeType.includes('audio'))
                 {
                         mediaType = 'audio';
-
+                        $("#hideall").css('position':'relative');
                         $('.plyr').css({
                             'position': 'fixed',
                             'bottom': '0',
@@ -185,9 +185,11 @@ function play(event) {
                         mediaType = 'video';
 
                         if ($(window).width() > 992) {
+                          $("#hideall").css('position':'absolute');
                           $("#hideall").hide();
                             $('.btn-hide').show();
                         } else if (($(window).width() < 992) ){
+                          $("#hideall").css('position':'relative');
                             $("#hideall").show();
                             $('.btn-hide').hide();
                         } else {};

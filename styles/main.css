@@ -23213,7 +23213,7 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   position: relative;
   max-width: 100%;
   min-width: 290px;
-  opacity: 0;
+  display: none;
 }
 
 .plyr,

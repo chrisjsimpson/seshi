@@ -172,7 +172,7 @@ function play(event) {
                 //Music or Audio?
                 if (objectInfo.mimeType.includes('audio'))
                 {
-                        $('.plyr').css('opacity','1');
+                        $('.plyr').show()
                         mediaType = 'audio';
                         $("#hideall").css('position', 'relative');
                         $('.plyr').css({
@@ -184,7 +184,7 @@ function play(event) {
                             $('.btn-hide').css('opacity', '0');
                 } else if (objectInfo.mimeType.includes('video')) {
                         mediaType = 'video';
-                          $('.plyr').css('opacity','1');
+                          $('.plyr').show();
                         if ($(window).width() > 992) {
                           $('.plyr').css({
                               'position': 'relative',

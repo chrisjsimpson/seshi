@@ -20363,6 +20363,7 @@ input[id="display-name"]:focus + .edit-btn {
 
 .btn-hide {
   display: none;
+  opacity: 0;
 }
 
 #hideall {
@@ -23212,6 +23213,7 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   position: relative;
   max-width: 100%;
   min-width: 290px;
+  opacity: 0;
 }
 
 .plyr,

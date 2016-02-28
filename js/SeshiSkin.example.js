@@ -172,7 +172,7 @@ function play(event) {
                 //Music or Audio?
                 if (objectInfo.mimeType.includes('audio'))
                 {
-                        $('.plyr').show();
+                        $('.plyr').css('opacity','1');
                         mediaType = 'audio';
                         $("#hideall").css('position', 'relative');
                         $('.plyr').css({
@@ -181,10 +181,10 @@ function play(event) {
                             'width': '100%',
                             'z-index':'1001'
                                 });
-                            $('.btn-hide').hide();
+                            $('.btn-hide').css('opacity', '0');
                 } else if (objectInfo.mimeType.includes('video')) {
                         mediaType = 'video';
-                          $('.plyr').show();
+                          $('.plyr').css('opacity','1');
                         if ($(window).width() > 992) {
                           $('.plyr').css({
                               'position': 'relative',
@@ -193,7 +193,7 @@ function play(event) {
                                   });
                           $("#hideall").css('position', 'absolute');
                           $("#hideall").hide();
-                            $('.btn-hide').show();
+                            $('.btn-hide').css('opacity', '1');
                         } else if ($(window).width() < 992 && $(window).width() > 768 ) {
                           $('.plyr').css({
                               'position': 'fixed',

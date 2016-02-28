@@ -193,7 +193,7 @@ function play(event) {
                           $("#hideall").css('position', 'absolute');
                           $("#hideall").hide();
                             $('.btn-hide').show();
-                        } else if ($(window).width() < 992) {
+                        } else if ($(window).width() < 992 && $(window).width() > 768 ) {
                           $('.plyr').css({
                               'position': 'fixed',
                               'bottom': '0',
@@ -203,13 +203,15 @@ function play(event) {
                           $("#hideall").css('position', 'relative');
                             $("#hideall").show();
                             $('.btn-hide').hide();
-                        }  else if ($(window).width() < 768) {
+                        }  else if ($(window).width() < 768 && $(window).width() > 480) {
                           $('.plyr').css({
                               'position': 'fixed',
                               'bottom': '0',
                               'width': '72%',
                               'z-index':'1001'
                                   });
+                            $("#hideall").show();
+                            $('.btn-hide').hide();
                           }   else if ($(window).width() < 480) {
                             $('.plyr').css({
                                 'position': 'fixed',
@@ -217,6 +219,8 @@ function play(event) {
                                 'width': '100%',
                                 'z-index':'1001'
                                     });
+                            $("#hideall").show();
+                            $('.btn-hide').hide();
                             }
                 } else {
                         // $('.plyr').hide();

@@ -20363,7 +20363,6 @@ input[id="display-name"]:focus + .edit-btn {
 
 .btn-hide {
   display: none;
-  opacity: 0;
 }
 
 #hideall {

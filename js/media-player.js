@@ -26,7 +26,9 @@ $(".btn-hide").click(function() {
      $("#hideall").fadeToggle();
     // var txt = $("#hideall").is(':visible') ? 'Hide' : 'Show';
     if ($("#hideall").is(':visible') ) {
-        $('.btn-hide').find('i').toggleClass('fa-eye-slash')
+        $('.btn-hide').find('i').addClass('fa-eye-slash');
+    } else if (!$("#hideall").is(':visible') {
+        $('.btn-hide').find('i').removeClass('fa-eye-slash');
     }
     //  $(".btn-hide").text(txt);
 

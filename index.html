@@ -71,7 +71,7 @@
                     <div class="col-md-8 col-md-offset-2 main-header">
                         <h4>Store, Share, & Stream files from your browser</h4>
                              <div>
-                                 <span class=" fileUpload btn btn-default btn-upload">
+                                 <span class=" fileUpload btn btn-default btn-upload" >
                                      <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
                                      <span><i class="fa fa-plus"></i> Click to Add Files</span>
                                      <div class=" hidden-xs dragfile">
@@ -130,7 +130,13 @@
                 </div>
 
                 <div class="row" id="fileBoxes">
-                    <div class="col-sm-5 col-offset-sm-7">
+                    <div class="col-sm-3 addmorefiles" id="addmorefiles">
+                        <div class="addmorefile btn btn-addmorefile">
+                            <span><i class="fa fa-plus"></i> Add More Files</span>
+                            <input type="file" onchange="storeFile(this.files)" multiple/>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-offset-sm-4">
                         <div class="displayname">
                             <span>Display name: </span>
                             <span class="profile-input">
@@ -411,6 +417,18 @@ function initMap(e) {
 }
     </script>
 
+    <script>
+$(document).ready(function() {
+    var topOfOthDiv = $("#hideall").offset().top;
+    $(window).scroll(function() {
+  if($(window).scrollTop() > (topOfOthDiv - 170)) { //scrolled past the other div?
+      $("#addmorefiles").css('opacity', '1') //reached the desired point -- show div
+  } else {
+      $("#addmorefiles").css('opacity', '0')
+  }
+});
+});
+    </script>
 
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">

@@ -22862,7 +22862,7 @@ input[id="display-name"]:focus + .edit-btn {
   border-color: #222;
 }
 
-.fileUpload {
+.fileUpload, .addmorefile {
   position: relative;
   overflow: hidden;
   display: inline-block;
@@ -22887,7 +22887,7 @@ input[id="display-name"]:focus + .edit-btn {
   opacity: 0.01;
 }
 
-.fileUpload .btn-upload {
+.fileUpload .btn-upload, .addmorefile .btn-addmorefile {
   cursor: pointer;
   display: inline-block;
 }
@@ -22913,7 +22913,7 @@ input[id="display-name"]:focus + .edit-btn {
   border-width: 2px;
 }
 
-.fileUpload:after {
+.fileUpload:after, .addmorefile:after {
   content: '';
 }
 
@@ -22921,6 +22921,45 @@ input[id="display-name"]:focus + .edit-btn {
   position: relative;
   margin-top: -150px;
   margin-bottom: -30px;
+}
+
+/** Add More file on scroll */
+.addmorefiles {
+  margin-left: 30px;
+}
+
+.addmorefile input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+#addmorefiles {
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-addmorefile {
+  color: #eee;
+  line-height: 30px;
+  width: 160px;
+  border: 1px solid #fff;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+}
+
+.btn-addmorefile:hover, .btn-addmorefile:active, .btn-addmorefile:focus {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #eee;
+  border-color: #eee;
 }
 
 @media (max-width: 768px) {

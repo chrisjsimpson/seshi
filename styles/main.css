@@ -23039,14 +23039,16 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 .btn-addmorefile {
-  color: #eee;
+  color: #fefefe;
+  font-weight: 600;
   line-height: 30px;
-  width: 160px;
-  border: 1px solid #fff;
+  width: 164px;
+  border: 2px solid #fff;
   margin: 0 auto;
   margin-bottom: 20px;
   font-size: 13px;
   letter-spacing: 1.5px;
+  border-radius: 6px;
 }
 
 .btn-addmorefile:hover, .btn-addmorefile:active, .btn-addmorefile:focus {
@@ -23224,6 +23226,7 @@ input[id="display-name"]:focus + .edit-btn {
   min-height: 35px;
   font-size: 18px;
   color: #fff;
+  letter-spacing: 1.3px;
   font-family: 'Source Sans Pro';
   text-transform: uppercase;
   margin-top: 0;

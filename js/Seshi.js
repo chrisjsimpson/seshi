@@ -44,7 +44,7 @@ Seshi = {
                         onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName', true, true);
 
                         //Prepare storage worker, ready to store incoming data (either over datachanner or filesystem
-                        StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
+                        //StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
 
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
@@ -59,6 +59,8 @@ Seshi = {
                         }//End add default signaling server if none present
                         return "It's 106 miles to Chicago; We got a full tank of gas; half a pack of cigarettes; its dark, and we're wearing sunglasses. Let's go!";
     },
+    StorageWorker: new Worker("js/workers/storeFileDexieWorker.js")
+    ,
     help:function(){console.log("#\n" +
                         '# Usage:\n' + 
                         '#  Seshi.help() -- This menu\n' +
@@ -286,9 +288,9 @@ Seshi = {
                          #  arrayBuffer. Each chunk will be stored directly into Seshi's 
                          #  IndexedDB using the web worker storeFileDexieWorker.js
                         */
-                        StorageWorker.postMessage(dataSourceMsg); // Post data to worker for storage
+                        Seshi.StorageWorker.postMessage(dataSourceMsg); // Post data to worker for storage
                         //Recieve proress message(s)
-                        StorageWorker.onmessage = function(event) {
+                        Seshi.StorageWorker.onmessage = function(event) {
                             var progressData = event.data;
                             //Update Seshi.storeProgess array with file storing progress updates, indexeded by fileId
                             Seshi.storeProgress[progressData.fileId] = {

@@ -417,19 +417,6 @@ function initMap(e) {
 }
     </script>
 
-    <script>
-$(document).ready(function() {
-    var topOfOthDiv = $("#hideall").offset().top;
-    $(window).scroll(function() {
-  if($(window).scrollTop() > (topOfOthDiv - 170)) { //scrolled past the other div?
-      $("#addmorefiles").css('opacity', '1') //reached the desired point -- show div
-  } else {
-      $("#addmorefiles").css('opacity', '0')
-  }
-});
-});
-    </script>
-
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>

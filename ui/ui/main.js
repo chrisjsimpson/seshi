@@ -11832,6 +11832,17 @@ $("#copyclipboard").click(function () {
 
 });
 
+//scroll show extra upload button
+
+var topOfOthDiv = $("#hideall").offset().top;
+$(window).scroll(function() {
+if($(window).scrollTop() > (topOfOthDiv - 170)) { //scrolled past the other div?
+  $("#addmorefiles").css('opacity', '1') //reached the desired point -- show div
+} else {
+  $("#addmorefiles").css('opacity', '0')
+}
+});
+
 // Google Maps Scripts
 // When the window has finished loading create our google map below
 

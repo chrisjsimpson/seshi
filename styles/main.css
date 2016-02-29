@@ -15025,9 +15025,9 @@ html {
 body {
   font-family: "Signika", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
-  color: #eee;
-  background-color: #eee;
-  -webkit-tap-highlight-color: rgba(238, 238, 238, 0.2);
+  color: #fefefe;
+  background-color: #fefefe;
+  -webkit-tap-highlight-color: rgba(254, 254, 254, 0.2);
   overflow-x: hidden;
 }
 
@@ -15054,6 +15054,11 @@ p {
   font-size: 34px;
   font-weight: 400;
   letter-spacing: 1px;
+  text-transform: none;
+}
+
+.main-header h4 span {
+  font-weight: 700;
 }
 
 .navbar-custom {
@@ -15092,7 +15097,7 @@ p {
 .navbar-custom .navbar-brand .navbar-toggle {
   padding: 4px 6px;
   font-size: 16px;
-  color: #eee;
+  color: #fefefe;
 }
 
 .navbar-custom .navbar-brand .navbar-toggle:focus, .navbar-custom .navbar-brand .navbar-toggle:active {
@@ -15100,7 +15105,7 @@ p {
 }
 
 .navbar-custom a {
-  color: #eee;
+  color: #fefefe;
 }
 
 .navbar-custom .nav li.active {
@@ -15181,7 +15186,7 @@ p {
   }
   .navbar-custom.top-nav-collapse {
     height: 95px;
-    border-bottom: 1px solid rgba(238, 238, 238, 0.3);
+    border-bottom: 1px solid rgba(254, 254, 254, 0.3);
   }
   .content-section {
     padding-top: 250px;
@@ -15207,13 +15212,13 @@ p {
   .navbar-custom .navbar-brand .navbar-toggle {
     padding: 4px 6px;
     font-size: 16px;
-    color: #eee;
+    color: #fefefe;
   }
   .navbar-custom .navbar-brand .navbar-toggle:focus, .navbar-custom .navbar-brand .navbar-toggle:active {
     outline: none;
   }
   .navbar-custom a {
-    color: #eee;
+    color: #fefefe;
   }
   .navbar-custom .nav li {
     border-bottom: 2px solid transparent;
@@ -15224,7 +15229,7 @@ p {
     border-bottom: 2px solid #fff;
   }
   .navbar-custom .nav li.active a {
-    color: #eee;
+    color: #fff;
   }
   .navbar-custom .nav li a {
     -webkit-transition: all .3s ease-in-out;
@@ -15232,6 +15237,7 @@ p {
     transition: all .3s ease-in-out;
     border-bottom: 2px solid transparent;
     padding-bottom: 4px;
+    font-weight: 600;
   }
   .navbar-custom .nav li a:hover {
     outline: none;
@@ -15245,7 +15251,7 @@ p {
 }
 
 a {
-  color: #eee;
+  color: #fefefe;
   -webkit-transition: all .2s ease-in-out;
   -moz-transition: all .2s ease-in-out;
   transition: all .2s ease-in-out;
@@ -15272,7 +15278,7 @@ a:hover, a:focus {
   height: auto;
   padding: 50px 0;
   text-align: center;
-  color: #eee;
+  color: #fefefe;
   background: linear-gradient(rgba(22, 198, 236, 0.55), rgba(22, 143, 236, 0.8)), url("../img/polygon.jpg") no-repeat center center;
   /* fallback for old browsers */
   -webkit-background-size: cover;
@@ -15349,10 +15355,10 @@ a:hover, a:focus {
   height: 70px;
   margin-top: 15px;
   padding: 7px 16px;
-  border: 2px solid #eee;
+  border: 2px solid #fefefe;
   border-radius: 35px;
   font-size: 40px;
-  color: #eee;
+  color: #fefefe;
   background: transparent;
   -webkit-transition: background .3s ease-in-out;
   -moz-transition: background .3s ease-in-out;
@@ -15361,8 +15367,8 @@ a:hover, a:focus {
 
 .btn-circle:hover, .btn-circle:focus {
   outline: none;
-  color: #eee;
-  background: rgba(238, 238, 238, 0.1);
+  color: #fefefe;
+  background: rgba(254, 254, 254, 0.1);
 }
 
 .content-section {
@@ -15372,7 +15378,7 @@ a:hover, a:focus {
 .download-section {
   width: 100%;
   padding: 50px 0;
-  color: #eee;
+  color: #fefefe;
   background: #777 url(../images/downloads-bg.jpg) no-repeat scroll center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -15388,7 +15394,7 @@ a:hover, a:focus {
 }
 
 footer {
-  background: #222;
+  background-color: rgba(20, 20, 20, 0.9);
 }
 
 footer a {
@@ -15527,7 +15533,7 @@ footer p {
 ::-moz-selection, ::selection {
   text-shadow: none;
   background: #fcfcfc;
-  background: rgba(238, 238, 238, 0.2);
+  background: rgba(254, 254, 254, 0.2);
 }
 
 img::selection {
@@ -23033,14 +23039,16 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 .btn-addmorefile {
-  color: #eee;
+  color: #fefefe;
+  font-weight: 600;
   line-height: 30px;
-  width: 160px;
-  border: 1px solid #fff;
+  width: 164px;
+  border: 2px solid #fff;
   margin: 0 auto;
   margin-bottom: 20px;
   font-size: 13px;
   letter-spacing: 1.5px;
+  border-radius: 6px;
 }
 
 .btn-addmorefile:hover, .btn-addmorefile:active, .btn-addmorefile:focus {
@@ -23218,6 +23226,7 @@ input[id="display-name"]:focus + .edit-btn {
   min-height: 35px;
   font-size: 18px;
   color: #fff;
+  letter-spacing: 1.3px;
   font-family: 'Source Sans Pro';
   text-transform: uppercase;
   margin-top: 0;
@@ -23383,6 +23392,10 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   min-height: 95vh;
   margin-top: -1vh;
   vertical-align: middle;
+}
+
+.plyr video {
+  background-color: rgba(0, 0, 0, 0.65);
 }
 
 .plyr video::-webkit-media-text-track-container {
@@ -23954,10 +23967,10 @@ input[id="mce-EMAIL"]:focus + .email-btn {
     z-index: 1001;
   }
   .plyr video {
-    min-height: 23vh;
+    min-height: 34vh;
     border: 1px solid #fff;
     border-radius: 2px;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
   }
 }
 

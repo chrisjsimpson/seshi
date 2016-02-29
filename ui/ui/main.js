@@ -11842,7 +11842,7 @@ $('.btn-hide').hide();
 
 var topOfOthDiv = $("#hideall").offset().top;
 $(window).scroll(function() {
-if($(window).scrollTop() > (topOfOthDiv - 170)) { //scrolled past the other div?
+if($(window).scrollTop() > (topOfOthDiv - 130)) { //scrolled past the other div?
   $("#addmorefiles").css('opacity', '1') //reached the desired point -- show div
 } else {
   $("#addmorefiles").css('opacity', '0')

@@ -22873,7 +22873,7 @@ input[id="display-name"]:focus + .edit-btn {
 .fileUpload input[type="file"] {
   cursor: pointer;
   position: absolute;
-  height: 200px;
+  height: 331px;
   width: 100%;
   top: 0;
   right: 0;
@@ -22932,6 +22932,8 @@ input[id="display-name"]:focus + .edit-btn {
   position: absolute;
   top: 0;
   right: 0;
+  width: 160px;
+  height: 43px;
   margin: 0;
   padding: 0;
   font-size: 20px;
@@ -22963,6 +22965,12 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (max-width: 768px) {
+  .fileUpload input[type="file"] {
+    height: 213px;
+  }
+  .addmorefiles {
+    margin-left: 0;
+  }
   .btn-upload {
     line-height: 200px;
     width: 60%;
@@ -22971,6 +22979,9 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (max-width: 480px) {
+  .fileUpload input[type="file"] {
+    height: 183px;
+  }
   .btn-upload {
     color: #eee;
     line-height: 170px;

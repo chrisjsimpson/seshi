@@ -23394,6 +23394,10 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   vertical-align: middle;
 }
 
+.plyr video {
+  background-color: rgba(0, 0, 0, 0.65);
+}
+
 .plyr video::-webkit-media-text-track-container {
   display: none;
 }
@@ -23963,10 +23967,10 @@ input[id="mce-EMAIL"]:focus + .email-btn {
     z-index: 1001;
   }
   .plyr video {
-    min-height: 23vh;
+    min-height: 34vh;
     border: 1px solid #fff;
     border-radius: 2px;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
   }
 }
 

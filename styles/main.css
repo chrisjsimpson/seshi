@@ -15061,7 +15061,7 @@ p {
   border-bottom: 1px solid rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
   font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
-  background-color: rgba(3, 13, 36, 0.6);
+  background-color: rgba(22, 174, 231, 0.75);
 }
 
 .navbar-custom .navbar-brand {
@@ -15171,7 +15171,7 @@ p {
   .top-nav-collapse {
     padding: 14px;
     height: 40px;
-    background-color: rgba(3, 13, 36, 0.8);
+    background-color: rgba(22, 174, 231, 0.8);
   }
   .navbar-custom.top-nav-collapse {
     height: 95px;
@@ -15267,7 +15267,7 @@ a:hover, a:focus {
   padding: 50px 0;
   text-align: center;
   color: #eee;
-  background: linear-gradient(rgba(17, 57, 143, 0.55), rgba(10, 31, 77, 0.8)), url("../img/polygon.jpg") no-repeat center center;
+  background: linear-gradient(rgba(22, 198, 236, 0.55), rgba(22, 143, 236, 0.8)), url("../img/polygon.jpg") no-repeat center center;
   /* fallback for old browsers */
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -15319,7 +15319,7 @@ a:hover, a:focus {
 }
 
 #contact {
-  background: linear-gradient(rgba(17, 57, 143, 0.8), rgba(10, 31, 77, 0.8)), url("../img/newcastle.jpg") no-repeat center center fixed;
+  background: linear-gradient(rgba(16, 108, 199, 0.8), rgba(22, 143, 236, 0.8)), url("../img/newcastle.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -19648,6 +19648,19 @@ li {
   color: #656565;
 }
 
+.btn-chat-toggle {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-chat-toggle:hover {
+  color: #444;
+  border: 1px solid #eee;
+  background: rgba(255, 255, 255, 0.3);
+}
+
 @media (min-width: 480px) {
   #chatup {
     left: -161px;
@@ -22955,12 +22968,13 @@ input[id="display-name"]:focus + .edit-btn {
   line-height: 250px;
   width: 100%;
   border-style: dashed;
-  border-color: #ccc;
-  border-width: 2px;
+  border-color: #ddd;
+  border-width: 3px;
   margin: 0 auto;
   margin-bottom: 70px;
   font-size: 20px;
   letter-spacing: 1.5px;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-upload:hover, .btn-upload:active, .btn-upload:focus {
@@ -22968,7 +22982,10 @@ input[id="display-name"]:focus + .edit-btn {
   color: #fff;
   border-color: #fff;
   border-style: dashed;
-  border-width: 2px;
+  border-width: 3px;
+  -webkit-box-shadow: 1px 1px 17px 4px rgba(233, 240, 245, 0.7);
+  -moz-box-shadow: 1px 1px 17px 4px rgba(233, 240, 245, 0.7);
+  box-shadow: 1px 1px 17px 4px rgba(233, 240, 245, 0.7);
 }
 
 .btn-upload span img {

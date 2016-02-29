@@ -15066,11 +15066,20 @@ p {
 
 .navbar-custom .navbar-brand {
   font-weight: 700;
-  padding: 18px 15px;
+  padding: 0 15px;
+  padding-top: 5px;
 }
 
 .navbar-custom .navbar-brand:focus {
   outline: none;
+}
+
+.navbar-custom .navbar-brand .logo {
+  width: 35px;
+}
+
+.navbar-custom .navbar-brand .seshitext {
+  padding-left: 5px;
 }
 
 .navbar-custom .navbar-brand .navbar-toggle {
@@ -15115,9 +15124,14 @@ p {
 @media (min-width: 768px) {
   .navbar-custom .navbar-brand {
     font-weight: 700;
+    padding-top: 0;
   }
   .navbar-custom .navbar-brand:focus {
     outline: none;
+  }
+  .navbar-custom .navbar-brand .logo {
+    width: 45px;
+    transition: all 0.2s ease-in-out;
   }
   .navbar-custom .navbar-brand .navbar-toggle {
     padding: 4px 6px;
@@ -15169,12 +15183,18 @@ a:hover, a:focus {
   font-weight: 400;
 }
 
+.container > .navbar-header, .container > .navbar-collapse, .container-fluid > .navbar-header, .container-fluid > .navbar-collapse {
+  margin-right: -15px;
+  margin-left: -15px;
+  padding: 7px;
+}
+
 @media (min-width: 767px) {
   .navbar {
     padding: 20px 0;
     border-bottom: none;
     letter-spacing: 1px;
-    background-color: rgba(3, 13, 36, 0.6);
+    background: transparent;
     -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
     -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
     transition: background .5s ease-in-out,padding .5s ease-in-out;
@@ -15185,7 +15205,7 @@ a:hover, a:focus {
     background-color: rgba(3, 13, 36, 0.8);
   }
   .navbar-custom.top-nav-collapse {
-    height: 80px;
+    height: 95px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   }
 }

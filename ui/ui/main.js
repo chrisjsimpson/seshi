@@ -11785,6 +11785,8 @@ if (typeof jQuery === 'undefined') {
  */
 
 // jQuery to collapse the navbar on scroll
+$(document).ready(function() {
+
 $(window).scroll(function() {
     if ($(".navbar").offset().top > 50) {
         $(".navbar-fixed-top").addClass("top-nav-collapse");
@@ -11832,6 +11834,10 @@ $("#copyclipboard").click(function () {
 
 });
 
+//hide the hidebutton on load
+
+$('.btn-hide').hide();
+
 //scroll show extra upload button
 
 var topOfOthDiv = $("#hideall").offset().top;
@@ -11865,6 +11871,8 @@ function initMap() {
     icon: 'img/marker2.png'
   });
 }
+
+});
 
 // /*
 // JS Modified from a tutorial found here:

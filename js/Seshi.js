@@ -43,6 +43,9 @@ Seshi = {
                         onGotRemoteDisplayName = new Event('onGotRemoteDisplayName');
                         onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName', true, true);
 
+                        //Prepare storage worker, ready to store incoming data (either over datachanner or filesystem
+                        StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
+
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
                             Seshi.updateLocalFilesList();
@@ -283,7 +286,6 @@ Seshi = {
                          #  arrayBuffer. Each chunk will be stored directly into Seshi's 
                          #  IndexedDB using the web worker storeFileDexieWorker.js
                         */
-                        var StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
                         StorageWorker.postMessage(dataSourceMsg); // Post data to worker for storage
                         //Recieve proress message(s)
                         StorageWorker.onmessage = function(event) {

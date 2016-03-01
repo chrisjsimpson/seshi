@@ -74,6 +74,17 @@ function peerConnectionBroken() {
      *  Used to display a break in Datachannel connection.
      * */
     alert("Doh we broke the internet!");
+    //Show connection status text as 'Disconnected'
+    var statusText = document.getElementById('connectionStatus').innerText = 'Disconnected. :(';
+
+    //Disable Send / Recieve buttons:
+    var receiveBtn = document.getElementById('receiveBtn').disabled = true;
+    var sendBtn = document.getElementById('sendBtn').disabled = true;
+
+    //Disable chat button / Show online status
+    var chatToggleBtn = document.getElementById('chatToggle');
+    chatToggleBtn.innerText  = "CHAT: Offline"
+    //End show show tollge button status
 
 }//End peerConnectionBroken()
 

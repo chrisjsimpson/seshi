@@ -15395,6 +15395,8 @@ a:hover, a:focus {
 
 footer {
   background-color: rgba(20, 20, 20, 0.9);
+  font-size: 14px;
+  padding: 36px;
 }
 
 footer a {
@@ -15518,12 +15520,6 @@ ul.banner-social-buttons {
   ul.banner-social-buttons li:last-child {
     margin-bottom: 0;
   }
-}
-
-footer {
-  padding: 50px 0;
-  padding-top: 20px;
-  height: 40px;
 }
 
 footer p {

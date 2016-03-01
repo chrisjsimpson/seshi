@@ -18,7 +18,7 @@ a.onload = function() {
     c.innerHTML = a.responseText;
     b.insertBefore(c, b.childNodes[0]);
 };
-})(document, 'https://cdn.plyr.io/1.5.14/sprite.svg');
+})(document, 'img/plyricons/sprite.svg');
 
 //hide all
 

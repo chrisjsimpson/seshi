@@ -19850,7 +19850,8 @@ label {
   font-size: 14px;
   text-align: left;
   color: #000;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: white;
+  cursor: pointer;
 }
 
 .dropdown-menu > li > a {
@@ -23305,11 +23306,12 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 
 .footer, .page-wrap:after {
   height: 60px;
+  padding-top: 15px;
 }
 
 #about {
   background-color: #eee;
-  padding: 50px;
+  padding: 50px 30px;
   min-height: 80vh;
   color: #222;
   text-transform: none;
@@ -23317,6 +23319,12 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 
 #about p {
   text-align: left;
+}
+
+@media (min-width: 480px) {
+  #about {
+    padding: 50px;
+  }
 }
 
 .progress-bar {

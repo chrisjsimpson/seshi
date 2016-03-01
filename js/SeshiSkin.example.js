@@ -387,18 +387,22 @@ function updateFileListDisplay(fileListObj, targetElm) {
                                '<input class="col-xs-1 col-sm-1 checkall" type="checkbox">' +
                                 '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
                                 '<div class="col-xs-3 col-sm-2 ">Type</div>' +
-                                '<div class="col-xs-2 col-sm-2"></div>' +
-                                '<div class="col-xs-1 col-sm-1 dropdown">' +
-                                    '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
-                                    '<i class="fa fa-chevron-down"></i>' +
-                                    '</a>' +
-                                    '<ul class="dropdown-menu">' +
-                                        '<li><a id="multiDownloadLocalFiles">Download </a></li>' +
-                                        '<li class="divider"></li>' +
-                                        '<li><a id="multiDeleteLocalFiles">Delete</a></li>' +
-                                    '</ul>' +
-                                '</div>' +
-                            '</div>';
+                                '<div class="col-xs-2 col-sm-2"></div>';
+                                //Only show file header dropdown menu for local file list
+                                if (targetElm != 'remoteFileList') 
+                                {
+                                    list += '<div class="col-xs-1 col-sm-1 dropdown">' +
+                                        '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
+                                        '<i class="fa fa-chevron-down"></i>' +
+                                        '</a>' +
+                                        '<ul class="dropdown-menu">' +
+                                            '<li><a id="multiDownloadLocalFiles">Download </a></li>' +
+                                            '<li class="divider"></li>' +
+                                            '<li><a id="multiDeleteLocalFiles">Delete</a></li>' +
+                                        '</ul>' +
+                                    '</div>';
+                                 }//End only show file header dropdown menu for local file list.
+        list += '</div>';//End file list header
 
     console.log("There are " + files.length + " local files");
 
@@ -418,14 +422,14 @@ function updateFileListDisplay(fileListObj, targetElm) {
         list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
         //Filetype
         list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="fa ' + getFileTypeIcon(mimeType) + '"></i></label>';
-        //Play button
-        list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
-        //Download button
-        list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
-        //Delete button
-        if (targetElm != 'remoteFileList' )
+        if (targetElm != 'remoteFileList' ) //Only show action buttons (delete, play, download) on the local file list side)
         {
+            //Delete button
             list += '<div class="col-xs-1 hidden-xs"><i title="Delete" onclick="deleteFile(event)" data-id="' + fileId + '" class="fa fa-trash  "></i></div>';
+            //Play button
+            list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
+            //Download button
+            list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         }//End if targetElm != 'remoteFileList'
 
         //Close </li>

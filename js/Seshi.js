@@ -43,6 +43,21 @@ Seshi = {
                         onGotRemoteDisplayName = new Event('onGotRemoteDisplayName');
                         onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName', true, true);
 
+                        //Initalize storage worker
+                        StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
+                        //Recieve proress message(s)
+                        StorageWorker.onmessage = function(event) {
+                            var progressData = event.data;
+                            //Update Seshi.storeProgess array with file storing progress updates, indexeded by fileId
+                            Seshi.storeProgress[progressData.fileId] = {
+                                "fileName":progressData.fileName,
+                                "currentChunk":progressData.currentChunk,
+                                "totalNumChunks":progressData.totalNumChunks,
+                                "complete":progressData.currentChunk == progressData.totalNumChunks ? true:false,
+                                "UIdone":false
+                                }
+                            dispatchEvent(storeFilesProgressUpdate);//Dispact/fire progress update event
+                        }//End recieve storage progress update and update Seshi.storeProgress array with fileId's progress
 
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
@@ -284,20 +299,7 @@ Seshi = {
                          #  arrayBuffer. Each chunk will be stored directly into Seshi's 
                          #  IndexedDB using the web worker storeFileDexieWorker.js
                         */
-                        StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
-                        //Recieve proress message(s)
-                        StorageWorker.onmessage = function(event) {
-                            var progressData = event.data;
-                            //Update Seshi.storeProgess array with file storing progress updates, indexeded by fileId
-                            Seshi.storeProgress[progressData.fileId] = {
-                                "fileName":progressData.fileName,
-                                "currentChunk":progressData.currentChunk,
-                                "totalNumChunks":progressData.totalNumChunks,
-                                "complete":progressData.currentChunk == progressData.totalNumChunks ? true:false,
-                                "UIdone":false
-                                }
-                            dispatchEvent(storeFilesProgressUpdate);//Dispact/fire progress update event
-                        }//End recieve storage progress update and update Seshi.storeProgress array with fileId's progress
+                        console.log("In store..");
                         StorageWorker.postMessage(dataSourceMsg); // Post data to worker for storage
     },
     storeProgress:[],
@@ -444,6 +446,8 @@ Seshi = {
                          *      Share known signaling servers, peer exchange, file lists (names), boxIds
                         */
                         
+                        //Set flag for outbox
+                        Seshi.flagProcessOutboxStarted = true;     
                         //Check Datachannel connection status
                         if (typeof dc == "undefined" || dc.readyState != "open") {
                             console.error("Seshi.sendFileToPeer(fileId) Tried to send file to peer but Datachannel is not open");
@@ -460,7 +464,12 @@ Seshi = {
                             var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
                             var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                             var sendChunk = new Blob([header, chunk.chunk]);
-                            //Needs to be sent as an arrayBuffer
+                            //Add chunk to outBox for sending
+                            Seshi.outBox.push(sendChunk);
+                            Seshi.processOutbox();
+                            //Close outbox flag so we don't repeatedly open a new filereader
+                            Seshi.flagProcessOutboxStarted=false;
+                            /*Needs to be sent as an arrayBuffer
                             var reader = new FileReader();
                             reader.onload = function(file) {
                                 if( reader.readyState == FileReader.DONE ) {
@@ -468,7 +477,8 @@ Seshi = {
                                         dc.send(result = file.target.result);
                                 }//End FileReader.DONE
                             }//End reader.onload
-                            reader.readAsArrayBuffer(sendChunk);
+                            reader.readAsArrayBuffer(sendChunk);*/
+                            
                             //Update sendingFileProgress
                             Seshi.sendingFileProgress.percentComplete= (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100;
                             Seshi.sendingFileProgress.fileName = chunk.fileName;
@@ -476,11 +486,40 @@ Seshi = {
                             Seshi.sendingFileProgress.fileType = chunk.fileType;
                             Seshi.sendingFileProgress.chunkNumber = chunk.chunkNumber;
                             Seshi.sendingFileProgress.numberOfChunks = chunk.numberOfChunks;
-                            dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
+                            //dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                             }).then(function(){
                             Seshi.sendingFileProgress.allFileDataSent = true;
+                            Seshi.flagProcessOutboxStarted == true;
+                            Seshi.processOutbox();
                             dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event //Final invocation
                             })});
+    },
+    outBox:[],
+    flagProcessOutboxStarted:true,
+    processOutbox:function() {
+                    /* processOutbox()
+                     *
+                     * - Reads outbox & sends each message to peer untill outBox is empty.
+                     */
+                    if ( Seshi.flagProcessOutboxStarted == true )
+                    {
+                        fr = new FileReader
+
+                        function loadNext() {
+
+                        fr.onload = function(chunk) {      
+                              if (Seshi.outBox.length > 0) {
+                             console.log("We got a chunk to send!");
+                                for(var i=0;i<=99999999;i++) {}//Crude delay!
+                                dc.send(chunk.target.result);
+                                loadNext(); // shortcut here
+                              }
+                           };
+                        fr.readAsArrayBuffer(Seshi.outBox.shift());
+                        }
+
+                        loadNext();
+                    }//End only open reader again if flagProcessOutboxStarted is set to true.
     },
     sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''},
     addSignalingServer:function(signallingServerAddress){

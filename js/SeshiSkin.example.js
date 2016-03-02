@@ -184,9 +184,8 @@ function play(event) {
                                 }
                 var player = plyr.setup()[0]; //
                 //Music or Audio?
-                var filetype = objectInfo.mimeType.includes(filetype);
                 //Detemine mimetype & show media player accordingly
-                switch(filetype) {
+                switch(objectInfo.mimeType.includes(filetype)) {
                   case 'audio':
                   $('.plyr').show()
                   mediaType = 'audio';

@@ -15055,6 +15055,7 @@ p {
   font-weight: 400;
   letter-spacing: 1px;
   text-transform: none;
+  text-shadow: 1px 1px 2px #888;
 }
 
 .main-header h4 span, .main-header h5 span {
@@ -19819,6 +19820,17 @@ label {
   padding-top: 20px;
   padding-bottom: 70px;
   margin-bottom: 0;
+}
+
+.myfiles h3 {
+  font-size: 28px;
+  text-transform: none;
+  font-weight: 400;
+  text-shadow: 1px 1px 2px #888;
+}
+
+.myfiles h3 span {
+  font-weight: 600;
 }
 
 .filewell {

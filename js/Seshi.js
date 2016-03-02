@@ -975,18 +975,20 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                                 var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
                                                                 message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
                                                                 message += " FileName: " + curChunk.fileName;
-                                                                //chunkProgresTextBox.value = message;
-                                                                
-								var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
-								//Update user facing status box
-								if (chunkProg == 100)
-								{
-									statusMsg = 'Complete!: "' + curChunk.fileName + ' 100%';
-								} else {
-									statusMsg = 'Reciving file: "' + curChunk.fileName + '" Chunk number: ' + curChunk.chunkNumber;
-								}
-							    statusE = document.getElementById("status"),
-								statusE.innerHTML = statusMsg;
+                                
+                                                                var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
+                                                                //Update user facing status box
+                                                                if (chunkProg == 100)
+                                                                {
+                                                                    statusMsg = 'Complete!: "' + curChunk.fileName + ' 100%';
+                                                                } else {
+                                                                    statusMsg = 'Reciving file: "' + curChunk.fileName + '" Chunk number: ' + curChunk.chunkNumber;
+                                                                }
+                                                                statusE = document.getElementById("status"),
+                                                                statusE.innerHTML = statusMsg;
+                                                                if (curChunk.chunkNumber == curChunk.numberOfChunks - 1) {
+                                                                        refreshFileList('localFileList');
+                                                                }//End refresh 
                                                                 //End extract file meta from blob
                                                         }//End check read data is > 0
                                                                 //Start send data payload

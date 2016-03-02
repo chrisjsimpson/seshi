@@ -147,7 +147,7 @@ function storeFiles(fileList) {
                                 //Exit if storage is complete
                                 if(currentChunkNumTransactionScope == numChunksNeeded) 
                                 {
-                                    close(); //Exit worker on completion
+                                    //close(); //Exit worker on completion
                                 }//End exit if storage is complete                  
                             }).catch(function(error) {
                                 console.err(error);

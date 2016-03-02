@@ -465,27 +465,19 @@ Seshi = {
                             var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                             var sendChunk = new Blob([header, chunk.chunk]);
                             //Add chunk to outBox for sending
-                            Seshi.outBox.push(sendChunk);
+                            Seshi.outBox.push({
+                                percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
+                                fileName: chunk.fileName,
+                                fileId: chunk.fileId,
+                                fileType: chunk.fileType,
+                                chunkNumber: chunk.chunkNumber,
+                                numberOfChunks: chunk.numberOfChunks,
+                                chunk: sendChunk
+                            });
                             Seshi.processOutbox();
                             //Close outbox flag so we don't repeatedly open a new filereader
                             Seshi.flagProcessOutboxStarted=false;
-                            /*Needs to be sent as an arrayBuffer
-                            var reader = new FileReader();
-                            reader.onload = function(file) {
-                                if( reader.readyState == FileReader.DONE ) {
-                                        for(var i=0;i<=99999999;i++) {}//Crude delay!
-                                        dc.send(result = file.target.result);
-                                }//End FileReader.DONE
-                            }//End reader.onload
-                            reader.readAsArrayBuffer(sendChunk);*/
                             
-                            //Update sendingFileProgress
-                            Seshi.sendingFileProgress.percentComplete= (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100;
-                            Seshi.sendingFileProgress.fileName = chunk.fileName;
-                            Seshi.sendingFileProgress.fileId = chunk.fileId;
-                            Seshi.sendingFileProgress.fileType = chunk.fileType;
-                            Seshi.sendingFileProgress.chunkNumber = chunk.chunkNumber;
-                            Seshi.sendingFileProgress.numberOfChunks = chunk.numberOfChunks;
                             //dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                             }).then(function(){
                             Seshi.sendingFileProgress.allFileDataSent = true;
@@ -512,10 +504,21 @@ Seshi = {
                              console.log("We got a chunk to send!");
                                 for(var i=0;i<=99999999;i++) {}//Crude delay!
                                 dc.send(chunk.target.result);
+                                dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                                 loadNext(); // shortcut here
                               }
                            };
-                        fr.readAsArrayBuffer(Seshi.outBox.shift());
+    
+                            //Get next chunk info, pass chunk to fileReader & update sendingFileProgress
+                            chunkData = Seshi.outBox.shift();
+                            Seshi.sendingFileProgress.percentComplete= (chunkData.chunkNumber + 1) / chunkData.numberOfChunks * 100;
+                            Seshi.sendingFileProgress.fileName = chunkData.fileName;
+                            Seshi.sendingFileProgress.fileId = chunkData.fileId;
+                            Seshi.sendingFileProgress.fileType = chunkData.fileType;
+                            Seshi.sendingFileProgress.chunkNumber = chunkData.chunkNumber;
+                            Seshi.sendingFileProgress.numberOfChunks = chunkData.numberOfChunks;
+
+                        fr.readAsArrayBuffer(chunkData.chunk);
                         }
 
                         loadNext();

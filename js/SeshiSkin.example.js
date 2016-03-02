@@ -185,83 +185,72 @@ function play(event) {
                 var player = plyr.setup()[0]; //
                 //Music or Audio?
                 var mimeType = objectInfo.mimeType;
-            function objectInfo.mimeType.includes(filetype) {
                 //Detemine mimetype & show media player accordingly
-                switch(filetype) {
-                  case 'audio':
-                  $('.plyr').show()
-                  mediaType = 'audio';
-                  $("#hideall").css('position', 'relative');
-                  $('.plyr').css({
-                      'position': 'fixed',
-                      'bottom': '0',
-                      'width': '100%',
-                      'z-index':'1001'
-                          });
-                      $('.btn-hide').hide();
-                      break;
-                  case 'video':
-                  mediaType = 'video';
-                    $('.plyr').show();
-                  if ($(window).width() > 992) {
-                    $('.plyr').css({
-                        'position': 'relative',
-                        'width': '100%',
-                        'z-index':'1'
-                            });
-                    $("#hideall").css('position', 'absolute');
-                    $("#hideall").hide();
-                      $('.btn-hide').show();
-                  } else if ($(window).width() < 992 && $(window).width() > 768 ) {
-                    $('.plyr').css({
-                        'position': 'fixed',
-                        'bottom': '0',
-                        'width': '62%',
-                        'z-index':'1001'
-                            });
-                    $("#hideall").css('position', 'relative');
-                      $("#hideall").show();
-                      $('.btn-hide').hide();
-                  }  else if ($(window).width() < 768 && $(window).width() > 480) {
-                    $('.plyr').css({
-                        'position': 'fixed',
-                        'bottom': '0',
-                        'width': '72%',
-                        'z-index':'1001'
-                            });
-                      $("#hideall").show();
-                      $('.btn-hide').hide();
-                    }   else if ($(window).width() < 480) {
-                      $('.plyr').css({
-                          'position': 'fixed',
-                          'bottom': '0',
-                          'width': '100%',
-                          'z-index':'1001'
-                              });
-                      $("#hideall").show();
-                      $('.btn-hide').hide();
-                      }
-                      break;
-                    case ''
-                    default:
-                    $('.plyr').show();
-                  // $('.plyr').hide();
-                  // $('.btn-hide').hide();
-                      mediaType = 'video';
-
-                }
-              }
-                //End detemine mimetype & show media player accordingly
-                // if (objectInfo.mimeType.includes('audio'))
-                // {
+                // switch(mimeType) {
                 //
-                // } else if (objectInfo.mimeType.includes('video')) {
                 //
-                // } else {
-
+                // }//End detemine mimetype & show media player accordingly
+                if (objectInfo.mimeType.includes('audio'))
+                {
+                        $('.plyr').show()
+                        mediaType = 'audio';
+                        $("#hideall").css('position', 'relative');
+                        $('.plyr').css({
+                            'position': 'fixed',
+                            'bottom': '0',
+                            'width': '100%',
+                            'z-index':'1001'
+                                });
+                            $('.btn-hide').hide();
+                } else if (objectInfo.mimeType.includes('video')) {
+                        mediaType = 'video';
+                          $('.plyr').show();
+                        if ($(window).width() > 992) {
+                          $('.plyr').css({
+                              'position': 'relative',
+                              'width': '100%',
+                              'z-index':'1'
+                                  });
+                          $("#hideall").css('position', 'absolute');
+                          $("#hideall").hide();
+                            $('.btn-hide').show();
+                        } else if ($(window).width() < 992 && $(window).width() > 768 ) {
+                          $('.plyr').css({
+                              'position': 'fixed',
+                              'bottom': '0',
+                              'width': '62%',
+                              'z-index':'1001'
+                                  });
+                          $("#hideall").css('position', 'relative');
+                            $("#hideall").show();
+                            $('.btn-hide').hide();
+                        }  else if ($(window).width() < 768 && $(window).width() > 480) {
+                          $('.plyr').css({
+                              'position': 'fixed',
+                              'bottom': '0',
+                              'width': '72%',
+                              'z-index':'1001'
+                                  });
+                            $("#hideall").show();
+                            $('.btn-hide').hide();
+                          }   else if ($(window).width() < 480) {
+                            $('.plyr').css({
+                                'position': 'fixed',
+                                'bottom': '0',
+                                'width': '100%',
+                                'z-index':'1001'
+                                    });
+                            $("#hideall").show();
+                            $('.btn-hide').hide();
+                            }
+                } else {
+                          $('.plyr').show();
+                        // $('.plyr').hide();
+                        // $('.btn-hide').hide();
+                        mediaType = 'video';
                         //Default to video (why?)
 
-                //End music or audio check
+                }//End music or audio check
 
                 player.source({
                                 type:       mediaType,

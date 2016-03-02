@@ -184,8 +184,9 @@ function play(event) {
                                 }
                 var player = plyr.setup()[0]; //
                 //Music or Audio?
+              function objectInfo.mimeType.includes(filetype) {
                 //Detemine mimetype & show media player accordingly
-                switch(objectInfo.mimeType.includes(filetype)) {
+                switch(filetype) {
                   case 'audio':
                   $('.plyr').show()
                   mediaType = 'audio';
@@ -247,7 +248,9 @@ function play(event) {
                   // $('.btn-hide').hide();
                       mediaType = 'video';
 
-                }//End detemine mimetype & show media player accordingly
+                }
+              }
+                //End detemine mimetype & show media player accordingly
                 // if (objectInfo.mimeType.includes('audio'))
                 // {
                 //
@@ -257,7 +260,7 @@ function play(event) {
 
                         //Default to video (why?)
 
-                }//End music or audio check
+                //End music or audio check
 
                 player.source({
                                 type:       mediaType,

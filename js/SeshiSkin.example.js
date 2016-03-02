@@ -186,10 +186,10 @@ function play(event) {
                 //Music or Audio?
                 var mimeType = objectInfo.mimeType;
                 //Detemine mimetype & show media player accordingly
-                switch(mimeType) {
-
-
-                }//End detemine mimetype & show media player accordingly 
+                // switch(mimeType) {
+                //
+                //
+                // }//End detemine mimetype & show media player accordingly
                 if (objectInfo.mimeType.includes('audio'))
                 {
                         $('.plyr').show()
@@ -389,7 +389,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
                                 '<div class="col-xs-3 col-sm-2 ">Type</div>' +
                                 '<div class="col-xs-2 col-sm-2"></div>';
                                 //Only show file header dropdown menu for local file list
-                                if (targetElm != 'remoteFileList') 
+                                if (targetElm != 'remoteFileList')
                                 {
                                     list += '<div class="col-xs-1 col-sm-1 dropdown">' +
                                         '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +

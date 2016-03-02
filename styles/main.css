@@ -15050,15 +15050,20 @@ p {
   line-height: 1.5;
 }
 
-.main-header h4 {
+.main-header h4, .main-header h5 {
   font-size: 34px;
   font-weight: 400;
   letter-spacing: 1px;
   text-transform: none;
+  text-shadow: 1px 1px 2px #888;
 }
 
-.main-header h4 span {
+.main-header h4 span, .main-header h5 span {
   font-weight: 700;
+}
+
+.main-header h5 {
+  font-size: 24px;
 }
 
 .navbar-custom {
@@ -15092,6 +15097,7 @@ p {
 
 .navbar-custom .navbar-brand .seshitext {
   padding-left: 5px;
+  font-weight: 600;
 }
 
 .navbar-custom .navbar-brand .navbar-toggle {
@@ -15313,9 +15319,14 @@ a:hover, a:focus {
 }
 
 #subscribe {
-  color: #777;
+  color: #333;
   padding: 50px;
   padding-top: 120px !important;
+}
+
+#subscribe .seshi-pro-p {
+  font-size: 17px;
+  font-weight: 700;
 }
 
 #howitworks {
@@ -15399,6 +15410,18 @@ footer {
   padding: 36px;
 }
 
+footer img {
+  float: left;
+  margin-left: 0;
+  margin-top: -5px;
+  padding-bottom: 10px;
+}
+
+footer .address {
+  color: #bbb;
+  margin-top: 42px;
+}
+
 footer a {
   color: #bbb;
   -webkit-transition: all .2s ease-in-out;
@@ -15411,8 +15434,13 @@ footer a:hover, footer a:focus {
   color: #ddd;
 }
 
+footer .terms {
+  padding: 25px;
+}
+
 .copyright {
-  font-size: 14px;
+  font-size: 16px;
+  text-align: center;
 }
 
 .btn {
@@ -18041,11 +18069,11 @@ img::-moz-selection {
   filter: alpha(opacity=65);
   -webkit-box-shadow: none;
   box-shadow: none;
+  /*CSS transitions*/
 }
 
 .button {
   float: auto;
-  min-width: 100px;
   max-width: 250px;
   display: block;
   margin: 1em;
@@ -19749,7 +19777,7 @@ label {
   outline: none;
 }
 
-.btn-connect, .btn-send, .btn-receive {
+.btn-connect, .btn-push, .btn-pull {
   margin: 0 auto;
   text-transform: uppercase;
   font-family: 'Source Sans Pro';
@@ -19760,12 +19788,19 @@ label {
 }
 
 /**File Table list */
-.btn-send {
-  width: 100px;
+.btn-push, .btn-pull {
+  width: 60px;
+  padding: 0;
+  transition: all 0.2s ease-in-out;
 }
 
-.btn-receive {
-  width: 140px;
+.btn-push i, .btn-pull i {
+  font-size: 22px;
+}
+
+.--hover:hover {
+  background-color: #fff;
+  color: #1679C5;
 }
 
 .filecard {
@@ -19787,6 +19822,17 @@ label {
   margin-bottom: 0;
 }
 
+.myfiles h3 {
+  font-size: 28px;
+  text-transform: none;
+  font-weight: 400;
+  text-shadow: 1px 1px 2px #888;
+}
+
+.myfiles h3 span {
+  font-weight: 600;
+}
+
 .filewell {
   height: 250px;
   overflow: auto;
@@ -19805,10 +19851,6 @@ label {
 
 .list-group-item input[type="checkbox"]:checked {
   background: #000;
-}
-
-.btn-send {
-  width: 80px;
 }
 
 .header-title {
@@ -20336,7 +20378,7 @@ a {
 }
 
 .uploading-item {
-  background: rgba(194, 227, 120, 0.8);
+  background: rgba(230, 230, 230, 0.8);
 }
 
 #percentupload {
@@ -20346,8 +20388,8 @@ a {
 .uploadbar {
   z-index: 10;
   width: 2%;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 7px rgba(255, 255, 255, 0.7);
+  background: rgba(194, 227, 120, 0.8);
+  box-shadow: 0 0 7px rgba(224, 237, 185, 0.7);
 }
 
 .progress-bar1 {
@@ -20452,13 +20494,8 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (min-width: 1200px) {
-  .btn-send {
-    margin-top: 50px;
-    width: 120px;
-    margin-bottom: 40px;
-  }
-  .btn-receive {
-    margin-top: 10px;
+  .btn-push {
+    margin-bottom: 25px;
   }
 }
 
@@ -20470,10 +20507,10 @@ input[id="display-name"]:focus + .edit-btn {
     margin-bottom: 15px;
     font-size: 20px;
   }
-  .btn-send {
+  .btn-push {
     margin-bottom: 15px;
   }
-  .btn-receive {
+  .btn-pull {
     margin-bottom: 15px;
   }
   .fa-long-arrow-left, .fa-long-arrow-right {
@@ -20482,7 +20519,7 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (max-width: 767px) {
-  .btn-receive {
+  .btn-pull {
     margin-right: 18%;
   }
 }
@@ -20529,10 +20566,10 @@ input[id="display-name"]:focus + .edit-btn {
     font-size: 20px;
     margin-left: 60px;
   }
-  .btn-send {
-    margin-top: 40px;
+  .btn-push {
+    margin-top: 56px;
   }
-  .btn-receive {
+  .btn-pull {
     margin-top: 20px;
   }
   .fa-arrow-down, .fa-arrow-up {

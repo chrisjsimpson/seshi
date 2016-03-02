@@ -628,7 +628,7 @@ function updateSendFileProgessDisplay() {
             }
             //Set UI complete flag
             Seshi.sendingFileProgress.UIdone = true;
-            refreshFileList('remoteFileList');
+            //refreshFileList('remoteFileList');
      } else { //End if complete
             //If not complete:
             if (document.getElementById('sendingFileId-' + fileId)) {

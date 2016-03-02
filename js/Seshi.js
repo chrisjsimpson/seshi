@@ -486,7 +486,7 @@ Seshi = {
                             Seshi.sendingFileProgress.fileType = chunk.fileType;
                             Seshi.sendingFileProgress.chunkNumber = chunk.chunkNumber;
                             Seshi.sendingFileProgress.numberOfChunks = chunk.numberOfChunks;
-                            //dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
+                            dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                             }).then(function(){
                             Seshi.sendingFileProgress.allFileDataSent = true;
                             Seshi.flagProcessOutboxStarted == true;

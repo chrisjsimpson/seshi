@@ -23268,8 +23268,6 @@ input[id="display-name"]:focus + .edit-btn {
   font-family: 'Source Sans Pro';
   text-transform: uppercase;
   margin-top: 0;
-  margin-right: 50px;
-  margin: 0 auto;
   margin-bottom: 15px;
   background: #6ca354;
   border-bottom: 2px solid darkgreen;
@@ -23289,6 +23287,7 @@ input[id="mce-EMAIL"] {
   padding-bottom: 2px;
   padding-right: 16px;
   padding-left: 16px;
+  margin-left: 6vw;
   transition: all .3s ease-in-out;
 }
 
@@ -23316,6 +23315,7 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 
 @media (max-width: 767px) {
   .btn-subscribe {
+    margin: 0 auto;
     margin-top: 25px;
   }
   .subscribe-email {
@@ -23326,6 +23326,9 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   #subscribe {
     padding: 17px;
     padding-bottom: 30px;
+  }
+  input[id="mce-EMAIL"] {
+    margin: 0 auto;
   }
 }
 

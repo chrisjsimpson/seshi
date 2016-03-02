@@ -474,14 +474,13 @@ Seshi = {
                                 numberOfChunks: chunk.numberOfChunks,
                                 chunk: sendChunk
                             });
-                            Seshi.processOutbox();
+                            //Seshi.processOutbox();
                             //Close outbox flag so we don't repeatedly open a new filereader
                             Seshi.flagProcessOutboxStarted=false;
                             
                             //dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                             }).then(function(){
-                            Seshi.sendingFileProgress.allFileDataSent = true;
-                            Seshi.flagProcessOutboxStarted == true;
+                            Seshi.flagProcessOutboxStarted = true;
                             Seshi.processOutbox();
                             dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event //Final invocation
                             })});

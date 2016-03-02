@@ -466,18 +466,7 @@ Seshi = {
                             var sendChunk = new Blob([header, chunk.chunk]);
                             //Add chunk to outBox for sending
                             Seshi.outBox.push(sendChunk);
-                            Seshi.processOutbox();
-                            //Close outbox flag so we don't repeatedly open a new filereader
-                            Seshi.flagProcessOutboxStarted=false;
-                            /*Needs to be sent as an arrayBuffer
-                            var reader = new FileReader();
-                            reader.onload = function(file) {
-                                if( reader.readyState == FileReader.DONE ) {
-                                        for(var i=0;i<=99999999;i++) {}//Crude delay!
-                                        dc.send(result = file.target.result);
-                                }//End FileReader.DONE
-                            }//End reader.onload
-                            reader.readAsArrayBuffer(sendChunk);*/
+                            //Seshi.processOutbox();
                             
                             //Update sendingFileProgress
                             Seshi.sendingFileProgress.percentComplete= (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100;

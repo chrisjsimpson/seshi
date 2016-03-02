@@ -184,70 +184,77 @@ function play(event) {
                                 }
                 var player = plyr.setup()[0]; //
                 //Music or Audio?
-                var mimeType = objectInfo.mimeType;
+                var mimeType = objectInfo.mimeType.includes();
                 //Detemine mimetype & show media player accordingly
                 switch(mimeType) {
+                  case 'audio':
+                    $('.plyr').show()
+                    mediaType = 'audio';
+                    $("#hideall").css('position', 'relative');
+                    $('.plyr').css({
+                        'position': 'fixed',
+                        'bottom': '0',
+                        'width': '100%',
+                        'z-index':'1001'
+                            });
+                            $('.btn-hide').hide();
+                      break;
+                  case 'video':
+                  mediaType = 'video';
+                    $('.plyr').show();
+                  if ($(window).width() > 992) {
+                    $('.plyr').css({
+                        'position': 'relative',
+                        'width': '100%',
+                        'z-index':'1'
+                            });
+                    $("#hideall").css('position', 'absolute');
+                    $("#hideall").hide();
+                      $('.btn-hide').show();
+                  } else if ($(window).width() < 992 && $(window).width() > 768 ) {
+                    $('.plyr').css({
+                        'position': 'fixed',
+                        'bottom': '0',
+                        'width': '62%',
+                        'z-index':'1001'
+                            });
+                    $("#hideall").css('position', 'relative');
+                      $("#hideall").show();
+                      $('.btn-hide').hide();
+                  }  else if ($(window).width() < 768 && $(window).width() > 480) {
+                    $('.plyr').css({
+                        'position': 'fixed',
+                        'bottom': '0',
+                        'width': '72%',
+                        'z-index':'1001'
+                            });
+                      $("#hideall").show();
+                      $('.btn-hide').hide();
+                    }   else if ($(window).width() < 480) {
+                      $('.plyr').css({
+                          'position': 'fixed',
+                          'bottom': '0',
+                          'width': '100%',
+                          'z-index':'1001'
+                              });
+                      $("#hideall").show();
+                      $('.btn-hide').hide();
+                    }
+                      break;
+                  default:
+                      $('.plyr').show();
+                        mediaType = 'video';
+                }
+                //End detemine mimetype & show media player accordingly
+                // if (objectInfo.mimeType.includes('audio'))
+                // {
+
+                // } else if (objectInfo.mimeType.includes('video')) {
+                //
+                //             }
+                // } else {
 
 
-                }//End detemine mimetype & show media player accordingly 
-                if (objectInfo.mimeType.includes('audio'))
-                {
-                        $('.plyr').show()
-                        mediaType = 'audio';
-                        $("#hideall").css('position', 'relative');
-                        $('.plyr').css({
-                            'position': 'fixed',
-                            'bottom': '0',
-                            'width': '100%',
-                            'z-index':'1001'
-                                });
-                            $('.btn-hide').hide();
-                } else if (objectInfo.mimeType.includes('video')) {
-                        mediaType = 'video';
-                          $('.plyr').show();
-                        if ($(window).width() > 992) {
-                          $('.plyr').css({
-                              'position': 'relative',
-                              'width': '100%',
-                              'z-index':'1'
-                                  });
-                          $("#hideall").css('position', 'absolute');
-                          $("#hideall").hide();
-                            $('.btn-hide').show();
-                        } else if ($(window).width() < 992 && $(window).width() > 768 ) {
-                          $('.plyr').css({
-                              'position': 'fixed',
-                              'bottom': '0',
-                              'width': '62%',
-                              'z-index':'1001'
-                                  });
-                          $("#hideall").css('position', 'relative');
-                            $("#hideall").show();
-                            $('.btn-hide').hide();
-                        }  else if ($(window).width() < 768 && $(window).width() > 480) {
-                          $('.plyr').css({
-                              'position': 'fixed',
-                              'bottom': '0',
-                              'width': '72%',
-                              'z-index':'1001'
-                                  });
-                            $("#hideall").show();
-                            $('.btn-hide').hide();
-                          }   else if ($(window).width() < 480) {
-                            $('.plyr').css({
-                                'position': 'fixed',
-                                'bottom': '0',
-                                'width': '100%',
-                                'z-index':'1001'
-                                    });
-                            $("#hideall").show();
-                            $('.btn-hide').hide();
-                            }
-                } else {
-                          $('.plyr').show();
-                        // $('.plyr').hide();
-                        // $('.btn-hide').hide();
-                        mediaType = 'video';
                         //Default to video (why?)
 
                 }//End music or audio check
@@ -389,7 +396,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
                                 '<div class="col-xs-3 col-sm-2 ">Type</div>' +
                                 '<div class="col-xs-2 col-sm-2"></div>';
                                 //Only show file header dropdown menu for local file list
-                                if (targetElm != 'remoteFileList') 
+                                if (targetElm != 'remoteFileList')
                                 {
                                     list += '<div class="col-xs-1 col-sm-1 dropdown">' +
                                         '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +

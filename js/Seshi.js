@@ -390,6 +390,28 @@ Seshi = {
                                 console.error(err);
                             })});//End get file chunks from fileId and playback
     },
+    isPlayable: function(mimeType) {
+
+                               if(mimeType.includes('audio') || mimeType.includes('video')) 
+                                {
+                                    return true;
+                                }
+
+                               switch(mimeType) {
+                                    case 'audio/mp3':
+                                    case 'audio/ogg':
+                                    case 'video/mp4':
+                                    case 'video/ogg':
+                                    case 'application/ogg':
+                                    case 'audio/wave':
+                                    case 'audio/wav':
+                                    case 'audio/x-wav':
+                                    case 'audio/x-pn-wav':
+                                         return true;
+                                    default:
+                                         return false;
+                                } 
+    },
     playInSyncRequest:function(fileId) {
 
                             msg = {"cmd":"playInSync", "fileId":fileId}; 
@@ -480,8 +502,7 @@ Seshi = {
                             
                             //dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                             }).then(function(){
-                            Seshi.sendingFileProgress.allFileDataSent = true;
-                            Seshi.flagProcessOutboxStarted == true;
+                            Seshi.flagProcessOutboxStarted = true;
                             Seshi.processOutbox();
                             dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event //Final invocation
                             })});
@@ -500,7 +521,7 @@ Seshi = {
                         function loadNext() {
 
                         fr.onload = function(chunk) {      
-                              if (Seshi.outBox.length > 0) {
+                              if (Seshi.outBox.length >= 0) {
                              console.log("We got a chunk to send!");
                                 for(var i=0;i<=99999999;i++) {}//Crude delay!
                                 dc.send(chunk.target.result);
@@ -1000,7 +1021,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                                 }
                                                                 statusE = document.getElementById("status"),
                                                                 statusE.innerHTML = statusMsg;
-                                                                if (curChunk.chunkNumber == curChunk.numberOfChunks - 1) {
+                                                                if (curChunk.chunkNumber == curChunk.numberOfChunks) {
                                                                         refreshFileList('localFileList');
                                                                 }//End refresh 
                                                                 //End extract file meta from blob

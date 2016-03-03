@@ -287,10 +287,11 @@ function refreshFileList(listId) {
                     '<div></div>' +
                     '<div></div>' +
                     '</div>';
-              return throbber;
+
     document.getElementById('header-' + listId).insertAdjacentHTML('afterend', throbber);
 
     // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
+    return
     Seshi.updateLocalFilesList().then( // .then() we know the .localFileList cache is updated, so we display the fresh list.
             function(complete){
                 updateFileListDisplay(Seshi.localFileList(), listId);

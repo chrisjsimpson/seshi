@@ -245,10 +245,8 @@ function play(event) {
                             }
                 } else {
                           $('.plyr').show();
-                        // $('.plyr').hide();
-                        // $('.btn-hide').hide();
-                        mediaType = 'video';
-                        //Default to video (why?)
+                        mediaType = 'audio';
+                        //Default to audio (why? becuse we don't want a big black video screen unesseserily)
 
                 }//End music or audio check
 

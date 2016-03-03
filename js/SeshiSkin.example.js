@@ -426,7 +426,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
             list += '<div class="col-xs-1 hidden-xs"><i title="Delete" onclick="deleteFile(event)" data-id="' + fileId + '" class="fa fa-trash  "></i></div>';
             //Play button
                 //Only show play button if file is playable
-                if(Seshi.isPlayable(mimeType))
+                if(Seshi.isPlayable(mimeType, fileName))
                 {
                     list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
                 }else {

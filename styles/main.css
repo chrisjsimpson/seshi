@@ -15296,7 +15296,7 @@ a:hover, a:focus {
 .intro .intro-body {
   display: table-cell;
   vertical-align: middle;
-  padding-top: 135px;
+  padding-top: 100px;
 }
 
 .intro .intro-body .brand-heading {
@@ -20616,6 +20616,10 @@ input[id="display-name"]:focus + .edit-btn {
     padding-right: 5px;
     font-size: 13px;
   }
+  .myfiles h3 {
+    padding: 0 50px;
+    font-size: 19px;
+  }
   .btn-generate-key {
     width: 180px;
     margin-bottom: 35px;
@@ -22990,7 +22994,7 @@ input[id="display-name"]:focus + .edit-btn {
 .fileUpload input[type="file"] {
   cursor: pointer;
   position: absolute;
-  height: 331px;
+  height: 56vh;
   width: 100%;
   top: 0;
   right: 0;
@@ -23011,7 +23015,7 @@ input[id="display-name"]:focus + .edit-btn {
 
 .btn-upload {
   color: #eee;
-  line-height: 250px;
+  line-height: 39vh;
   width: 100%;
   border-style: dashed;
   border-color: #ddd;

@@ -23349,7 +23349,7 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   padding-top: 15px;
 }
 
-#about {
+#about, #terms {
   background-color: #eee;
   padding: 50px 30px;
   min-height: 80vh;
@@ -23357,12 +23357,16 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   text-transform: none;
 }
 
-#about p {
+#about p, #terms p {
   text-align: left;
 }
 
+#terms .desc p {
+  font-size: 16px;
+}
+
 @media (min-width: 480px) {
-  #about {
+  #about, #terms {
     padding: 50px;
   }
 }

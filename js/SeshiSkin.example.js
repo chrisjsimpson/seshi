@@ -487,7 +487,7 @@ function updateStoreProgressDisplay() {
             var output = '' +
                     '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">' +
                         //Filename
-                    '   <div class="col-xs-4 col-sm-3">' + fileName + '</div> ' +
+                    '   <div class="col-xs-4 col-sm-4">' + fileName + '</div> ' +
                         //Progress bar
                     '   <div class="col-xs-5  col-sm-6">' +
                     '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
@@ -501,8 +501,7 @@ function updateStoreProgressDisplay() {
                         //Cancell button
                     '   <div class="col-xs-1 col-sm-1">' +
                     '       <i class="fa fa-times "></i>' +
-                    '   </div>'
-                    '       <div class="col-xs-1 col-sm-1"></div>' +
+                    '   </div>' +
                     '</li>';
 
              //If complete, check for existing progress bar and delete it

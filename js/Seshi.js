@@ -390,7 +390,7 @@ Seshi = {
                                 console.error(err);
                             })});//End get file chunks from fileId and playback
     },
-    isPlayable: function(mimeType) {
+    isPlayable: function(mimeType, fileName=false) {
 
                                if(mimeType.includes('audio') || mimeType.includes('video')) 
                                 {
@@ -408,9 +408,27 @@ Seshi = {
                                     case 'audio/x-wav':
                                     case 'audio/x-pn-wav':
                                          return true;
-                                    default:
-                                         return false;
-                                } 
+                                }//End check mimetype
+
+                               // Check type using filename (last resort)
+                               if(fileName) {
+                                    fileName = fileName.toLowerCase();
+                                    /* Mp3 */
+                                    if (fileName.indexOf('.mp3') > -1) {
+                                        return true;
+                                    }
+                                    /* Mp4 */
+                                    if (fileName.indexOf('.mp4') > -1) {
+                                        return true;
+                                    }
+                                    /* webm */
+                                    if (fileName.indexOf('.webm') > -1) {
+                                        return true;
+                                    }
+
+                               }//End check type using filename (last resort)
+
+                               return false;
     },
     playInSyncRequest:function(fileId) {
 

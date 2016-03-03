@@ -277,8 +277,13 @@ function share(event) {
 }
 
 function refreshFileList(listId) {
-    //Show loading throbber icon whilst refreshing file list
-    var throbber = '<img src="/img/Ajax-loader.gif" />';
+    //Show loading throbber css animation whilst refreshing file list
+    var throbber = '<div class=" ball-pulse">' +
+                    '<div></div>' +
+                    '<div></div>' +
+                    '<div></div>' +
+                    '</div>';
+
     document.getElementById('header-' + listId).insertAdjacentHTML('afterend', throbber);
 
     // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
@@ -430,7 +435,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
                 {
                     list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
                 }else {
-                    list += '<div class="col-xs-1 "></div>';   
+                    list += '<div class="col-xs-1 "></div>';
                 }//End only show play button if file is playable
             //Download button
             list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';

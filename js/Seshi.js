@@ -474,7 +474,7 @@ Seshi = {
                                 numberOfChunks: chunk.numberOfChunks,
                                 chunk: sendChunk
                             });
-                            //Seshi.processOutbox();
+                            Seshi.processOutbox();
                             //Close outbox flag so we don't repeatedly open a new filereader
                             Seshi.flagProcessOutboxStarted=false;
                             
@@ -499,7 +499,7 @@ Seshi = {
                         function loadNext() {
 
                         fr.onload = function(chunk) {      
-                              if (Seshi.outBox.length > 0) {
+                              if (Seshi.outBox.length >= 0) {
                              console.log("We got a chunk to send!");
                                 for(var i=0;i<=99999999;i++) {}//Crude delay!
                                 dc.send(chunk.target.result);
@@ -999,7 +999,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                                 }
                                                                 statusE = document.getElementById("status"),
                                                                 statusE.innerHTML = statusMsg;
-                                                                if (curChunk.chunkNumber == curChunk.numberOfChunks - 1) {
+                                                                if (curChunk.chunkNumber == curChunk.numberOfChunks) {
                                                                         refreshFileList('localFileList');
                                                                 }//End refresh 
                                                                 //End extract file meta from blob

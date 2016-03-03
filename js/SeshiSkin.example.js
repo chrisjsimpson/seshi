@@ -497,8 +497,11 @@ function updateStoreProgressDisplay() {
                     '</li>';
 
              //If complete, check for existing progress bar and delete it
+             if (valueNow >= 100) {
+                    refreshFileList('localFileList');
+             }//If valueNow >= 100 refresh locaFileList
              //If not, replace any existing progress bar to the list
-             if(complete) {
+             if(complete) {//TODO remove this
                     if (document.getElementById('storingFileId-' + fileId)) {
                         document.getElementById('storingFileId-' + fileId).remove();
                     }

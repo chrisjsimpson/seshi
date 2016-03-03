@@ -57,6 +57,11 @@ Seshi = {
                                 "UIdone":false
                                 }
                             dispatchEvent(storeFilesProgressUpdate);//Dispact/fire progress update event
+                            //Delete completed storeProgess
+                            if(Seshi.storeProgress[progressData.fileId].complete == true)
+                            {
+                                delete(Seshi.storeProgress[progressData.fileId]);
+                            }
                         }//End recieve storage progress update and update Seshi.storeProgress array with fileId's progress
 
                         //Initalize local files list cache if empty

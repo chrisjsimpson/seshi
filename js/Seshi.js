@@ -390,6 +390,28 @@ Seshi = {
                                 console.error(err);
                             })});//End get file chunks from fileId and playback
     },
+    isPlayable: function(mimeType) {
+
+                               if(mimeType.includes('audio') || mimeType.includes('video')) 
+                                {
+                                    return true;
+                                }
+
+                               switch(mimeType) {
+                                    case 'audio/mp3':
+                                    case 'audio/ogg':
+                                    case 'video/mp4':
+                                    case 'video/ogg':
+                                    case 'application/ogg':
+                                    case 'audio/wave':
+                                    case 'audio/wav':
+                                    case 'audio/x-wav':
+                                    case 'audio/x-pn-wav':
+                                         return true;
+                                    default:
+                                         return false;
+                                } 
+    },
     playInSyncRequest:function(fileId) {
 
                             msg = {"cmd":"playInSync", "fileId":fileId}; 

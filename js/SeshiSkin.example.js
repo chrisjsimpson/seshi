@@ -425,7 +425,13 @@ function updateFileListDisplay(fileListObj, targetElm) {
             //Delete button
             list += '<div class="col-xs-1 hidden-xs"><i title="Delete" onclick="deleteFile(event)" data-id="' + fileId + '" class="fa fa-trash  "></i></div>';
             //Play button
-            list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
+                //Only show play button if file is playable
+                if(Seshi.isPlayable(mimeType))
+                {
+                    list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
+                }else {
+                    list += '<div class="col-xs-1 "></div>';   
+                }//End only show play button if file is playable
             //Download button
             list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         }//End if targetElm != 'remoteFileList'

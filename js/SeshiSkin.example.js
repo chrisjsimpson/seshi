@@ -362,15 +362,39 @@ function getFileTypeIcon(mimeType) {
     switch(mimeType) {
         case 'audio/mp3':
         case 'audio/ogg':
+        case 'audio/m4a':
              return 'fa-music';
+        case 'audio/midi':
+              return 'fa-file-audio-o';
         case 'video/mp4':
              return 'fa-film';
         case 'image/jpeg':
-             return 'fa-picture-o';
+        case 'image/png':
+        case 'image/bmp':
+        case 'image/gif':
+        case 'image/x-icon':
+        case 'image/svg+xml':
+             return 'fa-file-picture-o';
         case 'application/pdf':
              return 'fa-file-pdf-o';
+        case 'application/msword':
+            return 'fa-file-word-o';
+        case: 'application/vnd.ms-excel':
+            return 'fa-file-excel-o';
+        case: 'application/vnd.ms-powerpoint':
+            return ' fa-file-powerpoint-o';
+        case: 'application/zip':
+            return 'fa-file-archive-o';
+        case: 'application/javascript':
+        case: 'application/json':
+        case: 'text/html':
+        case: 'text/css':
+        case: 'text/x-java-source,java':
+            return 'fa-file-code-o';
+        case: 'text/plain':
+              'fa-file-text';
         default:
-             return mimeType;
+             return 'fa-file-o';
     }
 
 }//End getFileTypeIcon(mimeType)
@@ -430,7 +454,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
                 {
                     list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
                 }else {
-                    list += '<div class="col-xs-1 "></div>';   
+                    list += '<div class="col-xs-1 "></div>';
                 }//End only show play button if file is playable
             //Download button
             list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';

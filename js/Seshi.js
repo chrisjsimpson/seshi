@@ -1,7 +1,7 @@
 Seshi = {
-    welcome:(function(){   /* 
+    welcome:(function(){   /*
                         #   Seshi Init
-                        #   - Display welcome message - 
+                        #   - Display welcome message -
                         */
                         var welcomeMsg = "🚀  Welcome to Seshi! 🚀\n\nLet's rock the boat...\n\n\nType Seshi.help() for help.. \n\n\n";
                         console.log(welcomeMsg);
@@ -16,7 +16,7 @@ Seshi = {
                         */
 
                         //Create & register Seshi spesific events
-                        // - Custom Events triggered by Seshi useful to front-end UI development 
+                        // - Custom Events triggered by Seshi useful to front-end UI development
                         // - The events are fired (dispatched) according to their individual case.
 
                         //Fired when a datachannel is established between both peers
@@ -65,7 +65,7 @@ Seshi = {
                         }//Load localFilesList if empty
                         //Populate signaling servers list (Seshi.signalingServers.list)
                         Seshi.signalingServers.buildList();
-                        
+
                         //Add default Seshi.io Signaling server if none present
                         if ( Seshi.signalingServers.list.length == 0 ) {
                             Seshi.addSignalingServer("seshi.io");
@@ -73,7 +73,7 @@ Seshi = {
                         return "It's 106 miles to Chicago; We got a full tank of gas; half a pack of cigarettes; its dark, and we're wearing sunglasses. Let's go!";
     },
     help:function(){console.log("#\n" +
-                        '# Usage:\n' + 
+                        '# Usage:\n' +
                         '#  Seshi.help() -- This menu\n' +
                         '#  Seshi.connectionStatus -- Returns object of peer connection state for iceConnectionState & dataChannelState\n'+
                         '#  Seshi.generateKey() -- Returns a key (string) to be used when setting up a peer connection. This getts passed to the signalingServer.\n' +
@@ -82,52 +82,52 @@ Seshi = {
                         '#  Seshi.updateLocalFilesList() -- Refreshes the local file list\n' +
                         '#  Seshi.deleteFile(fileId) -- Delete file from Seshi\n' +
                         '#  Seshi.localFileList() -- Returns list of local files in Array of JSON objects\n' +
-                        '#  Seshi.play(fileId, element) -- Playback a file (fileId) in your browser, attaching it as the src of (element) video or audio tag\n' + 
+                        '#  Seshi.play(fileId, element) -- Playback a file (fileId) in your browser, attaching it as the src of (element) video or audio tag\n' +
                         '#  Seshi.sendLocalFileListToRemote -- Send local filelist to peer. Peer automatically sends theirs back populating Seshi.remoteFileList\n' +
                         '#  Seshi.download() -- Download a given fileId to the users local filesystem.\n' +
                         '#  Seshi.remoteFileList  -- Returns list of connected peers files (when connected)\n' +
                         '#  Seshi.sendFileToPeer(fileId) -- Send a file to peer over DataChannel. Must specify local FileId\n' +
                         '#  Seshi.setBoxId(boxName) -- Set Seshi.boxId , (similar to the folder concept, but more just a name to refer to a collection of files.\n' +
-                        '#  Seshi.getBoxId() -- Returns the current Seshi.boxId name under which files will be stored.\n' + 
-                        '#  Seshi.syncData() -- Send all data to connecteed peer. This may take a while!\n' + 
-                        '#  Seshi.addSignalingServer("example.com")  -- Add the address of additional signaling server(s)\n' + 
+                        '#  Seshi.getBoxId() -- Returns the current Seshi.boxId name under which files will be stored.\n' +
+                        '#  Seshi.syncData() -- Send all data to connecteed peer. This may take a while!\n' +
+                        '#  Seshi.addSignalingServer("example.com")  -- Add the address of additional signaling server(s)\n' +
                         '#\n\n\n' +
                         '#  ## The rest if Seshi is still being wrapped into the `Seshi.<call>` api ##\n' +
-                        '#  ## for better code quality and to help make building user interfaces a much cleaner experience. ##\n' + 
-                        '#      These will probably be named:\n' + 
-                        '#          > Seshi.call() -- For contacting signaling server(s)\n' + 
+                        '#  ## for better code quality and to help make building user interfaces a much cleaner experience. ##\n' +
+                        '#      These will probably be named:\n' +
+                        '#          > Seshi.call() -- For contacting signaling server(s)\n' +
                         '#          > Seshi.connect() -- Establish connection between peers\n' +
-                        '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n' 
+                        '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n'
             ); return "🚀 🚀  Keep calm & Seshi on! 🚀 🚀"},
     connect: function() {
                         /* Connect()
                          *
                          * Calls index.js Connect
-                         * Crude call to older code.. 
+                         * Crude call to older code..
                          *
-                         * Connect() is used to establish the signalling channel. 
+                         * Connect() is used to establish the signalling channel.
                          * Once established, call() can be executed to begin a datachannel connection.
                          */
                         connect();
     },
     connectionStatus:{
                         iceConnectionState:function(){
-                            if (typeof pc == "undefined") { 
+                            if (typeof pc == "undefined") {
                                 return "Not Started. Use Seshi.connect() to begin a peer connection";
                             } else {
                                 return pc.iceConnectionState}
                         },
                         dataChannelState:function(){
-                            if (typeof dc == "undefined") { 
-                                return "Not Started. Use Seshi.call() after initiating peer connection with Seshi.connect()"; 
-                            } else { 
+                            if (typeof dc == "undefined") {
+                                return "Not Started. Use Seshi.call() after initiating peer connection with Seshi.connect()";
+                            } else {
                                 return dc.readyState }
                         }
-                        
+
     },
     signalingStatus:'',
     getSignalingStatus: function() {
-                        /* getSignalingStatus 
+                        /* getSignalingStatus
                         * Simply return current status of signaling connection
                         */
                         return Seshi.signalingStatus;
@@ -139,7 +139,7 @@ Seshi = {
     },
     key:'', //Connection key for two connecting peers
     setKey: function() {
-                        /* Generate connection key 
+                        /* Generate connection key
                          * Used as key to pass to signaling server for connecting two peers
                         */
                         /* Cred: http://stackoverflow.com/a/1497512/885983 */
@@ -154,13 +154,13 @@ Seshi = {
     },
     getKey: function() {
                         /* getKey()
-                         * - Returns the current connection key 
+                         * - Returns the current connection key
                          */
                         return Seshi.key;
     },
     getShareUrl: function() {
                         /* getShareURL
-                         * - Returns the share url that the user needs to send to 
+                         * - Returns the share url that the user needs to send to
                          *   their friend / other device
                          */
                         var shareUrl =  document.location.origin + '?key=' + Seshi.getKey() + '#fileBoxes';
@@ -228,17 +228,17 @@ Seshi = {
                           }
     },
     updateLocalFilesList: function() {
-                        /* 
-                        #   UpdateLocalFilesList() 
+                        /*
+                        #   UpdateLocalFilesList()
                         #   - Refreshes Seshi's list of local files cache -
-                        #   
+                        #
                         #   Calls a worker, defined in js/getLocalFilesList.js
                         #   The worker queries IndexedDB for the latest list of files.
                         #   This takes time (hence the cache)
                         #   When done, the worker posts a message back to Seshi
-                        #   containing the most up-to-date list of files as an array 
-                        #   of objects. Seshi updates it's 'cache' of the latest file 
-                        #   list by Appending the list to Seshi.getLocalFileList. 
+                        #   containing the most up-to-date list of files as an array
+                        #   of objects. Seshi updates it's 'cache' of the latest file
+                        #   list by Appending the list to Seshi.getLocalFileList.
                         */
                         var promise = new Promise (function(resolve, reject) {
                             var LocalFilesListWorker= new Worker('js/workers/getLocalFilesList.js');
@@ -257,7 +257,7 @@ Seshi = {
                       .then(function(deleteCount) {
                         console.log("Deleted: " + deleteCount + " chunks. Of fileId: " + fileId );
                         Seshi.updateLocalFilesList(); //Update local filelist cache
-                      });  
+                      });
     },
     localFileList:function() {
                         /* Returns cached local files list from localstorage as array of JSON objects */
@@ -274,15 +274,15 @@ Seshi = {
                                             'remoteDisplayName':'SeshiBOT'
                                             });
         dc.send(msgRemoteFileList);
-        if (!remoteFileList.reply) 
-        {   
+        if (!remoteFileList.reply)
+        {
             console.log("Replying back to peer with own local file listing...");
             Seshi.sendLocalFileListToRemote(reply=true);//Send own localFilesList back to remote peer that sent theirs
         }//End send back own local files list if havn't already sent it
     },
     store:function(dataSourceMsg) {
                         /* Store() data into Seshi's Indexed DB
-                         #  
+                         #
                          # 'dataSourceMsg' should be given in the following format:
                          #
                          #  {
@@ -290,13 +290,13 @@ Seshi = {
                          #      "data":"File object || Seshi ArrayBuffer packet
                          #  }
                          #
-                         #  If dataSource is 'fileSystem' then 'data' should be a File 
+                         #  If dataSource is 'fileSystem' then 'data' should be a File
                          #  list object (https://developer.mozilla.org/en/docs/Web/API/FileList)
-                         #  each file in the file list object will then be chunked & stored 
+                         #  each file in the file list object will then be chunked & stored
                          #  into Seshi's IndexedDB using the web worker storeFileDexieWorker.js
                          #
-                         #  If dataSource is 'seshiChunk', it should be a Seshi chunk of type 
-                         #  arrayBuffer. Each chunk will be stored directly into Seshi's 
+                         #  If dataSource is 'seshiChunk', it should be a Seshi chunk of type
+                         #  arrayBuffer. Each chunk will be stored directly into Seshi's
                          #  IndexedDB using the web worker storeFileDexieWorker.js
                         */
                         console.log("In store..");
@@ -344,7 +344,7 @@ Seshi = {
                                             console.log("Data: " + url);
                                             resolve(
                                                 {   objectURL:url, //A blob url
-                                                    fileName: fileName, 
+                                                    fileName: fileName,
                                                     mimeType: chunks[0].fileType //e.g. audio/ogg
                                                 }); //Resolve promise
                                         })//Assemble all chunks into array
@@ -352,7 +352,7 @@ Seshi = {
                                 }).catch (function (err) {
                                     console.error(err);
                                 })//End get file chunks from fileId and generate object url.
-                        });//End promise 
+                        });//End promise
                         return promise;
     },
     play:function(fileId, playerId) {
@@ -392,7 +392,7 @@ Seshi = {
     },
     isPlayable: function(mimeType) {
 
-                               if(mimeType.includes('audio') || mimeType.includes('video')) 
+                               if(mimeType.includes('audio') || mimeType.includes('video'))
                                 {
                                     return true;
                                 }
@@ -402,22 +402,29 @@ Seshi = {
                                     case 'audio/ogg':
                                     case 'video/mp4':
                                     case 'video/ogg':
+                                    case 'video/3gpp':
+                                    case 'video/quicktime':
                                     case 'application/ogg':
                                     case 'audio/wave':
+                                    case 'audio/webm':
+                                    case 'video/webm':
+                                    case 'video/mpeg':
                                     case 'audio/wav':
                                     case 'audio/x-wav':
                                     case 'audio/x-pn-wav':
+                                    case 'audio/x-aac':
+                                    case 'audio/midi':
                                          return true;
                                     default:
                                          return false;
-                                } 
+                                }
     },
     playInSyncRequest:function(fileId) {
 
-                            msg = {"cmd":"playInSync", "fileId":fileId}; 
+                            msg = {"cmd":"playInSync", "fileId":fileId};
                             msg = JSON.stringify(msg);
                             //Send request of datachannel
-                            dc.send(msg); 
+                            dc.send(msg);
     },
     playInSync:function(playInSyncRequest) {
                             /* playInSync()
@@ -427,7 +434,7 @@ Seshi = {
                             Seshi.play(playInSyncRequest.fileId, "video");
     },
     download:function(fileId) {
-                        /* Download 
+                        /* Download
                         * - Download a given fileId from Seshi's database to the system's filesystem boo.
                         * TODO move Seshi.download job to a web worker!
                         */
@@ -462,14 +469,14 @@ Seshi = {
                         /* Sends given file (fieId) over Datachannel to connected peer
                          * For each chunk found, send over data channel until 'last chunk'* has been sent.
                          * The following comments require multipeer (TODO)
-                         *  > *Not all peers will have all chunks to the file, some may only have a subset. 
-                         *  > Close the connection? no. 
-                         *  > Exchange useful data: 
+                         *  > *Not all peers will have all chunks to the file, some may only have a subset.
+                         *  > Close the connection? no.
+                         *  > Exchange useful data:
                          *      Share known signaling servers, peer exchange, file lists (names), boxIds
                         */
-                        
+
                         //Set flag for outbox
-                        Seshi.flagProcessOutboxStarted = true;     
+                        Seshi.flagProcessOutboxStarted = true;
                         //Check Datachannel connection status
                         if (typeof dc == "undefined" || dc.readyState != "open") {
                             console.error("Seshi.sendFileToPeer(fileId) Tried to send file to peer but Datachannel is not open");
@@ -483,7 +490,7 @@ Seshi = {
                             var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
                             var lengthOfMeta = JSON.stringify(meta).length;
                             lengthOfMeta = zeroFill(lengthOfMeta, 64);
-                            var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
+                            var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
                             var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                             var sendChunk = new Blob([header, chunk.chunk]);
                             //Add chunk to outBox for sending
@@ -499,7 +506,7 @@ Seshi = {
                             Seshi.processOutbox();
                             //Close outbox flag so we don't repeatedly open a new filereader
                             Seshi.flagProcessOutboxStarted=false;
-                            
+
                             //dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                             }).then(function(){
                             Seshi.flagProcessOutboxStarted = true;
@@ -520,7 +527,7 @@ Seshi = {
 
                         function loadNext() {
 
-                        fr.onload = function(chunk) {      
+                        fr.onload = function(chunk) {
                               if (Seshi.outBox.length >= 0) {
                              console.log("We got a chunk to send!");
                                 for(var i=0;i<=99999999;i++) {}//Crude delay!
@@ -529,7 +536,7 @@ Seshi = {
                                 loadNext(); // shortcut here
                               }
                            };
-    
+
                             //Get next chunk info, pass chunk to fileReader & update sendingFileProgress
                             chunkData = Seshi.outBox.shift();
                             Seshi.sendingFileProgress.percentComplete= (chunkData.chunkNumber + 1) / chunkData.numberOfChunks * 100;
@@ -550,7 +557,7 @@ Seshi = {
                             /* - Add a signaling server to Seshi - */
                             //Check dosen't already exist
                             signalServerDb.signalServers.where("address").equalsIgnoreCase("seshi.io").
-                                count(function(num){ 
+                                count(function(num){
                                     if (num == 0) {//If entry dosn't already exist, add to indexedDB
                                         signalServerDb.signalServers.add({address: signallingServerAddress,
                                         lastSuccessfulConnectTimestamp: null,
@@ -577,18 +584,18 @@ Seshi = {
     },
     requestFilesFromPeer:function(filesRequested) {
                             /* requestFilesFromPeer(filesRequested)
-                             * 
-                             * - Request files from peer (we can see them in 
+                             *
+                             * - Request files from peer (we can see them in
                              *   Seshi.remoteFileList, now we want to request to
                              *   pull them from our peer to our own device!
                              *
-                             * Requires datachannel to be open! 
-                             * 
-                             * To check dataChannel is open use: 
+                             * Requires datachannel to be open!
+                             *
+                             * To check dataChannel is open use:
                              * Seshi.connectionStatus.dataChannelState() == 'open'
-                             * 
+                             *
                              * Arguments:
-                             * `filesRequested` should be an array of 
+                             * `filesRequested` should be an array of
                              *   objects in the following format:
                              * [
                              *  {
@@ -602,25 +609,25 @@ Seshi = {
                              * ]
                              *
                              * You can use this to request an entire file from a peer
-                             * or TODO a single chunk, or range of chunks. 
+                             * or TODO a single chunk, or range of chunks.
                              *
                              */
-                            
-                            //Stringify requested files object 
+
+                            //Stringify requested files object
                             var filesRequested = JSON.stringify(filesRequested);
                             //Send command over DataChannel to peer
                             msg = {"cmd":"requestFilesById", "data":filesRequested};
                                    msg = JSON.stringify(msg);
                                            dc.send(msg);
                             //Happy dance we've done a full cirlce & re-implimented a crude FTP in Javascript
-                            // go figure! 
+                            // go figure!
     },
     sendRequestedFilesToPeer:function(filesRequested){
                             /* sendRequestedFilesToPeer(files)
                              * - Respond to peer request to PULL files from their connected peer
                              *   `filesRequested` is an array of objects containing fileIds and the
                              *   parts of the file that the user is requesting (request type)
-                             *   
+                             *
                              *   The request type defaults to send 'ALL' chunks
                              *
                              * TODO requestType can be set to only request certain chunks,
@@ -640,16 +647,16 @@ Seshi = {
                              *  }
                              * ]
                              */
-                             
+
                             console.log(filesRequested);
                             //Work out what they want
                             var filesRequested = JSON.parse(filesRequested.data);
-                            
+
                             //Loop though each request sending the file to the peer as requested
-                            for (var i=0;i<filesRequested.length;i++) 
+                            for (var i=0;i<filesRequested.length;i++)
                             {
                                 //Work our request type:
-                                switch(filesRequested[i].requestType) 
+                                switch(filesRequested[i].requestType)
                                 {
                                     case 'ALL':
                                         Seshi.sendFileToPeer(filesRequested[i].fileId);
@@ -666,7 +673,7 @@ Seshi = {
                             }//End loop through each request sending the file to thhe peer as requested
     },
     syncData:function(){
-            /* Send all data to connected peer 
+            /* Send all data to connected peer
              * This is currently very intensive as it does not (yet) make use of the worker
              * TODO ^above^
             */
@@ -676,7 +683,7 @@ Seshi = {
                     var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
                     var lengthOfMeta = JSON.stringify(meta).length;
                     lengthOfMeta = zeroFill(lengthOfMeta, 64);
-                    var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
+                    var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
                     var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                     var sendChunk = new Blob([header, chunk.chunk]);
                     //Needs to be sent as an arrayBuffer
@@ -708,9 +715,9 @@ setBoxId:function(boxName) {
 getBoxId:function(){return Seshi.boxId;},
 boxId:'myBoxID',//Defaults to myBoxId
 trace: function(text) {
-            /* trace() 
+            /* trace()
             * logging with timestamp
-            */ 
+            */
             if (text[text.length - 1] == '\n') {
                 text = text.substring(0, text.length - 1);
             }
@@ -724,7 +731,7 @@ Seshi.init();
 ///////////////////////////////////////////////////////////////
 //
 //
-//          Index.js 
+//          Index.js
 //
 //
 //////////////////////////////////////////////////////////////
@@ -757,7 +764,7 @@ function connectedToPeer(e) {
         console.log("Great. Connected to peer via peer signaling channel, probably.");
         setStatus("Connected");
         // set up the RTC Peer Connection since we're connected
-}//End  
+}//End
 
 ////////////////////////////
 // This is the main routine.
@@ -769,7 +776,7 @@ function connectedToPeer(e) {
 /////////////////////
 
 // This routine connects to the web server and sets up the
-// signaling channel.  
+// signaling channel.
 
 function connect() {
   var errorCB, scHandlers, handleMsg;
@@ -900,7 +907,7 @@ function createPC() {
 // When our browser has another candidate, send it to the peer
 function onIceCandidate(e) {
   if (e.candidate) {
-        
+
         send({type:  'candidate',
                 mlineindex:  e.candidate.sdpMLineIndex,
                 candidate:  e.candidate.candidate});
@@ -916,7 +923,7 @@ function onRemoteStreamAdded(e) {
 // When browser alerts of change to Ice connection state
 function onIceconnectionStateChanged(e) {
     console.log("Ice Connection State Change to: " + pc.iceConnectionState);
-    if ( pc.iceConnectionState == 'completed' || pc.iceConnectionState == 'connected') { 
+    if ( pc.iceConnectionState == 'completed' || pc.iceConnectionState == 'connected') {
         //dispatch event onPeerConnectionEstablished since we now have a peer connection (TODO check datachannel state too!)
         dispatchEvent(onPeerConnectionEstablished);
     }//End if iceConnectionState == Completed
@@ -941,7 +948,7 @@ function onDataChannelAdded(e) {
     setupDataHandlers();
     sendChat("Yolo! Seshi Init.");
 
-   
+
     e.channel.onopen = function(){
         //Request file listing from remote peer
         Seshi.sendLocalFileListToRemote();
@@ -1010,7 +1017,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                                 var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
                                                                 message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
                                                                 message += " FileName: " + curChunk.fileName;
-                                
+
                                                                 var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
                                                                 //Update user facing status box
                                                                 if (chunkProg == 100)
@@ -1023,7 +1030,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                                 statusE.innerHTML = statusMsg;
                                                                 if (curChunk.chunkNumber == curChunk.numberOfChunks) {
                                                                         refreshFileList('localFileList');
-                                                                }//End refresh 
+                                                                }//End refresh
                                                                 //End extract file meta from blob
                                                         }//End check read data is > 0
                                                                 //Start send data payload
@@ -1048,9 +1055,9 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                                 }//End reader.readtState == DONE
                                         }//End reader.onload
                                         reader.readAsText(chunkFileMeta);
-                                        //End extract file meta from blob          
+                                        //End extract file meta from blob
 
-                                
+
                         }//End IF reading byte lenth of fileMeata
                 }//End get bytelength of fileMeta
                 reader2.readAsText(metaLength);
@@ -1058,15 +1065,15 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
 
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
-            {   
+            {
                 fileMeta = JSON.parse(event.data);
                 console.log('Got file meta');
             }
-        }//End determin if data message or control message.  
+        }//End determin if data message or control message.
 
-        
 
-        //Don't JSON.parse is data is already an object ;) 
+
+        //Don't JSON.parse is data is already an object ;)
         if ( typeof event.data != "object" ) {
                 var msg = JSON.parse(event.data);
         } else {
@@ -1074,7 +1081,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
         }//End don't parse data message recived if already an object!
         cb = document.getElementById("chatbox");
         rtt = document.getElementById("rtt");
-    
+
 
         //Command & control
         //Check for remote calls (ie file listing requests) risky!
@@ -1082,7 +1089,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
             console.log("Interpreting command from remote peer..");
             switch (msg.cmd) {
                 case 'sendLocalFileListToRemote': //Request from peer to see filelist
-                    Seshi.sendLocalFileListToRemote(); //Local peer sends its local file lsit to remote 
+                    Seshi.sendLocalFileListToRemote(); //Local peer sends its local file lsit to remote
                     break;
                 case 'recvRemoteFileList': //Receiving list of files from remote peer
                     Seshi.recvRemoteFileList(msg);
@@ -1090,7 +1097,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                 case 'requestFilesById': //Receiving request from peer to pull files from their peer.
                     Seshi.sendRequestedFilesToPeer(msg);
                     break;
-                case 'remoteDisplayName': //Receiving remote's display name 
+                case 'remoteDisplayName': //Receiving remote's display name
                     Seshi.setRemoteDisplayName(msg);
                     break;
                 case 'playInSync': //Play file in sync with connected peer DUDE.
@@ -1101,43 +1108,43 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
 
         //Realtime chat
         if(msg.rtt) {
-        // if real-time-text (per keypress) message, display in 
-        // real-time window 
-        console.log("received rtt of '" + msg.rtt + "'"); 
-        rtt.value = msg.rtt; msg = msg.rtt; 
+        // if real-time-text (per keypress) message, display in
+        // real-time window
+        console.log("received rtt of '" + msg.rtt + "'");
+        rtt.value = msg.rtt; msg = msg.rtt;
         } else if (msg.requestFileId) {
 
                 console.log("Request for file recieved.");
                 //sendFileToPeer(msg.requestFileId);
 
-        } else if (msg.chat) { 
+        } else if (msg.chat) {
             // if full message, display in chat window,
             // reset real-time window,
-            // and force chat window to last line 
+            // and force chat window to last line
             console.log("received chat of '" + msg.chat + "'");
-            //cb.value += msg.chat + "\n"; 
+            //cb.value += msg.chat + "\n";
             ////TODO Move to SeshiSkinExample to keep seperate from API:
-            var remoteChatMsg = 
+            var remoteChatMsg =
                 '<li class="clearfix">' +
-                '    <div class="message-data align-right">' + 
+                '    <div class="message-data align-right">' +
                 '    <span class="message-data-time">10:14 AM, Today</span>' +
-                '    <span class="message-data-name">' + 
-                     msg.remoteDisplayName+ 
+                '    <span class="message-data-name">' +
+                     msg.remoteDisplayName+
                 '    </span>' +
                 '    <i class="fa fa-circle me"></i></div>' +
                 '    <div class="message other-message float-right">' +
                                 msg.chat +
                 '    </div>' +
                 '</li>';
-            cb.insertAdjacentHTML('beforeend', remoteChatMsg); 
+            cb.insertAdjacentHTML('beforeend', remoteChatMsg);
             cb.scrollTop = cb.scrollHeight; msg = msg.chat;
             } else if (msg.storeData) {
                 console.log("Received data store message.");
                 //console.log(blobURL);
 
-            } else { 
+            } else {
                 console.log("received " + msg + "on data channel");
-                } 
+                }
                 };
     }
 
@@ -1146,23 +1153,23 @@ function sendChat(msg) {
 	//c = document.getElementById("chat");
     c = document.getElementById("message-to-send");
 
-	//Display message locally, send it, and force chat window to 
+	//Display message locally, send it, and force chat window to
 	// last line
 	msg = msg || c.value;
 	console.log("calling sendChat(" + msg + ")");
 	//cb.value += "-> " + msg + "\n";
     //TODO Move (below) to SeshiSkinExample to keep seperate from API:
-    var localChatMsg = 
+    var localChatMsg =
             '<li>' +
             '<div class="message-data align-left">' +
             '    <span class="message-data-name">' +
-            '        <i class="fa fa-circle online"></i> ' + 
+            '        <i class="fa fa-circle online"></i> ' +
                         Seshi.getDisplayName() +
             '    </span>' +
             '<span class="message-data-time">10:20 AM, Today</span>' +
             '</div>' +
             '    <div class="message my-message">' +
-                                msg + 
+                                msg +
             '    </div>' +
             '</li>';
     cb.insertAdjacentHTML('beforeend', localChatMsg);
@@ -1200,7 +1207,7 @@ function sendChunksToPeer(e, fileId) {
                         var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
                         var lengthOfMeta = JSON.stringify(meta).length;
                         lengthOfMeta = zeroFill(lengthOfMeta, 64);
-                        var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified 
+                        var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
                         var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                         var sendChunk = new Blob([header, chunk.chunk]);
                         url = window.URL.createObjectURL(sendChunk);
@@ -1273,7 +1280,7 @@ function attachMediaIfReady() {
 // All it does is to let the browser know to include this stream
 // in its next SDP description.
 function attachMedia() {
-  
+
   setStatus("Ready for call");
 }
 

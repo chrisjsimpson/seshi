@@ -375,12 +375,15 @@ function getFileTypeIcon(mimeType) {
              return 'fa-film';
         case 'image/jpeg':
         case 'image/png':
+        case 'image/svg+xml':
              return 'fa-file-image-o';
         case 'application/pdf':
              return 'fa-file-pdf-o';
         case 'application/msword':
         case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
               return 'fa-file-word-o';
+        case 'text/html':
+              return 'fa-file-code-o';
         default:
              return mimeType;
     }

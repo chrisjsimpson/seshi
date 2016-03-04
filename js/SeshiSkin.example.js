@@ -376,6 +376,7 @@ function getFileTypeIcon(mimeType) {
         case 'application/pdf':
              return 'fa-file-pdf-o';
         case 'application/msword':
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
               return 'fa-file-word-o';
         default:
              return mimeType;

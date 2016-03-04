@@ -385,6 +385,8 @@ function getFileTypeIcon(mimeType) {
         case 'text/html':
         case 'text/css':
               return 'fa-file-code-o';
+        case: 'application/x-compressed-zip':
+              return 'fa-file-archive-o';
         default:
              return mimeType;
     }

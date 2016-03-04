@@ -383,7 +383,10 @@ function getFileTypeIcon(mimeType) {
         case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
               return 'fa-file-word-o';
         case 'text/html':
+        case 'text/css':
               return 'fa-file-code-o';
+        case: 'application/vnd.ms-powerpoint':
+            return 'fa-file-powerpoint-o';
         default:
              return mimeType;
     }

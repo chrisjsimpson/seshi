@@ -375,6 +375,8 @@ function getFileTypeIcon(mimeType) {
              return 'fa-file-image-o';
         case 'application/pdf':
              return 'fa-file-pdf-o';
+        case: 'application/zip':
+              return 'fa-file-archive-o';
         default:
              return mimeType;
     }

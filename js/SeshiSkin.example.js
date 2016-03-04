@@ -384,7 +384,7 @@ function getFileTypeIcon(mimeType) {
               return 'fa-file-word-o';
         case 'text/html':
         case 'text/css':
-        case: 'application/x-javascript':
+        case: 'application/javascript':
               return 'fa-file-code-o';
         default:
              return mimeType;

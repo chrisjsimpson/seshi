@@ -310,6 +310,7 @@ function refreshFileList(listId) {
                     Seshi.sendLocalFileListToRemote();
                 }//End if peer connection is established, resend new local file list to peer.
             });
+
 }//End refreshFileList()
 
 function storeFile(fileList){

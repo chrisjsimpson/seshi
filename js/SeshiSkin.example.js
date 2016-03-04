@@ -393,6 +393,9 @@ function getFileTypeIcon(mimeType) {
         case 'application/msword':
         case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
               return 'fa-file-word-o';
+        case 'application/vnd.ms-excel':
+        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+              return 'fa-file-excel-o';
         default:
              return mimeType;
     }

@@ -368,9 +368,13 @@ function getFileTypeIcon(mimeType) {
         case 'video/mp4':
              return 'fa-film';
         case 'image/jpeg':
-             return 'fa-picture-o';
+        case 'image/png':
+             return 'fa-file-image-o';
         case 'application/pdf':
              return 'fa-file-pdf-o';
+        case 'application/msword':
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+              return 'fa-file-word-o';
         default:
              return mimeType;
     }

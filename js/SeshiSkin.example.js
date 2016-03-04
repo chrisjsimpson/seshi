@@ -369,6 +369,9 @@ function getFileTypeIcon(mimeType) {
         case 'audio/ogg':
              return 'fa-music';
         case 'video/mp4':
+        case 'video/ogg':
+        case 'video/3gpp':
+        case 'video/x-msvideo':
              return 'fa-film';
         case 'image/jpeg':
         case 'image/png':
@@ -378,9 +381,6 @@ function getFileTypeIcon(mimeType) {
         case 'application/msword':
         case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
               return 'fa-file-word-o';
-        case 'application/vnd.ms-excel':
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-              return 'fa-file-excel-o';
         default:
              return mimeType;
     }

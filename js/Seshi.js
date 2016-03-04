@@ -409,6 +409,7 @@ Seshi = {
                                     case 'audio/webm':
                                     case 'video/webm':
                                     case 'video/mpeg':
+                                    case 'video/x-msvideo':
                                     case 'audio/wav':
                                     case 'audio/x-wav':
                                     case 'audio/x-pn-wav':

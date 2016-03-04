@@ -385,6 +385,9 @@ function getFileTypeIcon(mimeType) {
         case 'text/html':
         case 'text/css':
               return 'fa-file-code-o';
+        case 'text/csv':
+        case 'text/plain':
+              return 'fa-file-text-o';
         default:
              return mimeType;
     }

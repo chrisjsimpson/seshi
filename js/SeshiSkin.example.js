@@ -360,8 +360,6 @@ function showConnected() {
 
 
 
-
-
 function getFileTypeIcon(mimeType) {
 
     switch(mimeType) {

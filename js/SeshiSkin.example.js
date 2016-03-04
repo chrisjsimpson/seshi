@@ -385,7 +385,7 @@ function getFileTypeIcon(mimeType) {
         case 'text/html':
         case 'text/css':
               return 'fa-file-code-o';
-        case: 'application/vnd.ms-powerpoint':
+        case: 'application/vnd.ms-powerpointtd>':
             return 'fa-file-powerpoint-o';
         default:
              return mimeType;

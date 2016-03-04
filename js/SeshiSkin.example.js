@@ -277,13 +277,8 @@ function share(event) {
 }
 
 function refreshFileList(listId) {
-    //Show loading throbber css animation whilst refreshing file list
-    var throbber = '<div class=" ball-pulse">' +
-                    '<div></div>' +
-                    '<div></div>' +
-                    '<div></div>' +
-                    '</div>';
-
+    //Show loading throbber icon whilst refreshing file list
+    var throbber = '<img src="/img/Ajax-loader.gif" />';
     document.getElementById('header-' + listId).insertAdjacentHTML('afterend', throbber);
 
     // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
@@ -368,12 +363,35 @@ function getFileTypeIcon(mimeType) {
         case 'audio/mp3':
         case 'audio/ogg':
              return 'fa-music';
+        case 'audio/midi':
+              return 'fa-file-audio-o';
         case 'video/mp4':
              return 'fa-film';
         case 'image/jpeg':
-             return 'fa-picture-o';
+        case 'image/png':
+        case 'image/bmp':
+        case 'image/gif':
+        case 'image/x-icon':
+        case 'image/svg+xml':
+             return 'fa-file-picture-o';
         case 'application/pdf':
              return 'fa-file-pdf-o';
+        case 'application/msword':
+            return 'fa-file-word-o';
+        case: 'application/vnd.ms-excel':
+            return 'fa-file-excel-o';
+        case: 'application/vnd.ms-powerpoint':
+            return ' fa-file-powerpoint-o';
+        case: 'application/zip':
+            return 'fa-file-archive-o';
+        case: 'application/javascript':
+        case: 'application/json':
+        case: 'text/html':
+        case: 'text/css':
+        case: 'text/x-java-source,java':
+            return 'fa-file-code-o';
+        case: 'text/plain':
+              'fa-file-text';
         default:
              return mimeType;
     }
@@ -487,7 +505,7 @@ function updateStoreProgressDisplay() {
             var output = '' +
                     '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">' +
                         //Filename
-                    '   <div class="col-xs-4 col-sm-4">' + fileName + '</div> ' +
+                    '   <div class="col-xs-4 col-sm-3">' + fileName + '</div> ' +
                         //Progress bar
                     '   <div class="col-xs-5  col-sm-6">' +
                     '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
@@ -501,7 +519,8 @@ function updateStoreProgressDisplay() {
                         //Cancell button
                     '   <div class="col-xs-1 col-sm-1">' +
                     '       <i class="fa fa-times "></i>' +
-                    '   </div>' +
+                    '   </div>'
+                    '       <div class="col-xs-1 col-sm-1"></div>' +
                     '</li>';
 
              //If complete, check for existing progress bar and delete it

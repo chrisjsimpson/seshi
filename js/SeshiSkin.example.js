@@ -19,6 +19,7 @@ copyKeyBtn = document.getElementById('copyclipboard');
 copyKeyBtn.addEventListener('click', createShareUrl, false);
 
 
+
 //Event: When user clicks 'send' button, check which files are marked,
 //send them over the datachannel
 var sendBtn = document.getElementById('sendBtn');
@@ -47,6 +48,7 @@ displayNameInput.addEventListener('blur', setDisplayName, false);//User leaves f
 var sendMsg = document.getElementById('sendMsg');
 sendMsg.addEventListener('click', function(){sendChat()});
 
+
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('onPeerConnectionEstablished', showConnected, false);
 
@@ -65,6 +67,21 @@ window.addEventListener('sendFileProgressUpdate', updateSendFileProgessDisplay, 
 //Event: displayName of remote user is recived
 window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
 
+
+
+function tickAllFiles(list) {
+
+
+    var fileList = document.getElementsByClassName(list);
+    for(var i=0; i< fileList.length; i++) {
+            if(fileList[i].checked == true)
+            {
+                fileList[i].checked = false;
+            } else {
+                fileList[i].checked = true;
+            }
+    }//End loop though local files list ticking each file
+}//End checkAll local files
 
 function peerConnectionBroken() {
     /* Called by event listener when sendFileProgressUpdate event is fired
@@ -382,13 +399,23 @@ function getFileTypeIcon(mimeType) {
 }//End getFileTypeIcon(mimeType)
 
 
-
 /* Update files list UI */
 function updateFileListDisplay(fileListObj, targetElm) {
     var files = fileListObj;
 
-    var list = '<div class="list-group-item row header-title" id="header-' + targetElm + '" >' +
-                               '<input class="col-xs-1 col-sm-1 checkall" type="checkbox">' +
+    var list = '<div class="list-group-item row header-title" id="header-' + targetElm + '" >';
+
+    //Determine checkAll id
+    switch(targetElm) {
+        case 'localFileList':
+            checkAllId =  'checkAll-localFileList';
+            break;
+        case 'remoteFileList':
+            checkAllId = 'checkAll-remoteFileList';
+            break;
+    }//End determine checkall id
+    
+                      list +=   '<input id="' + checkAllId + '" class="col-xs-1 col-sm-1" type="checkbox">' +
                                 '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
                                 '<div class="col-xs-3 col-sm-2 ">Type</div>' +
                                 '<div class="col-xs-2 col-sm-2"></div>';
@@ -721,3 +748,10 @@ function smoothScroll(eID) {
         leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
     }
 }
+
+//Event: User clicks 'check all' button on a files list
+var localCheckAll = document.getElementById('checkAll-localFileList');
+localCheckAll.addEventListener('click', function(){ tickAllFiles('localFileCheckBox');}, false);
+
+var remoteCheckAll = document.getElementById('checkAll-remoteFileList');
+remoteCheckAll.addEventListener('click', function(){ tickAllFiles('remoteFileCheckBox');}, false);

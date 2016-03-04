@@ -13,13 +13,10 @@
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 */
 
-//Event: When user clicks any of the share buttons, generatee a share URL
-shareBtns = document.getElementsByClassName('icon-link');
+//Event: When user clicks copy keybutton, generatee a share URL
+copyKeyBtn = document.getElementById('copyclipboard');
 //Attach createShareUrl event listener to each share url button
-for(var i=0;i<shareBtns.length;i++)
-{
-       shareBtns[i].addEventListener('click', createShareUrl, false);
-}//End attach createShareUrl event listener to each share url button
+copyKeyBtn.addEventListener('click', createShareUrl, false);
 
 
 //Event: When user clicks 'send' button, check which files are marked,

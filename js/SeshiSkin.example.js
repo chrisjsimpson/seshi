@@ -649,14 +649,13 @@ function updateSendFileProgessDisplay() {
             '</li>';
 
      //If complete, check for existing progress bar and delete it
-     //If not, replace any existing progress bar to the list
-     if(complete) {
+     if (valueNow >= 100) {
+         //Set UI complete flag
+         Seshi.sendingFileProgress.UIdone = true;
+         //Remove completed 'sending file' progress bar from senders UI
             if (document.getElementById('sendingFileId-' + fileId)) {
                 document.getElementById('sendingFileId-' + fileId).remove();
             }
-            //Set UI complete flag
-            Seshi.sendingFileProgress.UIdone = true;
-            //refreshFileList('remoteFileList');
      } else { //End if complete
             //If not complete:
             if (document.getElementById('sendingFileId-' + fileId)) {

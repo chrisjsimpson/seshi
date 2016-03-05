@@ -74,7 +74,7 @@ function tickAllFiles(list) {
 
     var fileList = document.getElementsByClassName(list);
     for(var i=0; i< fileList.length; i++) {
-            if(fileList[i].checked == true || fileList[i].checked = false )
+            if((fileList[i].checked == true) || (fileList[i].checked = false) )
             {
                 fileList[i].checked = false;
             } else {

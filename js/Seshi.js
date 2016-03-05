@@ -57,6 +57,11 @@ Seshi = {
                                 "UIdone":false
                                 }
                             dispatchEvent(storeFilesProgressUpdate);//Dispact/fire progress update event
+                            //Delete completed storeProgess
+                            if(Seshi.storeProgress[progressData.fileId].complete == true)
+                            {
+                                delete(Seshi.storeProgress[progressData.fileId]);
+                            }
                         }//End recieve storage progress update and update Seshi.storeProgress array with fileId's progress
 
                         //Initalize local files list cache if empty
@@ -382,15 +387,11 @@ Seshi = {
                                             video.play();
                                         }
                                     })//End playback media when ready
-                                    //Simply download file if on mobiles
-                                    if( window.screen.width < 700 ) {
-                                        alert("We're working hard on mobile playback. Support Seshi with a pro account to fund development!");
-                                    }//End display mobile playback message.
                             }).catch (function (err) {
                                 console.error(err);
                             })});//End get file chunks from fileId and playback
     },
-    isPlayable: function(mimeType) {
+    isPlayable: function(mimeType, fileName) {
 
                                if(mimeType.includes('audio') || mimeType.includes('video'))
                                 {
@@ -416,9 +417,27 @@ Seshi = {
                                     case 'audio/x-aac':
                                     case 'audio/midi':
                                          return true;
-                                    default:
-                                         return false;
-                                }
+                                }//End check mimetype
+
+                               // Check type using filename (last resort)
+                               if(fileName) {
+                                    fileName = fileName.toLowerCase();
+                                    /* Mp3 */
+                                    if (fileName.indexOf('.mp3') > -1) {
+                                        return true;
+                                    }
+                                    /* Mp4 */
+                                    if (fileName.indexOf('.mp4') > -1) {
+                                        return true;
+                                    }
+                                    /* webm */
+                                    if (fileName.indexOf('.webm') > -1) {
+                                        return true;
+                                    }
+
+                               }//End check type using filename (last resort)
+
+                               return false;
     },
     playInSyncRequest:function(fileId) {
 

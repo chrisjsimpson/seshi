@@ -94,7 +94,7 @@
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 main-header">
                         <h4><span>exchange</span> any files with anyone, anywhere </h4>
-                            <h5>No login & installation required</h5>
+                            <h5>No login - no installs required</h5>
                              <div>
                                  <span class=" fileUpload btn btn-default btn-upload" >
                                      <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
@@ -176,27 +176,26 @@
 
                 <div class="col-md-5">
                 <div class=" filecard filewell ">
-                    <div class="myfilelist">
-                    <div class="list-group-item row header-title" id="header-localFileList">
-                        <input class="col-xs-1 col-sm-1 checkall" type="checkbox">
-                        <div class="col-xs-6 col-sm-6 table-border">File Name</div>
-                        <div class="col-xs-3 col-sm-2 ">Type</div>
-                        <div class="col-xs-2 col-sm-2"></div>
-                        <div class="col-xs-1 col-sm-1 dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a id="multiDownloadLocalFiles">Download</a></li>
-                                <li class="divider"></li>
-                                <li><a id="multiDeleteLocalFiles">Delete</span></a></li>
-
-                                <!-- <li><a href="#">Di<span class="glyphicon glyphicon-log-out pull-right"></span></a></li> -->
-                            </ul>
-                        </div>
-                    </div>
-                </div>
                     <ul class="list-group myfilelist" id="localFileList">
+                        <div class="list-group-item row header-title" id="header-localFileList">
+                            <input class="col-xs-1 col-sm-1 checkall" type="checkbox">
+                            <div class="col-xs-6 col-sm-6 table-border">File Name</div>
+                            <div class="col-xs-3 col-sm-2 ">Type</div>
+                            <div class="col-xs-2 col-sm-2"></div>
+                            <div class="col-xs-1 col-sm-1 dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-chevron-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a id="multiDownloadLocalFiles">Download</a></li>
+                                    <li class="divider"></li>
+                                    <li><a id="multiDeleteLocalFiles">Delete</span></a></li>
+
+                                    <!-- <li><a href="#">Di<span class="glyphicon glyphicon-log-out pull-right"></span></a></li> -->
+                                </ul>
+                            </div>
+                        </div>
+
                     </ul>
                 </div>
             </div>
@@ -212,7 +211,8 @@
                 </div>
                 <div class="col-md-5">
                 <div class=" filecard filewell receive-well">
-                    <div class="myfilelist">
+
+                    <ul class="list-group myfilelist" id="remoteFileList">
                         <div class="list-group-item row header-title" id="header-remoteFileList">
                             <input class="col-xs-1 col-sm-1 checkall" type="checkbox">
                             <div class="col-xs-6 col-sm-6 table-border">File Name</div>
@@ -228,9 +228,6 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>   
-                    <ul class="list-group myfilelist" id="remoteFileList">
-
                     </ul>
                     <p id="connectionStatus"> Disconnected </p>
                 </div>

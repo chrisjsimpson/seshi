@@ -116,9 +116,10 @@ function storeFiles(fileList) {
                         var start = 0;
                         var end = maxChunkSize;
                         fileId = uuid();
+                        var percentageComplete = 0;
                         //Piece by piece, take maxChunkSize sized piexes of file.target.result and store them to IndexedDB
                         for(var chunkNum=0; chunkNum<= numChunksNeeded; chunkNum++)
-                        {   
+                        {
                             db.transaction("rw", db.chunks, function() {
                             var chunk = result.slice(start,end);
                             var currentChunkNumTransactionScope = chunkNum; //Without this, for loop will complete (out of scope) immediatly to value  of <= numChunksNeeded
@@ -136,7 +137,12 @@ function storeFiles(fileList) {
                                             console.log(error)
                             }).then(function() {
                                 //Check if storage is complete
-                                //Post storage progress update to main thread
+                            //Post storage progress update to main thread
+                            //Only post update event if store file progress is above 1%
+                            if ( percentageComplete < parseInt((currentChunkNumTransactionScope+ 1) / numChunksNeeded * 100))
+                            {
+                                console.log("1% increase");
+                                percentageComplete = parseInt((currentChunkNumTransactionScope + 1) / numChunksNeeded * 100);
                                 postMessage({
                                         "type":"storageProgressUpdate",
                                         "fileId":fileId,
@@ -144,6 +150,7 @@ function storeFiles(fileList) {
                                         "currentChunk":currentChunkNumTransactionScope,
                                         "totalNumChunks":numChunksNeeded,
                                 });
+                            }//End only post store file progress update after 1% increase
                                 //Exit if storage is complete
                                 if(currentChunkNumTransactionScope == numChunksNeeded) 
                                 {

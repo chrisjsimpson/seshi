@@ -94,7 +94,7 @@
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 main-header">
                         <h4><span>exchange</span> any files with anyone, anywhere </h4>
-                            <h5>No login & installation required</h5>
+                            <h5>No login - no installs required</h5>
                              <div>
                                  <span class=" fileUpload btn btn-default btn-upload" >
                                      <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
@@ -118,7 +118,7 @@
                         <div class="keycopy">
                             <h6 class="copied">copy key </h6>
                             <div class="keycontainer">
-                                <div id="copyclipboard" class="icon-link round-s clipboard fill"><i class="fa fa-clipboard"></i></div>
+                                <div id="copyclipboard" onclick="generateKey('Generate')" class="icon-link round-s clipboard fill"><i class="fa fa-clipboard"></i></div>
                             </div>
                         </div>
 
@@ -141,7 +141,7 @@
                                 <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
                             </div> -->
                                 <div class="col-xs-3 visible-xs">
-                                    <a class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
+                                    <a onclick="generateKey('Generate')" class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
                                 </div>
                             </div>
                             </div>
@@ -178,7 +178,7 @@
                 <div class=" filecard filewell ">
                     <ul class="list-group myfilelist" id="localFileList">
                         <div class="list-group-item row header-title" id="header-localFileList">
-                            <input id="checkAll-localFileList" class="col-xs-1 col-sm-1" type="checkbox">
+                            <input class="col-xs-1 col-sm-1 checkall" type="checkbox">
                             <div class="col-xs-6 col-sm-6 table-border">File Name</div>
                             <div class="col-xs-3 col-sm-2 ">Type</div>
                             <div class="col-xs-2 col-sm-2"></div>
@@ -190,8 +190,6 @@
                                     <li><a id="multiDownloadLocalFiles">Download</a></li>
                                     <li class="divider"></li>
                                     <li><a id="multiDeleteLocalFiles">Delete</span></a></li>
-
-                                    <!-- <li><a href="#">Di<span class="glyphicon glyphicon-log-out pull-right"></span></a></li> -->
                                 </ul>
                             </div>
                         </div>
@@ -214,7 +212,7 @@
 
                     <ul class="list-group myfilelist" id="remoteFileList">
                         <div class="list-group-item row header-title" id="header-remoteFileList">
-                            <input id="checkAll-remoteFileList" class="col-xs-1 col-sm-1" type="checkbox">
+                            <input class="col-xs-1 col-sm-1 checkall" type="checkbox">
                             <div class="col-xs-6 col-sm-6 table-border">File Name</div>
                             <div class="col-xs-3 col-sm-2 ">Type</div>
                             <div class="col-xs-2 col-sm-2"></div>

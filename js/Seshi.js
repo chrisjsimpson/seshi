@@ -401,21 +401,22 @@ Seshi = {
                                switch(mimeType) {
                                     case 'audio/mp3':
                                     case 'audio/ogg':
-                                    case 'video/mp4':
-                                    case 'video/ogg':
-                                    case 'video/3gpp':
-                                    case 'video/quicktime':
-                                    case 'application/ogg':
                                     case 'audio/wave':
                                     case 'audio/webm':
-                                    case 'video/webm':
-                                    case 'video/mpeg':
-                                    case 'video/x-msvideo':
                                     case 'audio/wav':
                                     case 'audio/x-wav':
                                     case 'audio/x-pn-wav':
                                     case 'audio/x-aac':
                                     case 'audio/midi':
+                                    case 'video/mp4':
+                                    case 'video/ogg':
+                                    case 'video/3gpp':
+                                    case 'video/quicktime':
+                                    case 'video/webm':
+                                    case 'video/mpeg':
+                                    case 'video/x-flv':
+                                    case 'video/x-msvideo':
+                                    case 'application/ogg':
                                          return true;
                                 }//End check mimetype
 

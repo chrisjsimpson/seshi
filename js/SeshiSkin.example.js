@@ -389,6 +389,7 @@ function getFileTypeIcon(mimeType) {
         case 'video/ogg':
         case 'video/3gpp':
         case 'video/x-msvideo':
+        case 'video/x-flv':
              return 'fa-film';
         case 'image/jpeg':
         case 'image/png':
@@ -429,7 +430,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
             checkAllId = 'checkAll-remoteFileList';
             break;
     }//End determine checkall id
-    
+
                       list +=   '<input id="' + checkAllId + '" class="col-xs-1 col-sm-1" type="checkbox">' +
                                 '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
                                 '<div class="col-xs-3 col-sm-2 ">Type</div>' +

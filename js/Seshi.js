@@ -304,7 +304,6 @@ Seshi = {
                          #  arrayBuffer. Each chunk will be stored directly into Seshi's
                          #  IndexedDB using the web worker storeFileDexieWorker.js
                         */
-                        console.log("In store..");
                         StorageWorker.postMessage(dataSourceMsg); // Post data to worker for storage
     },
     storeProgress:[],
@@ -548,7 +547,7 @@ Seshi = {
 
                         fr.onload = function(chunk) {
                               if (Seshi.outBox.length >= 0) {
-                             console.log("We got a chunk to send!");
+                                //console.log("We got a chunk to send!");
                                 for(var i=0;i<=99999999;i++) {}//Crude delay!
                                 dc.send(chunk.target.result);
                                 dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
@@ -1003,7 +1002,6 @@ function setupDataHandlers() {
 
         //Check if message is an array buffer (data)
         if(event.data instanceof ArrayBuffer || event.data.size){ //event.data.size is for Firefox(automatically transforms data to Blob type
-            console.log('Recieved ArrayBuffer message');
             //Catch ArrayBuffer sent through the datachannel
             var blob = new Blob([event.data]);
 
@@ -1021,7 +1019,6 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                                 var fileMetaLengthObj = JSON.parse(result2);
                                 var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
                                 window.fileMetaLength = fileMetaLength;
-                                console.log("Meta length is:" + fileMetaLength);
 
                                     //Split file meta from begining of chunk (all chunk payloads are 64512 bytes in length)
                                     var chunkFileMeta = blob.slice(81, window.fileMetaLength + 81); //First get file type, chunk number etc

@@ -170,12 +170,10 @@ function storeFiles(fileList) {
     
 }//End storeFiles(fileList)
 
-
+var percentageComplete = 0;
 function storeChunk(seshiChunk) {
-
-    console.log("Recived req to store chunk in webworker.");
     console.log(seshiChunk);
-
+    var currentChunk = seshiChunk.chunkNumber;
     //Store chunk into Seshi's indexedDB
     db.chunks.add({
                 fileId: seshiChunk.fileId,
@@ -186,9 +184,13 @@ function storeChunk(seshiChunk) {
                 numberOfChunks: seshiChunk.numberOfChunks,
                 chunkSize: seshiChunk.chunkSize,
                 chunk: seshiChunk.chunk
-            }).then(function(done){
-                console.log('Celebrate');
-                //Post storage progress update to main thread
+            });
+            //Post storage progress update to main thread if neededd
+            //Only post update message if store file progress is above 1%
+            if ( percentageComplete < parseInt(( currentChunk + 1) / seshiChunk.numberOfChunks * 100))
+            {
+                console.log("1% increase");
+                percentageComplete = parseInt(( currentChunk + 1) / seshiChunk.numberOfChunks * 100);
                 postMessage({
                         "type":"storageProgressUpdate",
                         "fileId":seshiChunk.fileId,
@@ -196,9 +198,7 @@ function storeChunk(seshiChunk) {
                         "currentChunk":seshiChunk.chunkNumber,
                         "totalNumChunks":seshiChunk.numberOfChunks
                 });
-                //close();//Close worker thread upon storing the chunk. No need to close as on persistent worker
-            });
-        console.log("Stored a chunk over RTCdatachannel inside worker");
+            }//End Only post update message if store file progress is above 1%
 
 }//End storeChunk()
 

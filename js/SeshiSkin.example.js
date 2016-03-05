@@ -71,15 +71,16 @@ window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
 
 function tickAllFiles(list) {
 
+    //Work out which file box we're playing with, based on 'list' <<- value of list is set by  event listner
+    list == 'checkAll-remoteFileList' ? fileList = "remoteFileCheckBox" : fileList = "localFileCheckBox";
 
-    var fileList = document.getElementsByClassName(list);
+    //Get the value of the toggle check box
+    var newState = document.getElementById(list).checked;
+
+    //Set each file's checkbox to the value of the toggler
+    var fileList = document.getElementsByClassName(fileList);
     for(var i=0; i< fileList.length; i++) {
-            if(fileList[i].checked == true)
-            {
-                fileList[i].checked = false;
-            } else {
-                fileList[i].checked = true;
-            }
+                fileList[i].checked = newState;
     }//End loop though local files list ticking each file
 }//End checkAll local files
 
@@ -739,7 +740,7 @@ function smoothScroll(eID) {
 
 //Event: User clicks 'check all' button on a files list
 var localCheckAll = document.getElementById('checkAll-localFileList');
-localCheckAll.addEventListener('click', function(){ tickAllFiles('localFileCheckBox');}, false);
+localCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-localFileList');}, false);
 
 var remoteCheckAll = document.getElementById('checkAll-remoteFileList');
-remoteCheckAll.addEventListener('click', function(){ tickAllFiles('remoteFileCheckBox');}, false);
+remoteCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-remoteFileList');}, false);

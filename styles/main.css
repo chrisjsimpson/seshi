@@ -19867,6 +19867,20 @@ input[type="checkbox"]:checked + .fileitem {
   margin-bottom: -5px;
 }
 
+.fixed-header-wrapper {
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+}
+
+.fixed-header-file {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 64px;
+  padding: 14px 14px;
+}
+
 .list-group-item:first-child {
   border-top-right-radius: none !important;
   border-bottom: none !important;
@@ -24743,48 +24757,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.53s;
-  animation-duration: 1.48s;
+  animation-delay: 0.62s;
+  animation-duration: 0.85s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.25s;
-  animation-duration: 1.04s;
+  animation-delay: 0.74s;
+  animation-duration: 1.16s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: -0.16s;
-  animation-duration: 1.12s;
+  animation-delay: 0.72s;
+  animation-duration: 0.68s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.03s;
-  animation-duration: 1.6s;
+  animation-delay: 0.04s;
+  animation-duration: 0.64s;
 }
 
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.62s;
-  animation-duration: 0.63s;
+  animation-delay: 0.41s;
+  animation-duration: 1.55s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.46s;
-  animation-duration: 1.4s;
+  animation-delay: 0.05s;
+  animation-duration: 1.52s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.1s;
-  animation-duration: 1.4s;
+  animation-delay: -0.12s;
+  animation-duration: 1.17s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.56s;
-  animation-duration: 1.34s;
+  animation-delay: 0.52s;
+  animation-duration: 1.23s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: -0.16s;
-  animation-duration: 0.62s;
+  animation-delay: 0.74s;
+  animation-duration: 1.54s;
 }
 
 .ball-grid-beat > div {
@@ -24820,48 +24834,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.59s;
-  animation-duration: 1.11s;
+  animation-delay: -0.04s;
+  animation-duration: 0.66s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.79s;
-  animation-duration: 0.8s;
+  animation-delay: 0.06s;
+  animation-duration: 1.06s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.58s;
-  animation-duration: 0.7s;
+  animation-delay: -0.08s;
+  animation-duration: 0.76s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.42s;
-  animation-duration: 0.67s;
+  animation-delay: 0.67s;
+  animation-duration: 1.16s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.37s;
-  animation-duration: 0.82s;
+  animation-delay: -0.15s;
+  animation-duration: 1.58s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.38s;
-  animation-duration: 0.95s;
+  animation-delay: 0.01s;
+  animation-duration: 1.16s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: -0.03s;
-  animation-duration: 1.56s;
+  animation-delay: 0.73s;
+  animation-duration: 0.95s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.11s;
-  animation-duration: 0.97s;
+  animation-delay: 0.35s;
+  animation-duration: 0.62s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.42s;
-  animation-duration: 0.7s;
+  animation-delay: 0.58s;
+  animation-duration: 0.71s;
 }
 
 .ball-grid-pulse > div {
@@ -25199,23 +25213,23 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.3s;
-  animation-duration: 1.11s;
+  animation-delay: 0.46s;
+  animation-duration: 1.21s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.62s;
-  animation-duration: 0.5s;
+  animation-delay: 0.73s;
+  animation-duration: 1.29s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.11s;
-  animation-duration: 0.81s;
+  animation-delay: 0.01s;
+  animation-duration: 0.79s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.66s;
-  animation-duration: 0.81s;
+  animation-delay: 0.67s;
+  animation-duration: 0.33s;
 }
 
 .line-scale-party > div {

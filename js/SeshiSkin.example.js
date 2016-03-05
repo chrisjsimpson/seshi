@@ -294,7 +294,9 @@ function share(event) {
 
 function refreshFileList(listId) {
     //Show loading throbber css animation whilst refreshing file list
-    var throbber = '<div class=" ball-pulse">' +
+ 
+    var throbberId = 'throbber-' + listId;
+    var throbber = '<div id="' + throbberId + '" class="ball-pulse">' +
                     '<div></div>' +
                     '<div></div>' +
                     '<div></div>' +
@@ -305,6 +307,8 @@ function refreshFileList(listId) {
     // Seshi..updateLocalFilesList() returns a promise, therefore we must 'wait' for it to resolve.
     Seshi.updateLocalFilesList().then( // .then() we know the .localFileList cache is updated, so we display the fresh list.
             function(complete){
+                //Remove throbber
+                document.getElementById(throbberId).remove();
                 updateFileListDisplay(Seshi.localFileList(), listId);
                 //If peer connection is established, resend new local file list to peer
                 if(Seshi.connectionStatus.dataChannelState() == 'open')
@@ -418,8 +422,7 @@ function getFileTypeIcon(mimeType) {
 /* Update files list UI */
 function updateFileListDisplay(fileListObj, targetElm) {
     var files = fileListObj;
-
-    var list = '<div class="list-group-item row header-title" id="header-' + targetElm + '" >';
+    var list = '';
 
     //Determine checkAll id
     switch(targetElm) {
@@ -431,27 +434,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
             break;
     }//End determine checkall id
 
-                      list +=   '<input id="' + checkAllId + '" class="col-xs-1 col-sm-1" type="checkbox">' +
-                                '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
-                                '<div class="col-xs-3 col-sm-2 ">Type</div>' +
-                                '<div class="col-xs-2 col-sm-2"></div>';
-                                //Only show file header dropdown menu for local file list
-                                if (targetElm != 'remoteFileList')
-                                {
-                                    list += '<div class="col-xs-1 col-sm-1 dropdown">' +
-                                        '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
-                                        '<i class="fa fa-chevron-down"></i>' +
-                                        '</a>' +
-                                        '<ul class="dropdown-menu">' +
-                                            '<li><a id="multiDownloadLocalFiles">Download </a></li>' +
-                                            '<li class="divider"></li>' +
-                                            '<li><a id="multiDeleteLocalFiles">Delete</a></li>' +
-                                        '</ul>' +
-                                    '</div>';
-                                 }//End only show file header dropdown menu for local file list.
-        list += '</div>';//End file list header
-
-    console.log("There are " + files.length + " local files");
+    console.log("There are " + files.length + " " + targetElm + " files");
 
     //Loop through each
     for(var i=0;i<files.length;i++) {
@@ -489,26 +472,16 @@ function updateFileListDisplay(fileListObj, targetElm) {
         list += '</li>';
     }//End loop through each local file list (cached) and build list items
     //Update display with local files list
-    var localFileList = document.getElementById(targetElm);//Get reference to local file list
-    var numFilesInList = localFileList.children.length;
+    var fileBoxList = document.getElementById(targetElm);//Get reference to file box 
+    var numFilesInList = fileBoxList.children.length;
 
     for(var i=1; i < numFilesInList; i++) //Remove all current items from local file list
-    {  //Note that we start at index 1, so as not to delete the table header.
-       localFileList.removeChild(localFileList.children[1]);
+    {  
+       fileBoxList.removeChild(fileBoxList.children[0]);
     }//End remove all current items in list ready for replacement
 
-    //Update table with local file list:
-    localFileList.innerHTML = list;
-
-    /* Reattach events to filelist header DOH this is bad....*/
-    //Event: When user uses drop down menu to delete selected (checkbox items)
-    var multiDeleteBtn = document.getElementById('multiDeleteLocalFiles');
-    multiDeleteBtn.addEventListener('click', deleteSelectedFiles, false);
-
-    //Event: When user uses drop down menu to dowload selected local files (checkboxes)
-    var multiDownloadBtn = document.getElementById('multiDownloadLocalFiles');
-    multiDownloadBtn.addEventListener('click', function(){ downloadSelectedFiles(); }, false);
-    /* Reattach events */
+    //Update table with file list:
+    fileBoxList.innerHTML = list;
 
 }//updateFileListDisplay()
 

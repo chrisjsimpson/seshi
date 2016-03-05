@@ -447,7 +447,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Open <li>
         list += '<li class="list-group-item file-item row">\n';
         //Checkbox
-        list += '<input class="col-xs-1 ' + checkBoxClass + '" type="checkbox" data-id="' + fileId + '">\n';
+        list += '<input class="col-xs-1 ' + checkBoxClass + '" type="checkbox" id="' + fileId + '" data-id="' + fileId + '">\n';
         //Checkbox label & file name
         list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
         //Filetype

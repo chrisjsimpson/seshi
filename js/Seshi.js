@@ -948,7 +948,7 @@ function onIceconnectionStateChanged(e) {
         dispatchEvent(onPeerConnectionEstablished);
     }//End if iceConnectionState == Completed
 
-    if (pc.iceConnectionState == 'disconnected' || pc.iceConnectionState == 'failed') {
+    if (pc.iceConnectionState == 'disconnected') {
         dispatchEvent(onPeerConnectionBroken);
     }//End if iceConnection state is disconnected or failed, dispatch onPeerConnectionEstablished event
 }//End onIceconnectionStateChanged

@@ -88,6 +88,9 @@ function peerConnectionBroken() {
      *  Used to display a break in Datachannel connection.
      * */
     alert("Doh we broke the internet!");
+    alert("Hold on, we'll try and reconnect");
+    document.getElementById('connectionStatus').innerText = 'Atempting Reconnect...';
+    connect();
     //Show connection status text as 'Disconnected'
     var statusText = document.getElementById('connectionStatus').innerText = 'Disconnected. :(';
 

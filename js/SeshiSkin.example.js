@@ -387,6 +387,7 @@ function getFileTypeIcon(mimeType) {
         case 'video/ogg':
         case 'video/3gpp':
         case 'video/x-msvideo':
+        case 'video/x-flv':
              return 'fa-film';
         case 'image/jpeg':
         case 'image/png':

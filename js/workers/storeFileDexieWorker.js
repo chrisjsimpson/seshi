@@ -116,10 +116,9 @@ function storeFiles(fileList) {
                         var start = 0;
                         var end = maxChunkSize;
                         fileId = uuid();
-                        var percentageComplete = 0;
                         //Piece by piece, take maxChunkSize sized piexes of file.target.result and store them to IndexedDB
                         for(var chunkNum=0; chunkNum<= numChunksNeeded; chunkNum++)
-                        {
+                        {   
                             db.transaction("rw", db.chunks, function() {
                             var chunk = result.slice(start,end);
                             var currentChunkNumTransactionScope = chunkNum; //Without this, for loop will complete (out of scope) immediatly to value  of <= numChunksNeeded
@@ -137,12 +136,7 @@ function storeFiles(fileList) {
                                             console.log(error)
                             }).then(function() {
                                 //Check if storage is complete
-                            //Post storage progress update to main thread
-                            //Only post update event if store file progress is above 1%
-                            if ( percentageComplete < parseInt((currentChunkNumTransactionScope+ 1) / numChunksNeeded * 100))
-                            {
-                                console.log("1% increase");
-                                percentageComplete = parseInt((currentChunkNumTransactionScope + 1) / numChunksNeeded * 100);
+                                //Post storage progress update to main thread
                                 postMessage({
                                         "type":"storageProgressUpdate",
                                         "fileId":fileId,
@@ -150,7 +144,6 @@ function storeFiles(fileList) {
                                         "currentChunk":currentChunkNumTransactionScope,
                                         "totalNumChunks":numChunksNeeded,
                                 });
-                            }//End only post store file progress update after 1% increase
                                 //Exit if storage is complete
                                 if(currentChunkNumTransactionScope == numChunksNeeded) 
                                 {
@@ -170,10 +163,12 @@ function storeFiles(fileList) {
     
 }//End storeFiles(fileList)
 
-var percentageComplete = 0;
+
 function storeChunk(seshiChunk) {
+
+    console.log("Recived req to store chunk in webworker.");
     console.log(seshiChunk);
-    var currentChunk = seshiChunk.chunkNumber;
+
     //Store chunk into Seshi's indexedDB
     db.chunks.add({
                 fileId: seshiChunk.fileId,
@@ -184,13 +179,9 @@ function storeChunk(seshiChunk) {
                 numberOfChunks: seshiChunk.numberOfChunks,
                 chunkSize: seshiChunk.chunkSize,
                 chunk: seshiChunk.chunk
-            });
-            //Post storage progress update to main thread if neededd
-            //Only post update message if store file progress is above 1%
-            if ( percentageComplete < parseInt(( currentChunk + 1) / seshiChunk.numberOfChunks * 100))
-            {
-                console.log("1% increase");
-                percentageComplete = parseInt(( currentChunk + 1) / seshiChunk.numberOfChunks * 100);
+            }).then(function(done){
+                console.log('Celebrate');
+                //Post storage progress update to main thread
                 postMessage({
                         "type":"storageProgressUpdate",
                         "fileId":seshiChunk.fileId,
@@ -198,7 +189,9 @@ function storeChunk(seshiChunk) {
                         "currentChunk":seshiChunk.chunkNumber,
                         "totalNumChunks":seshiChunk.numberOfChunks
                 });
-            }//End Only post update message if store file progress is above 1%
+                //close();//Close worker thread upon storing the chunk. No need to close as on persistent worker
+            });
+        console.log("Stored a chunk over RTCdatachannel inside worker");
 
 }//End storeChunk()
 

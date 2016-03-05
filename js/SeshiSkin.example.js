@@ -416,38 +416,7 @@ function getFileTypeIcon(mimeType) {
 function updateFileListDisplay(fileListObj, targetElm) {
     var files = fileListObj;
 
-    var list = '<div class="list-group-item row header-title" id="header-' + targetElm + '" >';
-
-    //Determine checkAll id
-    switch(targetElm) {
-        case 'localFileList':
-            checkAllId =  'checkAll-localFileList';
-            break;
-        case 'remoteFileList':
-            checkAllId = 'checkAll-remoteFileList';
-            break;
-    }//End determine checkall id
     
-                      list +=   '<input id="' + checkAllId + '" class="col-xs-1 col-sm-1" type="checkbox">' +
-                                '<div class="col-xs-6 col-sm-6 table-border">File Name</div>' +
-                                '<div class="col-xs-3 col-sm-2 ">Type</div>' +
-                                '<div class="col-xs-2 col-sm-2"></div>';
-                                //Only show file header dropdown menu for local file list
-                                if (targetElm != 'remoteFileList')
-                                {
-                                    list += '<div class="col-xs-1 col-sm-1 dropdown">' +
-                                        '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
-                                        '<i class="fa fa-chevron-down"></i>' +
-                                        '</a>' +
-                                        '<ul class="dropdown-menu">' +
-                                            '<li><a id="multiDownloadLocalFiles">Download </a></li>' +
-                                            '<li class="divider"></li>' +
-                                            '<li><a id="multiDeleteLocalFiles">Delete</a></li>' +
-                                        '</ul>' +
-                                    '</div>';
-                                 }//End only show file header dropdown menu for local file list.
-        list += '</div>';//End file list header
-
     console.log("There are " + files.length + " local files");
 
     //Loop through each

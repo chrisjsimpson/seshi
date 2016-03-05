@@ -404,6 +404,8 @@ function getFileTypeIcon(mimeType) {
               return 'fa-file-code-o';
         case 'text/csv':
         case 'text/plain':
+        case 'application/x-latex':
+        case 'application/x-tex':
               return 'fa-file-text-o';
         default:
              return mimeType;

@@ -388,6 +388,8 @@ function getFileTypeIcon(mimeType) {
         case 'text/csv':
         case 'text/plain':
               return 'fa-file-text-o';
+        case 'application/x-font-ttf':
+              return 'fa-font';
         default:
              return mimeType;
     }

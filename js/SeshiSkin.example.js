@@ -384,18 +384,25 @@ function getFileTypeIcon(mimeType) {
         case 'audio/ogg':
              return 'fa-music';
         case 'video/mp4':
+        case 'video/ogg':
+        case 'video/3gpp':
+        case 'video/x-msvideo':
              return 'fa-film';
         case 'image/jpeg':
         case 'image/png':
+        case 'image/svg+xml':
              return 'fa-file-image-o';
         case 'application/pdf':
              return 'fa-file-pdf-o';
         case 'application/msword':
         case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
               return 'fa-file-word-o';
-        case 'application/vnd.ms-excel':
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-              return 'fa-file-excel-o';
+        case 'text/html':
+        case 'text/css':
+              return 'fa-file-code-o';
+        case 'text/csv':
+        case 'text/plain':
+              return 'fa-file-text-o';
         default:
              return mimeType;
     }

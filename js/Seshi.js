@@ -542,7 +542,7 @@ Seshi = {
                      *
                      * - Reads outbox & sends each message to peer untill outBox is empty.
                      */
-                    if ( Seshi.flagProcessOutboxStarted == true )
+                    if ( Seshi.flagProcessOutboxStarted == true && typeof fr != 'object')
                     {
                         fr = new FileReader
 
@@ -554,8 +554,13 @@ Seshi = {
                                 for(var i=0;i<=99999999;i++) {}//Crude delay!
                                 dc.send(chunk.target.result);
                                 dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
+                                    //Kill off fileReader if we've reached the end
+                                    if(Seshi.outBox.length == 0)
+                                    {
+                                        fr = undefined; 
+                                    }//End kill off fileReader if we've reached the end
                                 loadNext(); // shortcut here
-                              }
+                              } 
                            };
 
                             //Get next chunk info, pass chunk to fileReader & update sendingFileProgress

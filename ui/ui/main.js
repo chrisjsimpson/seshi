@@ -11854,24 +11854,6 @@ if($(window).scrollTop() > (topOfOthDiv - 130)) { //scrolled past the other div?
 
 //pyr plugin
 
-
-google.maps.event.addDomListener(window, 'load', init);
-
-function initMap() {
-  var myLatLng = {lat: 54.976944, lng: -1.607170};
-
-  var map = new google.maps.Map(document.getElementById('map-canvas'), {
-   zoom: 15,
-    center: myLatLng
-  });
-
-  var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map,
-    icon: 'img/marker2.png'
-  });
-}
-
 });
 
 // /*

@@ -527,7 +527,7 @@ function updateStoreProgressDisplay() {
             var complete = Seshi.storeProgress[fileId].complete;
 
             var output = '' +
-                    '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">' +
+                    '<li class="file-item uploading-item row" id="storingFileId-' + fileId + '">' +
                         //Filename
                     '   <div class="col-xs-4 col-sm-4 name-label">' + fileName + '</div> ' +
                         //Progress bar

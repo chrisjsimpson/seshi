@@ -524,22 +524,18 @@ function updateStoreProgressDisplay() {
 
              //If complete, check for existing progress bar and delete it
              if (valueNow >= 100) {
-                    refreshFileList('localFileList');
-             }//If valueNow >= 100 refresh locaFileList
-             //If not, replace any existing progress bar to the list
-             if(complete) {//TODO remove this
                     if (document.getElementById('storingFileId-' + fileId)) {
                         document.getElementById('storingFileId-' + fileId).remove();
+                        refreshFileList('localFileList');
                     }
                     //Set UI complete flag
                     Seshi.storeProgress[fileId].UIdone = true;
-                    refreshFileList('localFileList');
-             } else { //End if complete
-                    //If not complete:
+             }else { // End ff valueNow >= 100 refresh locaFileList
+                //otherwise, replace any existing progress bar to the list
                     if (document.getElementById('storingFileId-' + fileId)) {
                         document.getElementById('storingFileId-' + fileId).remove();
                     }
-                    document.getElementById('header-localFileList').insertAdjacentHTML('afterend', output);
+                    document.getElementById('localFileList').insertAdjacentHTML('beforeend', output);
              }//End if not complete
          }//End check Seshi.storeProgress[fileId].UIdone == false before proceeding (prevents itterating over already completed UI updates.
     }//End loop through each item in Seshi.storeProgress & update the display accordingly

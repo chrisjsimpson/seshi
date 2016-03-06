@@ -11830,7 +11830,7 @@ $("#copyclipboard").click(function () {
     });
     $(".keycopy .copied").replaceWith("<h6> Copied! </h6>")
 
-    $(".message-app-card").css('opacity', '1');
+    $(".message-app-card").delay(400).fadeIn();
 
 });
 

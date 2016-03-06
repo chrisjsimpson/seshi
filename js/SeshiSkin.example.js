@@ -502,6 +502,7 @@ function updateStoreProgressDisplay() {
             Seshi.storeProgress[fileId];
             var fileName = Seshi.storeProgress[fileId].fileName;
             var valueNow = parseInt((Seshi.storeProgress[fileId].currentChunk + 1) / Seshi.storeProgress[fileId].totalNumChunks * 100);
+            var totalNumChunks = Seshi.storeProgress[fileId].totalNumChunks;
             var complete = Seshi.storeProgress[fileId].complete;
 
             var output = '' +
@@ -526,9 +527,11 @@ function updateStoreProgressDisplay() {
 
              //If complete, check for existing progress bar and delete it
              if (valueNow >= 100) {
-                    if (document.getElementById('storingFileId-' + fileId)) {
+                    if (document.getElementById('storingFileId-' + fileId)) {//Get reference to progress bar
                         document.getElementById('storingFileId-' + fileId).remove();
                         refreshFileList('localFileList');
+                    }else if ( totalNumChunks == 1) {
+                        refreshFileList('localFileList');//Refresh filelist for tiny (one chunk) files too (they don't have a progress bar)
                     }
                     //Set UI complete flag
                     Seshi.storeProgress[fileId].UIdone = true;

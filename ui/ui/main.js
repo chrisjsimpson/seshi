@@ -11828,7 +11828,7 @@ $("#copyclipboard").click(function () {
     $(".keycopy").animate({
         width: '25%'
     });
-    $(".keycopy .copied").replaceWith("<h6> Copied! </h6>")
+    $(".keycopy .copied").replaceWith('<h6 class="flashcopied"> Copied! </h6>');
 
     $(".message-app-card").delay(400).fadeIn();
 

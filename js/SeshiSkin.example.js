@@ -434,8 +434,10 @@ function updateFileListDisplay(fileListObj, targetElm) {
             checkAllId = 'checkAll-remoteFileList';
             break;
     }//End determine checkall id
-
-    console.log("There are " + files.length + " " + targetElm + " files");
+    if(files) 
+    {
+        console.log("There are " + files.length + " " + targetElm + " files");
+    }
 
     //Loop through each
     for(var i=0;i<files.length;i++) {
@@ -535,7 +537,7 @@ function updateStoreProgressDisplay() {
                     if (document.getElementById('storingFileId-' + fileId)) {
                         document.getElementById('storingFileId-' + fileId).remove();
                     }
-                    document.getElementById('localFileList').insertAdjacentHTML('beforeend', output);
+                    document.getElementById('localFileList').insertAdjacentHTML('afterbegin', output);
              }//End if not complete
          }//End check Seshi.storeProgress[fileId].UIdone == false before proceeding (prevents itterating over already completed UI updates.
     }//End loop through each item in Seshi.storeProgress & update the display accordingly
@@ -658,7 +660,7 @@ function updateSendFileProgessDisplay() {
             if (document.getElementById('sendingFileId-' + fileId)) {
                 document.getElementById('sendingFileId-' + fileId).remove();
             }
-            document.getElementById('remoteFileList').insertAdjacentHTML('beforeend', output);
+            document.getElementById('remoteFileList').insertAdjacentHTML('afterbegin', output);
      }//End if not complete
 }//End updateSendFileProgessDisplay()
 

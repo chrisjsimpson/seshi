@@ -173,7 +173,7 @@ function replaceGenerateKeyBtn() {
     var connectBtn = document.createElement('p');
     connectBtn.id = 'connectionStatus';
     connectBtn.className = '' ;
-    connectBTnText = document.createTextNode("Send your friend the key:\n " + Seshi.getShareUrl()); //Message shown to user on button
+    connectBTnText = document.createTextNode("waiting for friend to receive key"); //Message shown to user on button
     connectBtn.appendChild(connectBTnText);
 
     var parentDiv = generateKeyBtn.parentNode; //Locate the parent node of the existing button.

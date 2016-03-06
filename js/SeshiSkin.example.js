@@ -658,7 +658,7 @@ function updateSendFileProgessDisplay() {
             if (document.getElementById('sendingFileId-' + fileId)) {
                 document.getElementById('sendingFileId-' + fileId).remove();
             }
-            document.getElementById('header-remoteFileList').insertAdjacentHTML('afterend', output);
+            document.getElementById('remoteFileList').insertAdjacentHTML('beforeend', output);
      }//End if not complete
 }//End updateSendFileProgessDisplay()
 

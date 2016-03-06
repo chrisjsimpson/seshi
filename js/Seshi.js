@@ -1151,6 +1151,8 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
             //cb.value += msg.chat + "\n";
             ////TODO Move to SeshiSkinExample to keep seperate from API:
             var timeStamp = new Date();
+            timeStamp = timeStamp.toString();
+            timeStamp = timeStamp.substring(0,21);
             var remoteChatMsg =
                 '<li class="clearfix">' +
                 '    <div class="message-data align-right">' +
@@ -1187,6 +1189,8 @@ function sendChat(msg) {
 	//cb.value += "-> " + msg + "\n";
     //TODO Move (below) to SeshiSkinExample to keep seperate from API:
     var timeStamp = new Date();
+    timeStamp = timeStamp.toString();
+    timeStamp = timeStamp.substring(0,21);
     var localChatMsg =
             '<li>' +
             '<div class="message-data align-left">' +

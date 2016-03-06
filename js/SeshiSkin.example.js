@@ -531,7 +531,7 @@ function updateStoreProgressDisplay() {
                         //Filename
                     '   <div class="col-xs-4 col-sm-4 name-label">' + fileName + '</div> ' +
                         //Progress bar
-                    '   <div class="col-xs-5  col-sm-6">' +
+                    '   <div class="col-xs-7  col-sm-7">' +
                     '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
                     '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' +
                     '                </div>' +
@@ -541,9 +541,9 @@ function updateStoreProgressDisplay() {
                     '       <div id="percentupload">' + valueNow + '%</div>' +
                     '        </div>' +
                         //Cancell button
-                    '   <div class="col-xs-1 col-sm-1">' +
-                    '       <i class="fa fa-times "></i>' +
-                    '   </div>' +
+                    // '   <div class="col-xs-1 col-sm-1">' +
+                    // '       <i class="fa fa-times "></i>' +
+                    // '   </div>' +
                     '</li>';
 
              //If complete, check for existing progress bar and delete it

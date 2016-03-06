@@ -1150,10 +1150,11 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
             console.log("received chat of '" + msg.chat + "'");
             //cb.value += msg.chat + "\n";
             ////TODO Move to SeshiSkinExample to keep seperate from API:
+            var timeStamp = new Date();
             var remoteChatMsg =
                 '<li class="clearfix">' +
                 '    <div class="message-data align-right">' +
-                '    <span class="message-data-time">10:14 AM, Today</span>' +
+                '    <span class="message-data-time">' + timeStamp + 
                 '    <span class="message-data-name">' +
                      msg.remoteDisplayName+
                 '    </span>' +
@@ -1185,6 +1186,7 @@ function sendChat(msg) {
 	console.log("calling sendChat(" + msg + ")");
 	//cb.value += "-> " + msg + "\n";
     //TODO Move (below) to SeshiSkinExample to keep seperate from API:
+    var timeStamp = new Date();
     var localChatMsg =
             '<li>' +
             '<div class="message-data align-left">' +
@@ -1192,7 +1194,7 @@ function sendChat(msg) {
             '        <i class="fa fa-circle online"></i> ' +
                         Seshi.getDisplayName() +
             '    </span>' +
-            '<span class="message-data-time">10:20 AM, Today</span>' +
+            '<span class="message-data-time">' + timeStamp + '</span>' +
             '</div>' +
             '    <div class="message my-message">' +
                                 msg +

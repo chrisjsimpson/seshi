@@ -531,7 +531,7 @@ function updateStoreProgressDisplay() {
                         //Filename
                     '   <div class="col-xs-4 col-sm-4 name-label">' + fileName + '</div> ' +
                         //Progress bar
-                    '   <div class="col-xs-7  col-sm-7">' +
+                    '   <div class="col-xs-6  col-sm-6">' +
                     '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
                     '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' +
                     '                </div>' +

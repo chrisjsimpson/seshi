@@ -505,25 +505,21 @@ function updateStoreProgressDisplay() {
             var totalNumChunks = Seshi.storeProgress[fileId].totalNumChunks;
             var complete = Seshi.storeProgress[fileId].complete;
 
-            var output = '' +
-                    '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">' +
+            var output = '';
+            output += '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">';
                         //Filename
-                    '   <div class="col-xs-4 col-sm-4 name-label">' + fileName + '</div> ' +
+            output += '<div class="col-xs-4 col-sm-4 name-label">' + fileName + '</div> ';
                         //Progress bar
-                    '   <div class="col-xs-6  col-sm-6">' +
-                    '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
-                    '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' +
-                    '                </div>' +
-                    '   </div>' +
+            output += '<div class="col-xs-6  col-sm-6">';
+            output += '<div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">';
+            output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
+            output += '</div>';
+            output += '</div>';
                         //Percentage complete
-                    '   <div class="col-xs-1 col-sm-1">' +
-                    '       <div id="percentupload">' + valueNow + '%</div>' +
-                    '        </div>' +
-                        //Cancell button
-                    // '   <div class="col-xs-1 col-sm-1">' +
-                    // '       <i class="fa fa-times "></i>' +
-                    // '   </div>' +
-                    '</li>';
+            output += '<div class="col-xs-1 col-sm-1">';
+            output += '<div id="percentupload">' + valueNow + '%</div>';
+            output += '</div>';
+            output += '</li>';
 
              //If complete, check for existing progress bar and delete it
              if (valueNow >= 100) {
@@ -629,26 +625,26 @@ function updateSendFileProgessDisplay() {
         var valueNow = parseInt((chunkNumber + 1) / numberOfChunks * 100);
         var complete = Seshi.sendingFileProgress.allFileDataSent;
 
-    var output = '' +
-            '<li class="list-group-item file-item uploading-item row" id="sendingFileId-' + fileId + '">' +
+    var output = '';
+    output += '<li class="list-group-item file-item uploading-item row" id="sendingFileId-' + fileId + '">';
                 //Filename
-            '   <div class="col-xs-4 col-sm-3">' + fileName + '</div> ' +
+    output += '<div class="col-xs-4 col-sm-3">' + fileName + '</div> ';
                 //Progress bar
-            '   <div class="col-xs-5  col-sm-6">' +
-            '       <div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
-            '            <span class="uploadbar" style="width: ' + valueNow + '%;"></span>' +
-            '                </div>' +
-            '   </div>' +
+    output += '<div class="col-xs-5  col-sm-6">';
+    output += '<div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">';
+    output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
+    output += '</div>';
+    output += '</div>';
                 //Percentage complete
-            '   <div class="col-xs-1 col-sm-1">' +
-            '       <div id="percentupload">' + valueNow + '%</div>' +
-            '        </div>' +
+    output += '<div class="col-xs-1 col-sm-1">';
+    output += '<div id="percentupload">' + valueNow + '%</div>';
+    output += '</div>';
                 //Cancell button
-            '   <div class="col-xs-1 col-sm-1">' +
-            '       <i class="fa fa-times "></i>' +
-            '   </div>'
-            '       <div class="col-xs-1 col-sm-1"></div>' +
-            '</li>';
+    output += '<div class="col-xs-1 col-sm-1">';
+    output += '<i class="fa fa-times "></i>';
+    output += '</div>';
+    output += '<div class="col-xs-1 col-sm-1"></div>';
+    output += '</li>';
 
      //If complete, check for existing progress bar and delete it
      if (valueNow >= 100) {

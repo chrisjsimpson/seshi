@@ -1153,6 +1153,12 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
             var timeStamp = new Date();
             timeStamp = timeStamp.toString();
             timeStamp = timeStamp.substring(0,21);
+            //Filter chat message
+            chatData = filterXSS(msg.chat, {
+                whiteList:          [],        // empty, means filter out all tags
+                stripIgnoreTag:     true,      // filter out all HTML not in the whilelist
+                stripIgnoreTagBody: ['script'] // the script tag is a special case, we need to filter out its content
+                });
             var remoteChatMsg =
                 '<li class="clearfix">' +
                 '    <div class="message-data align-right">' +
@@ -1162,7 +1168,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                 '    </span>' +
                 '    <i class="fa fa-circle me"></i></div>' +
                 '    <div class="message other-message float-right">' +
-                                msg.chat +
+                                ourcehatData +
                 '    </div>' +
                 '</li>';
             cb.insertAdjacentHTML('beforeend', remoteChatMsg);
@@ -1191,6 +1197,12 @@ function sendChat(msg) {
     var timeStamp = new Date();
     timeStamp = timeStamp.toString();
     timeStamp = timeStamp.substring(0,21);
+    //Filter chat message
+    chatData = filterXSS(msg, {
+        whiteList:          [],        // empty, means filter out all tags
+        stripIgnoreTag:     true,      // filter out all HTML not in the whilelist
+        stripIgnoreTagBody: ['script'] // the script tag is a special case, we need to filter out its content
+        });
     var localChatMsg =
             '<li>' +
             '<div class="message-data align-left">' +
@@ -1201,7 +1213,7 @@ function sendChat(msg) {
             '<span class="message-data-time">' + timeStamp + '</span>' +
             '</div>' +
             '    <div class="message my-message">' +
-                                msg +
+                                chatData +
             '    </div>' +
             '</li>';
     cb.insertAdjacentHTML('beforeend', localChatMsg);

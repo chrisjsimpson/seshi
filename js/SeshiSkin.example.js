@@ -339,9 +339,9 @@ if (getQueryVariable("key")) {
     generateKeyBtn = document.getElementById('connectionStatus');
 
     //Create replacement 'button' <<-- This is just to match UI, the user dosn't need to click it.
-    var waitingBtn= document.createElement('button');
+    var waitingBtn= document.createElement('p');
     waitingBtn.id = 'connectionStatus';
-    waitingBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
+    // waitingBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
     waitingBTnText = document.createTextNode("Connecting..."); //Message shown to user on button
     waitingBtn.appendChild(waitingBTnText);
 

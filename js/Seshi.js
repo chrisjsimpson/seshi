@@ -1168,7 +1168,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                 '    </span>' +
                 '    <i class="fa fa-circle me"></i></div>' +
                 '    <div class="message other-message float-right">' +
-                                ourcehatData +
+                                chatData +
                 '    </div>' +
                 '</li>';
             cb.insertAdjacentHTML('beforeend', remoteChatMsg);

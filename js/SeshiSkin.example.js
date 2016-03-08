@@ -333,20 +333,26 @@ function deleteFile(event){
 }
 
 
-/* Show 'connecting' instead of generate key box if 'key' is in URI */
+/* Show 'connecting' instead of generate key box if 'key' is in URI 
+ * and user isn't trying to connect to themselves 
+ * */
 if (getQueryVariable("key")) {
     //Get reference to Generate Key button
     generateKeyBtn = document.getElementById('connectionStatus');
 
-    //Create replacement 'button' <<-- This is just to match UI, the user dosn't need to click it.
-    var waitingBtn= document.createElement('p');
-    waitingBtn.id = 'connectionStatus';
-    // waitingBtn.className = 'button button--antiman button--round-l button--text-medium btn-generate-key';
-    waitingBTnText = document.createTextNode("Connecting..."); //Message shown to user on button
-    waitingBtn.appendChild(waitingBTnText);
+    var connectionStatusMessage= document.createElement('p');
+    connectionStatusMessage.id = 'connectionStatus';
+    if(getQueryVariable("key") != localStorage.getItem('key'))
+    {
+        connectionStatusMessageText = document.createTextNode("Connecting..."); //Message shown to user on button
+    } else {
+        connectionStatusMessageText = document.createTextNode("Hey! It looks like you've sent the key to yourself, send it to a friend to share files with them.");
+    }//End if user has connected to themself, explain the situation..
+
+    connectionStatusMessage.appendChild(connectionStatusMessageText);
 
     var parentDiv = generateKeyBtn.parentNode; //Locate the parent node of the existing button.
-    parentDiv.replaceChild(waitingBtn, generateKeyBtn); //Replace the old button with the new
+    parentDiv.replaceChild(connectionStatusMessage, generateKeyBtn); //Replace the old button with the new
 
 }//End show 'connecting' instead of generate key box if 'key' is in URI */
 

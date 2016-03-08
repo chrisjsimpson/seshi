@@ -155,6 +155,9 @@ Seshi = {
                             retVal += charset.charAt(Math.floor(Math.random() * n));
                         }
                         Seshi.key = retVal;
+                        //Store key in localstorage (so can be used to prevent self connects)
+                        localStorage.setItem('key', Seshi.getKey());
+                        //Return key
                         return Seshi.getKey();
     },
     getKey: function() {
@@ -782,7 +785,11 @@ var signalingChannel, key, id,
 
 if(getQueryVariable("key")) {
     Seshi.key = getQueryVariable("key");
-    connect();
+    //Prevent user connecting to themselves
+    if (localStorage.getItem('key') != Seshi.key)
+    {
+        connect();
+    }//End prevent user connecting to themselves
 }//End auto-connect is key is in URI
 
 
@@ -952,6 +959,8 @@ function onIceconnectionStateChanged(e) {
     if ( pc.iceConnectionState == 'completed' || pc.iceConnectionState == 'connected') {
         //dispatch event onPeerConnectionEstablished since we now have a peer connection (TODO check datachannel state too!)
         dispatchEvent(onPeerConnectionEstablished);
+        //Remove key guard from localstorage which prevents users from connecting to themselves
+        localStorage.removeItem('key'); 
     }//End if iceConnectionState == Completed
 
     if (pc.iceConnectionState == 'disconnected') {

@@ -323,9 +323,7 @@ function refreshFileList(listId) {
 function storeFile(fileList){
     Seshi.store({'dataSource':'fileSystem','data':fileList});
     //Scroll to file list so user can see storing progress bar indicator:
-    $('.dropfile').css({'opacity': '0',
-                    'z-index': '999'});
-                        $('input[id="dropfileinput"]').hide();
+    smoothScroll('shareButtonsRow');
 }
 
 function deleteFile(event){

@@ -226,7 +226,7 @@ function play(event) {
                           $('.plyr').css({
                               'position': 'relative',
                               'width': '100%',
-                              'z-index':'1'
+                              'z-index':'1000'
                                   });
                           $("#hideall").css('position', 'absolute');
                           $("#hideall").hide();

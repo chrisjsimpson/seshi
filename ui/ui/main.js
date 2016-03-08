@@ -11847,7 +11847,8 @@ $('.dropfile').on('dragenter', function() {
 
 });
 
-$('.dropfile').on('drop', function() {
+$('.dropfile').on('drop', function(e) {
+   e.preventDefault();
     dropzoneleave();
 
 });
@@ -11865,7 +11866,7 @@ function dropzoneenter() {
 //     .css({'background-color' : 'rgba(255,255,255,0.6)',
 // });
     $('.dropfile').css({'opacity':'1',
-                        'z-index': '1500'})
+                        'z-index': '1002'})
                         $('input[id="dropfileinput"]').show();
 }
 
@@ -11873,7 +11874,7 @@ function dropzoneleave() {
     // $('.dropfile')
     // .css({'background-color' : ''});
     $('.dropfile').css({'opacity': '0',
-                        'z-index': '1500'});
+                        'z-index': '999'});
                             $('input[id="dropfileinput"]').hide();
 }
 

@@ -87,65 +87,83 @@
         <!-- /.container -->
     </nav>
 
+    <!---dropzone -->
+    <div class="hidden-sm hidden-xs dropfile">
+        <div id="dropzonetext" class="dragdrop"><p>or DRAG FILES HERE TO UPLOAD</p></div>
+        <input type="file" id="dropfileinput" onchange="storeFile(this.files)" multiple/>
+    </div>
+
+
+    <!-- <div id="dropzone"></div> -->
     <!-- Intro Header -->
     <header class="intro">
         <div class="intro-body">
+
             <div class="container">
                 <div class="row">
-                    <div class="col-md-8 col-md-offset-2 main-header">
+                    <div class="main-header">
                         <h4><span>exchange</span> any files with anyone, anywhere </h4>
                             <h5>No login - no installs required</h5>
-                             <div>
-                                 <span class=" fileUpload btn btn-default btn-upload" >
-                                     <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
-                                     <span><img src="img/add_fileicon.png"> </span><span>Click to Add Files</span>
-                                     <div class=" hidden-xs dragfile">
-                                         or drag files to upload
+                            <!-- <h3> <span>Send key </span>to a friend to start file exchange</h3> -->
+                            <div class="uploadbox-connect">
+                                 <div class="col-sm-3">
+                                     <span class=" fileUpload btn btn-default btn-upload" >
+                                         <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
+                                         <span><img src="img/add_fileicon.png"> </span><span class="hidden-sm">Add Files</span>
+                                         <!-- <div class=" hidden-xs dragfile">
+                                             or drag files to upload
+                                         </div> -->
+                                     </span>
+                                 </div>
+                             <div class="col-sm-9">
+                                 <div class="copyclipboard-card">
+                                     <div class="keycopy">
+                                         <h6 class="copied">Send url key </h6>
+                                         <div class="keycontainer">
+                                             <div id="copyclipboard" class="icon-link round-s clipboard fill"><i class="fa fa-clipboard"></i></div>
+                                         </div>
                                      </div>
-                                 </span>
+
+                                     <div class="col-75 col-80 message-app-card" >
+                                         <h6>Send the connection key to a friend </h6>
+                                         <div class="keycontainer">
+                                         <div class="col-xs-3 col-sm-4">
+                                             <a target="_blank" href="http://twitter.com" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
+                                         </div>
+
+                                         <div class="col-xs-3 col-sm-4">
+                                             <a target="_blank" href="http://facebook.com" class="icon-link round-corner facebook fill"><i class="fa fa-facebook"></i></a>
+                                         </div>
+
+                                         <div class="col-xs-3 col-sm-4">
+                                             <a href="#" class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
+                                         </div>
+
+                                         <!-- <div class="col-xs-3 col-sm-4">
+                                             <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
+                                         </div> -->
+                                             <div class="col-xs-3 visible-xs">
+                                                 <a class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
+                                             </div>
+                                         </div>
+                                         </div>
+                                 </div>
+
                              </div>
+                         </div>
+
                     </div>
+
                 </div>
             </div>
-        <div id="hideall"> <!--hide wrapper -->
+    <div id="hideall"> <!--hide wrapper -->
             <div class="row myfiles" id="myfiles">
-                <h3> <span>Send key </span>to a friend to start file exchange</h3>
+
+
 
                 <div class="row generate-key">
                     <div class="container" id="shareButtonsRow">
 
-                    <div class="copyclipboard-card">
-                        <div class="keycopy">
-                            <h6 class="copied">copy key </h6>
-                            <div class="keycontainer">
-                                <div id="copyclipboard" class="icon-link round-s clipboard fill"><i class="fa fa-clipboard"></i></div>
-                            </div>
-                        </div>
-
-                        <div class="col-75 col-80 message-app-card" >
-                            <h6>Send the connection key to a friend </h6>
-                            <div class="keycontainer">
-                            <div class="col-xs-3 col-sm-4">
-                                <a target="_blank" href="http://twitter.com" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
-                            </div>
-
-                            <div class="col-xs-3 col-sm-4">
-                                <a target="_blank" href="http://facebook.com" class="icon-link round-corner facebook fill"><i class="fa fa-facebook"></i></a>
-                            </div>
-
-                            <div class="col-xs-3 col-sm-4">
-                                <a href="#" class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
-                            </div>
-
-                            <!-- <div class="col-xs-3 col-sm-4">
-                                <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
-                            </div> -->
-                                <div class="col-xs-3 visible-xs">
-                                    <a class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
-                                </div>
-                            </div>
-                            </div>
-                    </div>
 
 
 
@@ -155,12 +173,6 @@
                 </div>
 
                 <div class="row" id="fileBoxes">
-                    <div class="col-sm-3 addmorefiles" id="addmorefiles">
-                        <div class="addmorefile btn btn-addmorefile">
-                            <span><img src="img/add_fileicon.png"> Add More Files</span>
-                            <input type="file" onchange="storeFile(this.files)" multiple/>
-                        </div>
-                    </div>
                     <div class="col-sm-5 col-offset-sm-4">
                         <div class="displayname">
                             <span>Display name: </span>
@@ -402,26 +414,13 @@
     </footer>
 
 
-    <div id="statsFornerds" style="display:none;height:200px;margin-top:50px;color:black;"><!-- TODO move to styles & hide by default -->
-        In:
-        <textarea id="message"></textarea>
-        Out:
-        <textarea id="outmessages"></textarea>
-        Response:
-        <textarea id="response"></textarea>
-        Inmessages:
-        <textarea id="inmessages"></textarea>
-        Chatbox:
-        Chat:
-        <textarea id="chat"></textarea>
-        <textarea id="status"></textarea>
-    </div>
-    <!-- end statsFornerds -->
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- Custom Theme JavaScript -->
 
+    <script>
 
+
+     </script>
 
     <!--Video player -->
     <script src="js/plyr/plyr.js"></script>

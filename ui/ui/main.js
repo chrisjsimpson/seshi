@@ -11847,7 +11847,7 @@ $('.dropfile').on('dragenter', function() {
 
 });
 
-$('.dropfile').on('dragend', function(e) {
+$('.dropfile').on('drop', function(e) {
    e.preventDefault();
     dropzoneleave();
 

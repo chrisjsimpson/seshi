@@ -32,6 +32,36 @@ $(".btn-hide").click(function() {
 
 })
 
+$('#dropzone').on('dragenter', function() {
+    dropzoneenter();
+});
+
+$('#dropzone').on('dragleave', function() {
+    dropzoneleave();
+});
+
+$('.btn-upload').mouseenter( function(){
+    dropzoneenter();
+});
+
+$('.btn-upload').mouseleave( function(){
+    dropzoneleave();
+});
+
+function dropzoneenter() {
+//     $('.dropfile')
+//     .css({'background-color' : 'rgba(255,255,255,0.6)',
+// });
+    $('.dropfile').fadeIn(200);
+}
+
+function dropzoneleave() {
+    // $('.dropfile')
+    // .css({'background-color' : ''});
+    $('.dropfile').fadeOut(200);
+}
+
+
 //if audio player CSS change
 // if($('.plyr').find('audio').length != 0) {
 //     $('#hideall').css('position', 'relative');

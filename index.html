@@ -87,6 +87,15 @@
         <!-- /.container -->
     </nav>
 
+    <!---dropzone -->
+    <div class="dropfile">
+
+        <div id="dropzonetext" class="dragdrop"><p>or DRAG FILES HERE TO UPLOAD</p></div>
+        <input type="file" id="dropfileinput" onchange="storeFile(this.files)" multiple/>
+    </div>
+
+
+
     <!-- Intro Header -->
     <header class="intro">
         <div class="intro-body">
@@ -98,10 +107,10 @@
                              <div>
                                  <span class=" fileUpload btn btn-default btn-upload" >
                                      <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
-                                     <span><img src="img/add_fileicon.png"> </span><span>Click to Add Files</span>
-                                     <div class=" hidden-xs dragfile">
+                                     <span><img src="img/add_fileicon.png"> </span><span>Add Files</span>
+                                     <!-- <div class=" hidden-xs dragfile">
                                          or drag files to upload
-                                     </div>
+                                     </div> -->
                                  </span>
                              </div>
                     </div>
@@ -402,26 +411,13 @@
     </footer>
 
 
-    <div id="statsFornerds" style="display:none;height:200px;margin-top:50px;color:black;"><!-- TODO move to styles & hide by default -->
-        In:
-        <textarea id="message"></textarea>
-        Out:
-        <textarea id="outmessages"></textarea>
-        Response:
-        <textarea id="response"></textarea>
-        Inmessages:
-        <textarea id="inmessages"></textarea>
-        Chatbox:
-        Chat:
-        <textarea id="chat"></textarea>
-        <textarea id="status"></textarea>
-    </div>
-    <!-- end statsFornerds -->
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- Custom Theme JavaScript -->
 
+    <script>
 
+
+     </script>
 
     <!--Video player -->
     <script src="js/plyr/plyr.js"></script>

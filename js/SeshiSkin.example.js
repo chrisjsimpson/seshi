@@ -226,7 +226,7 @@ function play(event) {
                           $('.plyr').css({
                               'position': 'relative',
                               'width': '100%',
-                              'z-index':'1'
+                              'z-index':'1000'
                                   });
                           $("#hideall").css('position', 'absolute');
                           $("#hideall").hide();
@@ -295,7 +295,7 @@ function share(event) {
 
 function refreshFileList(listId) {
     //Show loading throbber css animation whilst refreshing file list
- 
+
     var throbberId = 'throbber-' + listId;
     var throbber = '<div id="' + throbberId + '" class="ball-pulse">' +
                     '<div></div>' +
@@ -440,7 +440,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
             checkAllId = 'checkAll-remoteFileList';
             break;
     }//End determine checkall id
-    if(files) 
+    if(files)
     {
         console.log("There are " + files.length + " " + targetElm + " files");
     }
@@ -481,11 +481,11 @@ function updateFileListDisplay(fileListObj, targetElm) {
         list += '</li>';
     }//End loop through each local file list (cached) and build list items
     //Update display with local files list
-    var fileBoxList = document.getElementById(targetElm);//Get reference to file box 
+    var fileBoxList = document.getElementById(targetElm);//Get reference to file box
     var numFilesInList = fileBoxList.children.length;
 
     for(var i=1; i < numFilesInList; i++) //Remove all current items from local file list
-    {  
+    {
        fileBoxList.removeChild(fileBoxList.children[0]);
     }//End remove all current items in list ready for replacement
 
@@ -546,6 +546,9 @@ function updateStoreProgressDisplay() {
              }//End if not complete
          }//End check Seshi.storeProgress[fileId].UIdone == false before proceeding (prevents itterating over already completed UI updates.
     }//End loop through each item in Seshi.storeProgress & update the display accordingly
+
+
+
 }//End updateStoreProgressDisplay()
 
 

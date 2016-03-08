@@ -88,7 +88,7 @@
     </nav>
 
     <!---dropzone -->
-    <div class="dropfile">
+    <div class="hidden-sm hidden-xs dropfile">
         <div id="dropzonetext" class="dragdrop"><p>or DRAG FILES HERE TO UPLOAD</p></div>
         <input type="file" id="dropfileinput" onchange="storeFile(this.files)" multiple/>
     </div>
@@ -106,16 +106,16 @@
                             <h5>No login - no installs required</h5>
                             <!-- <h3> <span>Send key </span>to a friend to start file exchange</h3> -->
                             <div class="uploadbox-connect">
-                                 <div class="col-xs-3">
+                                 <div class="col-sm-3">
                                      <span class=" fileUpload btn btn-default btn-upload" >
                                          <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
-                                         <span><img src="img/add_fileicon.png"> </span><span class="hidden-sm hidden-xs">Add Files</span>
+                                         <span><img src="img/add_fileicon.png"> </span><span class="hidden-sm">Add Files</span>
                                          <!-- <div class=" hidden-xs dragfile">
                                              or drag files to upload
                                          </div> -->
                                      </span>
                                  </div>
-                             <div class="col-xs-9">
+                             <div class="col-sm-9">
                                  <div class="copyclipboard-card">
                                      <div class="keycopy">
                                          <h6 class="copied">Send url key </h6>

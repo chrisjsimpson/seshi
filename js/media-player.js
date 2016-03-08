@@ -32,12 +32,14 @@ $(".btn-hide").click(function() {
 
 })
 
-$('#dropzone').on('dragenter', function() {
+$('.dropfile').on('dragenter', function() {
     dropzoneenter();
+    $('input[id="dropfileinput"]').show();
 });
 
-$('#dropzone').on('dragleave', function() {
+$('.dropfile').on('dragleave', function() {
     dropzoneleave();
+    $('input[id="dropfileinput"]').hide();
 });
 
 $('.btn-upload').mouseenter( function(){
@@ -52,13 +54,15 @@ function dropzoneenter() {
 //     $('.dropfile')
 //     .css({'background-color' : 'rgba(255,255,255,0.6)',
 // });
-    $('.dropfile').fadeIn(200);
+    $('.dropfile').css({'opacity':'1',
+                        'z-index': '1500'})
 }
 
 function dropzoneleave() {
     // $('.dropfile')
     // .css({'background-color' : ''});
-    $('.dropfile').fadeOut(200);
+    $('.dropfile').css({'opacity': '0',
+                        'z-index': '1'});
 }
 
 

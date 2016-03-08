@@ -11822,13 +11822,14 @@ $('.drop-up').click(function(e) {
 
 $("#copyclipboard").click(function () {
     // $(".message-app-card").show();
-    $(".copyclipboard-card ").animate({
-        width: '100%'
-    });
     $(".keycopy").animate({
         width: '25%'
     });
-    $(".keycopy .copied").replaceWith('<h6 class="flashcopied"> Copied! </h6>');
+    $(".copyclipboard-card ").animate({
+        width: '100%'
+    });
+
+    $(".keycopy .copied").replaceWith('<h6 class="flashcopied"> Copied key! </h6>');
 
     $(".message-app-card").delay(400).fadeIn();
 

@@ -125,7 +125,8 @@
                                      </div>
 
                                      <div class="col-75 col-80 message-app-card" >
-                                         <h6>Send the connection key to a friend </h6>
+                                         <h6><a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Once friend/recipient has the key, you will each other's files that have been added to Seshi">
+                                             <i class="fa fa-question-circle"></i></a> Send the connection key to a friend </h6>
                                          <div class="keycontainer">
                                          <div class="col-xs-3 col-sm-4">
                                              <a target="_blank" href="http://twitter.com" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
@@ -413,12 +414,29 @@
        </div>
     </footer>
 
+    <div id="statsFornerds" style="display:none;height:200px;margin-top:50px;color:black;"><!-- todo move to styles & hide by default -->
+        In:
+        <textarea id="message"></textarea>
+        Out:
+        <textarea id="outmessages"></textarea>
+        Response:
+        <textarea id="response"></textarea>
+        Inmessages:
+        <textarea id="inmessages"></textarea>
+        Chatbox:
+        Chat:
+        <textarea id="chat"></textarea>
+        <textarea id="status"></textarea>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- Custom Theme JavaScript -->
 
     <script>
 
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 
      </script>
 

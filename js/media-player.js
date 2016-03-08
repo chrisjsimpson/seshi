@@ -32,39 +32,6 @@ $(".btn-hide").click(function() {
 
 })
 
-$('.dropfile').on('dragenter', function() {
-    dropzoneenter();
-    $('input[id="dropfileinput"]').show();
-});
-
-$('.dropfile').on('dragleave', function() {
-    dropzoneleave();
-    $('input[id="dropfileinput"]').hide();
-});
-
-$('.btn-upload').mouseenter( function(){
-    dropzoneenter();
-});
-
-$('.btn-upload').mouseleave( function(){
-    dropzoneleave();
-});
-
-function dropzoneenter() {
-//     $('.dropfile')
-//     .css({'background-color' : 'rgba(255,255,255,0.6)',
-// });
-    $('.dropfile').css({'opacity':'1',
-                        'z-index': '1500'})
-}
-
-function dropzoneleave() {
-    // $('.dropfile')
-    // .css({'background-color' : ''});
-    $('.dropfile').css({'opacity': '0',
-                        'z-index': '1'});
-}
-
 
 //if audio player CSS change
 // if($('.plyr').find('audio').length != 0) {

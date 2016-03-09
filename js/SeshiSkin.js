@@ -232,7 +232,8 @@ function play(event) {
                               'width': '100%',
                               'z-index':'999'
                                   });
-                          $("#hideall").css('position', 'absolute');
+                          $("#hideall").css({'position':'absolute',
+                                              'margin': '0 auto'});
                           $("#hideall").hide();
                             $('.btn-hide').show();
                         } else if ($(window).width() < 992 && $(window).width() > 768 ) {

@@ -224,6 +224,7 @@ function play(event) {
                                 });
                             $('.btn-hide').hide();
                             $(".myfiles").css('background', 'rgba(0, 0, 0, 0.3)');
+                            $("#hideall").removeClass('widthOpenVideo');
                 } else if (objectInfo.mimeType.includes('video')) {
                         mediaType = 'video';
                           $('.plyr').show();
@@ -235,6 +236,7 @@ function play(event) {
                                   });
                           $("#hideall").css({'position':'absolute',
                                               'margin': '0 auto'});
+                          $("#hideall").addClass('widthOpenVideo');
                           $(".myfiles").css('background', 'rgba(255, 255, 255, 0.3)');
                           $("#hideall").hide();
                             $('.btn-hide').show();

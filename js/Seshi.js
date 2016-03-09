@@ -554,8 +554,11 @@ Seshi = {
                         fr.onload = function(chunk) {
                               if (Seshi.outBox.length >= 0) {
                              console.log("We got a chunk to send!");
-                                for(var i=0;i<=99999999;i++) {}//Crude delay!
-                                dc.send(chunk.target.result);
+                                //for(var i=0;i<=99999999;i++) {}//Crude delay!
+                                //dc.send(chunk.target.result);
+                                //Add chunk to buffer
+                                Seshi.buffer.push(chunk.target.result);
+                                Seshi.sendAllData();
                                 dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                                     //Kill off fileReader if we've reached the end
                                     if(Seshi.outBox.length == 0)
@@ -581,6 +584,21 @@ Seshi = {
                         loadNext();
                     }//End only open reader again if flagProcessOutboxStarted is set to true.
     },
+    bufferFullThreshold:8192,
+    listener: function() {
+                dc.removeEventListener('bufferedamountlow', Seshi.listener);
+                Seshi.sendAllData();
+    },
+    sendAllData: function() {
+        while (Seshi.buffer.length > 0) {
+                if(dc.bufferedAmount > Seshi.bufferFullThreshold) {
+                    dc.addEventListener('bufferedamountlow', Seshi.listener);
+                    return; //Exit sendAllData  until ready because buffer is full
+                }//End wait for buffer to clear (dc.bufferedAmount > bufferFullThreshold)
+                dc.send(Seshi.buffer.shift());
+        }//End while buffer is not empty
+    },
+    buffer:[],
     sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''},
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */

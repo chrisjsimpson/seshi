@@ -558,7 +558,7 @@ Seshi = {
                                 //dc.send(chunk.target.result);
                                 //Add chunk to buffer
                                 Seshi.buffer.push(chunk.target.result);
-                                Seshi.sendAllData();
+                                //Seshi.sendAllData();
                                 dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                                     //Kill off fileReader if we've reached the end
                                     if(Seshi.outBox.length == 0)
@@ -584,7 +584,7 @@ Seshi = {
                         loadNext();
                     }//End only open reader again if flagProcessOutboxStarted is set to true.
     },
-    bufferFullThreshold:8192,
+    bufferFullThreshold:4096,
     listener: function() {
                 dc.removeEventListener('bufferedamountlow', Seshi.listener);
                 Seshi.sendAllData();
@@ -592,6 +592,8 @@ Seshi = {
     sendAllData: function() {
         while (Seshi.buffer.length > 0) {
                 if(dc.bufferedAmount > Seshi.bufferFullThreshold) {
+                    //Use polling (forced)
+                    //setTimeout(Seshi.sendAllData, 106500);
                     dc.addEventListener('bufferedamountlow', Seshi.listener);
                     return; //Exit sendAllData  until ready because buffer is full
                 }//End wait for buffer to clear (dc.bufferedAmount > bufferFullThreshold)

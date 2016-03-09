@@ -337,8 +337,8 @@ function deleteFile(event){
 }
 
 
-/* Show 'connecting' instead of generate key box if 'key' is in URI 
- * and user isn't trying to connect to themselves 
+/* Show 'connecting' instead of generate key box if 'key' is in URI
+ * and user isn't trying to connect to themselves
  * */
 if (getQueryVariable("key")) {
     //Get reference to Generate Key button
@@ -363,7 +363,7 @@ if (getQueryVariable("key")) {
 
 function showConnected() {
 
-    $("#hideuntilconnected").fadeIn();
+    $("#remoteFileListContainer").fadeIn();
     $(".temp-message p").hide();
     //Get reference to 'connecting' UI button
     if (targetBtn = document.getElementById('connectionStatus')) {

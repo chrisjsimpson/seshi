@@ -230,7 +230,7 @@ function play(event) {
                           $('.plyr').css({
                               'position': 'relative',
                               'width': '100%',
-                              'z-index':'1000'
+                              'z-index':'999'
                                   });
                           $("#hideall").css('position', 'absolute');
                           $("#hideall").hide();

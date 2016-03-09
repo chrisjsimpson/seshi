@@ -100,7 +100,7 @@
         <div class="intro-body">
 
             <div class="container">
-                <div class="row">
+
                     <div class="main-header">
                         <h4><span>exchange</span> any files with anyone, anywhere </h4>
                             <h5>No login - no installs required</h5>
@@ -155,19 +155,13 @@
 
                     </div>
 
-                </div>
+
             </div>
-    <div id="hideall"> <!--hide wrapper -->
+    <div class="container" id="hideall"> <!--hide wrapper -->
             <div class="row myfiles" id="myfiles">
-
-
 
                 <div class="row generate-key">
                     <div class="container" id="shareButtonsRow">
-
-
-
-
 
                     </div>
 
@@ -176,18 +170,21 @@
                 <div class="row" id="fileBoxes">
                     <div class="col-sm-5 col-offset-sm-4">
                         <div class="displayname">
-                            <span>Display name: </span>
-                            <span class="profile-input">
+                            <span class="label-display">Display name: </span>
+                            <span class="display-input">
                                 <input type="text" id="display-name">
-                                <span class="edit-btn"><i class="fa fa-pencil-square-o"></i></span>
+                                <!-- <span class="edit-btn"><i class="fa fa-pencil"></i></span> -->
                             </span>
                         </div>
+
+
                         <!-- <button class="btn btn-default" id="refreshList">Refresh List</button> -->
 
                     </div>
                 </div>
 
                 <div class="col-md-5">
+                        <h4> My Files </h4>
                     <div class="myfilelist fixed-header-wrapper">
                     <div class="row header-title fixed-header-file" id="header-localFileList">
                         <input id="checkAll-localFileList" class="col-xs-1 col-sm-1 checkall" type="checkbox">
@@ -212,7 +209,9 @@
                     </ul>
                 </div>
             </div>
-                <div class="col-md-2">
+
+            <div id="hideuntilconnected">
+                <div class="col-md-2 pushpull">
                     <div class="col-xs-6 col-md-12">
                         <button disabled id="sendBtn" class="button  button--border-medium button--round-l button--text-thick btn-push">
                         <i class="send fa fa-arrow-right hidden-xs hidden-sm"></i><i class="button__icon  send fa fa-arrow-down visible-xs visible-sm"></i></button>
@@ -223,6 +222,7 @@
                     </div>
                 </div>
                 <div class="col-md-5">
+                        <h4> Friend's Files </h4>
                     <div class="myfilelist fixed-header-wrapper">
                         <div class="row header-title fixed-header-file" id="header-remoteFileList">
                             <input id="checkAll-remoteFileList" class="col-xs-1 col-sm-1 checkall" type="checkbox">
@@ -240,7 +240,7 @@
                             </div>
                         </div>
                     </div>
-                <div class=" filecard filewell receive-well">
+                <div class="filewell receive-well">
 
                     <ul class="list-group myfilelist" id="remoteFileList">
                     </ul>
@@ -290,12 +290,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> <!-- col-md-5 -->
+            </div> <!-- hide until connect -->
 
-                <!-- <div class="col-md-5">
-
-                </div> -->
+            <div class=" col-md-7 temp-message">
+                <p>this is where your friend's files will appear</p>
             </div>
+        </div> <!--myfiles-->
 
     </div> <!--hide wrapper -->
 
@@ -320,7 +321,7 @@
 
 
 
-</div> <!--intro-body end -->
+        </div> <!--intro-body end -->
     </header>
 
     <!-- Contact Section -->

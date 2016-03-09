@@ -560,10 +560,10 @@ Seshi = {
                                     //Kill off fileReader if we've reached the end
                                     if(Seshi.outBox.length == 0)
                                     {
-                                        fr = undefined; 
+                                        fr = undefined;
                                     }//End kill off fileReader if we've reached the end
                                 loadNext(); // shortcut here
-                              } 
+                              }
                            };
 
                             //Get next chunk info, pass chunk to fileReader & update sendingFileProgress
@@ -961,10 +961,14 @@ function onIceconnectionStateChanged(e) {
         dispatchEvent(onPeerConnectionEstablished);
         //Remove key guard from localstorage which prevents users from connecting to themselves
         localStorage.removeItem('key'); 
+        $("#hideuntilconnected").fadeIn();
+        $(".temp-message p").hide();
     }//End if iceConnectionState == Completed
 
     if (pc.iceConnectionState == 'disconnected') {
         dispatchEvent(onPeerConnectionBroken);
+        $("#hideuntilconnected").fadeOut();
+        $(".temp-message p").show();
     }//End if iceConnection state is disconnected or failed, dispatch onPeerConnectionEstablished event
 }//End onIceconnectionStateChanged
 
@@ -1171,7 +1175,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
             var remoteChatMsg =
                 '<li class="clearfix">' +
                 '    <div class="message-data align-right">' +
-                '    <span class="message-data-time">' + timeStamp + 
+                '    <span class="message-data-time">' + timeStamp +
                 '    <span class="message-data-name">' +
                      msg.remoteDisplayName+
                 '    </span>' +

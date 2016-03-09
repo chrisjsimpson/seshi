@@ -15063,6 +15063,7 @@ p {
 
 .main-header h5 {
   font-size: 22px;
+  padding-bottom: 20px;
 }
 
 .navbar-custom {
@@ -15297,7 +15298,7 @@ a:hover, a:focus {
 .intro .intro-body {
   display: table-cell;
   vertical-align: middle;
-  padding-top: 100px;
+  padding-top: 145px;
 }
 
 .intro .intro-body .brand-heading {
@@ -15323,6 +15324,7 @@ a:hover, a:focus {
   color: #333;
   padding: 50px;
   padding-top: 120px !important;
+  z-index: 1000;
 }
 
 #subscribe .seshi-pro-p {
@@ -15409,6 +15411,7 @@ footer {
   background-color: rgba(20, 20, 20, 0.9);
   font-size: 14px;
   padding: 36px;
+  z-index: 1000;
 }
 
 footer img {
@@ -19693,6 +19696,7 @@ li {
   color: #fff;
   border: 1px solid #fff;
   transition: all 0.2s ease-in-out;
+  margin-top: 10px;
 }
 
 .btn-chat-toggle:hover {
@@ -19812,7 +19816,7 @@ label {
   min-height: 20px;
   margin-bottom: 20px;
   padding: 0 13px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.6);
   border: 1px solid #e3e3e3;
   border-top-color: transparent;
   border-bottom-left-radius: 4px;
@@ -19822,11 +19826,19 @@ label {
 }
 
 .myfiles {
+  width: 100%;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 20px;
   padding-bottom: 70px;
+  margin: 0 auto;
   margin-bottom: 0;
+  margin-top: 30px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
 }
 
 .myfiles h3 {
@@ -19838,6 +19850,10 @@ label {
 
 .myfiles h3 span {
   font-weight: 600;
+}
+
+.pushpull {
+  margin-top: 55px;
 }
 
 .filewell {
@@ -20430,12 +20446,24 @@ a {
   width: 100%;
   height: auto;
   color: #fff;
-  font-size: 16px;
-  margin-bottom: 20px;
+  font-size: 21px;
+  margin-top: -21px;
+  margin-bottom: 32px;
+  float: left;
+}
+
+.displayname .label-display {
+  float: left;
+  margin-left: 15px;
+  margin-top: 4px;
 }
 
 .profile-input {
   transition: all .3s ease-in-out;
+  position: relative;
+}
+
+.display-input {
   position: relative;
 }
 
@@ -20444,11 +20472,14 @@ input[id="display-name"] {
   border-bottom: 1px solid #ccc;
   color: #ccc;
   background: rgba(255, 255, 255, 0.3);
+  padding-top: 3px;
   padding-bottom: 2px;
-  padding-right: 16px;
-  padding-left: 6px;
-  width: 170px;
+  padding-right: 10px;
+  padding-left: 7px;
+  height: 40px;
+  width: 200px;
   margin-left: 16px;
+  float: left;
   transition: all .3s ease-in-out;
 }
 
@@ -20463,13 +20494,14 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 .edit-btn {
-  position: absolute;
+  position: relative;
   width: 16px;
   height: 16px;
   line-height: 16px;
-  top: 5px;
-  right: 6px;
+  top: 8px;
+  right: 26px;
   color: #ccc;
+  float: left;
   transition: all .3s ease-in-out;
 }
 
@@ -20526,7 +20558,15 @@ input[id="display-name"]:focus + .edit-btn {
 #hideall {
   position: relative;
   z-index: 1000;
-  width: 100%;
+}
+
+#hideuntilconnected {
+  display: none;
+}
+
+.temp-message p {
+  margin-top: 16vh;
+  font-size: 21px;
 }
 
 #connectionStatus {
@@ -23042,9 +23082,9 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 .dropfile {
-  position: fixed;
+  position: absolute;
   width: 100%;
-  height: 100%;
+  height: 1000px;
   margin: 0 auto;
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 5px;
@@ -23188,7 +23228,7 @@ input[id="display-name"]:focus + .edit-btn {
 .uploadbox-connect {
   padding: none;
   height: 154px;
-  margin: 5px;
+  margin: 5px auto;
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
@@ -24812,48 +24852,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.28s;
-  animation-duration: 1.32s;
+  animation-delay: -0.16s;
+  animation-duration: 1.33s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.79s;
-  animation-duration: 1.18s;
+  animation-delay: 0.28s;
+  animation-duration: 1.22s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.08s;
-  animation-duration: 0.85s;
+  animation-delay: 0.8s;
+  animation-duration: 1.55s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: -0.17s;
-  animation-duration: 1s;
+  animation-delay: 0.18s;
+  animation-duration: 0.75s;
 }
 
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: -0.07s;
-  animation-duration: 1.23s;
+  animation-delay: 0.19s;
+  animation-duration: 1.43s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.67s;
-  animation-duration: 1.29s;
+  animation-delay: 0.16s;
+  animation-duration: 0.77s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.59s;
-  animation-duration: 1.35s;
+  animation-delay: 0.33s;
+  animation-duration: 1.12s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.38s;
-  animation-duration: 0.98s;
+  animation-delay: 0.68s;
+  animation-duration: 1.51s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.61s;
-  animation-duration: 1.58s;
+  animation-delay: 0.64s;
+  animation-duration: 1.09s;
 }
 
 .ball-grid-beat > div {
@@ -24889,47 +24929,47 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.39s;
-  animation-duration: 0.79s;
+  animation-delay: 0.46s;
+  animation-duration: 1.02s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.6s;
-  animation-duration: 0.8s;
+  animation-delay: 0.55s;
+  animation-duration: 1.13s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.32s;
-  animation-duration: 0.76s;
+  animation-delay: 0.24s;
+  animation-duration: 1.16s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.58s;
-  animation-duration: 0.61s;
+  animation-delay: 0.3s;
+  animation-duration: 1.11s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.53s;
-  animation-duration: 0.99s;
+  animation-delay: 0.6s;
+  animation-duration: 0.87s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.62s;
-  animation-duration: 0.97s;
+  animation-delay: 0.52s;
+  animation-duration: 1.47s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0.21s;
-  animation-duration: 0.68s;
+  animation-delay: 0s;
+  animation-duration: 0.63s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.55s;
-  animation-duration: 0.89s;
+  animation-delay: -0.1s;
+  animation-duration: 0.94s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: -0.18s;
+  animation-delay: 0.03s;
   animation-duration: 0.69s;
 }
 
@@ -25268,23 +25308,23 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0s;
-  animation-duration: 0.42s;
+  animation-delay: 0.44s;
+  animation-duration: 1.05s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.53s;
-  animation-duration: 1.3s;
+  animation-delay: 0.08s;
+  animation-duration: 0.32s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: -0.08s;
-  animation-duration: 0.44s;
+  animation-delay: 0.23s;
+  animation-duration: 0.62s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.04s;
-  animation-duration: 1.2s;
+  animation-delay: 0.24s;
+  animation-duration: 0.31s;
 }
 
 .line-scale-party > div {

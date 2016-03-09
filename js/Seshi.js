@@ -961,14 +961,10 @@ function onIceconnectionStateChanged(e) {
         dispatchEvent(onPeerConnectionEstablished);
         //Remove key guard from localstorage which prevents users from connecting to themselves
         localStorage.removeItem('key'); 
-        $("#hideuntilconnected").fadeIn();
-        $(".temp-message p").hide();
     }//End if iceConnectionState == Completed
 
     if (pc.iceConnectionState == 'disconnected') {
         dispatchEvent(onPeerConnectionBroken);
-        $("#hideuntilconnected").fadeOut();
-        $(".temp-message p").show();
     }//End if iceConnection state is disconnected or failed, dispatch onPeerConnectionEstablished event
 }//End onIceconnectionStateChanged
 

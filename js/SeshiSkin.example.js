@@ -90,6 +90,10 @@ function peerConnectionBroken() {
      * */
     alert("Doh we broke the internet!");
     alert("Hold on, we'll try and reconnect");
+
+    $("#hideuntilconnected").fadeOut();
+    $(".temp-message p").show();
+
     var connectionStateBox = document.getElementById('connectionStatus');
     connectionStateBox.innerText = 'Atempting Reconnect...';
     connect();
@@ -358,6 +362,9 @@ if (getQueryVariable("key")) {
 
 
 function showConnected() {
+
+    $("#hideuntilconnected").fadeIn();
+    $(".temp-message p").hide();
     //Get reference to 'connecting' UI button
     if (targetBtn = document.getElementById('connectionStatus')) {
 

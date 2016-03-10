@@ -1,0 +1,39 @@
+.page-wrap {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -60px;
+}
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+.footer, .page-wrap:after {
+  height: 60px;
+  padding-top: 15px;
+}
+
+#about, #terms {
+  background-color: #eee;
+  padding:50px 30px;
+  min-height: 80vh;
+  color:#222;
+  text-transform: none;
+  p{
+    text-align: left;
+  }
+}
+
+#terms{
+  .desc {
+    p {
+  font-size: 16px;
+}
+}
+}
+
+@media(min-width: $screen-xs-min){
+  #about, #terms {
+    padding:50px;
+  }
+
+}

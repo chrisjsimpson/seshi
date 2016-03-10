@@ -11829,7 +11829,7 @@ $("#copyclipboard").click(function () {
         width: '100%'
     });
 
-    $(".keycopy .copied").replaceWith('<h6 class="flashcopied"> Copied key! </h6>');
+    $(".keycopy .copied").replaceWith('<h6 class="flashcopied"> Copied link! </h6>');
 
     $(".message-app-card").delay(400).fadeIn();
 

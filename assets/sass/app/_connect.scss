@@ -1,6 +1,12 @@
+$kinddarkgrey: #444;
 
 label {
   margin-bottom: 0;
+}
+.file-header h2 {
+  margin-top: -40px;
+  margin-bottom: 65px;
+  text-shadow: 1px 1px 2px #888;
 }
 
 .btn-generate-key {
@@ -52,6 +58,9 @@ label {
 
 .fullwidthcard {
   padding:0;
+  h4 {
+    color: $kinddarkgrey;
+  }
 }
 
 .filecard {
@@ -59,7 +68,7 @@ label {
   margin-bottom: 20px;
   padding: 0 13px;
   background-color: rgba(255, 255, 255, 0.6);
-  border: 1px solid #e3e3e3;
+  border: 1px solid #aaa;
   border-top-color: transparent;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -77,7 +86,7 @@ label {
   margin-bottom: 0;
   margin-top: 30px;
   border-radius: 6px;
-  background: rgba(0,0,0,0.3);
+  background: rgba(255,255,255,0.7);
   -webkit-box-shadow: 1px 1px 17px 4px rgba(0,0,0,0.2);
   -moz-box-shadow: 1px 1px 17px 4px rgba(0,0,0,0.2);
   box-shadow: 1px 1px 17px 4px rgba(0,0,0,0.2);
@@ -123,13 +132,16 @@ input[type="checkbox"]:checked + .fileitem{
 }
 
 .header-title {
+  color:#fff;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px #777;
   font-weight: 700;
-  border-bottom: 3px solid #aaa !important;
+  border-bottom: 3px solid rgba(14, 150, 203, 0.8) !important;
   border-bottom-right-radius: none !important;
   border-bottom-left-radius: none !important;
   padding: 10px 15px;
-  background-color: #fff;
-  border: 1px solid #eee;
+  background-color: rgba(22,174,231, 0.7);
+  border: 1px solid #aaa;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   margin-bottom: -5px
@@ -181,7 +193,8 @@ padding: 14px;
 }
 
 .dropdown-menu > li > a {
-  color: #0E2257 !important;
+  color: #409BDC !important;
+  text-shadow: none;
 }
 
 .dropdown-menu > li > a:hover {
@@ -189,7 +202,7 @@ padding: 14px;
 }
 
 a {
-  color: #0E2257;
+  color: #fff;
 }
 
 .dropdown ul.dropdown-menu {
@@ -247,7 +260,7 @@ a {
 
 .file-item .fa-play:hover {
   background: #aaa;
-  color: #444;
+  color: $kinddarkgrey;
 }
 
 .file-item .fa-arrow-down, .file-item .fa-trash, .file-item .fa-times {
@@ -416,7 +429,7 @@ a {
 }
 
 .icon-link.fill.github {
-  background-color: #444;
+  background-color: $kinddarkgrey;
 }
 
 .icon-link.fill.github:hover {
@@ -424,7 +437,7 @@ a {
 }
 
 .icon-link.fill.github:hover .fa-github {
-  color: #444;
+  color: $kinddarkgrey;
   -moz-transition: color 150ms ease-in-out;
   -o-transition: color 150ms ease-in-out;
   -webkit-transition: color 150ms ease-in-out;
@@ -572,7 +585,7 @@ a {
 }
 
 .icon-link:hover .fa-github {
-  color: #444;
+  color: $kinddarkgrey;
   -moz-transition: color 150ms ease-in-out;
   -o-transition: color 150ms ease-in-out;
   -webkit-transition: color 150ms ease-in-out;
@@ -692,7 +705,7 @@ a {
 .displayname {
   width: 100%;
   height: auto;
-  color: #fff;
+  color: $kinddarkgrey;
   font-size: 21px;
   margin-top: -21px;
   margin-bottom: 32px;
@@ -716,8 +729,8 @@ a {
 input[id="display-name"] {
   border-width: 0;
   border-bottom: 1px solid #ccc;
-  color: #ccc;
-  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.1);
   padding-top:3px;
   padding-bottom: 2px;
   padding-right: 10px;
@@ -731,8 +744,8 @@ input[id="display-name"] {
 
 input[id="display-name"]:focus {
   outline: none;
-  color: #fff;
-  border-bottom: 1px solid #fff;
+  color: #777;
+  border-bottom: 2px solid #409BDC;
 }
 
 input[id="display-name"]:focus + .edit-btn {
@@ -757,11 +770,9 @@ input[id="display-name"]:focus + .edit-btn {
   height: 115px;
   /* margin-bottom: 20px; */
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.7);
-  border: 1px solid #e3e3e3;
+  background-color: rgba(240, 240, 240, 0.7);
+  border: 2px solid #aaa;
   border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 1px 1px;
   text-align: center;
 margin: 0 auto;
 margin-top: 20px;
@@ -816,13 +827,12 @@ z-index: 999;
 
 .temp-message {
   p {
-    margin-top:16vh;
-    font-size: 21px;
+    color: $kinddarkgrey
   }
 }
 
 #connectionStatus {
-  margin-top: 7vh;
+  margin-top: 20vh;
   font-size: 2rem;
 }
 
@@ -895,7 +905,7 @@ z-index: 999;
   .btn-hide {
     display: block;
     position: absolute;
-    color: #444;
+    color: $kinddarkgrey;
     float: left;
     margin: 20px;
     position: relative;
@@ -924,7 +934,7 @@ z-index: 999;
 @media (min-width: 1200px) {
   .btn-hide {
     position: absolute;
-    color: #444;
+    color: $kinddarkgrey;
     float: left;
     margin: 20px;
     position: relative;

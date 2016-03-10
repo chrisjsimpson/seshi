@@ -50,9 +50,17 @@ Seshi = {
                         StorageWorker.onmessage = function(event) {
                             var progressData = event.data;
                             //Update Seshi.storeProgess array with file storing progress updates, indexeded by fileId
+
+                            if ( Seshi.storeProgress[progressData.fileId] === undefined ) 
+                            {
+                                currentChunk = 0;
+                            }else { //End set progress to zero initially
+                                currentChunk = Seshi.storeProgress[progressData.fileId].currentChunk;
+                            }//End else incriment currentChunk using current value
+                                 
                             Seshi.storeProgress[progressData.fileId] = {
                                 "fileName":progressData.fileName,
-                                "currentChunk":progressData.currentChunk,
+                                "currentChunk":currentChunk + 1,
                                 "totalNumChunks":progressData.totalNumChunks,
                                 "complete":progressData.currentChunk == progressData.totalNumChunks ? true:false,
                                 "UIdone":false

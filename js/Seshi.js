@@ -1,3 +1,4 @@
+processRecieveBufferFLAG = false;
 Seshi = {
     welcome:(function(){   /*
                         #   Seshi Init
@@ -558,7 +559,7 @@ Seshi = {
                                 //dc.send(chunk.target.result);
                                 //Add chunk to buffer
                                 Seshi.buffer.push(chunk.target.result);
-                                //Seshi.sendAllData();
+                                Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
                                 dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                                     //Kill off fileReader if we've reached the end
                                     if(Seshi.outBox.length == 0)
@@ -1043,8 +1044,11 @@ function setupDataHandlers() {
             console.log('Recieved ArrayBuffer message');
             //Catch ArrayBuffer sent through the datachannel & add it to recvBuffer for later processing
             Seshi.recvBuffer.push(new Blob([event.data]));
-        
 
+            if ( processRecieveBufferFLAG == false )
+            {
+                processRecieveBuffer();
+            }//Only run processRecieveBuffer() if not already running
 
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
@@ -1402,11 +1406,12 @@ function getQueryVariable(variable)
 
 function processRecieveBuffer() {    
 
-    var takeItSteady = window.setInterval( function() {
     if ( Seshi.recvBuffer.length == 0 )
     {
-         window.clearInterval(takeItSteady);
-    }//Clear interval if all chunks stored
+        processRecieveBufferFLAG = false;
+        return; //Because we're done.
+    }
+        processRecieveBufferFLAG = true;
     /* Process each chunk in Seshi.ReciveBuffer */
     if( Seshi.recvBuffer.length > 0 ) {
                 var blob = Seshi.recvBuffer.pop();
@@ -1473,11 +1478,13 @@ function processRecieveBuffer() {
                                                                     StorageWorker.postMessage(storeReqObj);
                                                                     StorageWorker.addEventListener("message", function(e) {
                                                                         resolve(e.data);
-                                                                        console.log("We are resolving");
                                                                     });
                                                                     return storePromise;
                                                                 });
                                                                 //End send data chunk payload
+                                                                storePromise.then(function() {
+                                                                    processRecieveBuffer();//Check for more chunks in recvBuffer
+                                                                });//End then check for next chunk in recvBuffer
                                                 }//End reader.readtState == DONE
                                         }//End reader.onload
                                         reader.readAsText(chunkFileMeta);
@@ -1486,6 +1493,5 @@ function processRecieveBuffer() {
                 }//End get bytelength of fileMeta
                 reader2.readAsText(metaLength);
  }//End if Seshi.recvBuffer is < 0.
-    }, 250);
 
 }//End processRecieveBuffer.

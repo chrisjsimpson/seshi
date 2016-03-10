@@ -223,7 +223,6 @@ function play(event) {
                             'z-index':'1001'
                                 });
                             $('.btn-hide').hide();
-                            $(".myfiles").css('background', 'rgba(0, 0, 0, 0.3)');
                             $("#hideall").removeClass('widthOpenVideo');
                 } else if (objectInfo.mimeType.includes('video')) {
                         mediaType = 'video';
@@ -237,7 +236,6 @@ function play(event) {
                           $("#hideall").css({'position':'absolute',
                                               'margin': '0 auto'});
                           $("#hideall").addClass('widthOpenVideo');
-                          $(".myfiles").css('background', 'rgba(255, 255, 255, 0.3)');
                           $("#hideall").hide();
                             $('.btn-hide').show();
                         } else if ($(window).width() < 992 && $(window).width() > 768 ) {

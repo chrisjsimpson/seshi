@@ -91,36 +91,43 @@ function storeFiles(fileList) {
                                 var numChunksNeeded = Math.ceil(fileSize/maxChunkSize);
                                 console.log("We need " + numChunksNeeded + " chunks. (" + fileSize +"/" + maxChunkSize + ")");
                                 //Generate SHA-256 hash of file
-                                fileId = sha256(file).then(function(digest) { return digest;});
-                                //fileId = uuid();
-                                db.transaction("rw", db.chunks, function() {
-                                var chunk = result.slice(start,end);
-                                    db.chunks
-                                        .add({
-                                            fileId: fileId,
-                                            boxId: 'myBoxID',
-                                            fileName: currentFile.name,
-                                            fileType: currentFile.type,
-                                            chunkNumber: 0,
-                                            numberOfChunks: 1,
-                                            chunkSize: result.byteLength,
-                                            chunk: result
-                                        }).catch(function(error) {
-                                                console.log(error)
-                                }).then(function() {
-                                    //Check if storage is complete
-                                    //Post storage progress update to main thread
-                                    postMessage({
-                                            "type":"storageProgressUpdate",
-                                            "fileId":fileId,
-                                            "fileName":currentFile.name,
-                                            "currentChunk":1, //It's actually chunk zero, but our store progress postMessage simplifies if we send one
-                                            "totalNumChunks":1,
-                                    });
-                                        //close(); //Exit worker on completion
-                                }).catch(function(error) {
-                                    console.err(error);
-                                })})
+                                sha256(result).then(function(digest) 
+                                    {
+                                       fileId = digest;
+                                       storeTinyLessThanOneChunkFile();
+                                    }); 
+
+                                function storeTinyLessThanOneChunkFile()
+                                {
+                                    db.transaction("rw", db.chunks, function() {
+                                    var chunk = result.slice(start,end);
+                                        db.chunks
+                                            .add({
+                                                fileId: fileId,
+                                                boxId: 'myBoxID',
+                                                fileName: currentFile.name,
+                                                fileType: currentFile.type,
+                                                chunkNumber: 0,
+                                                numberOfChunks: 1,
+                                                chunkSize: result.byteLength,
+                                                chunk: result
+                                            }).catch(function(error) {
+                                                    console.log(error)
+                                    }).then(function() {
+                                        //Check if storage is complete
+                                        //Post storage progress update to main thread
+                                        postMessage({
+                                                "type":"storageProgressUpdate",
+                                                "fileId":fileId,
+                                                "fileName":currentFile.name,
+                                                "currentChunk":1, //It's actually chunk zero, but our store progress postMessage simplifies if we send one
+                                                "totalNumChunks":1,
+                                        });
+                                            //close(); //Exit worker on completion
+                                    }).catch(function(error) {
+                                        console.err(error);
+                                    })})
+                                }//End storeTinyLessThanOneChunkFile() 
 
                             } else { //File is bigger than maxChunkSize, so needs more than one chunk
 
@@ -133,48 +140,52 @@ function storeFiles(fileList) {
                                 var end = maxChunkSize;
                                 //Generate SHA-256 hash of file
                                 sha256(result).then(function(digest) 
-                                { 
-                                    fileId = digest;
-                                    //Piece by piece, take maxChunkSize sized piexes of file.target.result and store them to IndexedDB
-                                    for(var chunkNum=0; chunkNum<= numChunksNeeded; chunkNum++)
-                                    {   
-                                        db.transaction("rw", db.chunks, function() {
-                                        var chunk = result.slice(start,end);
-                                        var currentChunkNumTransactionScope = chunkNum; //Without this, for loop will complete (out of scope) immediatly to value  of <= numChunksNeeded
-                                            db.chunks
-                                                .add({
-                                                    fileId: fileId,
-                                                    boxId: 'myBoxID',
-                                                    fileName: currentFile.name,
-                                                    fileType: currentFile.type,
-                                                    chunkNumber: chunkNum,
-                                                    numberOfChunks: numChunksNeeded,
-                                                    chunkSize: chunk.byteLength,
-                                                    chunk: chunk
-                                                }).catch(function(error) {
-                                                        console.log(error)
-                                        }).then(function() {
-                                            //Check if storage is complete
-                                            //Post storage progress update to main thread
-                                            postMessage({
-                                                    "type":"storageProgressUpdate",
-                                                    "fileId":fileId,
-                                                    "fileName":currentFile.name,
-                                                    "currentChunk":currentChunkNumTransactionScope,
-                                                    "totalNumChunks":numChunksNeeded,
-                                            });
-                                            //Exit if storage is complete
-                                            if(currentChunkNumTransactionScope == numChunksNeeded) 
-                                            {
-                                                //close(); //Exit worker on completion
-                                            }//End exit if storage is complete                  
-                                        }).catch(function(error) {
-                                            console.err(error);
-                                        })})
-                                        start = start + maxChunkSize;//Shift up to next bytes from file.target.result
-                                        end = end + maxChunkSize; 
-                                    }//End Piece by piece, take a chunk of the file.target.result, and store it to IndexedDB
-                           });//End generate SHA hash of file & store 
+                                    {
+                                       fileId = digest;
+                                       storeLargerThanOneChunkFile();
+                                    }); 
+                                    function storeLargerThanOneChunkFile() 
+                                    {
+                                        //Piece by piece, take maxChunkSize sized piexes of file.target.result and store them to IndexedDB
+                                        for(var chunkNum=0; chunkNum<= numChunksNeeded; chunkNum++)
+                                        {   
+                                            db.transaction("rw", db.chunks, function() {
+                                            var chunk = result.slice(start,end);
+                                            var currentChunkNumTransactionScope = chunkNum; //Without this, for loop will complete (out of scope) immediatly to value  of <= numChunksNeeded
+                                                db.chunks
+                                                    .add({
+                                                        fileId: fileId,
+                                                        boxId: 'myBoxID',
+                                                        fileName: currentFile.name,
+                                                        fileType: currentFile.type,
+                                                        chunkNumber: chunkNum,
+                                                        numberOfChunks: numChunksNeeded,
+                                                        chunkSize: chunk.byteLength,
+                                                        chunk: chunk
+                                                    }).catch(function(error) {
+                                                            console.log(error)
+                                            }).then(function() {
+                                                //Check if storage is complete
+                                                //Post storage progress update to main thread
+                                                postMessage({
+                                                        "type":"storageProgressUpdate",
+                                                        "fileId":fileId,
+                                                        "fileName":currentFile.name,
+                                                        "currentChunk":currentChunkNumTransactionScope,
+                                                        "totalNumChunks":numChunksNeeded,
+                                                });
+                                                //Exit if storage is complete
+                                                if(currentChunkNumTransactionScope == numChunksNeeded) 
+                                                {
+                                                    //close(); //Exit worker on completion
+                                                }//End exit if storage is complete                  
+                                            }).catch(function(error) {
+                                                console.err(error);
+                                            })})
+                                            start = start + maxChunkSize;//Shift up to next bytes from file.target.result
+                                            end = end + maxChunkSize; 
+                                        }//End Piece by piece, take a chunk of the file.target.result, and store it to IndexedDB
+                               }//End storeLargerThanOneChunkFile() 
                             }//End else if need more than one chunk
                         }//End reader.readyState == DONE
                     }//End reader.onload

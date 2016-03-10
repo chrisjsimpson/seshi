@@ -68,10 +68,10 @@
                 <ul class="nav navbar-nav">
                     <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                     <li>
-                        <a class="page-scroll" href="#page-top">Add Files</a>
+                        <a class="page-scroll" href="#addfiles">Add Files</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#myfiles">file exchange</a>
+                        <a class="page-scroll" href="#hideall">file exchange</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#subscribe">Pro</a>
@@ -88,22 +88,40 @@
     </nav>
 
     <!---dropzone -->
-    <div class="hidden-sm hidden-xs dropfile">
+    <!-- <div class="hidden-sm hidden-xs dropfile">
         <div id="dropzonetext" class="dragdrop"><p>or DROP FILES HERE TO ADD</p></div>
         <input type="file" id="dropfileinput" onchange="storeFile(this.files)" multiple/>
-    </div>
+    </div> -->
 
 
     <!-- <div id="dropzone"></div> -->
     <!-- Intro Header -->
-    <header class="intro">
+
+
+    <section id=landingpage>
+        <div class="container">
+        <div class="col-sm-7">
+            <div class="main-header">
+                <h4>simplest way to exchange files with anyone, anywhere </h4>
+                    <h5>No login - no installs required</h5>
+                    <h5>Instantly playback your audio and video files</h5>
+                    <!-- <h5>Only on Chrome and Firefox</h5> -->
+            </div>
+            <a href="#addfiles" class="btn btn-startapp">Start now</a>
+        </div>
+        <div class="hidden-xs col-sm-4 mobile-cloud">
+            <img class="" src="img/cloudmobile.png">
+            <p>*only on android browser for mobile &amp; tablet</p>
+        </div>
+    </div>
+    </section>
+    <header class="intro" id="addfiles">
         <div class="intro-body">
 
-            <div class="container">
+            <div class="seshi-container">
 
-                    <div class="main-header">
-                        <h4><span>exchange</span> any files with anyone, anywhere </h4>
-                            <h5>No login - no installs required</h5>
+                    <div class="file-header" >
+                            <h2>File Exchange </h2>
                             <!-- <h3> <span>Send key </span>to a friend to start file exchange</h3> -->
                             <div class="uploadbox-connect">
                                  <div class="col-sm-3">
@@ -157,8 +175,8 @@
 
 
             </div>
-    <div class="container" id="hideall"> <!--hide wrapper -->
-            <div class="row myfiles" id="myfiles">
+    <div class="seshi-container" id="hideall"> <!--hide wrapper -->
+            <div class="row myfiles">
 
                 <div class="row generate-key">
                     <div class="container" id="shareButtonsRow">
@@ -438,6 +456,7 @@
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
     });
+
 
      </script>
 

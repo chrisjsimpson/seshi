@@ -68,7 +68,7 @@ label {
   margin-bottom: 20px;
   padding: 0 13px;
   background-color: rgba(255, 255, 255, 0.6);
-  border: 1px solid #e3e3e3;
+  border: 1px solid #aaa;
   border-top-color: transparent;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -132,13 +132,16 @@ input[type="checkbox"]:checked + .fileitem{
 }
 
 .header-title {
+  color:#fff;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px #777;
   font-weight: 700;
-  border-bottom: 3px solid #aaa !important;
+  border-bottom: 3px solid rgba(14, 150, 203, 0.8) !important;
   border-bottom-right-radius: none !important;
   border-bottom-left-radius: none !important;
   padding: 10px 15px;
-  background-color: #eee;
-  border: 1px solid #eee;
+  background-color: rgba(22,174,231, 0.7);
+  border: 1px solid #aaa;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   margin-bottom: -5px
@@ -190,7 +193,7 @@ padding: 14px;
 }
 
 .dropdown-menu > li > a {
-  color: #0E2257 !important;
+  color: #409BDC !important;
 }
 
 .dropdown-menu > li > a:hover {
@@ -198,7 +201,7 @@ padding: 14px;
 }
 
 a {
-  color: #0E2257;
+  color: #fff;
 }
 
 .dropdown ul.dropdown-menu {
@@ -823,14 +826,12 @@ z-index: 999;
 
 .temp-message {
   p {
-    margin-top:16vh;
-    font-size: 21px;
     color: $kinddarkgrey
   }
 }
 
 #connectionStatus {
-  margin-top: 7vh;
+  margin-top: 20vh;
   font-size: 2rem;
 }
 

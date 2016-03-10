@@ -15345,7 +15345,7 @@ a:hover, a:focus {
   padding: 50px 0;
   text-align: center;
   color: #fefefe;
-  background: linear-gradient(rgba(22, 198, 236, 0.55), rgba(22, 143, 236, 0.8)), url("../img/polygon.jpg") no-repeat center center;
+  background: linear-gradient(rgba(124, 211, 244, 0.7), rgba(129, 186, 226, 0.8)), url("../img/polygon.jpg") no-repeat center center;
   /* fallback for old browsers */
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -19826,6 +19826,12 @@ label {
   margin-bottom: 0;
 }
 
+.file-header h2 {
+  margin-top: -40px;
+  margin-bottom: 65px;
+  text-shadow: 1px 1px 2px #888;
+}
+
 .btn-generate-key {
   width: 190px;
   color: #000;
@@ -19877,6 +19883,10 @@ label {
   padding: 0;
 }
 
+.fullwidthcard h4 {
+  color: #444;
+}
+
 .filecard {
   min-height: 20px;
   margin-bottom: 20px;
@@ -19900,7 +19910,7 @@ label {
   margin-bottom: 0;
   margin-top: 30px;
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.7);
   -webkit-box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
@@ -19948,7 +19958,7 @@ input[type="checkbox"]:checked + .fileitem {
   border-bottom-right-radius: none !important;
   border-bottom-left-radius: none !important;
   padding: 10px 15px;
-  background-color: #fff;
+  background-color: #eee;
   border: 1px solid #eee;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
@@ -20510,7 +20520,7 @@ a {
 .displayname {
   width: 100%;
   height: auto;
-  color: #fff;
+  color: #444;
   font-size: 21px;
   margin-top: -21px;
   margin-bottom: 32px;
@@ -20535,8 +20545,8 @@ a {
 input[id="display-name"] {
   border-width: 0;
   border-bottom: 1px solid #ccc;
-  color: #ccc;
-  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.1);
   padding-top: 3px;
   padding-bottom: 2px;
   padding-right: 10px;
@@ -20550,8 +20560,8 @@ input[id="display-name"] {
 
 input[id="display-name"]:focus {
   outline: none;
-  color: #fff;
-  border-bottom: 1px solid #fff;
+  color: #777;
+  border-bottom: 2px solid #409BDC;
 }
 
 input[id="display-name"]:focus + .edit-btn {
@@ -20576,11 +20586,9 @@ input[id="display-name"]:focus + .edit-btn {
   height: 115px;
   /* margin-bottom: 20px; */
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.7);
-  border: 1px solid #e3e3e3;
+  background-color: rgba(240, 240, 240, 0.7);
+  border: 1px solid #eee;
   border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 1px 1px;
   text-align: center;
   margin: 0 auto;
   margin-top: 20px;
@@ -20636,6 +20644,7 @@ input[id="display-name"]:focus + .edit-btn {
 .temp-message p {
   margin-top: 16vh;
   font-size: 21px;
+  color: #444;
 }
 
 #connectionStatus {
@@ -23210,31 +23219,39 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 .btn-upload {
-  color: #eee;
+  color: #444;
+  font-weight: 600;
   line-height: 96px;
   height: 115px;
   width: 220px;
-  border: 2px solid #eee;
+  border: 2px solid #777;
   border-radius: 5px;
   font-size: 20px;
+  background-color: white;
   letter-spacing: 1.5px;
   transition: all 0.2s ease-in-out;
-  z-index: 2000;
+  z-index: 1000;
   margin: 20px 0;
 }
 
 .btn-upload:hover, .btn-upload:active, .btn-upload:focus {
-  background-color: transparent;
-  color: #fff;
-  border: 2px solid #fff;
+  background-color: white;
+  color: #409BDC;
+  border: 2px solid #409BDC;
   -webkit-box-shadow: 1px 1px 17px 4px rgba(233, 240, 245, 0.7);
   -moz-box-shadow: 1px 1px 17px 4px rgba(233, 240, 245, 0.7);
   box-shadow: 1px 1px 17px 4px rgba(233, 240, 245, 0.7);
 }
 
-.btn-upload span img {
+.btn-upload:hover .addicon, .btn-upload:active .addicon, .btn-upload:focus .addicon {
+  background-color: #409BDC;
+}
+
+.btn-upload .addicon {
   width: 35px;
   cursor: pointer;
+  background-color: #444;
+  transition: all 0.2s ease-in-out;
 }
 
 .fileUpload:after, .addmorefile:after {
@@ -23299,17 +23316,17 @@ input[id="display-name"]:focus + .edit-btn {
   height: 154px;
   margin: 5px auto;
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
-  box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+  -webkit-box-shadow: 1px 1px 14px 4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 14px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 14px 4px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 991px) {
   .btn-upload {
     width: 125px;
   }
-  .btn-upload span img {
+  .btn-upload .addicon {
     width: 50px;
   }
 }
@@ -23318,7 +23335,7 @@ input[id="display-name"]:focus + .edit-btn {
   .btn-upload {
     width: 300px;
   }
-  .btn-upload span img {
+  .btn-upload .addicon {
     width: 40px;
   }
   .uploadbox-connect {
@@ -24921,48 +24938,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.11s;
-  animation-duration: 0.83s;
+  animation-delay: -0.11s;
+  animation-duration: 1.26s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.04s;
-  animation-duration: 1.46s;
+  animation-delay: 0.48s;
+  animation-duration: 1.25s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.06s;
-  animation-duration: 1.35s;
+  animation-delay: 0.75s;
+  animation-duration: 1.22s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.15s;
-  animation-duration: 0.9s;
+  animation-delay: 0.49s;
+  animation-duration: 0.96s;
 }
 
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: -0.17s;
-  animation-duration: 1.02s;
+  animation-delay: 0.79s;
+  animation-duration: 0.72s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.29s;
-  animation-duration: 1.44s;
+  animation-delay: 0.51s;
+  animation-duration: 0.74s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.11s;
-  animation-duration: 1.28s;
+  animation-delay: 0.49s;
+  animation-duration: 1.34s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.26s;
-  animation-duration: 1.29s;
+  animation-delay: 0.75s;
+  animation-duration: 0.68s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: -0.07s;
-  animation-duration: 0.81s;
+  animation-delay: 0.35s;
+  animation-duration: 0.71s;
 }
 
 .ball-grid-beat > div {
@@ -24998,48 +25015,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.73s;
-  animation-duration: 1.39s;
+  animation-delay: 0.04s;
+  animation-duration: 0.83s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: -0.15s;
-  animation-duration: 1.43s;
+  animation-delay: 0.43s;
+  animation-duration: 1.54s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.5s;
-  animation-duration: 1.58s;
+  animation-delay: 0.13s;
+  animation-duration: 1.6s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: -0.19s;
-  animation-duration: 0.74s;
+  animation-delay: -0.12s;
+  animation-duration: 1.17s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.63s;
-  animation-duration: 1.55s;
+  animation-delay: 0.67s;
+  animation-duration: 0.95s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: -0.1s;
-  animation-duration: 1.55s;
+  animation-delay: 0.16s;
+  animation-duration: 1.46s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: -0.13s;
-  animation-duration: 1.57s;
+  animation-delay: 0.65s;
+  animation-duration: 1.08s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.08s;
-  animation-duration: 1.36s;
+  animation-delay: 0.78s;
+  animation-duration: 1.08s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.01s;
-  animation-duration: 1.02s;
+  animation-delay: 0.56s;
+  animation-duration: 1.11s;
 }
 
 .ball-grid-pulse > div {
@@ -25377,23 +25394,23 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.32s;
-  animation-duration: 1.07s;
+  animation-delay: 0.67s;
+  animation-duration: 0.85s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: -0.11s;
-  animation-duration: 0.89s;
+  animation-delay: 0.11s;
+  animation-duration: 0.48s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.75s;
-  animation-duration: 0.61s;
+  animation-delay: 0.42s;
+  animation-duration: 0.9s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.74s;
-  animation-duration: 0.46s;
+  animation-delay: 0.39s;
+  animation-duration: 1.19s;
 }
 
 .line-scale-party > div {

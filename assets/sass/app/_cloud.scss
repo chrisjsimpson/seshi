@@ -81,30 +81,41 @@
   display: inline-block;
 }
 .btn-upload {
-  color:#eee;
+  color:#444;
+  font-weight: 600;
   line-height:96px;
   height:115px;
   width:220px;
-  border: 2px solid #eee;
+  border: 2px solid #777;
   border-radius: 5px;
   font-size: 20px;
+  background-color: white;
   letter-spacing: 1.5px;
   transition: all 0.2s ease-in-out;
-  z-index: 2000;
+  z-index: 1000;
   margin: 20px 0 ;
   &:hover , &:active, &:focus{
-    background-color: transparent;
-    color:#fff;
-    border: 2px solid #fff;
+      background-color: white;
+    color:#409BDC;
+    border: 2px solid #409BDC;
     -webkit-box-shadow: 1px 1px 17px 4px rgba(233,240,245,0.7);
     -moz-box-shadow: 1px 1px 17px 4px rgba(233,240,245,0.7);
     box-shadow: 1px 1px 17px 4px rgba(233,240,245,0.7);
+
+    .addicon {
+        background-color: #409BDC;
+      }
   }
 
-  span img {
+.addicon {
     width: 35px;
     cursor: pointer;
+    background-color: #444;
+      transition: all 0.2s ease-in-out;
+    // background-image: url('img/addfile.png');
   }
+
+
 }
 
 
@@ -174,17 +185,17 @@
   height: 154px;
   margin: 5px auto;
   border-radius: 6px;
-  background: rgba(0,0,0,0.3);
-  -webkit-box-shadow: 1px 1px 17px 4px rgba(0,0,0,0.2);
-  -moz-box-shadow: 1px 1px 17px 4px rgba(0,0,0,0.2);
-  box-shadow: 1px 1px 17px 4px rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.7);
+  -webkit-box-shadow: 1px 1px 14px 4px rgba(0,0,0,0.2);
+  -moz-box-shadow: 1px 1px 14px 4px rgba(0,0,0,0.2);
+  box-shadow: 1px 1px 14px 4px rgba(0,0,0,0.2);
 }
 
 
 @media(max-width: $screen-sm-max) {
   .btn-upload {
     width: 125px;
-    span img {
+    .addicon {
       width: 50px;
     }
   }
@@ -193,7 +204,7 @@
 @media(max-width: $screen-xs-max) {
   .btn-upload {
     width:300px;;
-    span img {
+    .addicon {
       width: 40px;
     }
   }

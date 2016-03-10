@@ -570,7 +570,7 @@ Seshi = {
                            };
 
                             //Get next chunk info, pass chunk to fileReader & update sendingFileProgress
-                            chunkData = Seshi.outBox.shift();
+                            chunkData = Seshi.outBox.pop();
                             Seshi.sendingFileProgress.percentComplete= (chunkData.chunkNumber + 1) / chunkData.numberOfChunks * 100;
                             Seshi.sendingFileProgress.fileName = chunkData.fileName;
                             Seshi.sendingFileProgress.fileId = chunkData.fileId;
@@ -600,7 +600,8 @@ Seshi = {
                 dc.send(Seshi.buffer.shift());
         }//End while buffer is not empty
     },
-    buffer:[],
+    buffer:[], 
+    recvBuffer:[],
     sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''},
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
@@ -1040,82 +1041,9 @@ function setupDataHandlers() {
         //Check if message is an array buffer (data)
         if(event.data instanceof ArrayBuffer || event.data.size){ //event.data.size is for Firefox(automatically transforms data to Blob type
             console.log('Recieved ArrayBuffer message');
-            //Catch ArrayBuffer sent through the datachannel
-            var blob = new Blob([event.data]);
-
-/* Change this to read the lengthOfMeta, which is always at the start of the blob and is 64 bytes long.
-We might need to reduce the size of the chunks for this to work over STCP!!!
-#########*/
-                //Get length of file meta (size specified is always a zerofilled 64byte long string at the begining of the blob
-                var metaLength = blob.slice(0,81);
-
-                //Read metaLength to get size in bytes of chunk fileMeta
-                var reader2 = new FileReader();
-                reader2.onload = function(file2) {
-                        if ( reader2.readyState == FileReader.DONE ) {
-                                result2 = file2.target.result;
-                                var fileMetaLengthObj = JSON.parse(result2);
-                                var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
-                                window.fileMetaLength = fileMetaLength;
-                                console.log("Meta length is:" + fileMetaLength);
-
-                                    //Split file meta from begining of chunk (all chunk payloads are 64512 bytes in length)
-                                    var chunkFileMeta = blob.slice(81, window.fileMetaLength + 81); //First get file type, chunk number etc
-                                        var reader = new FileReader();
-                                        reader.onload = function(file) {
-                                                if ( reader.readyState == FileReader.DONE ) {
-                                                        result = file.target.result;
-                                                        if ( result.length > 0 ) {
-                                                                window.curChunk = JSON.parse(result);
-                                                                //Update window with current chunk information
-                                                                //var chunkProgresTextBox = document.getElementById('chunkInProgress');
-                                                                var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
-                                                                message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
-                                                                message += " FileName: " + curChunk.fileName;
-
-                                                                var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
-                                                                //Update user facing status box
-                                                                if (chunkProg == 100)
-                                                                {
-                                                                    statusMsg = 'Complete!: "' + curChunk.fileName + ' 100%';
-                                                                } else {
-                                                                    statusMsg = 'Reciving file: "' + curChunk.fileName + '" Chunk number: ' + curChunk.chunkNumber;
-                                                                }
-                                                                statusE = document.getElementById("status"),
-                                                                statusE.innerHTML = statusMsg;
-                                                                if (curChunk.chunkNumber == curChunk.numberOfChunks) {
-                                                                        refreshFileList('localFileList');
-                                                                }//End refresh
-                                                                //End extract file meta from blob
-                                                        }//End check read data is > 0
-                                                                //Start send data payload
-                                                                var headerOffset = 81 + window.fileMetaLength;
-                                                                //var chunkBlob = blob.slice(headerOffset); //Get chunk payload
-                                                                var chunk = blob.slice(headerOffset); //Get chunk payload
-                                                                //Store chunkBlob into IndexedDB
-                                                                //Use Seshi.store() API (should move file header parsing to this web worker also...)
-                                                                var storeReqObj = {
-                                                                    "dataSource"    : "seshiChunk",
-                                                                    "boxId"         : Seshi.getBoxId(),
-                                                                    "chunk"         : chunk,
-                                                                    "chunkNumber"   : window.curChunk.chunkNumber,
-                                                                    "chunkSize"     : window.curChunk.chunkSize,
-                                                                    "fileId"        : window.curChunk.fileId,
-                                                                    "fileName"      : window.curChunk.fileName,
-                                                                    "fileType"      : window.curChunk.fileType,
-                                                                    "numberOfChunks": window.curChunk.numberOfChunks
-                                                                };
-                                                                Seshi.store(storeReqObj);
-                                                                //End send data chunk payload
-                                                }//End reader.readtState == DONE
-                                        }//End reader.onload
-                                        reader.readAsText(chunkFileMeta);
-                                        //End extract file meta from blob
-
-
-                        }//End IF reading byte lenth of fileMeata
-                }//End get bytelength of fileMeta
-                reader2.readAsText(metaLength);
+            //Catch ArrayBuffer sent through the datachannel & add it to recvBuffer for later processing
+            Seshi.recvBuffer.push(new Blob([event.data]));
+        
 
 
         } else { //If not an ArrayBuffer , treat as control packet.
@@ -1471,3 +1399,93 @@ function getQueryVariable(variable)
        }
        return(false);
 }
+
+function processRecieveBuffer() {    
+
+    var takeItSteady = window.setInterval( function() {
+    if ( Seshi.recvBuffer.length == 0 )
+    {
+         window.clearInterval(takeItSteady);
+    }//Clear interval if all chunks stored
+    /* Process each chunk in Seshi.ReciveBuffer */
+    if( Seshi.recvBuffer.length > 0 ) {
+                var blob = Seshi.recvBuffer.pop();
+                //Get length of file meta (size specified is always a zerofilled 64byte long string at the begining of the blob
+                var metaLength = blob.slice(0,81);
+                //Read metaLength to get size in bytes of chunk fileMeta
+                var reader2 = new FileReader();
+                reader2.onload = function(file2) {
+                        if ( reader2.readyState == FileReader.DONE ) {
+                                result2 = file2.target.result;
+                                var fileMetaLengthObj = JSON.parse(result2);
+                                var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
+                                window.fileMetaLength = fileMetaLength;
+                                console.log("Meta length is:" + fileMetaLength);
+                                    //Split file meta from begining of chunk (all chunk payloads are 64512 bytes in length)
+                                    var chunkFileMeta = blob.slice(81, window.fileMetaLength + 81); //First get file type, chunk number etc
+                                        var reader = new FileReader();
+                                        reader.onload = function(file) {
+                                                if ( reader.readyState == FileReader.DONE ) {
+                                                        result = file.target.result;
+                                                        if ( result.length > 0 ) {
+                                                                window.curChunk = JSON.parse(result);
+                                                                //Update window with current chunk information
+                                                                //var chunkProgresTextBox = document.getElementById('chunkInProgress');
+                                                                var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
+                                                                message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
+                                                                message += " FileName: " + curChunk.fileName;
+
+                                                                var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
+                                                                //Update user facing status box
+                                                                if (chunkProg == 100)
+                                                                {
+                                                                    statusMsg = 'Complete!: "' + curChunk.fileName + ' 100%';
+                                                                } else {
+                                                                    statusMsg = 'Reciving file: "' + curChunk.fileName + '" Chunk number: ' + curChunk.chunkNumber;
+                                                                }
+                                                                statusE = document.getElementById("status"),
+                                                                statusE.innerHTML = statusMsg;
+                                                                if (curChunk.chunkNumber == curChunk.numberOfChunks) {
+                                                                        refreshFileList('localFileList');
+                                                                }//End refresh
+                                                                //End extract file meta from blob
+                                                        }//End check read data is > 0
+                                                                //Start send data payload
+                                                                var headerOffset = 81 + window.fileMetaLength;
+                                                                //var chunkBlob = blob.slice(headerOffset); //Get chunk payload
+                                                                var chunk = blob.slice(headerOffset); //Get chunk payload
+                                                                //Store chunkBlob into IndexedDB
+                                                                //Use Seshi.store() API (should move file header parsing to this web worker also...)
+  
+                                                                var storeReqObj = {
+                                                                    "dataSource"    : "seshiChunk",
+                                                                    "boxId"         : Seshi.getBoxId(),
+                                                                    "chunk"         : chunk,
+                                                                    "chunkNumber"   : window.curChunk.chunkNumber,
+                                                                    "chunkSize"     : window.curChunk.chunkSize,
+                                                                    "fileId"        : window.curChunk.fileId,
+                                                                    "fileName"      : window.curChunk.fileName,
+                                                                    "fileType"      : window.curChunk.fileType,
+                                                                    "numberOfChunks": window.curChunk.numberOfChunks
+                                                                };
+                                                                var storePromise = new Promise(function(resolve, reject) 
+                                                                { 
+                                                                    StorageWorker.postMessage(storeReqObj);
+                                                                    StorageWorker.addEventListener("message", function(e) {
+                                                                        resolve(e.data);
+                                                                        console.log("We are resolving");
+                                                                    });
+                                                                    return storePromise;
+                                                                });
+                                                                //End send data chunk payload
+                                                }//End reader.readtState == DONE
+                                        }//End reader.onload
+                                        reader.readAsText(chunkFileMeta);
+                                        //End extract file meta from blob
+                        }//End IF reading byte lenth of fileMeata
+                }//End get bytelength of fileMeta
+                reader2.readAsText(metaLength);
+ }//End if Seshi.recvBuffer is < 0.
+    }, 250);
+
+}//End processRecieveBuffer.

@@ -155,7 +155,7 @@ padding-right: 15px;
 
 
     .navbar-toggle {
-      padding: 4px 6px;
+      padding: 4px 6px !important;
       font-size: 16px;
       color: $grayscale-light;
 
@@ -197,6 +197,14 @@ padding-right: 15px;
       }
     }
   }
+}
+
+.navbar-toggle {
+  padding: 4px 6px;
+}
+
+.navbar-toggle .fa-bars {
+  font-size: 30px;
 }
 
 .mapimg {
@@ -713,6 +721,10 @@ img {
 
 }
 
+#landingpage .main-header {
+    padding-top: 20vh;
+}
+
 @media (min-width: 768px) {
 .seshi-container {
     min-width: 770px;
@@ -733,5 +745,19 @@ img {
     }
     .seshi-container {
       width: 1170px;
+    }
+    .mobile-cloud {
+      img {
+        width: 276px;
+        height: auto;
+        margin-top: 11vh;
+        margin-left: 3vw;
+      }
+      p{
+        font-family: 'Source Sans Pro';
+        color: rgb(22,174,231);
+        font-size: 14px;
+        margin-left:3vw;
+      }
     }
 }

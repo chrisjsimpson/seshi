@@ -59,6 +59,7 @@ label {
 .fullwidthcard {
   padding:0;
   z-index: 2;
+  margin-top:14px;
   h4 {
     color: $kinddarkgrey;
   }
@@ -743,7 +744,8 @@ input[id="display-name"] {
   padding-right: 10px;
   padding-left: 7px;
   height:40px;
-  width: 200px;
+  width: 90%;
+  max-width: 325px;
   margin-left: 16px;
   float:left;
   transition: all .3s ease-in-out;
@@ -810,12 +812,14 @@ transition: width 0.3s;
   // margin: 10px;
   margin-left: -20px;
   height: 115px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-top: 20px;
   span h3 {
     padding:43px;
     font-size:26px;
-
+    font-weight: 600;
+    text-transform: none;
+    text-shadow: 1px 1px 2px #888;
   }
 }
 
@@ -825,6 +829,7 @@ transition: width 0.3s;
 padding: 28px;
 // padding-left: 12px;
 padding-right: 5px;
+  text-shadow: 1px 1px 2px #888;
 }
 
 /* End */
@@ -1065,6 +1070,12 @@ padding-right: 5px;
     height:99px;
     margin-top: 60px;
   }
+}
 
+/*small phones  portrait*/
 
+@media(max-width: 375px) {
+  .fullwidthcard {
+    top: -28px;
+  }
 }

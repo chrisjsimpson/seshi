@@ -1,4 +1,28 @@
 @import "../vendor/_font-awesome";
+.demo-droppable {
+    position: absolute;
+    width: 92%;
+    height: 433px;
+    background: transparent;
+    opacity:1;
+    padding: 200px 50px;
+    text-align: left;
+    border-radius: 3px;
+    p {
+      color: #444;
+      font-size: 24px;
+      padding-left: 45px;
+      padding-top: 30px;
+    }
+
+  }
+  .demo-droppable.dragover {
+    background: transparent;
+    opacity: 1;
+    p {
+      color: #111;
+    }
+  }
 
 .fileUpload input[type="file"] {
     cursor: pointer;

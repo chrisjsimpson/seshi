@@ -62,7 +62,7 @@ Seshi = {
                                 "fileName":progressData.fileName,
                                 "currentChunk":currentChunk + 1,
                                 "totalNumChunks":progressData.totalNumChunks,
-                                "complete":progressData.currentChunk == progressData.totalNumChunks ? true:false,
+                                "complete":currentChunk >= progressData.totalNumChunks ? true:false,
                                 "UIdone":false
                                 }
                             dispatchEvent(storeFilesProgressUpdate);//Dispact/fire progress update event

@@ -592,19 +592,31 @@ Seshi = {
 
                     if ( Seshi.sendingFileProgress[ack.fileId] === undefined )
                     {
-                        chunkCount = 0;
+                        recvChunkCount = 0;
                     }else { //End set progress to zero initially
-                        chunkCount = Seshi.sendingFileProgress[ack.fileId].chunkCount;
+                        recvChunkCount = Seshi.sendingFileProgress[ack.fileId].recvChunkCount;
                     }//End else incriment currentChunk using current value
 
-                    Seshi.sendingFileProgress.percentComplete= (ack.chunkNumber + 1) / ack.numberOfChunks * 100;
-                    Seshi.sendingFileProgress.fileName = ack.fileName;
-                    Seshi.sendingFileProgress.fileId = ack.fileId;
-                    Seshi.sendingFileProgress.fileType = ack.fileType;
-                    Seshi.sendingFileProgress.chunkNumber = ack.chunkNumber;
-                    Seshi.sendingFileProgress.numberOfChunks = ack.numberOfChunks;
+                    Seshi.sendingFileProgress[ack.fileId] = {
+                        "percentComplete"   : (ack.chunkNumber + 1) / ack.numberOfChunks * 100,
+                        "fileName"          : ack.fileName,
+                        "fileId"            : ack.fileId,
+                        "fileType"          : ack.fileType,
+                        "chunkNumber"       : ack.chunkNumber,
+                        "numberOfChunks"    : ack.numberOfChunks,
+                        "recvChunkCount"    : recvChunkCount + 1,
+                        "complete"          : recvChunkCount >= ack.numberOfChunks ? true:false,
+                        "UIdone"            : false
+                    }//End update Seshi.sendingFileProgress[]
+
                     //Fire sendFileProgressUpdate event so sender knows to update their UI with sending progress bar
                     dispatchEvent(sendFileProgressUpdate);
+                    //Delete completed storeProgess
+                    if(Seshi.sendingFileProgess[ack.fileId].complete == true)
+                    {
+                        delete(Seshi.sendingFileProgress[ack.fileId]);
+                    }
+
     },
     bufferFullThreshold:4096,
     listener: function() {
@@ -624,7 +636,7 @@ Seshi = {
     },
     buffer:[], 
     recvBuffer:[],
-    sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''},
+    sendingFileProgress:[],
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
                             //Check dosen't already exist

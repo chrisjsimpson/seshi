@@ -710,11 +710,17 @@ img {
     //     width: 16.66667%;
     // }
 
+
+}
+
+@media (min-width: 768px) {
+.seshi-container {
+    min-width: 770px;
+}
 }
 
 
-
-@media (min-width: screen-sm-max) {
+@media (min-width: $screen-sm-max) {
     .col-md-15 {
         width: 20%;
         float: left;

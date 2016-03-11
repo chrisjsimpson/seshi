@@ -123,26 +123,43 @@
                     <div class="file-header" >
                             <h2>File Exchange </h2>
                             <!-- <h3> <span>Send key </span>to a friend to start file exchange</h3> -->
+                            <div id="fileBoxes">
+                                <div class="col-sm-12">
+                                    <div class="displayname">
+                                        <span class="label-display">Display name: </span>
+                                        <span class="display-input">
+                                            <input type="text" id="display-name">
+                                            <!-- <span class="edit-btn"><i class="fa fa-pencil"></i></span> -->
+                                        </span>
+                                    </div>
+
+
+                                    <!-- <button class="btn btn-default" id="refreshList">Refresh List</button> -->
+
+                                </div>
+                            </div>
                             <div class="uploadbox-connect">
                                  <div class="col-sm-3">
                                      <span class=" fileUpload btn btn-upload" >
                                          <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
-                                         <span><img class="addicon"src="img/addfile.png"> </span><span class="hidden-sm"> Add Files</span>
+                                         <span><img class="addicon"src="img/addfile.png"> </span><span class="hidden-sm addtext"> Add Files</span>
                                          <!-- <div class=" hidden-xs dragfile">
                                              or drag files to upload
                                          </div> -->
                                      </span>
                                  </div>
                              <div class="col-sm-9">
-                                 <div class="copyclipboard-card">
-                                     <div class="keycopy">
-                                         <h6 class="copied">Share url link </h6>
-                                         <div class="keycontainer">
-                                             <div id="copyclipboard" class="icon-link round-s clipboard fill"><i class="fa fa-link"></i></div>
-                                         </div>
-                                     </div>
+                                 <div class="keycopy ">
+                                     <div id="copyclipboard" class="icon-link clipboard fill largelink">
+                                         <i class="fa fa-link float-link"></i>
+                                         <span class=""><h3 class="copied">Send</h3></span></div>
+                                         <h6 class="flashcopied"></h6>
+                                 </div>
+                                 <div class="copyclipboard-card col-75 col-80">
 
-                                     <div class="col-75 col-80 message-app-card" >
+
+
+                                     <div class=" message-app-card" >
                                          <h6><a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Once a friend/recipient clicks the link, you and your friend will be connected">
                                              <i class="fa fa-question-circle"></i></a> Send the link to a friend </h6>
                                          <div class="keycontainer">
@@ -178,7 +195,7 @@
     <div class="seshi-container" id="hideall"> <!--hide wrapper -->
             <div class="row myfiles">
 
-                <div class="row generate-key">
+                <div class="row">
                     <div class="container" id="shareButtonsRow">
 
                     </div>
@@ -188,21 +205,7 @@
                   <p>Drag and drop files here</p>
                 </div>
 
-                <div class="row" id="fileBoxes">
-                    <div class="col-sm-5 col-offset-sm-4">
-                        <div class="displayname">
-                            <span class="label-display">Display name: </span>
-                            <span class="display-input">
-                                <input type="text" id="display-name">
-                                <!-- <span class="edit-btn"><i class="fa fa-pencil"></i></span> -->
-                            </span>
-                        </div>
 
-
-                        <!-- <button class="btn btn-default" id="refreshList">Refresh List</button> -->
-
-                    </div>
-                </div>
 
                 <div class="col-md-5 fullwidthcard">
                         <h4> My Files </h4>
@@ -315,7 +318,7 @@
             </div> <!-- hide until connect -->
 
             <div class=" col-md-7 temp-message">
-                <p id="connectionStatus">your friend's files will appear here</p>
+                <p id="connectionStatus">share link to see friend's list of files</p>
             </div>
         </div> <!--myfiles-->
 

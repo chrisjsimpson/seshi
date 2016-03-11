@@ -15160,7 +15160,7 @@ p {
 }
 
 .navbar-custom .navbar-brand .navbar-toggle {
-  padding: 4px 6px;
+  padding: 4px 6px !important;
   font-size: 16px;
   color: #fefefe;
 }
@@ -15192,6 +15192,14 @@ p {
   outline: none;
   background-color: rgba(255, 255, 255, 0.7);
   color: #222;
+}
+
+.navbar-toggle {
+  padding: 4px 6px;
+}
+
+.navbar-toggle .fa-bars {
+  font-size: 30px;
 }
 
 .mapimg {
@@ -15646,7 +15654,17 @@ img::-moz-selection {
   }
 }
 
-@media (min-width: screen-sm-max) {
+#landingpage .main-header {
+  padding-top: 20vh;
+}
+
+@media (min-width: 768px) {
+  .seshi-container {
+    min-width: 770px;
+  }
+}
+
+@media (min-width: 991px) {
   .col-md-15 {
     width: 20%;
     float: left;
@@ -15660,6 +15678,18 @@ img::-moz-selection {
   }
   .seshi-container {
     width: 1170px;
+  }
+  .mobile-cloud img {
+    width: 276px;
+    height: auto;
+    margin-top: 11vh;
+    margin-left: 3vw;
+  }
+  .mobile-cloud p {
+    font-family: 'Source Sans Pro';
+    color: #16aee7;
+    font-size: 14px;
+    margin-left: 3vw;
   }
 }
 
@@ -19882,6 +19912,7 @@ label {
 .fullwidthcard {
   padding: 0;
   z-index: 2;
+  margin-top: 14px;
 }
 
 .fullwidthcard h4 {
@@ -19935,6 +19966,7 @@ label {
 .filewell {
   height: 220px;
   overflow: auto;
+  overflow-x: hidden;
 }
 
 .myfilelist {
@@ -20328,6 +20360,10 @@ a {
   transition: color 150ms ease-in-out;
 }
 
+.icon-link.fill.clipboard:hover .copied {
+  color: #F0C973;
+}
+
 .icon-link.round {
   border-radius: 50%;
 }
@@ -20527,8 +20563,9 @@ a {
   height: auto;
   color: #444;
   font-size: 21px;
-  margin-top: -21px;
-  margin-bottom: 32px;
+  padding-top: 20px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   float: left;
 }
 
@@ -20557,7 +20594,8 @@ input[id="display-name"] {
   padding-right: 10px;
   padding-left: 7px;
   height: 40px;
-  width: 200px;
+  width: 90%;
+  max-width: 325px;
   margin-left: 16px;
   float: left;
   transition: all .3s ease-in-out;
@@ -20590,18 +20628,21 @@ input[id="display-name"]:focus + .edit-btn {
   min-height: 25px;
   height: 115px;
   /* margin-bottom: 20px; */
-  padding: 10px;
   background-color: rgba(240, 240, 240, 0.7);
   border: 2px solid #aaa;
   border-radius: 4px;
   text-align: center;
   margin: 0 auto;
   margin-top: 20px;
+  width: 40%;
+  opacity: 0;
   z-index: 999;
+  transition: width 0.3s;
 }
 
 .flashcopied {
   color: #fc3f3f !important;
+  margin: -38px;
 }
 
 .copyclipboard-card h6 {
@@ -20612,20 +20653,37 @@ input[id="display-name"]:focus + .edit-btn {
   padding: 11px 0;
 }
 
-.message-app-card {
-  display: none;
+/*large clipboard send link overwrite */
+.largelink {
+  width: 100%;
+  margin-left: -20px;
+  height: 115px;
+  border-radius: 6px;
+  margin-top: 20px;
 }
 
+.largelink span h3 {
+  padding: 43px;
+  font-size: 26px;
+  font-weight: 600;
+  text-transform: none;
+  text-shadow: 1px 1px 2px #888;
+}
+
+.float-link {
+  float: left;
+  padding: 28px;
+  padding-right: 5px;
+  text-shadow: 1px 1px 2px #888;
+}
+
+/* End */
 .message-app-card h6 a {
   color: #222;
 }
 
-.copyclipboard-card {
-  width: 30%;
-}
-
-.copyclipboard-card .keycopy {
-  width: 100%;
+.keycopy {
+  width: 25%;
   float: left;
 }
 
@@ -20687,6 +20745,28 @@ input[id="display-name"]:focus + .edit-btn {
   }
 }
 
+@media (max-width: 992px) {
+  .float-link {
+    padding: 21px;
+    padding-left: 12px;
+    padding-right: 0;
+    font-size: 25px !important;
+  }
+  .largelink {
+    height: 98px;
+    margin-top: 30px;
+  }
+  .largelink span h3 {
+    padding: 38px;
+    text-indent: 3px;
+    font-size: 21px;
+  }
+  .flashcopied {
+    font-size: 12px;
+    margin: -30px;
+  }
+}
+
 @media (max-width: 767px) {
   .btn-pull {
     margin-right: 18%;
@@ -20705,7 +20785,6 @@ input[id="display-name"]:focus + .edit-btn {
 
 @media (min-width: 768px) {
   .copyclipboard-card {
-    width: 31%;
     padding-top: 3px;
     float: left;
   }
@@ -20790,6 +20869,43 @@ input[id="display-name"]:focus + .edit-btn {
   .btn-generate-key {
     width: 180px;
     margin-bottom: 35px;
+  }
+  .keycopy {
+    float: none;
+    margin: 0 auto;
+    width: 100%;
+    transition: all 0.3s ease;
+  }
+  .float-link {
+    padding: 27px;
+    padding-left: 12px;
+    padding-right: 0;
+    font-size: 25px !important;
+  }
+  .largelink {
+    height: 98px;
+    width: 150px;
+    margin-top: 0;
+  }
+  .largelink span h3 {
+    padding: 38px;
+    text-indent: 3px;
+    font-size: 21px;
+  }
+  .flashcopied {
+    font-size: 12px;
+    margin: -30px;
+  }
+  .copyclipboard-card {
+    height: 99px;
+    margin-top: 60px;
+  }
+}
+
+/*small phones  portrait*/
+@media (max-width: 375px) {
+  .fullwidthcard {
+    top: -28px;
   }
 }
 
@@ -23147,11 +23263,11 @@ input[id="display-name"]:focus + .edit-btn {
 
 .demo-droppable {
   position: absolute;
-  width: 92%;
+  width: 52%;
   height: 433px;
   background: transparent;
   opacity: 1;
-  padding: 200px 50px;
+  padding: 173px 50px;
   text-align: left;
   border-radius: 3px;
 }
@@ -23160,7 +23276,6 @@ input[id="display-name"]:focus + .edit-btn {
   color: #444;
   font-size: 24px;
   padding-left: 45px;
-  padding-top: 30px;
 }
 
 .demo-droppable.dragover {
@@ -23285,6 +23400,11 @@ input[id="display-name"]:focus + .edit-btn {
   transition: all 0.2s ease-in-out;
 }
 
+.btn-upload .addtext {
+  text-transform: none;
+  margin-left: 3px;
+}
+
 .fileUpload:after, .addmorefile:after {
   content: '';
 }
@@ -23344,7 +23464,7 @@ input[id="display-name"]:focus + .edit-btn {
 
 .uploadbox-connect {
   padding: none;
-  height: 154px;
+  height: 227px;
   margin: 5px auto;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.7);
@@ -23370,7 +23490,7 @@ input[id="display-name"]:focus + .edit-btn {
     width: 40px;
   }
   .uploadbox-connect {
-    height: 307px;
+    height: 367px;
   }
 }
 
@@ -24969,48 +25089,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.71s;
-  animation-duration: 1.55s;
+  animation-delay: 0.15s;
+  animation-duration: 1.36s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.64s;
-  animation-duration: 1.57s;
+  animation-delay: 0.36s;
+  animation-duration: 0.81s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.14s;
-  animation-duration: 0.83s;
+  animation-delay: 0.02s;
+  animation-duration: 1.24s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.53s;
-  animation-duration: 1.26s;
+  animation-delay: -0.08s;
+  animation-duration: 1.35s;
 }
 
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.11s;
-  animation-duration: 0.89s;
+  animation-delay: 0.62s;
+  animation-duration: 1.12s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: -0.09s;
-  animation-duration: 1.59s;
+  animation-delay: 0.1s;
+  animation-duration: 1.48s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: -0.15s;
-  animation-duration: 1.38s;
+  animation-delay: 0.33s;
+  animation-duration: 0.94s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.68s;
-  animation-duration: 1.5s;
+  animation-delay: 0.12s;
+  animation-duration: 1.37s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: -0.18s;
-  animation-duration: 1.11s;
+  animation-delay: 0.5s;
+  animation-duration: 1.57s;
 }
 
 .ball-grid-beat > div {
@@ -25046,48 +25166,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.57s;
-  animation-duration: 1.48s;
+  animation-delay: -0.13s;
+  animation-duration: 0.99s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.68s;
-  animation-duration: 1.17s;
+  animation-delay: 0.19s;
+  animation-duration: 1.27s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.58s;
-  animation-duration: 0.92s;
+  animation-delay: 0.31s;
+  animation-duration: 0.98s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.61s;
-  animation-duration: 1.06s;
+  animation-delay: -0.17s;
+  animation-duration: 0.77s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.03s;
-  animation-duration: 0.61s;
+  animation-delay: 0.28s;
+  animation-duration: 1.51s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.52s;
-  animation-duration: 1.45s;
+  animation-delay: -0.14s;
+  animation-duration: 0.69s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0.74s;
-  animation-duration: 0.7s;
+  animation-delay: 0.45s;
+  animation-duration: 1.44s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.79s;
+  animation-delay: 0.36s;
   animation-duration: 0.97s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: -0.04s;
-  animation-duration: 1.35s;
+  animation-delay: -0.11s;
+  animation-duration: 0.85s;
 }
 
 .ball-grid-pulse > div {
@@ -25425,23 +25545,23 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: -0.12s;
-  animation-duration: 1.22s;
+  animation-delay: 0.66s;
+  animation-duration: 0.6s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.03s;
-  animation-duration: 0.56s;
+  animation-delay: -0.07s;
+  animation-duration: 0.75s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.16s;
-  animation-duration: 1.18s;
+  animation-delay: -0.07s;
+  animation-duration: 0.71s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.73s;
-  animation-duration: 0.54s;
+  animation-delay: 0.45s;
+  animation-duration: 0.75s;
 }
 
 .line-scale-party > div {

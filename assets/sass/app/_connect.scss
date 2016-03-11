@@ -59,6 +59,7 @@ label {
 .fullwidthcard {
   padding:0;
   z-index: 2;
+  margin-top:14px;
   h4 {
     color: $kinddarkgrey;
   }
@@ -113,6 +114,7 @@ label {
 
   height: 220px;
   overflow: auto;
+  overflow-x: hidden;
 
 }
 
@@ -509,6 +511,10 @@ a {
   transition: color 150ms ease-in-out;
 }
 
+.icon-link.fill.clipboard:hover .copied {
+    color: #F0C973;
+}
+
 .icon-link.round {
   border-radius: 50%;
 }
@@ -705,12 +711,13 @@ a {
 /* Display name */
 .displayname {
   width: 100%;
-  height: auto;
-  color: $kinddarkgrey;
-  font-size: 21px;
-  margin-top: -21px;
-  margin-bottom: 32px;
-  float:left;
+height: auto;
+color: $kinddarkgrey;
+font-size: 21px;
+padding-top: 20px;
+margin-top: 6px;
+margin-bottom: 6px;
+float: left;
   .label-display {
     float:left;
     margin-left: 15px;
@@ -737,7 +744,8 @@ input[id="display-name"] {
   padding-right: 10px;
   padding-left: 7px;
   height:40px;
-  width: 200px;
+  width: 90%;
+  max-width: 325px;
   margin-left: 16px;
   float:left;
   transition: all .3s ease-in-out;
@@ -770,19 +778,23 @@ input[id="display-name"]:focus + .edit-btn {
   min-height: 25px;
   height: 115px;
   /* margin-bottom: 20px; */
-  padding: 10px;
+  // padding: 10px;
   background-color: rgba(240, 240, 240, 0.7);
   border: 2px solid #aaa;
   border-radius: 4px;
   text-align: center;
 margin: 0 auto;
 margin-top: 20px;
-
+width: 40%;
+// float:right;
+opacity:0;
 z-index: 999;
+transition: width 0.3s;
 }
 
 .flashcopied {
   color: #fc3f3f !important;
+    margin: -38px;
 }
 
 .copyclipboard-card h6 {
@@ -793,22 +805,46 @@ z-index: 999;
   padding: 11px 0;
 }
 
+/*large clipboard send link overwrite */
+
+.largelink {
+  width: 100%;
+  // margin: 10px;
+  margin-left: -20px;
+  height: 115px;
+  border-radius: 6px;
+  margin-top: 20px;
+  span h3 {
+    padding:43px;
+    font-size:26px;
+    font-weight: 600;
+    text-transform: none;
+    text-shadow: 1px 1px 2px #888;
+  }
+}
+
+
+.float-link {
+  float: left;
+padding: 28px;
+// padding-left: 12px;
+padding-right: 5px;
+  text-shadow: 1px 1px 2px #888;
+}
+
+/* End */
+
 .message-app-card {
-  display: none;
   h6 a {
     color:#222;
   }
 }
 
-.copyclipboard-card {
-  width: 30%;
-}
 
-.copyclipboard-card .keycopy {
-  width: 100%;
+.keycopy {
+  width: 25%;
   float: left;
 }
-
 .btn-hide {
   display: none;
 }
@@ -869,6 +905,28 @@ z-index: 999;
   }
 }
 
+@media(max-width: 992px) {
+  .float-link {
+    padding: 21px;
+    padding-left:12px;
+    padding-right: 0;
+    font-size: 25px !important;
+  }
+
+  .largelink {
+    height: 98px;
+    margin-top: 30px;
+    span h3 {
+    padding: 38px;
+    text-indent: 3px;
+    font-size: 21px;
+    }
+  }
+  .flashcopied {
+    font-size: 12px;
+    margin: -30px;
+  }
+}
 @media (max-width: 767px) {
   .btn-pull {
     margin-right: 18%;
@@ -893,7 +951,7 @@ z-index: 999;
 
 @media (min-width: 768px) {
   .copyclipboard-card {
-    width: 31%;
+    // width: 40%;
     padding-top: 3px;
     float:left;
   }
@@ -978,5 +1036,46 @@ z-index: 999;
   .btn-generate-key {
     width: 180px;
     margin-bottom: 35px;
+  }
+
+  .keycopy {
+    float: none;
+    margin: 0 auto;
+    width:100%;
+    transition: all 0.3s ease;
+  }
+
+  .float-link {
+    padding: 27px;
+    padding-left: 12px;
+    padding-right: 0;
+    font-size: 25px !important;
+  }
+
+  .largelink {
+    height: 98px;
+    width:150px;
+    margin-top: 0;
+    span h3 {
+    padding: 38px;
+    text-indent: 3px;
+    font-size: 21px;
+    }
+  }
+  .flashcopied {
+    font-size: 12px;
+    margin: -30px;
+  }
+  .copyclipboard-card {
+    height:99px;
+    margin-top: 60px;
+  }
+}
+
+/*small phones  portrait*/
+
+@media(max-width: 375px) {
+  .fullwidthcard {
+    top: -28px;
   }
 }

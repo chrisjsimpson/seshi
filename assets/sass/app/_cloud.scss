@@ -1,18 +1,18 @@
 @import "../vendor/_font-awesome";
 .demo-droppable {
     position: absolute;
-    width: 92%;
+    width: 52%;
     height: 433px;
     background: transparent;
     opacity:1;
-    padding: 200px 50px;
+    padding: 173px 50px;
     text-align: left;
     border-radius: 3px;
     p {
       color: #444;
       font-size: 24px;
       padding-left: 45px;
-      padding-top: 30px;
+
     }
 
   }
@@ -141,6 +141,11 @@
     // background-image: url('img/addfile.png');
   }
 
+  .addtext {
+    text-transform: none;
+    margin-left: 3px;
+  }
+
 
 }
 
@@ -208,7 +213,7 @@
 
 .uploadbox-connect {
   padding:none;
-  height: 154px;
+  height: 227px;
   margin: 5px auto;
   border-radius: 6px;
   background: rgba(255,255,255,0.7);
@@ -235,7 +240,7 @@
     }
   }
   .uploadbox-connect {
-    height: 307px;
+    height: 367px;
   }
 }
 

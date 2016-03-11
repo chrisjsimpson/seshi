@@ -11822,16 +11822,28 @@ $('.drop-up').click(function(e) {
 
 $("#copyclipboard").click(function () {
     // $(".message-app-card").show();
-    $(".keycopy").animate({
-        width: '25%'
-    });
-    $(".copyclipboard-card ").animate({
-        width: '100%'
-    });
+   //  $(".keycopy").animate({
+   //      width: '25%'
+   //  });
 
-    $(".keycopy .copied").replaceWith('<h6 class="flashcopied"> Copied link! </h6>');
+   if ($(window).width() < 768) {
+      $('.keycopy').css('float', 'left');
+      $(".copyclipboard-card ").css({
+          width: '100%'
+      });
+      $(".uploadbox-connect").css('height', '451px')
+      $(".copyclipboard-card ").css({
+          width: '100%'
+      });
+   } else {
+    $(".copyclipboard-card ").css({
+        width: '75%'
+    });
+}
 
-    $(".message-app-card").delay(400).fadeIn();
+    $(".flashcopied").replaceWith('<h6 class="flashcopied"> Copied link! </h6>');
+
+    $(".copyclipboard-card").css('opacity', '1');
 
 });
 

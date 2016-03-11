@@ -635,7 +635,6 @@ function pullSelectedFiles() {
 
 function updateSendFileProgessDisplay() {
 //Called upon sendFileProgressUpdate event being fired
-    console.log(Seshi.sendingFileProgress);
         var fileId = Seshi.sendingFileProgress.fileId;
         var fileName = Seshi.sendingFileProgress.fileName;
         var fileType = Seshi.sendingFileProgress.fileType;

@@ -65,7 +65,8 @@ Seshi = {
                                 "complete":currentChunk >= progressData.totalNumChunks ? true:false,
                                 "UIdone":false
                                 }
-                            dispatchEvent(storeFilesProgressUpdate);//Dispact/fire progress update event
+                            dispatchEvent(storeFilesProgressUpdate);//Dispacht/fire progress update event for local UI
+
                             //Delete completed storeProgess
                             if(Seshi.storeProgress[progressData.fileId].complete == true)
                             {
@@ -540,11 +541,9 @@ Seshi = {
                             //Close outbox flag so we don't repeatedly open a new filereader
                             Seshi.flagProcessOutboxStarted=false;
 
-                            //dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                             }).then(function(){
                             Seshi.flagProcessOutboxStarted = true;
                             Seshi.processOutbox();
-                            dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event //Final invocation
                             })});
     },
     outBox:[],
@@ -562,13 +561,9 @@ Seshi = {
 
                         fr.onload = function(chunk) {
                               if (Seshi.outBox.length >= 0) {
-                             console.log("We got a chunk to send!");
-                                //for(var i=0;i<=99999999;i++) {}//Crude delay!
-                                //dc.send(chunk.target.result);
                                 //Add chunk to buffer
                                 Seshi.buffer.push(chunk.target.result);
                                 Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
-                                dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                                     //Kill off fileReader if we've reached the end
                                     if(Seshi.outBox.length == 0)
                                     {
@@ -577,21 +572,51 @@ Seshi = {
                                 loadNext(); // shortcut here
                               }
                            };
-
-                            //Get next chunk info, pass chunk to fileReader & update sendingFileProgress
-                            chunkData = Seshi.outBox.pop();
-                            Seshi.sendingFileProgress.percentComplete= (chunkData.chunkNumber + 1) / chunkData.numberOfChunks * 100;
-                            Seshi.sendingFileProgress.fileName = chunkData.fileName;
-                            Seshi.sendingFileProgress.fileId = chunkData.fileId;
-                            Seshi.sendingFileProgress.fileType = chunkData.fileType;
-                            Seshi.sendingFileProgress.chunkNumber = chunkData.chunkNumber;
-                            Seshi.sendingFileProgress.numberOfChunks = chunkData.numberOfChunks;
-
+                        chunkData = Seshi.outBox.pop();
                         fr.readAsArrayBuffer(chunkData.chunk);
                         }
 
                         loadNext();
                     }//End only open reader again if flagProcessOutboxStarted is set to true.
+    },
+    updateSendingProgress: function(ack) {
+                    /* This is called by receivedChunkACK comman from over the datachannel.
+                     * This occurs when the connected peer has sucessfully received, and stored
+                     * A chunk which we sent to them. the 'receivedChunkACK' is their confirmation
+                     * which we then use to update the sender on the progress of their push. 
+                     * (A push is a file 'upload' to a connected peer).
+                     * */
+                    //For file progress, just count number of ACKS received, not the actual 
+                    // chunk number in the ACK message, because chunks mayt arrive out of order
+                    // therere ack.chunkNumber is not a reliable indicator of chunk recieved progress
+
+                    if ( Seshi.sendingFileProgress[ack.fileId] === undefined )
+                    {
+                        recvChunkCount = 0;
+                    }else { //End set progress to zero initially
+                        recvChunkCount = Seshi.sendingFileProgress[ack.fileId].recvChunkCount;
+                    }//End else incriment currentChunk using current value
+
+                    Seshi.sendingFileProgress[ack.fileId] = {
+                        "percentComplete"   : (ack.chunkNumber + 1) / ack.numberOfChunks * 100,
+                        "fileName"          : ack.fileName,
+                        "fileId"            : ack.fileId,
+                        "fileType"          : ack.fileType,
+                        "chunkNumber"       : ack.chunkNumber,
+                        "numberOfChunks"    : ack.numberOfChunks,
+                        "recvChunkCount"    : recvChunkCount + 1,
+                        "complete"          : recvChunkCount >= ack.numberOfChunks ? true:false,
+                        "UIdone"            : false
+                    }//End update Seshi.sendingFileProgress[]
+
+                    //Fire sendFileProgressUpdate event so sender knows to update their UI with sending progress bar
+                    dispatchEvent(sendFileProgressUpdate);
+                    //Delete completed storeProgess
+                    if(Seshi.sendingFileProgess[ack.fileId].complete == true)
+                    {
+                        delete(Seshi.sendingFileProgress[ack.fileId]);
+                    }
+
     },
     bufferFullThreshold:4096,
     listener: function() {
@@ -611,7 +636,7 @@ Seshi = {
     },
     buffer:[], 
     recvBuffer:[],
-    sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''},
+    sendingFileProgress:[],
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
                             //Check dosen't already exist
@@ -1041,7 +1066,7 @@ function setupDataHandlers() {
 	//statusE = document.getElementById("status"),
 	//statusE.innerHTML = "We are connected!";
 
-        trace('Received Message: ' + event.data);
+        //trace('Received Message: ' + event.data);
 
         if ( event.data instanceof Array ) {
                 alert('Is array');
@@ -1062,7 +1087,6 @@ function setupDataHandlers() {
             if(JSON.parse(event.data))
             {
                 fileMeta = JSON.parse(event.data);
-                console.log('Got file meta');
             }
         }//End determin if data message or control message.
 
@@ -1088,6 +1112,10 @@ function setupDataHandlers() {
                     break;
                 case 'recvRemoteFileList': //Receiving list of files from remote peer
                     Seshi.recvRemoteFileList(msg);
+                    break;
+                case 'receivedChunkACK': //Got a received & stored Chunk ACK from peer.
+                    trace("Peer told me that they've sucessfully received & stored a chunk I sent them. Yay."); 
+                    Seshi.updateSendingProgress(msg.data);
                     break;
                 case 'requestFilesById': //Receiving request from peer to pull files from their peer.
                     Seshi.sendRequestedFilesToPeer(msg);
@@ -1146,10 +1174,8 @@ function setupDataHandlers() {
                 console.log("Received data store message.");
                 //console.log(blobURL);
 
-            } else {
-                console.log("received " + msg + "on data channel");
-                }
-                };
+            }
+           };
     }
 
 function sendChat(msg) {
@@ -1491,6 +1517,23 @@ function processRecieveBuffer() {
                                                                 });
                                                                 //End send data chunk payload
                                                                 storePromise.then(function() {
+                                                                    //Send back ACK to remote peer with progess update
+                                                                     var peerReceivedChunkACK = {
+                                                                         'cmd':'receivedChunkACK',
+                                                                         'data':{
+                                                                                    'boxId'         : Seshi.getBoxId(),
+                                                                                    'fileId'        : window.curChunk.fileId,
+                                                                                    "fileName"      : window.curChunk.fileName,
+                                                                                    "fileType"      : window.curChunk.fileType,
+                                                                                    "numberOfChunks": window.curChunk.numberOfChunks,
+                                                                                    'chunkNumber'   : window.curChunk.chunkNumber,
+                                                                                    'chunkSize'     : window.curChunk.chunkSize
+                                                                                }
+                                                                     };
+                                                                     //Send chunk received ACK over datachannel to peer
+                                                                     peerReceivedChunkACK = JSON.stringify(peerReceivedChunkACK);
+                                                                     dc.send(peerReceivedChunkACK);
+
                                                                     processRecieveBuffer();//Check for more chunks in recvBuffer
                                                                 });//End then check for next chunk in recvBuffer
                                                 }//End reader.readtState == DONE

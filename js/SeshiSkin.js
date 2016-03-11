@@ -635,51 +635,58 @@ function pullSelectedFiles() {
 
 function updateSendFileProgessDisplay() {
 //Called upon sendFileProgressUpdate event being fired
-    console.log(Seshi.sendingFileProgress);
-        var fileId = Seshi.sendingFileProgress.fileId;
-        var fileName = Seshi.sendingFileProgress.fileName;
-        var fileType = Seshi.sendingFileProgress.fileType;
-        var chunkNumber = Seshi.sendingFileProgress.chunkNumber;
-        var numberOfChunks = Seshi.sendingFileProgress.numberOfChunks;
-        var valueNow = parseInt((chunkNumber + 1) / numberOfChunks * 100);
-        var complete = Seshi.sendingFileProgress.allFileDataSent;
 
-    var output = '';
-    output += '<li class="list-group-item file-item uploading-item row" id="sendingFileId-' + fileId + '">';
-                //Filename
-    output += '<div class="col-xs-4 col-sm-3">' + fileName + '</div> ';
-                //Progress bar
-    output += '<div class="col-xs-5  col-sm-6">';
-    output += '<div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">';
-    output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
-    output += '</div>';
-    output += '</div>';
-                //Percentage complete
-    output += '<div class="col-xs-1 col-sm-1">';
-    output += '<div id="percentupload">' + valueNow + '%</div>';
-    output += '</div>';
-                //Cancell button
-    output += '<div class="col-xs-1 col-sm-1">';
-    output += '<i class="fa fa-times "></i>';
-    output += '</div>';
-    output += '<div class="col-xs-1 col-sm-1"></div>';
-    output += '</li>';
+    for (var fileId in Seshi.sendingFileProgress) 
+    {
+        if(Seshi.sendingFileProgress[fileId].UIdone == true) {
+            continue; //Dont re-add progress bar as file is 100% sent
+        };
+        var file = Seshi.sendingFileProgress[fileId];
+        var fileName = file.fileName;
+        var fileType = file.fileType;
+        var chunkNumber = file.chunkNumber;
+        var numberOfChunks = file.numberOfChunks;
+        var valueNow = parseInt((file.recvChunkCount + 1) / numberOfChunks * 100);
+        var complete = file.recvChunkCount >= numberOfChunks ? true:false;
 
-     //If complete, check for existing progress bar and delete it
-     if (valueNow >= 100) {
-         //Set UI complete flag
-         Seshi.sendingFileProgress.UIdone = true;
-         //Remove completed 'sending file' progress bar from senders UI
-            if (document.getElementById('sendingFileId-' + fileId)) {
-                document.getElementById('sendingFileId-' + fileId).remove();
-            }
-     } else { //End if complete
-            //If not complete:
-            if (document.getElementById('sendingFileId-' + fileId)) {
-                document.getElementById('sendingFileId-' + fileId).remove();
-            }
-            document.getElementById('remoteFileList').insertAdjacentHTML('afterbegin', output);
-     }//End if not complete
+        var output = '';
+        output += '<li class="list-group-item file-item uploading-item row" id="sendingFileId-' + fileId + '">';
+                    //Filename
+        output += '<div class="col-xs-4 col-sm-3">' + fileName + '</div> ';
+                    //Progress bar
+        output += '<div class="col-xs-5  col-sm-6">';
+        output += '<div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">';
+        output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
+        output += '</div>';
+        output += '</div>';
+                    //Percentage complete
+        output += '<div class="col-xs-1 col-sm-1">';
+        output += '<div id="percentupload">' + valueNow + '%</div>';
+        output += '</div>';
+                    //Cancell button
+        output += '<div class="col-xs-1 col-sm-1">';
+        output += '<i class="fa fa-times "></i>';
+        output += '</div>';
+        output += '<div class="col-xs-1 col-sm-1"></div>';
+        output += '</li>';
+
+         //If complete, check for existing progress bar and delete it
+         if (valueNow >= 100) {
+             //Set UI complete flag
+             Seshi.sendingFileProgress[fileId].UIdone = true;
+             //Remove completed 'sending file' progress bar from senders UI
+                if (document.getElementById('sendingFileId-' + fileId)) {
+                    document.getElementById('sendingFileId-' + fileId).remove();
+                }
+         } else { //End if complete
+                //If not complete:
+                if (document.getElementById('sendingFileId-' + fileId)) {
+                    document.getElementById('sendingFileId-' + fileId).remove();
+                }
+                document.getElementById('remoteFileList').insertAdjacentHTML('afterbegin', output);
+         }//End if not complete
+        }//End loop though Seshi.sendingFileProgress showing sending file progress udates per file
+
 }//End updateSendFileProgessDisplay()
 
 

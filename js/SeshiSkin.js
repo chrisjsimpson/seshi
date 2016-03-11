@@ -479,12 +479,12 @@ function updateFileListDisplay(fileListObj, targetElm) {
                 //Only show play button if file is playable
                 if(Seshi.isPlayable(mimeType, fileName))
                 {
-                    list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="flaticon-arrow"></i></a></div>';
+                    list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
                 }else {
                     list += '<div class="col-xs-1 "></div>';
                 }//End only show play button if file is playable
             //Download button
-            list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="flaticon-arrows-1"></i></div>';
+            list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         }//End if targetElm != 'remoteFileList'
 
         //Close </li>

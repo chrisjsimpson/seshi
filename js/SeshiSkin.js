@@ -67,7 +67,8 @@ window.addEventListener('sendFileProgressUpdate', updateSendFileProgessDisplay, 
 //Event: displayName of remote user is recived
 window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
 
-
+//Event: onPlayInSyncRequest is fired
+window.addEventListener('playRequest', play, false);
 
 function tickAllFiles(list) {
 
@@ -194,7 +195,18 @@ function updateWhatsAppShareBtn() {
 
 function play(event) {
     console.log("My player implimentation...");
-    fileId = event.target.dataset.id;
+
+    //Determine if local play request or remote
+    if ( undefined !== event.target.dataset ) //Local play req
+    {
+        fileId = event.target.dataset.id;
+    } else if ( undefined !== event.detail.fileId.fileId )
+    {
+        fileId = event.detail.fileId.fileId;
+    } else if ( undefined !== event.detail.fileId) //Remote play req
+    {
+        fileId = event.detail.fileId;
+    }//End determine if local play request or remote
 
     Seshi.generateObjectUrl(fileId).then(
             function(objectInfo){

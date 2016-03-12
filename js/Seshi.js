@@ -458,15 +458,40 @@ Seshi = {
                             msg = JSON.stringify(msg);
                             //Send request of datachannel
                             dc.send(msg);
-                            //Play on local peer
-                            Seshi.play({'fileId':fileId}, "video");
+                            //Fire Play on local peer event
+                            var event = new CustomEvent(
+                                    "playRequest",
+                                    {
+                                        detail: {
+                                            "fileId":fileId
+                                        },
+                                        bubbles: true,
+                                        cancelable: true
+                                    } 
+                            );//End create play request event
+                            dispatchEvent(event);
+
+                            //Seshi.play({'fileId':fileId}, "video");
     },
     playInSync:function(fileId) {
                             /* playInSync()
                              * - Play the requested file ASAP (in sync!)
                              */
                             //Play file
-                            Seshi.play(fileId, "video");
+    //                        Seshi.play(fileId, "video");
+
+                            //Fire Play on local peer event
+                            var event = new CustomEvent(
+                                    "playRequest",
+                                    {
+                                        detail: {
+                                            "fileId":fileId
+                                        },
+                                        bubbles: true,
+                                        cancelable: true
+                                    }
+                            );//End create play request event
+                            dispatchEvent(event);
     },
     download:function(fileId) {
                         /* Download

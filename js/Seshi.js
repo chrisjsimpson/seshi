@@ -44,6 +44,10 @@ Seshi = {
                         onGotRemoteDisplayName = new Event('onGotRemoteDisplayName');
                         onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName', true, true);
 
+                        //Fired when a playInSync request is recieved, fileId is dispatched to UI
+                        onPlayInSyncRequest = new Event('onPlayInSyncRequest');
+                        onPlayInSyncRequest.initEvent('onPlayInSyncRequest', true, true);
+
                         //Initalize storage worker
                         StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
                         //Recieve proress message(s)
@@ -376,7 +380,7 @@ Seshi = {
                         //Query IndexedDB to get the file
                         db.transaction('r', db.chunks, function() {
                             //Transaction scope
-                            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                            db.chunks.where("fileId").equals(fileId.fileId).toArray(function(chunks) {
                                     console.log("Found " + chunks.length + " chunks");
                                     var allChunksArray = [];
                                     //Just get blob cunks (without meta info)
@@ -454,13 +458,15 @@ Seshi = {
                             msg = JSON.stringify(msg);
                             //Send request of datachannel
                             dc.send(msg);
+                            //Play on local peer
+                            Seshi.play({'fileId':fileId}, "video");
     },
-    playInSync:function(playInSyncRequest) {
+    playInSync:function(fileId) {
                             /* playInSync()
                              * - Play the requested file ASAP (in sync!)
                              */
                             //Play file
-                            Seshi.play(playInSyncRequest.fileId, "video");
+                            Seshi.play(fileId, "video");
     },
     download:function(fileId) {
                         /* Download

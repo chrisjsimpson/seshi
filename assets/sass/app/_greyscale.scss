@@ -402,7 +402,14 @@ a {
 
 
 .intro {
-  display: table;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction:row;
+  -webkit-align-items: center;
+   align-items: center;
+   -webkit-justify-content: center;
+   justify-content: center;
   width: 100%;
   height: auto;
   padding: 50px 0;
@@ -420,7 +427,7 @@ a {
   -o-background-size: cover;
 
   .intro-body {
-    display: table-cell;
+    // display: tflex
     vertical-align: middle;
     padding-top:145px;
 

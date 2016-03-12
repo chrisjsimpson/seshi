@@ -726,6 +726,12 @@ img {
     padding-top: 20vh;
 }
 
+@media (max-width: 767px) {
+.seshi-container {
+    max-width: 470px;
+}
+}
+
 @media (min-width: 768px) {
 .seshi-container {
     min-width: 770px;

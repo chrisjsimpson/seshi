@@ -302,8 +302,8 @@ box-shadow: 0px 0px 15px 0px #444;
 
 .btn-chat-toggle {
   background: transparent;
-  color:#fff;
-  border: 1px solid #fff;
+  color:$blue;
+  border: 1px solid $blue;
   transition: all 0.2s ease-in-out;
   margin-top: 10px;
   &:hover {

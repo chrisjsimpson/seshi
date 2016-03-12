@@ -1,0 +1,161 @@
+@charset "UTF-8";
+
+/*
+ * MAIN
+ */
+body{
+	background-color:#f5f5f5;
+  color:#666;
+  font-family: 'Open Sans', Arial;
+  font-size:13px;
+}
+#container{
+	position:relative;
+	margin:50px auto;
+	max-width:960px;
+}
+
+/*
+ * INTRO
+ */
+ #buy-now{
+	position:absolute;
+	right:0;
+	top:-40px;
+	padding:10px;
+	background-color:#11a7df;
+	color:#fff;
+	border-radius: 5px;
+	font-weight:bold;
+	font-size:16px;
+	text-decoration: none;
+	text-shadow: 1px 1px 3px #999;
+}
+ #buy-now:hover{
+	background-color:#109fd4;
+}
+#intro{
+	font-size:24px;
+	margin-bottom:20px;
+	text-align:center;
+}
+#intro span{
+	color:#11a7df;
+	display:block;
+	padding-bottom:20px;
+	font-size:48px;
+}
+#intro span sup{
+	font-size:10px;
+}
+#features{
+	color:#999;
+	text-align:center;
+	border-bottom:1px solid #ddd;
+	padding-bottom:30px;
+	margin-bottom:20px;
+}
+
+/*
+ * NAV
+ */
+ #nav{
+	text-align:center;
+	border-bottom:1px solid #ddd;
+	padding-bottom:10px;
+}
+#nav a{
+	display: inline-block;
+	text-decoration: none;
+	padding: 5px 10px;
+	background-color: #11a7df;
+	color: #fff;
+	margin:0 10px 10px 10px;
+	border-radius: 5px;
+}
+#nav a:hover{
+	background-color: #129acc;
+}
+
+/*
+ * SECTION
+ */
+.section{
+	margin-top:30px;
+	padding:15px 0;
+  font-size:24px;
+  font-weight: bold;
+}
+.section span{
+  font-weight: normal;
+}
+.section a{
+	float:right;
+  font-weight: normal;
+  color:#11a7df;
+  text-decoration: none;
+}
+
+/*
+ * DEMO
+ */
+ .demo-container{
+	overflow-y:auto;
+}
+.demo{
+	background-color:#e5e5e5;
+	box-sizing: border-box;
+	position:relative;
+	display:inline-block;
+	padding:30px 20px;
+	width:31%;
+	margin-left:2%;
+	margin-bottom:20px;
+}
+.demo span{
+	font-size:16px;
+	color:#11a7df;
+}
+.demo a{
+	position:absolute;
+	top:12px;
+	right:10px;
+	padding:5px 10px;
+	border-radius: 5px;
+	background-color:#11a7df;
+	color:#fff;
+	text-decoration: none;
+}
+.demo a:hover{
+	background-color: #129acc;
+}
+
+ /*
+  * TABLE
+  */
+.tftable {font-size:13px;color:#333333;width:100%;border-width: 1px; border-color: #ddd;border-collapse: collapse;}
+.tftable th {font-size:13px; background-color:#11a7df; color:#fff; border-width: 1px;padding: 8px;border-style: solid; border-color: #ddd;text-align:left;}
+.tftable tr {background-color:#ffffff;}
+.tftable td {font-size:13px;border-width: 1px;padding: 8px;border-style: solid;border-color: #ddd;}
+.tftable tr:hover {background-color:#f5f5f5;}
+
+ /*
+  * DEVELOPED BY
+  */
+.developed-by{
+	text-align:center;
+	margin-top:30px;
+	padding:10px;
+	background-color: #eee
+}
+.developed-by a{
+	color:#11a7df;
+}
+
+@media only screen and (max-width: 768px) {
+
+	.demo{
+		width:96%;
+	}
+	
+}

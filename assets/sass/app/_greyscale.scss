@@ -114,6 +114,7 @@ text-transform: lowercase !important;
 
 
 .seshi-container {
+
   margin-right: auto;
 margin-left: auto;
 padding-left: 15px;
@@ -402,7 +403,7 @@ a {
 
 
 .intro {
-  display: table;
+
   width: 100%;
   height: auto;
   padding: 50px 0;
@@ -420,7 +421,7 @@ a {
   -o-background-size: cover;
 
   .intro-body {
-    display: table-cell;
+    // display: tflex
     vertical-align: middle;
     padding-top:145px;
 
@@ -723,6 +724,12 @@ img {
 
 #landingpage .main-header {
     padding-top: 20vh;
+}
+
+@media (max-width: 767px) {
+.seshi-container {
+    max-width: 470px;
+}
 }
 
 @media (min-width: 768px) {

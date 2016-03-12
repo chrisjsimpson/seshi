@@ -1,4 +1,5 @@
 $kinddarkgrey: #444;
+$theprimarycolor: #2299e3;
 
 label {
   margin-bottom: 0;
@@ -35,9 +36,13 @@ label {
   text-transform: uppercase;
   font-family: 'Source Sans Pro';
   width: 140px;
-  color: #fff;
-  border-color: #fff;
+  color: $theprimarycolor;
+  border-color: $theprimarycolor;
   height: 60px;
+  &:hover {
+    color:#fff;
+    background-color: $theprimarycolor;
+  }
 }
 
 /**File Table list */
@@ -83,7 +88,7 @@ label {
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 20px;
-  padding-bottom: 70px;
+  padding-bottom: 10px;
   margin: 0 auto;
   margin-bottom: 0;
   margin-top: 30px;
@@ -107,7 +112,7 @@ label {
 }
 
 .pushpull {
-  margin-top: 55px;
+  margin-top: 69px;
 }
 
 .filewell {
@@ -906,6 +911,10 @@ padding-right: 5px;
 }
 
 @media(max-width: 992px) {
+  .pushpull {
+    margin-top: 30px;
+  margin-bottom: 10px;
+  }
   .float-link {
     padding: 21px;
     padding-left:12px;
@@ -926,6 +935,10 @@ padding-right: 5px;
     font-size: 12px;
     margin: -30px;
   }
+  #connectionStatus {
+    margin-top: 8vh;
+    margin-bottom: 8vh;
+  }
 }
 @media (max-width: 767px) {
   .btn-pull {
@@ -943,7 +956,10 @@ padding-right: 5px;
     padding-bottom: 6px;
   }
 
-
+  #connectionStatus {
+    margin-top: 5vh;
+    margin-bottom: 8vh;
+  }
   // .copyclipboard-card {
   //   float: auto;
   // }
@@ -1004,6 +1020,11 @@ padding-right: 5px;
 }
 
 @media (max-width: 767px) {
+
+  .pushpull {
+    margin-top: -22px;
+  margin-bottom: 38px;
+  }
   .icon-link {
     margin-left: 0;
     width: 45px;
@@ -1074,8 +1095,8 @@ padding-right: 5px;
 
 /*small phones  portrait*/
 
-@media(max-width: 375px) {
+@media(max-width: 767px) {
   .fullwidthcard {
-    top: -28px;
+    top: -45px;
   }
 }

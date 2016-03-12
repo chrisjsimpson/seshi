@@ -157,14 +157,9 @@ Seshi = {
                         /* Generate connection key
                          * Used as key to pass to signaling server for connecting two peers
                         */
-                        /* Cred: http://stackoverflow.com/a/1497512/885983 */
-                        var length = 8,
-                            charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-                            retVal = "";
-                        for (var i = 0, n = charset.length; i < length; ++i) {
-                            retVal += charset.charAt(Math.floor(Math.random() * n));
-                        }
-                        Seshi.key = retVal;
+                        var array = new Uint32Array(1);
+                        window.crypto.getRandomValues(array);
+                        Seshi.key = array[0];
                         //Store key in localstorage (so can be used to prevent self connects)
                         localStorage.setItem('key', Seshi.getKey());
                         //Return key

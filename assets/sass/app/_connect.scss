@@ -1,4 +1,5 @@
 $kinddarkgrey: #444;
+$theprimarycolor: #2299e3;
 
 label {
   margin-bottom: 0;
@@ -35,9 +36,13 @@ label {
   text-transform: uppercase;
   font-family: 'Source Sans Pro';
   width: 140px;
-  color: #fff;
-  border-color: #fff;
+  color: $theprimarycolor;
+  border-color: $theprimarycolor;
   height: 60px;
+  &:hover {
+    color:#fff;
+    background-color: $theprimarycolor;
+  }
 }
 
 /**File Table list */
@@ -107,7 +112,7 @@ label {
 }
 
 .pushpull {
-  margin-top: 55px;
+  margin-top: 69px;
 }
 
 .filewell {
@@ -906,6 +911,10 @@ padding-right: 5px;
 }
 
 @media(max-width: 992px) {
+  .pushpull {
+    margin-top: 30px;
+  margin-bottom: 10px;
+  }
   .float-link {
     padding: 21px;
     padding-left:12px;
@@ -1011,6 +1020,11 @@ padding-right: 5px;
 }
 
 @media (max-width: 767px) {
+
+  .pushpull {
+    margin-top: -22px;
+  margin-bottom: 38px;
+  }
   .icon-link {
     margin-left: 0;
     width: 45px;

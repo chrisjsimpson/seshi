@@ -19788,8 +19788,8 @@ li {
 
 .btn-chat-toggle {
   background: transparent;
-  color: #fff;
-  border: 1px solid #fff;
+  color: #2299e3;
+  border: 1px solid #2299e3;
   transition: all 0.2s ease-in-out;
   margin-top: 10px;
 }
@@ -19892,9 +19892,14 @@ label {
   text-transform: uppercase;
   font-family: 'Source Sans Pro';
   width: 140px;
-  color: #fff;
-  border-color: #fff;
+  color: #2299e3;
+  border-color: #2299e3;
   height: 60px;
+}
+
+.btn-connect:hover, .btn-push:hover, .btn-pull:hover {
+  color: #fff;
+  background-color: #2299e3;
 }
 
 /**File Table list */
@@ -19964,7 +19969,7 @@ label {
 }
 
 .pushpull {
-  margin-top: 55px;
+  margin-top: 69px;
 }
 
 .filewell {
@@ -20750,6 +20755,10 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (max-width: 992px) {
+  .pushpull {
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
   .float-link {
     padding: 21px;
     padding-left: 12px;
@@ -20849,6 +20858,10 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (max-width: 767px) {
+  .pushpull {
+    margin-top: -22px;
+    margin-bottom: 38px;
+  }
   .icon-link {
     margin-left: 0;
     width: 45px;
@@ -25101,48 +25114,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.46s;
-  animation-duration: 0.68s;
-}
-
-.ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.47s;
-  animation-duration: 0.8s;
-}
-
-.ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.77s;
-  animation-duration: 1.35s;
-}
-
-.ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.15s;
-  animation-duration: 1.26s;
-}
-
-.ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.37s;
+  animation-delay: -0.19s;
   animation-duration: 1.3s;
 }
 
+.ball-grid-beat > div:nth-child(2) {
+  animation-delay: 0.12s;
+  animation-duration: 1.04s;
+}
+
+.ball-grid-beat > div:nth-child(3) {
+  animation-delay: 0.26s;
+  animation-duration: 0.88s;
+}
+
+.ball-grid-beat > div:nth-child(4) {
+  animation-delay: -0.14s;
+  animation-duration: 0.76s;
+}
+
+.ball-grid-beat > div:nth-child(5) {
+  animation-delay: 0.41s;
+  animation-duration: 1.2s;
+}
+
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.11s;
-  animation-duration: 0.79s;
+  animation-delay: 0.27s;
+  animation-duration: 1.2s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.47s;
-  animation-duration: 0.87s;
+  animation-delay: 0.75s;
+  animation-duration: 0.92s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.5s;
-  animation-duration: 1.11s;
+  animation-delay: 0.79s;
+  animation-duration: 1.31s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.77s;
-  animation-duration: 0.74s;
+  animation-delay: 0.51s;
+  animation-duration: 1.18s;
 }
 
 .ball-grid-beat > div {
@@ -25178,48 +25191,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.33s;
-  animation-duration: 0.72s;
+  animation-delay: 0.42s;
+  animation-duration: 1.03s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.21s;
-  animation-duration: 1.34s;
+  animation-delay: 0.54s;
+  animation-duration: 1.37s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.19s;
-  animation-duration: 1.23s;
+  animation-delay: 0.78s;
+  animation-duration: 1.21s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: -0.07s;
-  animation-duration: 1.48s;
+  animation-delay: 0.35s;
+  animation-duration: 1.28s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.04s;
-  animation-duration: 0.72s;
+  animation-delay: 0.03s;
+  animation-duration: 1.54s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.74s;
-  animation-duration: 1.32s;
+  animation-delay: 0.54s;
+  animation-duration: 1.02s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: -0.19s;
-  animation-duration: 0.61s;
+  animation-delay: -0.16s;
+  animation-duration: 1.53s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.21s;
-  animation-duration: 1.39s;
+  animation-delay: 0.02s;
+  animation-duration: 0.64s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.17s;
-  animation-duration: 0.92s;
+  animation-delay: 0.62s;
+  animation-duration: 0.79s;
 }
 
 .ball-grid-pulse > div {
@@ -25557,23 +25570,23 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.44s;
-  animation-duration: 0.71s;
+  animation-delay: 0.33s;
+  animation-duration: 1.16s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: -0.19s;
-  animation-duration: 1.14s;
+  animation-delay: 0.15s;
+  animation-duration: 0.64s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.58s;
-  animation-duration: 1.14s;
+  animation-delay: 0.18s;
+  animation-duration: 0.83s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.51s;
-  animation-duration: 0.88s;
+  animation-delay: 0.18s;
+  animation-duration: 0.97s;
 }
 
 .line-scale-party > div {

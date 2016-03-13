@@ -67,6 +67,13 @@ window.addEventListener('sendFileProgressUpdate', updateSendFileProgessDisplay, 
 //Event: displayName of remote user is recived
 window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
 
+//Init plyr
+    // plyr Settings:
+    var options = {
+               'controls':["restart", "rewind", "play", "fast-forward", "current-time", "duration", "mute", "volume", "captions", "fullscreen"]
+                }
+    var player = plyr.setup()[0]; 
+
 //Event: onPlayInSyncRequest is fired
 window.addEventListener('playRequest', play, false);
 window.addEventListener('resumePlayRequest', resumePlay, false);
@@ -74,17 +81,19 @@ window.addEventListener('resumePlayRequest', resumePlay, false);
 //Event: onSeshiPauseReq fired
 window.addEventListener('onSeshiPauseReq', pause, false);
 
-//Event: (Play)
-document.querySelector(".plyr").addEventListener("play", function() {
-      trace("Play button on Plyr was pressed.");
-      dispatchEvent(SeshiSkinPlay);
-});
 
 //Event: Seshi Skin Pause event (user clicks pause)
 document.querySelector(".plyr").addEventListener("pause", function() {
-      trace("Pause button on Plyr was pressed.");
+      console.log("Pause button on Plyr was pressed.");
       dispatchEvent(SeshiSkinPause);
 });
+
+//Event: Seshi Skin Pause event (user clicks pause)
+document.querySelector(".plyr").addEventListener("play", function() {
+      console.log("Play button on Plyr was pressed.");
+      dispatchEvent(SeshiSkinPlay);
+});
+
 
 function tickAllFiles(list) {
 
@@ -226,12 +235,6 @@ function play(event) {
 
     Seshi.generateObjectUrl(fileId).then(
             function(objectInfo){
-                //Play using plyr
-                //Settings:
-                var options = {
-                               'controls':["restart", "rewind", "play", "fast-forward", "current-time", "duration", "mute", "volume", "captions", "fullscreen"]
-                                }
-                var player = plyr.setup()[0]; //
                 //Music or Audio?
                 var mimeType = objectInfo.mimeType;
                 //Detemine mimetype & show media player accordingly
@@ -306,6 +309,7 @@ function play(event) {
                                     type:     objectInfo.mimeType
                                 }]});
                 player.play(); //Play the chosen media
+                localStorage.setItem('currentlyPlaying', fileId);
             });
 }//End play()
 
@@ -807,3 +811,11 @@ localCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-local
 
 var remoteCheckAll = document.getElementById('checkAll-remoteFileList');
 remoteCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-remoteFileList');}, false);
+
+//Event: (Play in sync button pressed)
+window.setTimeout(function() {
+        var playInSyncBtn = document.getElementById('playInSync');
+playInSyncBtn.addEventListener("click", function() {
+      trace("Play in sync btn was pressed.");
+      dispatchEvent(SeshiSkinPlay);
+    }, false);}, 4000);

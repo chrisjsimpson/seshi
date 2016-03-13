@@ -529,6 +529,13 @@ Seshi = {
                             
                             function playFile(fileId)
                             {
+                                //Don't play if it's the same file as last time  (avoid plyr/me bug)
+                                if ( fileId == localStorage.getItem('currentlyPlaying')) {
+                                    var player = document.querySelector('.plyr');
+                                    player.plyr.play()
+                                    return;
+                                }
+                             
                                 //Play file
                                 //Fire Play on local peer event
                                 var event = new CustomEvent(

@@ -69,6 +69,7 @@ window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
 
 //Event: onPlayInSyncRequest is fired
 window.addEventListener('playRequest', play, false);
+window.addEventListener('resumePlayRequest', resumePlay, false);
 
 //Event: onSeshiPauseReq fired
 window.addEventListener('onSeshiPauseReq', pause, false);
@@ -76,7 +77,7 @@ window.addEventListener('onSeshiPauseReq', pause, false);
 //Event: (Play)
 document.querySelector(".plyr").addEventListener("play", function() {
       trace("Play button on Plyr was pressed.");
-      //dispatchEvent(SeshiPlay);
+      dispatchEvent(SeshiSkinPlay);
 });
 
 //Event: Seshi Skin Pause event (user clicks pause)
@@ -319,6 +320,13 @@ function pause() {
     var player = document.querySelector('.plyr');
     player.plyr.pause(); //Pause media
 }//End pause()
+
+function resumePlay() {
+    //Called on resumePlayRequest event
+    //Get reference to player
+    var player = document.querySelector('.plyr');
+    player.plyr.play(); //play media (unpause) 
+}//End resumePlay() 
 
 function download(event) {
     fileId = event.target.dataset.id;

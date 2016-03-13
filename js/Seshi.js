@@ -48,6 +48,10 @@ Seshi = {
                         onPlayInSyncRequest = new Event('onPlayInSyncRequest');
                         onPlayInSyncRequest.initEvent('onPlayInSyncRequest', true, true);
 
+                        //Fired from UI when play event happends <--- NOTE: from UI, a user generated action.
+                        SeshiSkinPlay = new Event('SeshiSkinPlay');
+                        SeshiSkinPlay.initEvent('SeshiSkinPlay', true, true);
+
                         //Fired from UI when pause event hapends <--- NOTE: from UI, a user generated action.
                         SeshiSkinPause = new Event('SeshiSkinPause');
                         SeshiSkinPause.initEvent('SeshiSkinPause', true, true);
@@ -56,7 +60,10 @@ Seshi = {
                         onSeshiPauseReq = new Event('onSeshiPauseReq');
                         onSeshiPauseReq.initEvent('onSeshiPauseReq', true, true);
 
-                        //Listen for SeshiSkinPause evenst (dispatched from the UI)
+                        //Listen for SeshiSkinPlay event (dispatched from the UI)
+                        window.addEventListener('SeshiSkinPlay', Seshi.playHandler, false);
+
+                        //Listen for SeshiSkinPause event (dispatched from the UI)
                         window.addEventListener('SeshiSkinPause', Seshi.pauseHandler, false);
 
                         //Initalize storage worker
@@ -514,6 +521,10 @@ Seshi = {
                                  case 'pause':
                                      Seshi.pause();
                                      break;
+                                 case 'play':
+                                     //Note: The var fileId is in global scope (cringe) from origional play in sync request.
+                                     resumePlayFile(fileId); //This is more a resume than a play...
+                                     break;
                              }//End determine rpc call
                             
                             function playFile(fileId)
@@ -532,6 +543,40 @@ Seshi = {
                                 );//End create play request event
                                 dispatchEvent(event);
                             }//End playFile(fileId);
+
+                            function resumePlayFile(fileId)
+                            {
+                                //Resume Play file
+                                var event = new CustomEvent(
+                                        "resumePlayRequest",
+                                        {
+                                            detail: {
+                                                "fileId":fileId
+                                            },
+                                            bubbles: true,
+                                            cancelable: true
+                                        }
+                                );//End resume play request event
+                                dispatchEvent(event);
+                            }//End resumePlayFile(fileId);
+    },
+    playHandler: function() {
+                            /* playHandler()
+                             *  - This is more an UN-pause handler than a playHandler TODO (RENAME??)
+                             *  - React to play even fired by UI to unpause mendia
+                             */
+                            console.log("In Seshi.playHandler");
+
+                            //If playing in sync, tell other peer to lay  TODO: FLAG NEEDED
+                            var msg = {
+                                        "cmd":"playInSyncRPC",
+                                        "request":"play"
+                                };
+
+                            //Stringify 
+                            msg = JSON.stringify(msg);
+                            //Send play request to peer TODO: Check peer connection first
+                            dc.send(msg);
     },
     pauseHandler: function() {
                             /* pauseHandler() 

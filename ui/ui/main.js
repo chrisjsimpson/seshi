@@ -11831,7 +11831,7 @@ $("#copyclipboard").click(function () {
       $(".copyclipboard-card ").css({
           width: '100%'
       });
-      $(".uploadbox-connect").css('height', '451px')
+      $(".uploadbox-connect").css('height', '478px')
       $(".copyclipboard-card ").css({
           width: '100%'
       });

@@ -79,7 +79,7 @@ document.querySelector(".plyr").addEventListener("play", function() {
 //Event: (Pause)
 document.querySelector(".plyr").addEventListener("pause", function() {
       trace("Pause button on Plyr was pressed.");
-      //dipatchEvent(SeshiPause);
+      dispatchEvent(SeshiSkinPause);
 });
 
 function tickAllFiles(list) {

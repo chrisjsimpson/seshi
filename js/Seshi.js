@@ -48,6 +48,24 @@ Seshi = {
                         onPlayInSyncRequest = new Event('onPlayInSyncRequest');
                         onPlayInSyncRequest.initEvent('onPlayInSyncRequest', true, true);
 
+                        //Fired from UI when play event happends <--- NOTE: from UI, a user generated action.
+                        SeshiSkinPlay = new Event('SeshiSkinPlay');
+                        SeshiSkinPlay.initEvent('SeshiSkinPlay', true, true);
+
+                        //Fired from UI when pause event hapends <--- NOTE: from UI, a user generated action.
+                        SeshiSkinPause = new Event('SeshiSkinPause');
+                        SeshiSkinPause.initEvent('SeshiSkinPause', true, true);
+
+                        //Fired when a pause request is received (e.g. from remote peer)
+                        onSeshiPauseReq = new Event('onSeshiPauseReq');
+                        onSeshiPauseReq.initEvent('onSeshiPauseReq', true, true);
+
+                        //Listen for SeshiSkinPlay event (dispatched from the UI)
+                        window.addEventListener('SeshiSkinPlay', Seshi.playHandler, false);
+
+                        //Listen for SeshiSkinPause event (dispatched from the UI)
+                        window.addEventListener('SeshiSkinPause', Seshi.pauseHandler, false);
+
                         //Initalize storage worker
                         StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
                         //Recieve proress message(s)
@@ -403,6 +421,13 @@ Seshi = {
                                 console.error(err);
                             })});//End get file chunks from fileId and playback
     },
+    pause:function() {
+                        /* Seshi.pause()
+                         * - Fire pause event informing SeshiSkin to pause 
+                         *   whatever it's playing.
+                         */
+                         dispatchEvent(onSeshiPauseReq);
+    },
     isPlayable: function(mimeType, fileName) {
 
                                if(mimeType.includes('audio') || mimeType.includes('video'))
@@ -454,7 +479,12 @@ Seshi = {
     },
     playInSyncRequest:function(fileId) {
 
-                            msg = {"cmd":"playInSync", "fileId":fileId};
+                            var msg = {
+                                "cmd":"playInSyncRPC", 
+                                "request": "playRequest",
+                                "fileId":fileId
+                            };
+
                             msg = JSON.stringify(msg);
                             //Send request of datachannel
                             dc.send(msg);
@@ -473,25 +503,96 @@ Seshi = {
 
                             //Seshi.play({'fileId':fileId}, "video");
     },
-    playInSync:function(fileId) {
+    playInSyncRPC:function(msg) {
                             /* playInSync()
-                             * - Play the requested file ASAP (in sync!)
+                             * - RPC Handler for playing media in sync
+                             *
+                             *   Impliments: 
+                             *   - Play in sync (both peers begin playing same local file)
+                             *   - Pause in sync
                              */
-                            //Play file
-    //                        Seshi.play(fileId, "video");
+                             
+                             //determine rpc call
+                             switch(msg.request) {
+                                
+                                 case 'playRequest':
+                                     playFile(msg.fileId);
+                                     break;
+                                 case 'pause':
+                                     Seshi.pause();
+                                     break;
+                                 case 'play':
+                                     //Note: The var fileId is in global scope (cringe) from origional play in sync request.
+                                     resumePlayFile(fileId); //This is more a resume than a play...
+                                     break;
+                             }//End determine rpc call
+                            
+                            function playFile(fileId)
+                            {
+                                //Play file
+                                //Fire Play on local peer event
+                                var event = new CustomEvent(
+                                        "playRequest",
+                                        {
+                                            detail: {
+                                                "fileId":fileId
+                                            },
+                                            bubbles: true,
+                                            cancelable: true
+                                        }
+                                );//End create play request event
+                                dispatchEvent(event);
+                            }//End playFile(fileId);
 
-                            //Fire Play on local peer event
-                            var event = new CustomEvent(
-                                    "playRequest",
-                                    {
-                                        detail: {
-                                            "fileId":fileId
-                                        },
-                                        bubbles: true,
-                                        cancelable: true
-                                    }
-                            );//End create play request event
-                            dispatchEvent(event);
+                            function resumePlayFile(fileId)
+                            {
+                                //Resume Play file
+                                var event = new CustomEvent(
+                                        "resumePlayRequest",
+                                        {
+                                            detail: {
+                                                "fileId":fileId
+                                            },
+                                            bubbles: true,
+                                            cancelable: true
+                                        }
+                                );//End resume play request event
+                                dispatchEvent(event);
+                            }//End resumePlayFile(fileId);
+    },
+    playHandler: function() {
+                            /* playHandler()
+                             *  - This is more an UN-pause handler than a playHandler TODO (RENAME??)
+                             *  - React to play even fired by UI to unpause mendia
+                             */
+                            console.log("In Seshi.playHandler");
+
+                            //If playing in sync, tell other peer to lay  TODO: FLAG NEEDED
+                            var msg = {
+                                        "cmd":"playInSyncRPC",
+                                        "request":"play"
+                                };
+
+                            //Stringify 
+                            msg = JSON.stringify(msg);
+                            //Send play request to peer TODO: Check peer connection first
+                            dc.send(msg);
+    },
+    pauseHandler: function() {
+                            /* pauseHandler() 
+                             * - react to pause event fired by UI
+                             */
+                            trace("In Seshi.pauseHandler");
+
+                            //If playing in sync, tell other peer to pause TODO: FLAG NEEDED
+                            var msg = {
+                                        "cmd":"playInSyncRPC",
+                                        "request":"pause"
+                                };
+                            //Stringify 
+                            msg = JSON.stringify(msg);
+                            //Send pause request to peer TODO: Check peer connection first
+                            dc.send(msg);
     },
     download:function(fileId) {
                         /* Download
@@ -1098,6 +1199,8 @@ function setupDataHandlers() {
                 alert('Is array');
         }
 
+        console.log("We got: " + event.data);
+
         //Check if message is an array buffer (data)
         if(event.data instanceof ArrayBuffer || event.data.size){ //event.data.size is for Firefox(automatically transforms data to Blob type
             console.log('Recieved ArrayBuffer message');
@@ -1149,8 +1252,8 @@ function setupDataHandlers() {
                 case 'remoteDisplayName': //Receiving remote's display name
                     Seshi.setRemoteDisplayName(msg);
                     break;
-                case 'playInSync': //Play file in sync with connected peer DUDE.
-                    Seshi.playInSync(msg);
+                case 'playInSyncRPC': //Play file in sync with connected peer DUDE.
+                    Seshi.playInSyncRPC(msg);
                     break;
             }//Switch on comman requested by remote peer
         }//End check for command & control message from remote peer
@@ -1258,58 +1361,13 @@ function zeroFill( number, width )
   return number + ""; // always return a string
 }//End zeroFill
 
-function sendChunksToPeer(e, fileId) {
-        //Get file id else defaults to most recent file added
-        if(typeof(e) == 'object')
-        {
-            var fileId = e.target.dataset.fileid;
-        }
-
-    db.transaction('r', db.chunks, function() {
-            db.chunks.where("fileId").equals(fileId).each(function(chunk) {
-                //Transaction scope
-                        //Sending file meta...
-                        var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
-                        var lengthOfMeta = JSON.stringify(meta).length;
-                        lengthOfMeta = zeroFill(lengthOfMeta, 64);
-                        var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
-                        var header = JSON.stringify(metaLength) + JSON.stringify(meta);
-                        var sendChunk = new Blob([header, chunk.chunk]);
-                        url = window.URL.createObjectURL(sendChunk);
-                        //Needs to be sent as an arrayBuffer
-                        var reader = new FileReader();
-                                reader.onload = function(file) {
-                                if( reader.readyState == FileReader.DONE ) {
-                                        for(var i=0;i<=99999999;i++) {}//Crude delay!
-                                        dc.send(result = file.target.result);
-                                }//End FileReader.DONE
-
-                        }//End reader.onload
-                        reader.readAsArrayBuffer(sendChunk);
-			var chunkProg = (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100;
-                        //End sending file meta
-            })//End db.chunks toArray using Dexie (.then follows)
-
-        }).then(function() {
-            //Transaction completed
-	    var uploadBar = document.getElementById('uploadProgress');
-	    uploadBar.innerHTML="<span style=\"color:black\">UploadComplete!</span>";
-        }).catch (function (err) {
-
-            console.error(err);
-
-    });//End get fildIdChunks from fileId
-
-} //End sendChunksToPeer
-
-
 
 function sendMostRecentFile() {
 	//Get most recently added file (stored in localstorage.getItem('lastItem'))
 	if(localStorage.getItem('lastItem'))
 	{
 	    fileId = localStorage.getItem('lastItem');
-	    sendChunksToPeer('send by fileId', fileId); //Send file direct to peer over DC
+        //TODO send over datachannel
 	}//Only send last item if localStorage.getItem('lastItem') has a fileId
 }
 
@@ -1380,13 +1438,6 @@ function gotDescription(localDesc) {
   send(localDesc);
 }
 
-window.uuid = function()
-{   /* Credit http://stackoverflow.com/a/2117523 */
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-                return v.toString(16);
-    });
-}
 
 ////////////////////////////////////
 // This section is for changing the UI based on application

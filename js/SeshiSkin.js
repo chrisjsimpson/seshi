@@ -69,6 +69,22 @@ window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
 
 //Event: onPlayInSyncRequest is fired
 window.addEventListener('playRequest', play, false);
+window.addEventListener('resumePlayRequest', resumePlay, false);
+
+//Event: onSeshiPauseReq fired
+window.addEventListener('onSeshiPauseReq', pause, false);
+
+//Event: (Play)
+document.querySelector(".plyr").addEventListener("play", function() {
+      trace("Play button on Plyr was pressed.");
+      dispatchEvent(SeshiSkinPlay);
+});
+
+//Event: Seshi Skin Pause event (user clicks pause)
+document.querySelector(".plyr").addEventListener("pause", function() {
+      trace("Pause button on Plyr was pressed.");
+      dispatchEvent(SeshiSkinPause);
+});
 
 function tickAllFiles(list) {
 
@@ -219,10 +235,6 @@ function play(event) {
                 //Music or Audio?
                 var mimeType = objectInfo.mimeType;
                 //Detemine mimetype & show media player accordingly
-                // switch(mimeType) {
-                //
-                //
-                // }//End detemine mimetype & show media player accordingly
                 if (objectInfo.mimeType.includes('audio'))
                 {
                         $('.plyr').show()
@@ -296,6 +308,21 @@ function play(event) {
                 player.play(); //Play the chosen media
             });
 }//End play()
+
+function pause() {
+    //Callled onSeshiPauseReq event received from remote peer
+    
+    //Get reference to player
+    var player = document.querySelector('.plyr');
+    player.plyr.pause(); //Pause media
+}//End pause()
+
+function resumePlay() {
+    //Called on resumePlayRequest event
+    //Get reference to player
+    var player = document.querySelector('.plyr');
+    player.plyr.play(); //play media (unpause) 
+}//End resumePlay() 
 
 function download(event) {
     fileId = event.target.dataset.id;

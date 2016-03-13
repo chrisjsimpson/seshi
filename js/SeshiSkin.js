@@ -379,7 +379,7 @@ if (getQueryVariable("key")) {
 function showConnected() {
 
     $("#remoteFileListContainer").fadeIn();
-    $("#connectionStatus").hide();
+
     //Get reference to 'connecting' UI button
     if (targetBtn = document.getElementById('connectionStatus')) {
 
@@ -393,6 +393,7 @@ function showConnected() {
     connectedBtn.className = '';
     connectedBtnText = document.createTextNode("Connected!"); //Message shown to user on button
     connectedBtn.appendChild(connectedBtnText);
+    $("#connectionStatus").hide();
 
     var parentDiv = targetBtn.parentNode; //Locate the parent node of the existing button.
     parentDiv.replaceChild(connectedBtn, targetBtn); //Replace the old button with the new
@@ -648,7 +649,7 @@ function pullSelectedFiles() {
 function updateSendFileProgessDisplay() {
 //Called upon sendFileProgressUpdate event being fired
 
-    for (var fileId in Seshi.sendingFileProgress) 
+    for (var fileId in Seshi.sendingFileProgress)
     {
         if(Seshi.sendingFileProgress[fileId].UIdone == true) {
             continue; //Dont re-add progress bar as file is 100% sent

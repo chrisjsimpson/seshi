@@ -70,6 +70,18 @@ window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
 //Event: onPlayInSyncRequest is fired
 window.addEventListener('playRequest', play, false);
 
+//Event: (Play)
+document.querySelector(".plyr").addEventListener("play", function() {
+      trace("Play button on Plyr was pressed.");
+      //dispatchEvent(SeshiPlay);
+});
+
+//Event: (Pause)
+document.querySelector(".plyr").addEventListener("pause", function() {
+      trace("Pause button on Plyr was pressed.");
+      //dipatchEvent(SeshiPause);
+});
+
 function tickAllFiles(list) {
 
     //Work out which file box we're playing with, based on 'list' <<- value of list is set by  event listner

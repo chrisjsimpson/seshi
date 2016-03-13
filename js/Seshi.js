@@ -48,9 +48,13 @@ Seshi = {
                         onPlayInSyncRequest = new Event('onPlayInSyncRequest');
                         onPlayInSyncRequest.initEvent('onPlayInSyncRequest', true, true);
 
-                        //Fired from UI when pause event hapends
+                        //Fired from UI when pause event hapends <--- NOTE: from UI, a user generated action.
                         SeshiSkinPause = new Event('SeshiSkinPause');
                         SeshiSkinPause.initEvent('SeshiSkinPause', true, true);
+
+                        //Fired when a pause request is received (e.g. from remote peer)
+                        onSeshiPauseReq = new Event('onSeshiPauseReq');
+                        onSeshiPauseReq.initEvent('onSeshiPauseReq', true, true);
 
                         //Listen for SeshiSkinPause evenst (dispatched from the UI)
                         window.addEventListener('SeshiSkinPause', Seshi.pauseHandler, false);
@@ -410,6 +414,13 @@ Seshi = {
                                 console.error(err);
                             })});//End get file chunks from fileId and playback
     },
+    pause:function() {
+                        /* Seshi.pause()
+                         * - Fire pause event informing SeshiSkin to pause 
+                         *   whatever it's playing.
+                         */
+                         dispatchEvent(onSeshiPauseReq);
+    },
     isPlayable: function(mimeType, fileName) {
 
                                if(mimeType.includes('audio') || mimeType.includes('video'))
@@ -533,6 +544,8 @@ Seshi = {
                                         "cmd":"playInSyncRPC",
                                         "request":"pause"
                                 };
+                            //Stringify 
+                            msg = JSON.stringify(msg);
                             //Send pause request to peer TODO: Check peer connection first
                             dc.send(msg);
     },

@@ -235,10 +235,6 @@ function play(event) {
                 //Music or Audio?
                 var mimeType = objectInfo.mimeType;
                 //Detemine mimetype & show media player accordingly
-                // switch(mimeType) {
-                //
-                //
-                // }//End detemine mimetype & show media player accordingly
                 if (objectInfo.mimeType.includes('audio'))
                 {
                         $('.plyr').show()

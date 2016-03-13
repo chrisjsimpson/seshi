@@ -250,7 +250,7 @@ a {
     border-top-right-radius: none !important;
     padding: 10px 15px;
 }
-.file-item .fa-play {
+.file-item .fa-play, .fa-exchange {
   background: #ccc;
   width: 22px;
   height: 22px;
@@ -266,10 +266,38 @@ a {
   transition: background-color 0.1s 0.1s, color 0.2s;
 }
 
-.file-item .fa-play:hover {
+.fa-exchange {
+  position:absolute;
+  top:-10px;
+  left:30px;
+  padding: 4px;
+  padding-left: 4px;
+  padding-down: 3px;
+  z-index:3;
+}
+
+.tooltip-inner {
+    max-width: 350px;
+    /* If max-width does not work, try using width instead */
+    min-width: 80px;
+}
+
+.playsync {
+  display:none
+}
+
+.playoptions:hover .playsync {
+  display: block;
+}
+
+.file-item .fa-play:hover, .fa-exchange:hover {
   background: #aaa;
   color: $kinddarkgrey;
 }
+
+// .file-item .fa-play:hover .playsync{
+// display:block;
+// }
 
 .file-item .fa-arrow-down, .file-item .fa-trash, .file-item .fa-times {
   width: 22px;

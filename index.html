@@ -82,7 +82,7 @@
                         <a class="page-scroll" href="#addfiles">Add Files</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#hideall">file exchange</a>
+                        <a class="page-scroll" href="#fileexchange">file exchange</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#subscribe">Pro</a>
@@ -206,7 +206,7 @@
 
             </div>
     <div class="seshi-container" id="hideall"> <!--hide wrapper -->
-            <div class="row myfiles">
+            <div class="row myfiles" id="fileexchange">
 
                 <div class="row">
                     <div class="container" id="shareButtonsRow">
@@ -243,6 +243,14 @@
                 <div class=" filecard filewell dropit">
 
                     <ul class="list-group myfilelist" id="localFileList">
+                        <li class="list-group-item file-item row">
+<input class="col-xs-1 localFileCheckBox" type="checkbox" id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8" data-id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8">
+<label class="col-xs-6 table-border name-label" for="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8">Heart to Heart - 4minute.mp3</label>
+<label class="col-xs-2 name-label" for="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8"><i class="fa fa-music"></i></label><div class="col-xs-1 hidden-xs"><i title="Delete" onclick="deleteFile(event)" data-id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8" class="fa fa-trash  "></i></div><div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8" class="fa fa-play"></i></a><a class="playsync"><i class="fa fa-exchange"></i></a></div><div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8" class="fa fa-arrow-down"></i></div></li>
+<li class="list-group-item file-item row">
+<input class="col-xs-1 localFileCheckBox" type="checkbox" id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8" data-id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8">
+<label class="col-xs-6 table-border name-label" for="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8">Scott and Brendo.mp3</label>
+<label class="col-xs-2 name-label" for="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8"><i class="fa fa-music"></i></label><div class="col-xs-1 hidden-xs"><i title="Delete" onclick="deleteFile(event)" data-id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8" class="fa fa-trash  "></i></div><div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8" class="fa fa-play"></i></a><a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync" class="fa fa-exchange"></i></a></div><div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="564e27ab652163324422ef15e060d6614a53d8e100ec64d67e4553e8a5627fc8" class="fa fa-arrow-down"></i></div></li>
                     </ul>
                 </div>
             </div>
@@ -280,7 +288,9 @@
                 <div class="filecard filewell receive-well">
 
                     <ul class="list-group myfilelist" id="remoteFileList">
+
                     </ul>
+
 
 
                 </div>
@@ -478,6 +488,16 @@
     });
 
 
+     </script>
+
+     <script>
+     //
+    //  $(".playoptions").on("hover", function(e) {
+    //      $(".playsync:first").show();
+    //  })
+    //  $(".playoptions").on("mouseleave", function() {
+    //      $(".playsync:first").hide();
+    //  })
      </script>
 
 

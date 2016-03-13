@@ -393,10 +393,9 @@ function showConnected() {
     connectedBtn.className = '';
     connectedBtnText = document.createTextNode("Connected!"); //Message shown to user on button
     connectedBtn.appendChild(connectedBtnText);
-    $("#connectionStatus").hide();
-
     var parentDiv = targetBtn.parentNode; //Locate the parent node of the existing button.
     parentDiv.replaceChild(connectedBtn, targetBtn); //Replace the old button with the new
+      $("#connectionStatus").hide();
 
     //Enable Send / Recieve buttons:
     var receiveBtn = document.getElementById('receiveBtn').disabled = false;
@@ -492,7 +491,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
                 //Only show play button if file is playable
                 if(Seshi.isPlayable(mimeType, fileName))
                 {
-                    list += '<div class="col-xs-1 "><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
+                    list += '<div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a><a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync" class="fa fa-exchange"></i></a></div>';
                 }else {
                     list += '<div class="col-xs-1 "></div>';
                 }//End only show play button if file is playable

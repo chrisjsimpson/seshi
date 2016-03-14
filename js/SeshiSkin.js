@@ -19,6 +19,10 @@ copyKeyBtn = document.getElementById('copyclipboard');
 copyKeyBtn.addEventListener('click', createShareUrl, false);
 
 
+// Init helper tooltips
+$(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+})
 
 //Event: When user clicks 'send' button, check which files are marked,
 //send them over the datachannel

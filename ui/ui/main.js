@@ -11822,21 +11822,78 @@ $('.drop-up').click(function(e) {
 
 $("#copyclipboard").click(function () {
     // $(".message-app-card").show();
-    $(".copyclipboard-card ").animate({
-        width: '100%'
-    });
-    $(".keycopy").animate({
-        width: '25%'
-    });
-    $(".keycopy .copied").replaceWith('<h6 class="flashcopied"> Copied! </h6>');
+   //  $(".keycopy").animate({
+   //      width: '25%'
+   //  });
 
-    $(".message-app-card").delay(400).fadeIn();
+   if ($(window).width() < 768) {
+      $(".copyclipboard-card ").css({
+          width: '100%'
+      });
+      $(".uploadbox-connect").css('height', '375px')
+      $(".copyclipboard-card ").css({
+          width: '100%'
+      });
+   } else {
+    $(".copyclipboard-card ").css({
+        width: '75%'
+    });
+}
+
+    $(".flashcopied").replaceWith('<h6 class="flashcopied"> Copied link! </h6>');
+
+
+   //  $(".copyclipboard-card").css('opacity', '1');
+     $(".copyclipboard-card").fadeIn(500);
+
 
 });
 
 //hide the hidebutton on load
 
 $('.btn-hide').hide();
+
+//dropzone
+
+
+$('.dropfile').on('dragenter', function() {
+    dropzoneenter();
+
+});
+
+$('.dropfile').on('drop', function(e) {
+   e.preventDefault();
+    dropzoneleave();
+
+});
+
+$('.btn-upload').mouseenter( function(){
+    dropzoneenter();
+});
+
+$('.btn-upload').mouseleave( function(){
+    dropzoneleave();
+});
+
+function dropzoneenter() {
+//     $('.dropfile')
+//     .css({'background-color' : 'rgba(255,255,255,0.6)',
+// });
+    $('.dropfile').css({'opacity':'1',
+                        'z-index': '1002'})
+                        $('input[id="dropfileinput"]').show();
+}
+
+function dropzoneleave() {
+    // $('.dropfile')
+    // .css({'background-color' : ''});
+    $('.dropfile').css({'opacity': '0',
+                        'z-index': '999'});
+                            $('input[id="dropfileinput"]').hide();
+}
+
+
+
 
 //scroll show extra upload button
 
@@ -11855,6 +11912,80 @@ if($(window).scrollTop() > (topOfOthDiv - 130)) { //scrolled past the other div?
 //pyr plugin
 
 });
+
+
+
+
+(function(window) {
+    function triggerCallback(e, callback) {
+      if(!callback || typeof callback !== 'function') {
+        return;
+      }
+      var files;
+      if(e.dataTransfer) {
+        files = e.dataTransfer.files;
+      } else if(e.target) {
+        files = e.target.files;
+      }
+      callback.call(null, files);
+    }
+
+
+    function makeDroppable(ele, callback) {
+      var input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('multiple', true);
+      input.style.display = 'none';
+      input.addEventListener('change', function(e) {
+        triggerCallback(e, callback);
+      });
+      ele.appendChild(input);
+
+      ele.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+          ele.style.zIndex = '3';
+          $(".dropit").css('background-color', 'rgba(0,0,0,0.2)');
+        ele.classList.add('dragover');
+
+      });
+
+      ele.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+         ele.style.zIndex = '1';
+         $(".dropit").css('background-color', 'rgba(255,255,255,0.6)');
+        ele.classList.remove('dragover');
+
+      });
+
+      ele.addEventListener('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        ele.classList.remove('dragover');
+        ele.style.zIndex = '1';
+        $(".dropit").css('background-color', 'rgba(255,255,255,0.6)');
+        storeFile(this.files);
+        triggerCallback(e, callback);
+      });
+
+      // ele.addEventListener('click', function() {
+      //   input.value = null;
+      //   input.click();
+      // });
+    }
+    window.makeDroppable = makeDroppable;
+  })(this);
+  (function(window) {
+    makeDroppable(window.document.querySelector('.demo-droppable'), function(files) {
+      console.log(files);
+      // var output = document.querySelector('.output');
+      // output.innerHTML = '';
+      // for(var i=0; i<files.length; i++) {
+      //   output.innerHTML += '<p>'+files[i].name+'</p>';
+      // }
+    });
+  })(this);
 
 // /*
 // JS Modified from a tutorial found here:

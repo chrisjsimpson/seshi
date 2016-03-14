@@ -1,3 +1,4 @@
+processRecieveBufferFLAG = false;
 Seshi = {
     welcome:(function(){   /*
                         #   Seshi Init
@@ -43,20 +44,51 @@ Seshi = {
                         onGotRemoteDisplayName = new Event('onGotRemoteDisplayName');
                         onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName', true, true);
 
+                        //Fired when a playInSync request is recieved, fileId is dispatched to UI
+                        onPlayInSyncRequest = new Event('onPlayInSyncRequest');
+                        onPlayInSyncRequest.initEvent('onPlayInSyncRequest', true, true);
+
+                        //Fired from UI when play event happends <--- NOTE: from UI, a user generated action.
+                        SeshiSkinPlay = new Event('SeshiSkinPlay');
+                        SeshiSkinPlay.initEvent('SeshiSkinPlay', true, true);
+
+                        //Fired from UI when pause event hapends <--- NOTE: from UI, a user generated action.
+                        SeshiSkinPause = new Event('SeshiSkinPause');
+                        SeshiSkinPause.initEvent('SeshiSkinPause', true, true);
+
+                        //Fired when a pause request is received (e.g. from remote peer)
+                        onSeshiPauseReq = new Event('onSeshiPauseReq');
+                        onSeshiPauseReq.initEvent('onSeshiPauseReq', true, true);
+
+                        //Listen for SeshiSkinPlay event (dispatched from the UI)
+                        window.addEventListener('SeshiSkinPlay', Seshi.playHandler, false);
+
+                        //Listen for SeshiSkinPause event (dispatched from the UI)
+                        window.addEventListener('SeshiSkinPause', Seshi.pauseHandler, false);
+
                         //Initalize storage worker
                         StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
                         //Recieve proress message(s)
                         StorageWorker.onmessage = function(event) {
                             var progressData = event.data;
                             //Update Seshi.storeProgess array with file storing progress updates, indexeded by fileId
+
+                            if ( Seshi.storeProgress[progressData.fileId] === undefined ) 
+                            {
+                                currentChunk = 0;
+                            }else { //End set progress to zero initially
+                                currentChunk = Seshi.storeProgress[progressData.fileId].currentChunk;
+                            }//End else incriment currentChunk using current value
+                                 
                             Seshi.storeProgress[progressData.fileId] = {
                                 "fileName":progressData.fileName,
-                                "currentChunk":progressData.currentChunk,
+                                "currentChunk":currentChunk + 1,
                                 "totalNumChunks":progressData.totalNumChunks,
-                                "complete":progressData.currentChunk == progressData.totalNumChunks ? true:false,
+                                "complete":currentChunk >= progressData.totalNumChunks ? true:false,
                                 "UIdone":false
                                 }
-                            dispatchEvent(storeFilesProgressUpdate);//Dispact/fire progress update event
+                            dispatchEvent(storeFilesProgressUpdate);//Dispacht/fire progress update event for local UI
+
                             //Delete completed storeProgess
                             if(Seshi.storeProgress[progressData.fileId].complete == true)
                             {
@@ -147,14 +179,9 @@ Seshi = {
                         /* Generate connection key
                          * Used as key to pass to signaling server for connecting two peers
                         */
-                        /* Cred: http://stackoverflow.com/a/1497512/885983 */
-                        var length = 8,
-                            charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-                            retVal = "";
-                        for (var i = 0, n = charset.length; i < length; ++i) {
-                            retVal += charset.charAt(Math.floor(Math.random() * n));
-                        }
-                        Seshi.key = retVal;
+                        var array = new Uint32Array(1);
+                        window.crypto.getRandomValues(array);
+                        Seshi.key = array[0];
                         //Store key in localstorage (so can be used to prevent self connects)
                         localStorage.setItem('key', Seshi.getKey());
                         //Return key
@@ -371,7 +398,7 @@ Seshi = {
                         //Query IndexedDB to get the file
                         db.transaction('r', db.chunks, function() {
                             //Transaction scope
-                            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                            db.chunks.where("fileId").equals(fileId.fileId).toArray(function(chunks) {
                                     console.log("Found " + chunks.length + " chunks");
                                     var allChunksArray = [];
                                     //Just get blob cunks (without meta info)
@@ -393,6 +420,13 @@ Seshi = {
                             }).catch (function (err) {
                                 console.error(err);
                             })});//End get file chunks from fileId and playback
+    },
+    pause:function() {
+                        /* Seshi.pause()
+                         * - Fire pause event informing SeshiSkin to pause 
+                         *   whatever it's playing.
+                         */
+                         dispatchEvent(onSeshiPauseReq);
     },
     isPlayable: function(mimeType, fileName) {
 
@@ -445,17 +479,127 @@ Seshi = {
     },
     playInSyncRequest:function(fileId) {
 
-                            msg = {"cmd":"playInSync", "fileId":fileId};
+                            var msg = {
+                                "cmd":"playInSyncRPC", 
+                                "request": "playRequest",
+                                "fileId":fileId
+                            };
+
                             msg = JSON.stringify(msg);
                             //Send request of datachannel
                             dc.send(msg);
+                            //Fire Play on local peer event
+                            var event = new CustomEvent(
+                                    "playRequest",
+                                    {
+                                        detail: {
+                                            "fileId":fileId
+                                        },
+                                        bubbles: true,
+                                        cancelable: true
+                                    } 
+                            );//End create play request event
+                            dispatchEvent(event);
+
+                            //Seshi.play({'fileId':fileId}, "video");
     },
-    playInSync:function(playInSyncRequest) {
+    playInSyncRPC:function(msg) {
                             /* playInSync()
-                             * - Play the requested file ASAP (in sync!)
+                             * - RPC Handler for playing media in sync
+                             *
+                             *   Impliments: 
+                             *   - Play in sync (both peers begin playing same local file)
+                             *   - Pause in sync
                              */
-                            //Play file
-                            Seshi.play(playInSyncRequest.fileId, "video");
+                             
+                             //determine rpc call
+                             switch(msg.request) {
+                                
+                                 case 'playRequest':
+                                     playFile(msg.fileId);
+                                     break;
+                                 case 'pause':
+                                     Seshi.pause();
+                                     break;
+                                 case 'play':
+                                     //Note: The var fileId is in global scope (cringe) from origional play in sync request.
+                                     resumePlayFile(fileId); //This is more a resume than a play...
+                                     break;
+                             }//End determine rpc call
+                            
+                            function playFile(fileId)
+                            {
+                                //Don't play if it's the same file as last time  (avoid plyr/me bug)
+                                if ( fileId == localStorage.getItem('currentlyPlaying')) {
+                                    var player = document.querySelector('.plyr');
+                                    player.plyr.play()
+                                    return;
+                                }
+                             
+                                //Play file
+                                //Fire Play on local peer event
+                                var event = new CustomEvent(
+                                        "playRequest",
+                                        {
+                                            detail: {
+                                                "fileId":fileId
+                                            },
+                                            bubbles: true,
+                                            cancelable: true
+                                        }
+                                );//End create play request event
+                                dispatchEvent(event);
+                            }//End playFile(fileId);
+
+                            function resumePlayFile(fileId)
+                            {
+                                //Resume Play file
+                                var event = new CustomEvent(
+                                        "resumePlayRequest",
+                                        {
+                                            detail: {
+                                                "fileId":fileId
+                                            },
+                                            bubbles: true,
+                                            cancelable: true
+                                        }
+                                );//End resume play request event
+                                dispatchEvent(event);
+                            }//End resumePlayFile(fileId);
+    },
+    playHandler: function() {
+                            /* playHandler()
+                             *  - This is more an UN-pause handler than a playHandler TODO (RENAME??)
+                             *  - React to play even fired by UI to unpause mendia
+                             */
+                            console.log("In Seshi.playHandler");
+
+                            //If playing in sync, tell other peer to lay  TODO: FLAG NEEDED
+                            var msg = {
+                                        "cmd":"playInSyncRPC",
+                                        "request":"play"
+                                };
+
+                            //Stringify 
+                            msg = JSON.stringify(msg);
+                            //Send play request to peer TODO: Check peer connection first
+                            dc.send(msg);
+    },
+    pauseHandler: function() {
+                            /* pauseHandler() 
+                             * - react to pause event fired by UI
+                             */
+                            trace("In Seshi.pauseHandler");
+
+                            //If playing in sync, tell other peer to pause TODO: FLAG NEEDED
+                            var msg = {
+                                        "cmd":"playInSyncRPC",
+                                        "request":"pause"
+                                };
+                            //Stringify 
+                            msg = JSON.stringify(msg);
+                            //Send pause request to peer TODO: Check peer connection first
+                            dc.send(msg);
     },
     download:function(fileId) {
                         /* Download
@@ -531,11 +675,9 @@ Seshi = {
                             //Close outbox flag so we don't repeatedly open a new filereader
                             Seshi.flagProcessOutboxStarted=false;
 
-                            //dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
                             }).then(function(){
                             Seshi.flagProcessOutboxStarted = true;
                             Seshi.processOutbox();
-                            dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event //Final invocation
                             })});
     },
     outBox:[],
@@ -553,35 +695,82 @@ Seshi = {
 
                         fr.onload = function(chunk) {
                               if (Seshi.outBox.length >= 0) {
-                             console.log("We got a chunk to send!");
-                                for(var i=0;i<=99999999;i++) {}//Crude delay!
-                                dc.send(chunk.target.result);
-                                dispatchEvent(sendFileProgressUpdate);//Fire sendFileProgressUpdate event
+                                //Add chunk to buffer
+                                Seshi.buffer.push(chunk.target.result);
+                                Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
                                     //Kill off fileReader if we've reached the end
                                     if(Seshi.outBox.length == 0)
                                     {
-                                        fr = undefined; 
+                                        fr = undefined;
                                     }//End kill off fileReader if we've reached the end
                                 loadNext(); // shortcut here
-                              } 
+                              }
                            };
-
-                            //Get next chunk info, pass chunk to fileReader & update sendingFileProgress
-                            chunkData = Seshi.outBox.shift();
-                            Seshi.sendingFileProgress.percentComplete= (chunkData.chunkNumber + 1) / chunkData.numberOfChunks * 100;
-                            Seshi.sendingFileProgress.fileName = chunkData.fileName;
-                            Seshi.sendingFileProgress.fileId = chunkData.fileId;
-                            Seshi.sendingFileProgress.fileType = chunkData.fileType;
-                            Seshi.sendingFileProgress.chunkNumber = chunkData.chunkNumber;
-                            Seshi.sendingFileProgress.numberOfChunks = chunkData.numberOfChunks;
-
+                        chunkData = Seshi.outBox.pop();
                         fr.readAsArrayBuffer(chunkData.chunk);
                         }
 
                         loadNext();
                     }//End only open reader again if flagProcessOutboxStarted is set to true.
     },
-    sendingFileProgress:{"fileId":'',"fileName":'', "fileType":'',"numberOfChunks":'',"chunkNumber":'',"percentComplete":'',"allFileDataSent":''},
+    updateSendingProgress: function(ack) {
+                    /* This is called by receivedChunkACK comman from over the datachannel.
+                     * This occurs when the connected peer has sucessfully received, and stored
+                     * A chunk which we sent to them. the 'receivedChunkACK' is their confirmation
+                     * which we then use to update the sender on the progress of their push. 
+                     * (A push is a file 'upload' to a connected peer).
+                     * */
+                    //For file progress, just count number of ACKS received, not the actual 
+                    // chunk number in the ACK message, because chunks mayt arrive out of order
+                    // therere ack.chunkNumber is not a reliable indicator of chunk recieved progress
+
+                    if ( Seshi.sendingFileProgress[ack.fileId] === undefined )
+                    {
+                        recvChunkCount = 0;
+                    }else { //End set progress to zero initially
+                        recvChunkCount = Seshi.sendingFileProgress[ack.fileId].recvChunkCount;
+                    }//End else incriment currentChunk using current value
+
+                    Seshi.sendingFileProgress[ack.fileId] = {
+                        "percentComplete"   : (ack.chunkNumber + 1) / ack.numberOfChunks * 100,
+                        "fileName"          : ack.fileName,
+                        "fileId"            : ack.fileId,
+                        "fileType"          : ack.fileType,
+                        "chunkNumber"       : ack.chunkNumber,
+                        "numberOfChunks"    : ack.numberOfChunks,
+                        "recvChunkCount"    : recvChunkCount + 1,
+                        "complete"          : recvChunkCount >= ack.numberOfChunks ? true:false,
+                        "UIdone"            : false
+                    }//End update Seshi.sendingFileProgress[]
+
+                    //Fire sendFileProgressUpdate event so sender knows to update their UI with sending progress bar
+                    dispatchEvent(sendFileProgressUpdate);
+                    //Delete completed storeProgess
+                    if(Seshi.sendingFileProgess[ack.fileId].complete == true)
+                    {
+                        delete(Seshi.sendingFileProgress[ack.fileId]);
+                    }
+
+    },
+    bufferFullThreshold:4096,
+    listener: function() {
+                dc.removeEventListener('bufferedamountlow', Seshi.listener);
+                Seshi.sendAllData();
+    },
+    sendAllData: function() {
+        while (Seshi.buffer.length > 0) {
+                if(dc.bufferedAmount > Seshi.bufferFullThreshold) {
+                    //Use polling (forced)
+                    //setTimeout(Seshi.sendAllData, 106500);
+                    dc.addEventListener('bufferedamountlow', Seshi.listener);
+                    return; //Exit sendAllData  until ready because buffer is full
+                }//End wait for buffer to clear (dc.bufferedAmount > bufferFullThreshold)
+                dc.send(Seshi.buffer.shift());
+        }//End while buffer is not empty
+    },
+    buffer:[], 
+    recvBuffer:[],
+    sendingFileProgress:[],
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
                             //Check dosen't already exist
@@ -1011,98 +1200,29 @@ function setupDataHandlers() {
 	//statusE = document.getElementById("status"),
 	//statusE.innerHTML = "We are connected!";
 
-        trace('Received Message: ' + event.data);
+        //trace('Received Message: ' + event.data);
 
         if ( event.data instanceof Array ) {
                 alert('Is array');
         }
 
+        console.log("We got: " + event.data);
+
         //Check if message is an array buffer (data)
         if(event.data instanceof ArrayBuffer || event.data.size){ //event.data.size is for Firefox(automatically transforms data to Blob type
             console.log('Recieved ArrayBuffer message');
-            //Catch ArrayBuffer sent through the datachannel
-            var blob = new Blob([event.data]);
+            //Catch ArrayBuffer sent through the datachannel & add it to recvBuffer for later processing
+            Seshi.recvBuffer.push(new Blob([event.data]));
 
-/* Change this to read the lengthOfMeta, which is always at the start of the blob and is 64 bytes long.
-We might need to reduce the size of the chunks for this to work over STCP!!!
-#########*/
-                //Get length of file meta (size specified is always a zerofilled 64byte long string at the begining of the blob
-                var metaLength = blob.slice(0,81);
-
-                //Read metaLength to get size in bytes of chunk fileMeta
-                var reader2 = new FileReader();
-                reader2.onload = function(file2) {
-                        if ( reader2.readyState == FileReader.DONE ) {
-                                result2 = file2.target.result;
-                                var fileMetaLengthObj = JSON.parse(result2);
-                                var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
-                                window.fileMetaLength = fileMetaLength;
-                                console.log("Meta length is:" + fileMetaLength);
-
-                                    //Split file meta from begining of chunk (all chunk payloads are 64512 bytes in length)
-                                    var chunkFileMeta = blob.slice(81, window.fileMetaLength + 81); //First get file type, chunk number etc
-                                        var reader = new FileReader();
-                                        reader.onload = function(file) {
-                                                if ( reader.readyState == FileReader.DONE ) {
-                                                        result = file.target.result;
-                                                        if ( result.length > 0 ) {
-                                                                window.curChunk = JSON.parse(result);
-                                                                //Update window with current chunk information
-                                                                //var chunkProgresTextBox = document.getElementById('chunkInProgress');
-                                                                var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
-                                                                message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
-                                                                message += " FileName: " + curChunk.fileName;
-
-                                                                var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
-                                                                //Update user facing status box
-                                                                if (chunkProg == 100)
-                                                                {
-                                                                    statusMsg = 'Complete!: "' + curChunk.fileName + ' 100%';
-                                                                } else {
-                                                                    statusMsg = 'Reciving file: "' + curChunk.fileName + '" Chunk number: ' + curChunk.chunkNumber;
-                                                                }
-                                                                statusE = document.getElementById("status"),
-                                                                statusE.innerHTML = statusMsg;
-                                                                if (curChunk.chunkNumber == curChunk.numberOfChunks) {
-                                                                        refreshFileList('localFileList');
-                                                                }//End refresh
-                                                                //End extract file meta from blob
-                                                        }//End check read data is > 0
-                                                                //Start send data payload
-                                                                var headerOffset = 81 + window.fileMetaLength;
-                                                                //var chunkBlob = blob.slice(headerOffset); //Get chunk payload
-                                                                var chunk = blob.slice(headerOffset); //Get chunk payload
-                                                                //Store chunkBlob into IndexedDB
-                                                                //Use Seshi.store() API (should move file header parsing to this web worker also...)
-                                                                var storeReqObj = {
-                                                                    "dataSource"    : "seshiChunk",
-                                                                    "boxId"         : Seshi.getBoxId(),
-                                                                    "chunk"         : chunk,
-                                                                    "chunkNumber"   : window.curChunk.chunkNumber,
-                                                                    "chunkSize"     : window.curChunk.chunkSize,
-                                                                    "fileId"        : window.curChunk.fileId,
-                                                                    "fileName"      : window.curChunk.fileName,
-                                                                    "fileType"      : window.curChunk.fileType,
-                                                                    "numberOfChunks": window.curChunk.numberOfChunks
-                                                                };
-                                                                Seshi.store(storeReqObj);
-                                                                //End send data chunk payload
-                                                }//End reader.readtState == DONE
-                                        }//End reader.onload
-                                        reader.readAsText(chunkFileMeta);
-                                        //End extract file meta from blob
-
-
-                        }//End IF reading byte lenth of fileMeata
-                }//End get bytelength of fileMeta
-                reader2.readAsText(metaLength);
-
+            if ( processRecieveBufferFLAG == false )
+            {
+                processRecieveBuffer();
+            }//Only run processRecieveBuffer() if not already running
 
         } else { //If not an ArrayBuffer , treat as control packet.
             if(JSON.parse(event.data))
             {
                 fileMeta = JSON.parse(event.data);
-                console.log('Got file meta');
             }
         }//End determin if data message or control message.
 
@@ -1129,14 +1249,18 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                 case 'recvRemoteFileList': //Receiving list of files from remote peer
                     Seshi.recvRemoteFileList(msg);
                     break;
+                case 'receivedChunkACK': //Got a received & stored Chunk ACK from peer.
+                    trace("Peer told me that they've sucessfully received & stored a chunk I sent them. Yay."); 
+                    Seshi.updateSendingProgress(msg.data);
+                    break;
                 case 'requestFilesById': //Receiving request from peer to pull files from their peer.
                     Seshi.sendRequestedFilesToPeer(msg);
                     break;
                 case 'remoteDisplayName': //Receiving remote's display name
                     Seshi.setRemoteDisplayName(msg);
                     break;
-                case 'playInSync': //Play file in sync with connected peer DUDE.
-                    Seshi.playInSync(msg);
+                case 'playInSyncRPC': //Play file in sync with connected peer DUDE.
+                    Seshi.playInSyncRPC(msg);
                     break;
             }//Switch on comman requested by remote peer
         }//End check for command & control message from remote peer
@@ -1171,7 +1295,7 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
             var remoteChatMsg =
                 '<li class="clearfix">' +
                 '    <div class="message-data align-right">' +
-                '    <span class="message-data-time">' + timeStamp + 
+                '    <span class="message-data-time">' + timeStamp +
                 '    <span class="message-data-name">' +
                      msg.remoteDisplayName+
                 '    </span>' +
@@ -1186,10 +1310,8 @@ We might need to reduce the size of the chunks for this to work over STCP!!!
                 console.log("Received data store message.");
                 //console.log(blobURL);
 
-            } else {
-                console.log("received " + msg + "on data channel");
-                }
-                };
+            }
+           };
     }
 
 function sendChat(msg) {
@@ -1246,58 +1368,13 @@ function zeroFill( number, width )
   return number + ""; // always return a string
 }//End zeroFill
 
-function sendChunksToPeer(e, fileId) {
-        //Get file id else defaults to most recent file added
-        if(typeof(e) == 'object')
-        {
-            var fileId = e.target.dataset.fileid;
-        }
-
-    db.transaction('r', db.chunks, function() {
-            db.chunks.where("fileId").equals(fileId).each(function(chunk) {
-                //Transaction scope
-                        //Sending file meta...
-                        var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
-                        var lengthOfMeta = JSON.stringify(meta).length;
-                        lengthOfMeta = zeroFill(lengthOfMeta, 64);
-                        var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
-                        var header = JSON.stringify(metaLength) + JSON.stringify(meta);
-                        var sendChunk = new Blob([header, chunk.chunk]);
-                        url = window.URL.createObjectURL(sendChunk);
-                        //Needs to be sent as an arrayBuffer
-                        var reader = new FileReader();
-                                reader.onload = function(file) {
-                                if( reader.readyState == FileReader.DONE ) {
-                                        for(var i=0;i<=99999999;i++) {}//Crude delay!
-                                        dc.send(result = file.target.result);
-                                }//End FileReader.DONE
-
-                        }//End reader.onload
-                        reader.readAsArrayBuffer(sendChunk);
-			var chunkProg = (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100;
-                        //End sending file meta
-            })//End db.chunks toArray using Dexie (.then follows)
-
-        }).then(function() {
-            //Transaction completed
-	    var uploadBar = document.getElementById('uploadProgress');
-	    uploadBar.innerHTML="<span style=\"color:black\">UploadComplete!</span>";
-        }).catch (function (err) {
-
-            console.error(err);
-
-    });//End get fildIdChunks from fileId
-
-} //End sendChunksToPeer
-
-
 
 function sendMostRecentFile() {
 	//Get most recently added file (stored in localstorage.getItem('lastItem'))
 	if(localStorage.getItem('lastItem'))
 	{
 	    fileId = localStorage.getItem('lastItem');
-	    sendChunksToPeer('send by fileId', fileId); //Send file direct to peer over DC
+        //TODO send over datachannel
 	}//Only send last item if localStorage.getItem('lastItem') has a fileId
 }
 
@@ -1368,13 +1445,6 @@ function gotDescription(localDesc) {
   send(localDesc);
 }
 
-window.uuid = function()
-{   /* Credit http://stackoverflow.com/a/2117523 */
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-                return v.toString(16);
-    });
-}
 
 ////////////////////////////////////
 // This section is for changing the UI based on application
@@ -1451,3 +1521,112 @@ function getQueryVariable(variable)
        }
        return(false);
 }
+
+function processRecieveBuffer() {    
+
+    if ( Seshi.recvBuffer.length == 0 )
+    {
+        processRecieveBufferFLAG = false;
+        return; //Because we're done.
+    }
+        processRecieveBufferFLAG = true;
+    /* Process each chunk in Seshi.ReciveBuffer */
+    if( Seshi.recvBuffer.length > 0 ) {
+                var blob = Seshi.recvBuffer.pop();
+                //Get length of file meta (size specified is always a zerofilled 64byte long string at the begining of the blob
+                var metaLength = blob.slice(0,81);
+                //Read metaLength to get size in bytes of chunk fileMeta
+                var reader2 = new FileReader();
+                reader2.onload = function(file2) {
+                        if ( reader2.readyState == FileReader.DONE ) {
+                                result2 = file2.target.result;
+                                var fileMetaLengthObj = JSON.parse(result2);
+                                var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
+                                window.fileMetaLength = fileMetaLength;
+                                console.log("Meta length is:" + fileMetaLength);
+                                    //Split file meta from begining of chunk (all chunk payloads are 64512 bytes in length)
+                                    var chunkFileMeta = blob.slice(81, window.fileMetaLength + 81); //First get file type, chunk number etc
+                                        var reader = new FileReader();
+                                        reader.onload = function(file) {
+                                                if ( reader.readyState == FileReader.DONE ) {
+                                                        result = file.target.result;
+                                                        if ( result.length > 0 ) {
+                                                                window.curChunk = JSON.parse(result);
+                                                                //Update window with current chunk information
+                                                                //var chunkProgresTextBox = document.getElementById('chunkInProgress');
+                                                                var message = "File id: " + curChunk.fileId + " ChunkNumber: ";
+                                                                message += curChunk.chunkNumber + " Filetype: " + curChunk.fileType;
+                                                                message += " FileName: " + curChunk.fileName;
+
+                                                                var chunkProg = (curChunk.chunkNumber + 1) / curChunk.numberOfChunks * 100;
+                                                                //Update user facing status box
+                                                                if (chunkProg == 100)
+                                                                {
+                                                                    statusMsg = 'Complete!: "' + curChunk.fileName + ' 100%';
+                                                                } else {
+                                                                    statusMsg = 'Reciving file: "' + curChunk.fileName + '" Chunk number: ' + curChunk.chunkNumber;
+                                                                }
+                                                                statusE = document.getElementById("status"),
+                                                                statusE.innerHTML = statusMsg;
+                                                                if (curChunk.chunkNumber == curChunk.numberOfChunks) {
+                                                                        refreshFileList('localFileList');
+                                                                }//End refresh
+                                                                //End extract file meta from blob
+                                                        }//End check read data is > 0
+                                                                //Start send data payload
+                                                                var headerOffset = 81 + window.fileMetaLength;
+                                                                //var chunkBlob = blob.slice(headerOffset); //Get chunk payload
+                                                                var chunk = blob.slice(headerOffset); //Get chunk payload
+                                                                //Store chunkBlob into IndexedDB
+                                                                //Use Seshi.store() API (should move file header parsing to this web worker also...)
+  
+                                                                var storeReqObj = {
+                                                                    "dataSource"    : "seshiChunk",
+                                                                    "boxId"         : Seshi.getBoxId(),
+                                                                    "chunk"         : chunk,
+                                                                    "chunkNumber"   : window.curChunk.chunkNumber,
+                                                                    "chunkSize"     : window.curChunk.chunkSize,
+                                                                    "fileId"        : window.curChunk.fileId,
+                                                                    "fileName"      : window.curChunk.fileName,
+                                                                    "fileType"      : window.curChunk.fileType,
+                                                                    "numberOfChunks": window.curChunk.numberOfChunks
+                                                                };
+                                                                var storePromise = new Promise(function(resolve, reject) 
+                                                                { 
+                                                                    StorageWorker.postMessage(storeReqObj);
+                                                                    StorageWorker.addEventListener("message", function(e) {
+                                                                        resolve(e.data);
+                                                                    });
+                                                                    return storePromise;
+                                                                });
+                                                                //End send data chunk payload
+                                                                storePromise.then(function() {
+                                                                    //Send back ACK to remote peer with progess update
+                                                                     var peerReceivedChunkACK = {
+                                                                         'cmd':'receivedChunkACK',
+                                                                         'data':{
+                                                                                    'boxId'         : Seshi.getBoxId(),
+                                                                                    'fileId'        : window.curChunk.fileId,
+                                                                                    "fileName"      : window.curChunk.fileName,
+                                                                                    "fileType"      : window.curChunk.fileType,
+                                                                                    "numberOfChunks": window.curChunk.numberOfChunks,
+                                                                                    'chunkNumber'   : window.curChunk.chunkNumber,
+                                                                                    'chunkSize'     : window.curChunk.chunkSize
+                                                                                }
+                                                                     };
+                                                                     //Send chunk received ACK over datachannel to peer
+                                                                     peerReceivedChunkACK = JSON.stringify(peerReceivedChunkACK);
+                                                                     dc.send(peerReceivedChunkACK);
+
+                                                                    processRecieveBuffer();//Check for more chunks in recvBuffer
+                                                                });//End then check for next chunk in recvBuffer
+                                                }//End reader.readtState == DONE
+                                        }//End reader.onload
+                                        reader.readAsText(chunkFileMeta);
+                                        //End extract file meta from blob
+                        }//End IF reading byte lenth of fileMeata
+                }//End get bytelength of fileMeta
+                reader2.readAsText(metaLength);
+ }//End if Seshi.recvBuffer is < 0.
+
+}//End processRecieveBuffer.

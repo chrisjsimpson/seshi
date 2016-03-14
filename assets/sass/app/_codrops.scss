@@ -1,0 +1,144 @@
+@font-face {
+	font-weight: normal;
+	font-style: normal;
+	font-family: 'codropsicons';
+	src:url('../fonts/codropsicons.eot');
+	src:url('../fonts/codropsicons.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/codropsicons.woff') format('woff'),
+		url('../fonts/codropsicons.ttf') format('truetype'),
+		url('../fonts/codropsicons.svg#codropsicons') format('svg');
+}
+
+
+%extend_1 {
+	stroke: $white;
+	stroke-linecap: round;
+	stroke-width: 4;
+	//Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: opacity 0.1s;
+}
+
+
+%extend_2 {
+	opacity: 0;
+}
+
+%extend_3 {
+	//Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: background-color 0.3s, width 0.3s, border-width 0.3s;
+}
+
+%extend_4 {
+	opacity: 1;
+	//Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: stroke-dashoffset 0.3s;
+}
+
+
+.progress-button {
+	position: relative;
+	display: inline-block;
+	text-align: center;
+	width: 45%;
+	min-width: 250px;
+	margin: 10px;
+	button {
+		display: block;
+		margin: 0 auto;
+		padding: 0;
+		width: 250px;
+		height: 70px;
+		border: 2px solid #1ecd97;
+		border-radius: 40px;
+		background: transparent;
+		color: #1ecd97;
+		letter-spacing: 1px;
+		font-size: 18px;
+		font-family: Source Sans Pro, sans-serif;
+		transition: background-color 0.3s, color 0.3s, width 0.3s, border-width 0.3s, border-color 0.3s;
+		&:hover {
+			background-color: #1ecd97;
+			color: $white;
+		}
+		&:focus {
+			outline: none;
+		}
+		span {
+			transition: opacity 0.3s 0.1s;
+		}
+	}
+	svg {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		pointer-events: none;
+		path {
+			opacity: 0;
+			fill: none;
+		}
+		&.progress-circle path {
+			stroke: #1ecd97;
+			stroke-width: 5;
+		}
+		&.checkmark path {
+			@extend %extend_1;
+		}
+		&.cross path {
+			@extend %extend_1;
+		}
+	}
+}
+.loading {
+	&.progress-button {
+		button {
+			width: 70px;
+			border-width: 5px;
+			border-color: #ddd;
+			background-color: transparent;
+			color: $white;
+		}
+		span {
+			//Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+			transition: opacity 0.15s;
+			@extend %extend_2;
+		}
+		svg.progress-circle path {
+			@extend %extend_4;
+		}
+	}
+	&.elastic.progress-button button {
+		//Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+		transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.6, -0.6, 0.75, 0.75), border-width 0.3s, border-color 0.3s;
+	}
+}
+.success.progress-button {
+	span {
+		@extend %extend_2;
+	}
+	button {
+		@extend %extend_3;
+		border-color: #1ecd97;
+		background-color: #1ecd97;
+	}
+	svg.checkmark path {
+		@extend %extend_4;
+	}
+}
+.error.progress-button {
+	span {
+		@extend %extend_2;
+	}
+	button {
+		@extend %extend_3;
+		border-color: #fb797e;
+		background-color: #fb797e;
+	}
+	svg.cross path {
+		@extend %extend_4;
+	}
+}
+.elastic.progress-button button {
+	//Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.25, 0.25, 0.4, 1.6), border-width 0.3s, border-color 0.3s;
+}

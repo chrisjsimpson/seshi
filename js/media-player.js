@@ -32,6 +32,7 @@ $(".btn-hide").click(function() {
 
 })
 
+
 //if audio player CSS change
 // if($('.plyr').find('audio').length != 0) {
 //     $('#hideall').css('position', 'relative');

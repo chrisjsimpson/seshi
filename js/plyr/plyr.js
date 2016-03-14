@@ -2208,7 +2208,7 @@
             }
 
             // Pause playback
-            _pause();
+            //_pause();
 
             // Clean up YouTube stuff
             if (plyr.type === 'youtube') {

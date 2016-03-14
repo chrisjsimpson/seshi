@@ -1,0 +1,80 @@
+@import '../variables';
+@import '../mixins';
+@import '../functions';
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  45% {
+    transform: scale(0.1);
+    opacity: 0.7;
+  }
+  80% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// mixins should be separated out
+@mixin ball-pulse($n:3, $start:0) {
+  @for $i from $start through $n {
+    > div:nth-child(#{$i}) {
+      animation: scale 0.75s delay(0.12s, $n, $i) infinite cubic-bezier(.2,.68,.18,1.08);
+    }
+  }
+}
+
+.ball-pulse {
+      position: absolute;
+      z-index: 1002;
+      margin: 0 auto;
+      top: 17vh;
+      width: 48%;
+      left: 26%;
+  @include ball-pulse();
+
+  > div {
+    @include balls();
+    @include global-animation();
+    background-color: rgba(52, 169, 237, 0.7);
+    display: inline-block;
+    margin-left: 30px;
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media(max-width: $screen-sm-max){
+  .ball-pulse {
+        left: 38%;
+    > div {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+@media(max-width: 600px) {
+  .ball-pulse {
+        left: 31%;
+      }
+}
+
+@media(max-width: 480px){
+  .ball-pulse {
+        left: 28%;
+      > div {
+        width: 12px;
+        height: 12px;
+      }
+  }
+}
+
+@media(min-width: $screen-lg){
+  .ball-pulse {
+        left: 14vw;
+        top:17vh;
+      }
+}

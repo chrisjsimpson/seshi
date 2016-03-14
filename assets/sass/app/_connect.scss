@@ -900,6 +900,7 @@ padding-right: 5px;
 .showtoggle {
   opacity:0;
   z-index:1000;
+  transition: all 0.2s ease;
 }
 .widthOpenVideo {
   width: 100%;

@@ -76,7 +76,7 @@ window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
     var options = {
                'controls':["restart", "rewind", "play", "fast-forward", "current-time", "duration", "mute", "volume", "captions", "fullscreen"]
                 }
-    var player = plyr.setup()[0]; 
+    var player = plyr.setup()[0];
 
 //Event: onPlayInSyncRequest is fired
 window.addEventListener('playRequest', play, false);
@@ -392,12 +392,16 @@ function deleteFile(event){
  * */
 if (getQueryVariable("key")) {
     //Get reference to Generate Key button
+
+
     generateKeyBtn = document.getElementById('connectionStatus');
 
     var connectionStatusMessage= document.createElement('p');
     connectionStatusMessage.id = 'connectionStatus';
     if(getQueryVariable("key") != localStorage.getItem('key'))
     {
+      $("#sendIdThenHide").hide();
+      $("#connectionStatus").show();
         connectionStatusMessageText = document.createTextNode("Connecting..."); //Message shown to user on button
     } else {
         connectionStatusMessageText = document.createTextNode("Hey! It looks like you've sent the key to yourself, send it to a friend to share files with them.");
@@ -431,7 +435,6 @@ function showConnected() {
     var parentDiv = targetBtn.parentNode; //Locate the parent node of the existing button.
     parentDiv.replaceChild(connectedBtn, targetBtn); //Replace the old button with the new
       $("#connectionStatus").hide();
-      $("#sendIdThenHide").hide();
 
     //Enable Send / Recieve buttons:
     var receiveBtn = document.getElementById('receiveBtn').disabled = false;

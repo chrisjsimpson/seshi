@@ -821,7 +821,7 @@ input[id="display-name"]:focus + .edit-btn {
   border-radius: 4px;
   text-align: center;
 margin: 0 auto;
-margin-top: 81px;
+margin-top: 15px;
 width: 40%;
 // float:right;
 z-index: 999;
@@ -831,7 +831,8 @@ display:none;
 
 .flashcopied {
   color: #fc3f3f !important;
-    margin: -38px;
+  margin-top: -63px;
+margin-right: 30px;
 }
 
 .copyclipboard-card h6 {
@@ -905,6 +906,7 @@ padding-right: 5px;
 #connectionStatus {
   margin-top: 20vh;
   font-size: 2rem;
+  display:none;
 }
 
 @media (min-width: 1200px) {
@@ -965,7 +967,8 @@ padding-right: 5px;
   }
   .flashcopied {
     font-size: 12px;
-    margin: -30px;
+    margin-top: -70px;
+width: 100%;
   }
   #connectionStatus {
     margin-top: 8vh;
@@ -1117,12 +1120,11 @@ padding-right: 5px;
   }
   .flashcopied {
     font-size: 11px;
-    margin: -31px;
-    margin-right: -39px;
+
   }
   .copyclipboard-card {
     height:99px;
-    margin-top: 65px;
+    margin-top: 15px;
   }
 }
 

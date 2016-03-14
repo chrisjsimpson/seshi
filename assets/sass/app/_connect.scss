@@ -884,10 +884,7 @@ padding-right: 5px;
   display: none;
 }
 
-.showtoggle {
-  opacity:0;
-  z-index:1000;
-}
+
 
 
 #hideall {
@@ -898,6 +895,11 @@ padding-right: 5px;
 
 #addfilehide {
   opacity:1;
+}
+
+.showtoggle {
+  opacity:0;
+  z-index:1000;
 }
 .widthOpenVideo {
   width: 100%;

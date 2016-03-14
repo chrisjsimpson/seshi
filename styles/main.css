@@ -19921,7 +19921,6 @@ label {
 .fullwidthcard {
   padding: 0;
   z-index: 2;
-  margin-top: 24px;
 }
 
 .fullwidthcard h4 {
@@ -19943,10 +19942,10 @@ label {
 
 .myfiles {
   width: 100%;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-top: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 24px;
   margin: 0 auto;
   margin-bottom: 0;
   margin-top: 30px;
@@ -19969,7 +19968,7 @@ label {
 }
 
 .pushpull {
-  margin-top: 69px;
+  margin-top: 12px;
 }
 
 .filewell {
@@ -20028,8 +20027,14 @@ input[type="checkbox"]:checked + .fileitem {
   height: 100%;
 }
 
+.file-title-center {
+  text-align: center;
+  font-size: 18px;
+  margin-top: -3px;
+}
+
 .receive-well {
-  background: rgba(200, 200, 200, 0.4);
+  background: rgba(230, 230, 230, 0.4);
 }
 
 /**Dropdown **/
@@ -20668,9 +20673,9 @@ input[id="display-name"]:focus + .edit-btn {
   margin: 0 auto;
   margin-top: 20px;
   width: 40%;
-  opacity: 0;
   z-index: 999;
   transition: width 0.3s;
+  display: none;
 }
 
 .flashcopied {
@@ -20882,10 +20887,6 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (max-width: 767px) {
-  .pushpull {
-    margin-top: -22px;
-    margin-bottom: 38px;
-  }
   .icon-link {
     margin-left: 0;
     width: 45px;
@@ -20909,6 +20910,7 @@ input[id="display-name"]:focus + .edit-btn {
   .myfiles {
     padding-left: 5px;
     padding-right: 5px;
+    padding-top: 7px;
     font-size: 13px;
   }
   .myfiles h3 {
@@ -20933,8 +20935,8 @@ input[id="display-name"]:focus + .edit-btn {
   }
   .largelink {
     height: 98px;
-    width: 150px;
-    margin-top: 0;
+    width: 30vw;
+    margin-top: 30px;
   }
   .largelink span h3 {
     padding: 38px;
@@ -20942,12 +20944,13 @@ input[id="display-name"]:focus + .edit-btn {
     font-size: 21px;
   }
   .flashcopied {
-    font-size: 12px;
-    margin: -30px;
+    font-size: 11px;
+    margin: -31px;
+    margin-right: -9px;
   }
   .copyclipboard-card {
     height: 99px;
-    margin-top: 60px;
+    margin-top: 0;
   }
 }
 
@@ -23316,7 +23319,7 @@ input[id="display-name"]:focus + .edit-btn {
   height: 433px;
   background: transparent;
   opacity: 1;
-  padding: 173px 50px;
+  padding: 130px 50px;
   text-align: left;
   border-radius: 3px;
 }
@@ -23533,13 +23536,18 @@ input[id="display-name"]:focus + .edit-btn {
 
 @media (max-width: 767px) {
   .btn-upload {
-    width: 300px;
+    width: 168px;
+    line-height: 84px;
+    height: 101px;
+    margin: 29px 0;
+    margin-left: 10px;
+    float: left;
   }
   .btn-upload .addicon {
     width: 40px;
   }
   .uploadbox-connect {
-    height: 367px;
+    height: 253px;
   }
 }
 
@@ -25138,48 +25146,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: -0.14s;
-  animation-duration: 1.48s;
+  animation-delay: 0.14s;
+  animation-duration: 1.34s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.13s;
-  animation-duration: 1.53s;
+  animation-delay: 0.68s;
+  animation-duration: 0.98s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.79s;
-  animation-duration: 1.32s;
+  animation-delay: -0.02s;
+  animation-duration: 1.24s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.54s;
-  animation-duration: 1.38s;
+  animation-delay: 0.52s;
+  animation-duration: 1.54s;
 }
 
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.43s;
-  animation-duration: 0.81s;
+  animation-delay: 0.76s;
+  animation-duration: 1.31s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.33s;
-  animation-duration: 1.18s;
+  animation-delay: 0.69s;
+  animation-duration: 1.14s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.76s;
-  animation-duration: 1.3s;
+  animation-delay: 0.33s;
+  animation-duration: 0.71s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.6s;
-  animation-duration: 1.44s;
+  animation-delay: 0.61s;
+  animation-duration: 1.16s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.79s;
-  animation-duration: 1.16s;
+  animation-delay: 0.56s;
+  animation-duration: 0.66s;
 }
 
 .ball-grid-beat > div {
@@ -25215,48 +25223,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.27s;
-  animation-duration: 1.6s;
+  animation-delay: -0.01s;
+  animation-duration: 0.77s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: -0.08s;
-  animation-duration: 0.66s;
+  animation-delay: -0.05s;
+  animation-duration: 0.97s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.35s;
-  animation-duration: 1.05s;
+  animation-delay: 0.3s;
+  animation-duration: 1.16s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: -0.01s;
-  animation-duration: 1.32s;
+  animation-delay: 0.17s;
+  animation-duration: 0.94s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.39s;
-  animation-duration: 1.18s;
+  animation-delay: 0.66s;
+  animation-duration: 1.32s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.25s;
-  animation-duration: 1.57s;
+  animation-delay: 0.68s;
+  animation-duration: 1.36s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0.52s;
-  animation-duration: 1.47s;
+  animation-delay: 0.38s;
+  animation-duration: 0.97s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.01s;
-  animation-duration: 1.46s;
+  animation-delay: 0.26s;
+  animation-duration: 1.58s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.03s;
-  animation-duration: 1.43s;
+  animation-delay: 0.47s;
+  animation-duration: 1.22s;
 }
 
 .ball-grid-pulse > div {
@@ -25594,23 +25602,23 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.04s;
-  animation-duration: 0.38s;
+  animation-delay: 0.55s;
+  animation-duration: 0.47s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.43s;
-  animation-duration: 0.61s;
+  animation-delay: 0.5s;
+  animation-duration: 0.77s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.02s;
-  animation-duration: 0.7s;
+  animation-delay: 0.61s;
+  animation-duration: 0.87s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.76s;
-  animation-duration: 0.57s;
+  animation-delay: 0.33s;
+  animation-duration: 0.94s;
 }
 
 .line-scale-party > div {

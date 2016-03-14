@@ -64,7 +64,7 @@ label {
 .fullwidthcard {
   padding:0;
   z-index: 2;
-  margin-top:24px;
+  // margin-top:24px;
   h4 {
     color: $kinddarkgrey;
   }
@@ -85,10 +85,10 @@ label {
 
 .myfiles {
   width:100%;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-top: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 24px;
   margin: 0 auto;
   margin-bottom: 0;
   margin-top: 30px;
@@ -112,7 +112,7 @@ label {
 }
 
 .pushpull {
-  margin-top: 69px;
+  margin-top: 12px;
 }
 
 .filewell {
@@ -177,8 +177,13 @@ padding: 14px;
   height: 100%;
 }
 
+.file-title-center {
+  text-align: center;
+  font-size: 18px;
+  margin-top: -3px;
+}
 .receive-well {
-  background: rgba(200, 200, 200, 0.4);
+  background: rgba(230, 230, 230, 0.4);
 }
 
 /**Dropdown **/
@@ -820,9 +825,9 @@ margin: 0 auto;
 margin-top: 20px;
 width: 40%;
 // float:right;
-opacity:0;
 z-index: 999;
 transition: width 0.3s;
+display:none;
 }
 
 .flashcopied {
@@ -1048,11 +1053,6 @@ padding-right: 5px;
 }
 
 @media (max-width: 767px) {
-
-  .pushpull {
-    margin-top: -22px;
-  margin-bottom: 38px;
-  }
   .icon-link {
     margin-left: 0;
     width: 45px;
@@ -1076,6 +1076,7 @@ padding-right: 5px;
   .myfiles {
     padding-left: 5px;
     padding-right: 5px;
+    padding-top:7px;
     font-size: 13px;
   }
   .myfiles h3 {
@@ -1103,8 +1104,8 @@ padding-right: 5px;
 
   .largelink {
     height: 98px;
-    width:150px;
-    margin-top: 0;
+    width:30vw;
+    margin-top: 30px;
     span h3 {
     padding: 38px;
     text-indent: 3px;
@@ -1112,12 +1113,13 @@ padding-right: 5px;
     }
   }
   .flashcopied {
-    font-size: 12px;
-    margin: -30px;
+    font-size: 11px;
+    margin: -31px;
+    margin-right: -9px;
   }
   .copyclipboard-card {
     height:99px;
-    margin-top: 60px;
+    margin-top:0;
   }
 }
 

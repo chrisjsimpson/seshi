@@ -211,6 +211,7 @@
 }
 
 .uploadbox-connect {
+  position:relative
   padding:none;
   min-height: 227px;
   width: 50%;
@@ -221,6 +222,7 @@
   -webkit-box-shadow: 1px 1px 14px 4px rgba(0,0,0,0.2);
   -moz-box-shadow: 1px 1px 14px 4px rgba(0,0,0,0.2);
   box-shadow: 1px 1px 14px 4px rgba(0,0,0,0.2);
+  z-index:1000;
 }
 
 

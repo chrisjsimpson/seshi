@@ -266,8 +266,8 @@ function play(event) {
                                   });
                           $("#hideall").css({'position':'absolute',
                                               'margin': '0 auto'});
-                          // $("#hideall").addClass('widthOpenVideo');
-                          $("addfilehide").hide();
+                          $("#hideall").addClass('widthOpenVideo');
+                          $("#addfilehide").hide();
                           $("#hideall").hide();
                             $('.btn-hide').show();
                         } else if ($(window).width() < 992 && $(window).width() > 768 ) {

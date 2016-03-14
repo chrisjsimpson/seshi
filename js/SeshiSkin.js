@@ -311,7 +311,7 @@ function play(event) {
 
 function pause() {
     //Callled onSeshiPauseReq event received from remote peer
-    
+
     //Get reference to player
     var player = document.querySelector('.plyr');
     player.plyr.pause(); //Pause media
@@ -321,8 +321,8 @@ function resumePlay() {
     //Called on resumePlayRequest event
     //Get reference to player
     var player = document.querySelector('.plyr');
-    player.plyr.play(); //play media (unpause) 
-}//End resumePlay() 
+    player.plyr.play(); //play media (unpause)
+}//End resumePlay()
 
 function download(event) {
     fileId = event.target.dataset.id;
@@ -423,6 +423,7 @@ function showConnected() {
     var parentDiv = targetBtn.parentNode; //Locate the parent node of the existing button.
     parentDiv.replaceChild(connectedBtn, targetBtn); //Replace the old button with the new
       $("#connectionStatus").hide();
+      $("#sendIdThenHide").hide();
 
     //Enable Send / Recieve buttons:
     var receiveBtn = document.getElementById('receiveBtn').disabled = false;

@@ -11826,20 +11826,9 @@ $("#copyclipboard").click(function () {
    //      width: '25%'
    //  });
 
-   if ($(window).width() < 768) {
-      $(".copyclipboard-card ").css({
-          width: '100%'
-      });
-      $(".uploadbox-connect").css('height', '375px')
-      $(".copyclipboard-card ").css({
-          width: '100%'
-      });
-   } else {
-    $(".copyclipboard-card ").css({
-        width: '75%'
-    });
-}
-
+$(".copyclipboard-card ").css({
+    width: '100%'
+});
     $(".flashcopied").replaceWith('<h6 class="flashcopied"> Copied link! </h6>');
 
 

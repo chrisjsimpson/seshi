@@ -212,10 +212,12 @@
 
 .uploadbox-connect {
   padding:none;
-  height: 227px;
+  min-height: 227px;
+  width: 50%;
+  min-width: 600px;
   margin: 5px auto;
   border-radius: 6px;
-  background: rgba(255,255,255,0.7);
+  background: rgba(242, 241, 239,0.7);
   -webkit-box-shadow: 1px 1px 14px 4px rgba(0,0,0,0.2);
   -moz-box-shadow: 1px 1px 14px 4px rgba(0,0,0,0.2);
   box-shadow: 1px 1px 14px 4px rgba(0,0,0,0.2);
@@ -224,7 +226,6 @@
 
 @media(max-width: $screen-sm-max) {
   .btn-upload {
-    width: 125px;
     .addicon {
       width: 50px;
     }
@@ -237,13 +238,15 @@
     line-height: 84px;
     height: 101px;
     margin:29px 0;
-    margin-left: 10px;
-    float:left;
+    // margin-left: 10px;
+    // float:left;
     .addicon {
       width: 40px;
     }
   }
   .uploadbox-connect {
+    width:100%;
+    min-width: 300px;
     height: 253px;
   }
 }

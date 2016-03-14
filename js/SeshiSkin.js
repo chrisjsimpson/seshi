@@ -267,8 +267,8 @@ function play(event) {
                           $("#hideall").css({'position':'absolute',
                                               'margin': '0 auto'});
                           $("#hideall").addClass('widthOpenVideo');
-                          $("#addfilehide").hide();
-                          $("#hideall").hide();
+                          $("#addfilehide").addClass('showtoggle');
+                          $("#hideall").addClass('showtoggle');
                             $('.btn-hide').show();
                         } else if ($(window).width() < 992 && $(window).width() > 768 ) {
                           $('.plyr').css({

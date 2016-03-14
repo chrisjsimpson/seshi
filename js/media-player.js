@@ -23,8 +23,9 @@ a.onload = function() {
 //hide all
 
 $(".btn-hide").click(function() {
-     $("#hideall").fadeToggle();
-     $("#addfilehide").fadeToggle();
+    $("#addfilehide").toggleClass('showtoggle');
+$("#hideall").toggleClass('showtoggle');
+
     // var txt = $("#hideall").is(':visible') ? 'Hide' : 'Show';
     if (!$("#hideall").is(':visible') ) {
         $('.btn-hide').find('i').toggleClass('fa-eye-slash')

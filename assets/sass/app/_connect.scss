@@ -884,10 +884,20 @@ padding-right: 5px;
   display: none;
 }
 
+.showtoggle {
+  opacity:0;
+  z-index:1000;
+}
+
 
 #hideall {
+  opacity:1;
   position: relative;
   z-index: 1000;
+}
+
+#addfilehide {
+  opacity:1;
 }
 .widthOpenVideo {
   width: 100%;

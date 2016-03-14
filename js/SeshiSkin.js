@@ -522,7 +522,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
                 //Only show play button if file is playable
                 if(Seshi.isPlayable(mimeType, fileName))
                 {
-                    list += '<div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a><a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync" class="fa fa-exchange"></i></a></div>';
+                    list += '<div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a><a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync *coming soon*" class="fa fa-exchange"></i></a></div>';
                 }else {
                     list += '<div class="col-xs-1 "></div>';
                 }//End only show play button if file is playable

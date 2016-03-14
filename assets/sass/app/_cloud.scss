@@ -5,7 +5,7 @@
     height: 433px;
     background: transparent;
     opacity:1;
-    padding: 173px 50px;
+    padding: 130px 50px;
     text-align: left;
     border-radius: 3px;
     p {
@@ -233,13 +233,18 @@
 
 @media(max-width: $screen-xs-max) {
   .btn-upload {
-    width:300px;;
+    width:168px;
+    line-height: 84px;
+    height: 101px;
+    margin:29px 0;
+    margin-left: 10px;
+    float:left;
     .addicon {
       width: 40px;
     }
   }
   .uploadbox-connect {
-    height: 367px;
+    height: 253px;
   }
 }
 

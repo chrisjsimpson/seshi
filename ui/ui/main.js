@@ -11827,11 +11827,10 @@ $("#copyclipboard").click(function () {
    //  });
 
    if ($(window).width() < 768) {
-      $('.keycopy').css('float', 'left');
       $(".copyclipboard-card ").css({
           width: '100%'
       });
-      $(".uploadbox-connect").css('height', '451px')
+      $(".uploadbox-connect").css('height', '375px')
       $(".copyclipboard-card ").css({
           width: '100%'
       });
@@ -11843,7 +11842,10 @@ $("#copyclipboard").click(function () {
 
     $(".flashcopied").replaceWith('<h6 class="flashcopied"> Copied link! </h6>');
 
-    $(".copyclipboard-card").css('opacity', '1');
+
+   //  $(".copyclipboard-card").css('opacity', '1');
+     $(".copyclipboard-card").fadeIn(500);
+
 
 });
 

@@ -89,13 +89,13 @@ window.addEventListener('onSeshiPauseReq', pause, false);
 //Event: Seshi Skin Pause event (user clicks pause)
 document.querySelector(".plyr").addEventListener("pause", function() {
       console.log("Pause button on Plyr was pressed.");
-      dispatchEvent(SeshiSkinPause);
+      //dispatchEvent(SeshiSkinPause);
 });
 
 //Event: Seshi Skin Pause event (user clicks pause)
 document.querySelector(".plyr").addEventListener("play", function() {
       console.log("Play button on Plyr was pressed.");
-      dispatchEvent(SeshiSkinPlay);
+      //dispatchEvent(SeshiSkinPlay);
 });
 
 

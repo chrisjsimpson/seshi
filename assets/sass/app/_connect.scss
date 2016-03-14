@@ -891,18 +891,17 @@ padding-right: 5px;
   opacity:1;
   position: relative;
   z-index: 1000;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 #addfilehide {
   opacity:1;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .showtoggle {
   opacity:0 !important;
-  z-index:1000;
-  transition: all 0.2s ease;
+  z-index: 1 !important;
 }
 .widthOpenVideo {
   width: 100%;

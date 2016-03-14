@@ -417,6 +417,7 @@ if (getQueryVariable("key")) {
 
 function showConnected() {
 
+    $("#sendIdThenHide").hide();
     $("#remoteFileListContainer").fadeIn();
 
     //Get reference to 'connecting' UI button

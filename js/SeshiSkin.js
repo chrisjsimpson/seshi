@@ -76,7 +76,7 @@ window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
     var options = {
                'controls':["restart", "rewind", "play", "fast-forward", "current-time", "duration", "mute", "volume", "captions", "fullscreen"]
                 }
-    var player = plyr.setup()[0]; 
+    var player = plyr.setup()[0];
 
 //Event: onPlayInSyncRequest is fired
 window.addEventListener('playRequest', play, false);
@@ -267,7 +267,8 @@ function play(event) {
                           $("#hideall").css({'position':'absolute',
                                               'margin': '0 auto'});
                           $("#hideall").addClass('widthOpenVideo');
-                          $("#hideall").hide();
+                          $("#addfilehide").addClass('showtoggle');
+                          $("#hideall").addClass('showtoggle');
                             $('.btn-hide').show();
                         } else if ($(window).width() < 992 && $(window).width() > 768 ) {
                           $('.plyr').css({
@@ -319,7 +320,7 @@ function play(event) {
 
 function pause() {
     //Callled onSeshiPauseReq event received from remote peer
-    
+
     //Get reference to player
     var player = document.querySelector('.plyr');
     player.plyr.pause(); //Pause media
@@ -329,8 +330,8 @@ function resumePlay() {
     //Called on resumePlayRequest event
     //Get reference to player
     var player = document.querySelector('.plyr');
-    player.plyr.play(); //play media (unpause) 
-}//End resumePlay() 
+    player.plyr.play(); //play media (unpause)
+}//End resumePlay()
 
 function download(event) {
     fileId = event.target.dataset.id;
@@ -392,12 +393,16 @@ function deleteFile(event){
  * */
 if (getQueryVariable("key")) {
     //Get reference to Generate Key button
+
+
     generateKeyBtn = document.getElementById('connectionStatus');
 
     var connectionStatusMessage= document.createElement('p');
     connectionStatusMessage.id = 'connectionStatus';
     if(getQueryVariable("key") != localStorage.getItem('key'))
     {
+      $("#sendIdThenHide").hide();
+      $("#connectionStatus").show();
         connectionStatusMessageText = document.createTextNode("Connecting..."); //Message shown to user on button
     } else {
         connectionStatusMessageText = document.createTextNode("Hey! It looks like you've sent the key to yourself, send it to a friend to share files with them.");
@@ -413,6 +418,7 @@ if (getQueryVariable("key")) {
 
 function showConnected() {
 
+    $("#sendIdThenHide").hide();
     $("#remoteFileListContainer").fadeIn();
 
     //Get reference to 'connecting' UI button

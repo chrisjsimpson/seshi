@@ -15051,7 +15051,7 @@ p {
   height: 100vh;
   padding: 50px 0;
   text-align: center;
-  background: linear-gradient(rgba(27, 171, 226, 0.9), rgba(255, 255, 255, 0.9)), url("../img/polygon.jpg") no-repeat center center;
+  background: linear-gradient(rgba(34, 167, 240, 0.9), rgba(100, 100, 100, 0.7)), url("../img/polygon.jpg") no-repeat center center;
 }
 
 #landingpage .main-header {
@@ -15105,15 +15105,14 @@ p {
   width: 202px;
   color: white;
   font-size: 28px;
-  background: #6CA354;
-  border-bottom: 3px solid #4A7131;
+  background: #2299e3;
   outline: none;
   text-transform: lowercase !important;
 }
 
 .btn-startapp:hover, .btn-startapp:focus {
-  background: #4A7131;
-  color: white;
+  background: white;
+  color: #2299e3;
   outline: none;
 }
 
@@ -15255,7 +15254,7 @@ p {
   .top-nav-collapse {
     padding: 14px;
     height: 40px;
-    background-color: rgba(22, 174, 231, 0.8);
+    background-color: rgba(34, 167, 240, 0.8);
   }
   .navbar-custom.top-nav-collapse {
     height: 95px;
@@ -15352,7 +15351,7 @@ a:hover, a:focus {
   padding: 50px 0;
   text-align: center;
   color: #fefefe;
-  background: linear-gradient(rgba(124, 211, 244, 0.7), rgba(129, 186, 226, 0.8)), url("../img/polygon.jpg") no-repeat center center;
+  background: linear-gradient(rgba(253, 227, 167, 0.7), rgba(25, 181, 254, 0.8)), url("../img/polygon.jpg") no-repeat center center;
   /* fallback for old browsers */
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -15654,6 +15653,20 @@ img::-moz-selection {
 
 #landingpage .main-header {
   padding-top: 20vh;
+}
+
+#landingpage .main-header h4 {
+  font-size: 35px;
+}
+
+#landingpage .main-header h5 {
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  #landingpage .main-header {
+    padding-top: 17vh;
+  }
 }
 
 @media (max-width: 767px) {
@@ -19950,7 +19963,7 @@ label {
   margin-bottom: 0;
   margin-top: 30px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(242, 241, 239, 0.7);
   -webkit-box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 17px 4px rgba(0, 0, 0, 0.2);
@@ -19998,11 +20011,11 @@ input[type="checkbox"]:checked + .fileitem {
   letter-spacing: 1px;
   text-shadow: 1px 1px 2px #777;
   font-weight: 700;
-  border-bottom: 3px solid rgba(14, 150, 203, 0.8) !important;
+  border-bottom: 3px solid rgba(34, 167, 240, 0.8) !important;
   border-bottom-right-radius: none !important;
   border-bottom-left-radius: none !important;
   padding: 10px 15px;
-  background-color: rgba(22, 174, 231, 0.7);
+  background-color: rgba(22, 154, 231, 0.7);
   border: 1px solid #aaa;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
@@ -20604,6 +20617,7 @@ a {
   padding-top: 20px;
   margin-top: 6px;
   margin-bottom: 6px;
+  margin-left: 15px;
   float: left;
 }
 
@@ -20632,8 +20646,8 @@ input[id="display-name"] {
   padding-right: 10px;
   padding-left: 7px;
   height: 40px;
-  width: 90%;
-  max-width: 325px;
+  width: 60%;
+  max-width: 275px;
   margin-left: 16px;
   float: left;
   transition: all .3s ease-in-out;
@@ -20671,7 +20685,7 @@ input[id="display-name"]:focus + .edit-btn {
   border-radius: 4px;
   text-align: center;
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 15px;
   width: 40%;
   z-index: 999;
   transition: width 0.3s;
@@ -20680,7 +20694,8 @@ input[id="display-name"]:focus + .edit-btn {
 
 .flashcopied {
   color: #fc3f3f !important;
-  margin: -38px;
+  margin-top: -63px;
+  margin-right: 30px;
 }
 
 .copyclipboard-card h6 {
@@ -20693,7 +20708,8 @@ input[id="display-name"]:focus + .edit-btn {
 
 /*large clipboard send link overwrite */
 .largelink {
-  width: 100%;
+  width: 22vw;
+  max-width: 200px;
   margin-left: -20px;
   height: 115px;
   border-radius: 6px;
@@ -20720,18 +20736,25 @@ input[id="display-name"]:focus + .edit-btn {
   color: #222;
 }
 
-.keycopy {
-  width: 25%;
-  float: left;
-}
-
 .btn-hide {
   display: none;
 }
 
 #hideall {
+  opacity: 1;
   position: relative;
   z-index: 1000;
+  transition: all 0.3s ease-in-out;
+}
+
+#addfilehide {
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+}
+
+.showtoggle {
+  opacity: 0 !important;
+  z-index: 1 !important;
 }
 
 .widthOpenVideo {
@@ -20749,6 +20772,7 @@ input[id="display-name"]:focus + .edit-btn {
 #connectionStatus {
   margin-top: 20vh;
   font-size: 2rem;
+  display: none;
 }
 
 @media (min-width: 1200px) {
@@ -20788,15 +20812,17 @@ input[id="display-name"]:focus + .edit-btn {
     margin-top: 30px;
     margin-bottom: 10px;
   }
+  .myfiles {
+    padding-bottom: 48px;
+  }
   .float-link {
     padding: 21px;
-    padding-left: 12px;
-    padding-right: 0;
-    font-size: 25px !important;
+    padding-left: 25px;
+    font-size: 27px !important;
   }
   .largelink {
     height: 98px;
-    margin-top: 30px;
+    margin-top: 0;
   }
   .largelink span h3 {
     padding: 38px;
@@ -20805,7 +20831,8 @@ input[id="display-name"]:focus + .edit-btn {
   }
   .flashcopied {
     font-size: 12px;
-    margin: -30px;
+    margin-top: -70px;
+    width: 100%;
   }
   #connectionStatus {
     margin-top: 8vh;
@@ -20814,6 +20841,10 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 @media (max-width: 767px) {
+  input[id="display-name"] {
+    width: 90%;
+    max-width: 340px;
+  }
   .btn-pull {
     margin-right: 18%;
   }
@@ -20851,7 +20882,7 @@ input[id="display-name"]:focus + .edit-btn {
     float: left;
     margin: 20px;
     position: relative;
-    top: 85vh;
+    top: 58vh;
     z-index: 1001;
     outline: none;
   }
@@ -20880,7 +20911,7 @@ input[id="display-name"]:focus + .edit-btn {
     float: left;
     margin: 20px;
     position: relative;
-    top: 93vh;
+    top: 63vh;
     z-index: 1000;
     outline: none;
   }
@@ -20929,14 +20960,14 @@ input[id="display-name"]:focus + .edit-btn {
   }
   .float-link {
     padding: 27px;
-    padding-left: 12px;
+    padding-left: 21px;
     padding-right: 0;
     font-size: 25px !important;
   }
   .largelink {
     height: 98px;
     width: 30vw;
-    margin-top: 30px;
+    min-width: 160px;
   }
   .largelink span h3 {
     padding: 38px;
@@ -20945,12 +20976,10 @@ input[id="display-name"]:focus + .edit-btn {
   }
   .flashcopied {
     font-size: 11px;
-    margin: -31px;
-    margin-right: -9px;
   }
   .copyclipboard-card {
     height: 99px;
-    margin-top: 0;
+    margin-top: 15px;
   }
 }
 
@@ -23515,20 +23544,21 @@ input[id="display-name"]:focus + .edit-btn {
 }
 
 .uploadbox-connect {
+  position: relative;
   padding: none;
-  height: 227px;
+  min-height: 227px;
+  width: 50%;
+  min-width: 600px;
   margin: 5px auto;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(242, 241, 239, 0.7);
   -webkit-box-shadow: 1px 1px 14px 4px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 14px 4px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 14px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
 @media (max-width: 991px) {
-  .btn-upload {
-    width: 125px;
-  }
   .btn-upload .addicon {
     width: 50px;
   }
@@ -23540,13 +23570,13 @@ input[id="display-name"]:focus + .edit-btn {
     line-height: 84px;
     height: 101px;
     margin: 29px 0;
-    margin-left: 10px;
-    float: left;
   }
   .btn-upload .addicon {
     width: 40px;
   }
   .uploadbox-connect {
+    width: 100%;
+    min-width: 300px;
     height: 253px;
   }
 }
@@ -23856,7 +23886,7 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 .plyr audio {
   width: 100%;
   min-height: 95vh;
-  margin-top: -1vh;
+  margin-top: -35vh;
   vertical-align: middle;
 }
 
@@ -25146,48 +25176,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.77s;
-  animation-duration: 1.18s;
+  animation-delay: 0.06s;
+  animation-duration: 1.44s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: -0.02s;
-  animation-duration: 1.56s;
+  animation-delay: 0.36s;
+  animation-duration: 1.26s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.32s;
-  animation-duration: 1.32s;
+  animation-delay: -0.07s;
+  animation-duration: 1.39s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.71s;
-  animation-duration: 0.72s;
+  animation-delay: 0.2s;
+  animation-duration: 1.24s;
 }
 
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.19s;
-  animation-duration: 1.08s;
+  animation-delay: 0.47s;
+  animation-duration: 1.18s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.56s;
-  animation-duration: 0.72s;
+  animation-delay: 0.34s;
+  animation-duration: 0.81s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.62s;
-  animation-duration: 1.56s;
+  animation-delay: 0.01s;
+  animation-duration: 1.44s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.44s;
-  animation-duration: 1.6s;
+  animation-delay: 0.54s;
+  animation-duration: 0.82s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.7s;
-  animation-duration: 1.49s;
+  animation-delay: 0.41s;
+  animation-duration: 0.74s;
 }
 
 .ball-grid-beat > div {
@@ -25223,48 +25253,48 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.05s;
-  animation-duration: 0.87s;
+  animation-delay: 0.13s;
+  animation-duration: 0.78s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.51s;
-  animation-duration: 1.05s;
+  animation-delay: 0.78s;
+  animation-duration: 1.38s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.57s;
-  animation-duration: 1.45s;
+  animation-delay: 0.5s;
+  animation-duration: 1.08s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: -0.04s;
-  animation-duration: 0.73s;
+  animation-delay: 0.79s;
+  animation-duration: 0.64s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.34s;
-  animation-duration: 1.27s;
+  animation-delay: 0.8s;
+  animation-duration: 1.15s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.57s;
-  animation-duration: 1.33s;
+  animation-delay: 0s;
+  animation-duration: 0.71s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0.03s;
-  animation-duration: 1.29s;
+  animation-delay: 0.67s;
+  animation-duration: 0.89s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.59s;
-  animation-duration: 1.19s;
+  animation-delay: 0.54s;
+  animation-duration: 1.04s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.52s;
-  animation-duration: 0.68s;
+  animation-delay: -0.17s;
+  animation-duration: 1.19s;
 }
 
 .ball-grid-pulse > div {
@@ -25602,23 +25632,23 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.63s;
-  animation-duration: 1.13s;
+  animation-delay: 0.19s;
+  animation-duration: 0.82s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.8s;
-  animation-duration: 0.86s;
+  animation-delay: 0.42s;
+  animation-duration: 0.52s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.08s;
-  animation-duration: 0.57s;
+  animation-delay: 0.47s;
+  animation-duration: 0.71s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.78s;
-  animation-duration: 1.16s;
+  animation-delay: 0.09s;
+  animation-duration: 0.5s;
 }
 
 .line-scale-party > div {

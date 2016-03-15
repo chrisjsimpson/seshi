@@ -44,8 +44,8 @@ p {
   padding: 50px 0;
   text-align: center;
   background: linear-gradient(
-    rgba(27,171,226, 0.9),
-    rgba(255, 255, 255, 0.9)
+    rgba(34, 167, 240, 0.9),
+    rgba(100, 100, 100, 0.7)
   ), url('../img/polygon.jpg')  no-repeat center center;
 
   .main-header {
@@ -100,13 +100,12 @@ height: 60px;
 width: 202px;
 color: white;
 font-size: 28px;
-background: #6CA354;
-border-bottom: 3px solid #4A7131;
+background: #2299e3;
 outline:none;
 text-transform: lowercase !important;
  &:hover, &:focus {
-   background: #4A7131;
-   color: white;
+   background: white;
+   color: #2299e3;
    outline:none;
 
  }
@@ -284,7 +283,7 @@ padding-right: 15px;
   .top-nav-collapse {
     padding: 14px;
     height: 40px;
-    background-color: rgba(22,174,231, 0.8);
+    background-color: rgba(34, 167, 240, 0.8);
   }
 
   .navbar-custom.top-nav-collapse {
@@ -410,8 +409,8 @@ a {
   text-align: center;
   color: $grayscale-light;
   background: linear-gradient(
-    rgba(124, 211, 244, 0.7),
-  rgba(129, 186, 226, 0.8)
+    rgba(253, 227, 167, 0.7),
+  rgba(25, 181, 254, 0.8)
   ), url('../img/polygon.jpg')  no-repeat center center; /* fallback for old browsers */
   // background: -webkit-linear-gradient(to bottom, #4b6cb7 , #182848); /* Chrome 10-25, Safari 5.1-6 */
   // background: linear-gradient(to bottom, #4b6cb7 , #182848); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -721,10 +720,23 @@ img {
 
 
 }
-
 #landingpage .main-header {
     padding-top: 20vh;
+    h4 {
+      font-size: 35px;
+    }
+    h5 {
+      color:#fff;
+    }
 }
+
+@media(max-width: 480px) {
+  #landingpage .main-header {
+      padding-top: 17vh;
+  }
+}
+
+
 
 @media (max-width: 767px) {
 .seshi-container {

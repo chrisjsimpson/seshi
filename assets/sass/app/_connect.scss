@@ -93,7 +93,7 @@ label {
   margin-bottom: 0;
   margin-top: 30px;
   border-radius: 6px;
-  background: rgba(255,255,255,0.7);
+  background: rgba(242, 241, 239, 0.7);
   -webkit-box-shadow: 1px 1px 17px 4px rgba(0,0,0,0.2);
   -moz-box-shadow: 1px 1px 17px 4px rgba(0,0,0,0.2);
   box-shadow: 1px 1px 17px 4px rgba(0,0,0,0.2);
@@ -144,11 +144,11 @@ input[type="checkbox"]:checked + .fileitem{
   letter-spacing: 1px;
   text-shadow: 1px 1px 2px #777;
   font-weight: 700;
-  border-bottom: 3px solid rgba(14, 150, 203, 0.8) !important;
+  border-bottom: 3px solid rgba(34, 167, 240, 0.8) !important;
   border-bottom-right-radius: none !important;
   border-bottom-left-radius: none !important;
   padding: 10px 15px;
-  background-color: rgba(22,174,231, 0.7);
+  background-color: rgba(22,154,231, 0.7);
   border: 1px solid #aaa;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
@@ -753,6 +753,7 @@ font-size: 21px;
 padding-top: 20px;
 margin-top: 6px;
 margin-bottom: 6px;
+margin-left: 15px;
 float: left;
   .label-display {
     float:left;
@@ -780,8 +781,8 @@ input[id="display-name"] {
   padding-right: 10px;
   padding-left: 7px;
   height:40px;
-  width: 90%;
-  max-width: 325px;
+  width: 60%;
+  max-width: 275px;
   margin-left: 16px;
   float:left;
   transition: all .3s ease-in-out;
@@ -820,7 +821,7 @@ input[id="display-name"]:focus + .edit-btn {
   border-radius: 4px;
   text-align: center;
 margin: 0 auto;
-margin-top: 20px;
+margin-top: 15px;
 width: 40%;
 // float:right;
 z-index: 999;
@@ -830,7 +831,8 @@ display:none;
 
 .flashcopied {
   color: #fc3f3f !important;
-    margin: -38px;
+  margin-top: -63px;
+margin-right: 30px;
 }
 
 .copyclipboard-card h6 {
@@ -844,7 +846,8 @@ display:none;
 /*large clipboard send link overwrite */
 
 .largelink {
-  width: 100%;
+  width: 22vw;
+  max-width: 200px;
   // margin: 10px;
   margin-left: -20px;
   height: 115px;
@@ -877,18 +880,28 @@ padding-right: 5px;
 }
 
 
-.keycopy {
-  width: 25%;
-  float: left;
-}
 .btn-hide {
   display: none;
 }
 
 
+
+
 #hideall {
+  opacity:1;
   position: relative;
   z-index: 1000;
+  transition: all 0.3s ease-in-out;
+}
+
+#addfilehide {
+  opacity:1;
+  transition: all 0.3s ease-in-out;
+}
+
+.showtoggle {
+  opacity:0 !important;
+  z-index: 1 !important;
 }
 .widthOpenVideo {
   width: 100%;
@@ -907,6 +920,7 @@ padding-right: 5px;
 #connectionStatus {
   margin-top: 20vh;
   font-size: 2rem;
+  display:none;
 }
 
 @media (min-width: 1200px) {
@@ -946,16 +960,19 @@ padding-right: 5px;
     margin-top: 30px;
   margin-bottom: 10px;
   }
+
+  .myfiles {
+    padding-bottom: 48px;
+  }
   .float-link {
     padding: 21px;
-    padding-left:12px;
-    padding-right: 0;
-    font-size: 25px !important;
+  padding-left: 25px;
+    font-size: 27px !important;
   }
 
   .largelink {
     height: 98px;
-    margin-top: 30px;
+    margin-top: 0;
     span h3 {
     padding: 38px;
     text-indent: 3px;
@@ -964,7 +981,8 @@ padding-right: 5px;
   }
   .flashcopied {
     font-size: 12px;
-    margin: -30px;
+    margin-top: -70px;
+width: 100%;
   }
   #connectionStatus {
     margin-top: 8vh;
@@ -972,6 +990,10 @@ padding-right: 5px;
   }
 }
 @media (max-width: 767px) {
+  input[id="display-name"] {
+    width:90%;
+    max-width:340px;
+  }
   .btn-pull {
     margin-right: 18%;
   }
@@ -1015,7 +1037,7 @@ padding-right: 5px;
     float: left;
     margin: 20px;
     position: relative;
-    top: 85vh;
+    top: 58vh;
     z-index: 1001;
     outline: none;
   }
@@ -1044,7 +1066,7 @@ padding-right: 5px;
     float: left;
     margin: 20px;
     position: relative;
-    top: 93vh;
+    top: 63vh;
     z-index: 1000;
     outline: none;
   }
@@ -1095,7 +1117,7 @@ padding-right: 5px;
 
   .float-link {
     padding: 27px;
-    padding-left: 12px;
+    padding-left: 21px;
     padding-right: 0;
     font-size: 25px !important;
   }
@@ -1103,7 +1125,7 @@ padding-right: 5px;
   .largelink {
     height: 98px;
     width:30vw;
-    margin-top: 30px;
+    min-width:160px;
     span h3 {
     padding: 38px;
     text-indent: 3px;
@@ -1112,12 +1134,11 @@ padding-right: 5px;
   }
   .flashcopied {
     font-size: 11px;
-    margin: -31px;
-    margin-right: -9px;
+
   }
   .copyclipboard-card {
     height:99px;
-    margin-top:0;
+    margin-top: 15px;
   }
 }
 

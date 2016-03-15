@@ -89,9 +89,6 @@
                 <ul class="nav navbar-nav">
                     <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                     <li>
-                        <a class="page-scroll" href="#addfiles">Add Files</a>
-                    </li>
-                    <li>
                         <a class="page-scroll" href="#fileexchange">file exchange</a>
                     </li>
                     <li>
@@ -136,94 +133,60 @@
         </div>
     </div>
     </section>
-    <header class="intro" id="addfiles">
+    <header class="intro" id="fileexchange">
         <div class="intro-body">
 
-            <div class="seshi-container">
+            <div class="seshi-container" id="addfilehide">
 
                     <div class="file-header" >
                             <h2>File Exchange </h2>
                             <!-- <h3> <span>Send key </span>to a friend to start file exchange</h3> -->
-                            <div id="fileBoxes">
-                                <div class="col-sm-12">
-                                    <div class="displayname">
-                                        <span class="label-display">Display name: </span>
-                                        <span class="display-input">
-                                            <input type="text" id="display-name">
-                                            <!-- <span class="edit-btn"><i class="fa fa-pencil"></i></span> -->
-                                        </span>
-                                    </div>
 
-
-                                    <!-- <button class="btn btn-default" id="refreshList">Refresh List</button> -->
-
-                                </div>
-                            </div>
                             <div class="uploadbox-connect">
-                                 <div class="col-sm-3">
+                                <div class="">
+                                    <div class="row">
+                                        <div class="displayname">
+                                            <span class="label-display">Display name: </span>
+                                            <span class="display-input">
+                                                <input type="text" id="display-name">
+                                                <!-- <span class="edit-btn"><i class="fa fa-pencil"></i></span> -->
+                                            </span>
+                                        </div>
+
+
+                                        <!-- <button class="btn btn-default" id="refreshList">Refresh List</button> -->
+                                </div>
+                                <div class="row">
                                      <span class=" fileUpload btn btn-upload" >
                                          <input type="file" id="fileUpload" class="upload" onchange="storeFile(this.files)" multiple/>
                                          <span>
                                              <img class="addicon"src="img/addfile.png">
-                                         </span><span class="hidden-sm addtext"> Add Files</span>
+                                         </span><span class="addtext"> Add Files</span>
                                          <!-- <div class=" hidden-xs dragfile">
                                              or drag files to upload
                                          </div> -->
                                      </span>
-                                 </div>
+                             </div>
                              <div class="col-sm-9">
-                                 <div class="keycopy ">
-                                     <div id="copyclipboard" class="icon-link clipboard fill largelink">
-                                         <i class="fa fa-link float-link"></i>
-                                         <span class=""><h3 class="copied">Send</h3></span></div>
-                                         <h6 class="flashcopied"></h6>
-                                 </div>
-                                 <div class="copyclipboard-card col-75 col-80">
 
-
-
-                                     <div class=" message-app-card" >
-                                         <h6><a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Once a friend/recipient clicks the link, you and your friend will be connected">
-                                             <i class="fa fa-question-circle"></i></a> Send the link to a friend </h6>
-                                         <div class="keycontainer">
-                                         <div class="col-xs-3 col-sm-4">
-                                             <a target="_blank" href="https://twitter.com/messages" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
-                                         </div>
-
-                                         <div class="col-xs-3 col-sm-4">
-                                             <a target="_blank" href="https://facebook.com/messages" class="icon-link round-corner facebook fill"><i class="fa fa-facebook"></i></a>
-                                         </div>
-
-                                         <div class="col-xs-3 col-sm-4">
-                                             <a href="#" class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
-                                         </div>
-
-                                         <!-- <div class="col-xs-3 col-sm-4">
-                                             <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
-                                         </div> -->
-                                             <div class="col-xs-3 visible-xs">
-                                                 <a class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
-                                             </div>
-                                         </div>
-                                         </div>
-                                 </div>
 
                              </div>
                          </div>
+                     </div>
 
                     </div>
 
 
             </div>
     <div class="seshi-container" id="hideall"> <!--hide wrapper -->
-            <div class="row myfiles" id="fileexchange">
+            <div class="row myfiles" >
 
-                <div class="row">
+                <!-- <div class="row">
                     <div class="container" id="shareButtonsRow">
 
                     </div>
 
-                </div>
+                </div> -->
                 <!-- <div class="hidden-sm hidden-xs demo-droppable">
                   <p>Drag and drop files here</p>
                 </div> -->
@@ -235,7 +198,7 @@
                     <div class="myfilelist fixed-header-wrapper">
                     <div class="row header-title fixed-header-file" id="header-localFileList">
                         <input id="checkAll-localFileList" class="col-xs-1 col-sm-1 checkall" type="checkbox">
-                        <div class="col-xs-10 col-sm-10 table-border file-title-center">My Files</div>
+                        <div class="col-xs-9 col-sm-10 table-border file-title-center">My Files</div>
                         <!-- <div class="col-xs-3 col-sm-2 ">Type</div> -->
                         <!-- <div class="col-xs-2 col-sm-2"></div> -->
                         <div class="col-xs-1 col-sm-1 dropdown">
@@ -342,8 +305,46 @@
             </div> <!-- col-md-5 -->
             </div> <!-- hide until connect -->
 
-            <div class=" col-md-7 temp-message">
+            <div class=" col-md-7 temp-message" >
                 <p id="connectionStatus">share link to see friend's list of files</p>
+
+                <div id="sendIdThenHide">
+                    <span id="copyclipboard" class="icon-link clipboard fill largelink">
+                            <i class="fa fa-link float-link"></i>
+                            <span class=""><h3 class="copied">Send</h3></span>
+
+                        <h6 class="flashcopied"></h6>
+                    </span>
+                <div class="copyclipboard-card col-75 col-80">
+
+
+
+                    <div class=" message-app-card" >
+                        <h6><a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Once a friend/recipient clicks the link, you and your friend will be connected">
+                            <i class="fa fa-question-circle"></i></a> Send the link to a friend </h6>
+                        <div class="keycontainer">
+                        <div class="col-xs-3 col-sm-4">
+                            <a target="_blank" href="https://twitter.com/messages" class="icon-link round-corner twitter fill"><i class="fa fa-twitter"></i></a>
+                        </div>
+
+                        <div class="col-xs-3 col-sm-4">
+                            <a target="_blank" href="https://facebook.com/messages" class="icon-link round-corner facebook fill"><i class="fa fa-facebook"></i></a>
+                        </div>
+
+                        <div class="col-xs-3 col-sm-4">
+                            <a href="#" class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
+                        </div>
+
+                        <!-- <div class="col-xs-3 col-sm-4">
+                            <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
+                        </div> -->
+                            <div class="col-xs-3 visible-xs">
+                                <a class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+            </div>
             </div>
         </div> <!--myfiles-->
 

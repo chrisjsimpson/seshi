@@ -359,6 +359,11 @@ box-shadow: 0px 0px 15px 0px #444;
 //   display: none;
 // }
 
+.btn-group > .dropdown-toggle:not(:first-child) {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
 
 @include keyframes(bounce) {
 	0%, 20%, 50%, 80%, 100% {

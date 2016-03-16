@@ -467,7 +467,7 @@ function newChatMessageReceived() {
     var m = $("#message");
     m.fadeIn();
     var chatToggle = document.getElementsByClassName('btn-chat-toggle');
-    chatToggle.click(function() {
+    chatToggle.on('click', function() {
       m.fadeOut();
     });
 

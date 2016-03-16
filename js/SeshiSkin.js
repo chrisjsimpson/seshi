@@ -269,10 +269,13 @@ function play(event) {
                                   });
                           $("#hideall").css({'position':'absolute',
                                               'margin': '0 auto'});
-                          // $("#hideall").addClass('widthOpenVideo');
                           $("#addfilehide").hide();
                           $("#hideall").hide();
-                            $('.btn-hide').show();
+
+                          $("#hideall").addClass('widthOpenVideo');
+                          $("#addfilehide").addClass('showtoggle');
+                          $("#hideall").addClass('showtoggle');
+                          $('.btn-hide').show();
                         } else if ($(window).width() < 992 && $(window).width() > 768 ) {
                           $('.plyr').css({
                               'position': 'fixed',
@@ -544,14 +547,14 @@ function updateFileListDisplay(fileListObj, targetElm) {
                 //Only show play button if file is playable
                 if(Seshi.isPlayable(mimeType, fileName))
                 {
-                    list += '<div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a><a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync" class="fa fa-exchange"></i></a></div>';
+                    list += '<div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
                 }else {
                     list += '<div class="col-xs-1 "></div>';
                 }//End only show play button if file is playable
             //Download button
             list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         }//End if targetElm != 'remoteFileList'
-
+// <a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync" class="fa fa-exchange"></i></a>
         //Close </li>
         list += '</li>';
     }//End loop through each local file list (cached) and build list items

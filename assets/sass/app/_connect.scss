@@ -318,6 +318,10 @@ a {
   cursor: pointer;
 }
 
+.file-item .fa-arrow-down {
+  padding:5px;
+}
+
 .file-item .fa-arrow-down:hover, .file-item .fa-trash:hover, .file-item .fa-times:hover {
   color: #555;
   background: #aaa;
@@ -773,9 +777,9 @@ float: left;
 
 input[id="display-name"] {
   border-width: 0;
-  border-bottom: 1px solid #ccc;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #bbb;
+  color: #999;
+  background: rgba(245, 245, 245, 0.7);
   padding-top:3px;
   padding-bottom: 2px;
   padding-right: 10px;
@@ -783,8 +787,6 @@ input[id="display-name"] {
   height:40px;
   width: 60%;
   max-width: 275px;
-  margin-left: 16px;
-  float:left;
   transition: all .3s ease-in-out;
 }
 
@@ -885,9 +887,23 @@ padding-right: 5px;
 }
 
 
+
+
 #hideall {
+  opacity:1;
   position: relative;
   z-index: 1000;
+  transition: all 0.3s ease-in-out;
+}
+
+#addfilehide {
+  opacity:1;
+  transition: all 0.3s ease-in-out;
+}
+
+.showtoggle {
+  opacity:0 !important;
+  z-index: 1 !important;
 }
 .widthOpenVideo {
   width: 100%;
@@ -977,8 +993,9 @@ width: 100%;
 }
 @media (max-width: 767px) {
   input[id="display-name"] {
-    width:90%;
-    max-width:340px;
+    width:70%;
+    max-width:300px;
+    margin-left: -20px;
   }
   .btn-pull {
     margin-right: 18%;

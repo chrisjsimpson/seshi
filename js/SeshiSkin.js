@@ -468,7 +468,7 @@ function newChatMessageReceived() {
     m.fadeIn();
     $(".btn-chat-toggle").addEventListener('click', function() {
       m.fadeOut();
-    }
+    });
 
 
 } //End newChatMessageReceived()

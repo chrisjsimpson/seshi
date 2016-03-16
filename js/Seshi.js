@@ -32,6 +32,10 @@ Seshi = {
                         gotRemoteFileList = new Event('gotRemoteFileList');
                         gotRemoteFileList.initEvent('gotRemoteFileList', true, true);
 
+                        //Fired when a new chat message is recived
+                        onNewChatMessage = new Event('onNewChatMessage');
+                        onNewChatMessage.initEvent('onNewChatMessage', true, true);
+
                         //Fired when the storage worker reports it has stored from more chunks of a file(s)
                         storeFilesProgressUpdate = new Event('storeFilesProgressUpdate');
                         storeFilesProgressUpdate.initEvent('storeFilesProgressUpdate', true, true);
@@ -1306,6 +1310,9 @@ function setupDataHandlers() {
                 '</li>';
             cb.insertAdjacentHTML('beforeend', remoteChatMsg);
             cb.scrollTop = cb.scrollHeight; msg = msg.chat;
+            //Dispatch event to UI informing it about the new chat message
+            dispatchEvent(onNewChatMessage);
+
             } else if (msg.storeData) {
                 console.log("Received data store message.");
                 //console.log(blobURL);

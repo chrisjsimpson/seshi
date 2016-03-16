@@ -62,6 +62,9 @@ window.addEventListener('onPeerConnectionBroken', peerConnectionBroken, false);
 //Event: Recieved file listing of connected peer
 window.addEventListener('gotRemoteFileList', function(){updateFileListDisplay(Seshi.remoteFileList, 'remoteFileList');}, false);
 
+//Event: Chat message received:
+window.addEventListener('onNewChatMessage', newChatMessageReceived, false);
+
 //Event: Storage worker has stored more chunks of a file(s)
 window.addEventListener('storeFilesProgressUpdate', updateStoreProgressDisplay, false);
 
@@ -267,7 +270,7 @@ function play(event) {
                           $("#hideall").css({'position':'absolute',
                                               'margin': '0 auto'});
                           // $("#hideall").addClass('widthOpenVideo');
-                          $("#addfilehide".hide();
+                          $("#addfilehide").hide();
                           $("#hideall").hide();
                             $('.btn-hide').show();
                         } else if ($(window).width() < 992 && $(window).width() > 768 ) {
@@ -450,7 +453,16 @@ function showConnected() {
 }//End showConnected
 
 
+function newChatMessageReceived() {
+    /* newChatMessageReceived gets called after the 
+     * onNewChatMessage event is dispatched. We listen
+     * for that event to fire, and when it does, this
+     * function gets called.
+     */
 
+    console.log('newChatMessageReceived() called.');
+
+} //End newChatMessageReceived()
 
 
 function getFileTypeIcon(mimeType) {

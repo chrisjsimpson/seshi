@@ -463,9 +463,10 @@ function newChatMessageReceived() {
      * function gets called.
      */
     console.log('newChatMessageReceived() called.');
-    function showMessage() {
+
     var m = $("#message");
     m.addClass("is-visible");
+    
     setTimeout(function() {
      m.removeClass("is-visible");
      m.addClass("is-hidden");
@@ -473,8 +474,7 @@ function newChatMessageReceived() {
        m.addClass("is-removed");
      }, 4000);
     }, 6000);
-    }
-    window.showMessage();
+
 
 } //End newChatMessageReceived()
 
@@ -846,4 +846,3 @@ localCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-local
 
 var remoteCheckAll = document.getElementById('checkAll-remoteFileList');
 remoteCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-remoteFileList');}, false);
-

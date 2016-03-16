@@ -836,10 +836,3 @@ localCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-local
 var remoteCheckAll = document.getElementById('checkAll-remoteFileList');
 remoteCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-remoteFileList');}, false);
 
-//Event: (Play in sync button pressed)
-window.setTimeout(function() {
-        var playInSyncBtn = document.getElementById('playInSync');
-playInSyncBtn.addEventListener("click", function() {
-      trace("Play in sync btn was pressed.");
-      dispatchEvent(SeshiSkinPlay);
-    }, false);}, 4000);

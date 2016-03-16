@@ -8,6 +8,9 @@ Seshi = {
                         console.log(welcomeMsg);
                         return welcomeMsg;
                     })(),
+    config:{
+        "SeshiBotOn":false
+    },
     init:function(){
                         /* Initialise Seshi
                          *
@@ -312,7 +315,10 @@ Seshi = {
         msgRemoteFileList = JSON.stringify({'chat':'Sucesfully recived your list of files, ta!\nSending mine now..',
                                             'remoteDisplayName':'SeshiBOT'
                                             });
-        dc.send(msgRemoteFileList);
+        if (Seshi.config.SeshiBotOn)
+            {
+                dc.send(msgRemoteFileList);
+            }//End send Seshi Bot message about file list if SeshiBotIs On
         if (!remoteFileList.reply)
         {
             console.log("Replying back to peer with own local file listing...");

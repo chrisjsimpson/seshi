@@ -332,7 +332,7 @@ box-shadow: 0px 0px 15px 0px #444;
   -moz-transition: all 1s ease-out;
   -o-transition: all 1s ease-out;
   transition: all 1s ease-out;
-  opacity:0;
+  display:none;
   color: white;
   &:after {
     bottom: 100%;
@@ -348,15 +348,16 @@ box-shadow: 0px 0px 15px 0px #444;
     margin-left: -10px;
   }
 }
-.is-visible {
-  opacity:1 !important;
-}
-.is-hidden {
-  opacity: 0;
-}
-.is-removed {
-  display: none;
-}
+// .is-visible {
+//   opacity:1 !important;
+//   display:block;
+// }
+// .is-hidden {
+//   opacity: 0;
+// }
+// .is-removed {
+//   display: none;
+// }
 
 
 @include keyframes(bounce) {

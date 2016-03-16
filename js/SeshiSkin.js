@@ -465,15 +465,10 @@ function newChatMessageReceived() {
     console.log('newChatMessageReceived() called.');
 
     var m = $("#message");
-    m.addClass("is-visible");
-    
-    setTimeout(function() {
-     m.removeClass("is-visible");
-     m.addClass("is-hidden");
-     setTimeout(function() {
-       m.addClass("is-removed");
-     }, 4000);
-    }, 6000);
+    m.fadeIn();
+    $(".btn-chat-toggle").addEventListener('click', function() {
+      m.fadeOut();
+    }
 
 
 } //End newChatMessageReceived()

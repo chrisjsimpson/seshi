@@ -773,9 +773,9 @@ float: left;
 
 input[id="display-name"] {
   border-width: 0;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 2px solid #bbb;
   color: #fff;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(245, 245, 245, 0.7);
   padding-top:3px;
   padding-bottom: 2px;
   padding-right: 10px;
@@ -784,7 +784,6 @@ input[id="display-name"] {
   width: 60%;
   max-width: 275px;
   margin-left: 16px;
-  float:left;
   transition: all .3s ease-in-out;
 }
 
@@ -991,8 +990,9 @@ width: 100%;
 }
 @media (max-width: 767px) {
   input[id="display-name"] {
-    width:90%;
-    max-width:340px;
+    width:70%;
+    max-width:300px;
+    margin-left: -20px;
   }
   .btn-pull {
     margin-right: 18%;

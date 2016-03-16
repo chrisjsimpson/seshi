@@ -20642,7 +20642,7 @@ a {
 input[id="display-name"] {
   border-width: 0;
   border-bottom: 2px solid #bbb;
-  color: #fff;
+  color: #999;
   background: rgba(245, 245, 245, 0.7);
   padding-top: 3px;
   padding-bottom: 2px;
@@ -25184,48 +25184,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.34s;
-  animation-duration: 1.2s;
+  animation-delay: -0.16s;
+  animation-duration: 1s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.06s;
-  animation-duration: 0.92s;
+  animation-delay: 0s;
+  animation-duration: 1.53s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.2s;
-  animation-duration: 1.09s;
+  animation-delay: -0.09s;
+  animation-duration: 1.12s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.13s;
-  animation-duration: 1.24s;
-}
-
-.ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.46s;
-  animation-duration: 1.43s;
-}
-
-.ball-grid-beat > div:nth-child(6) {
-  animation-delay: -0.17s;
-  animation-duration: 0.62s;
-}
-
-.ball-grid-beat > div:nth-child(7) {
-  animation-delay: -0.03s;
+  animation-delay: 0.08s;
   animation-duration: 1.59s;
 }
 
-.ball-grid-beat > div:nth-child(8) {
+.ball-grid-beat > div:nth-child(5) {
+  animation-delay: 0.27s;
+  animation-duration: 1.38s;
+}
+
+.ball-grid-beat > div:nth-child(6) {
+  animation-delay: 0.6s;
+  animation-duration: 0.73s;
+}
+
+.ball-grid-beat > div:nth-child(7) {
   animation-delay: 0.65s;
-  animation-duration: 0.91s;
+  animation-duration: 1.51s;
+}
+
+.ball-grid-beat > div:nth-child(8) {
+  animation-delay: 0.31s;
+  animation-duration: 1.05s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.44s;
-  animation-duration: 1.11s;
+  animation-delay: 0.8s;
+  animation-duration: 1.45s;
 }
 
 .ball-grid-beat > div {
@@ -25261,48 +25261,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.01s;
-  animation-duration: 0.94s;
+  animation-delay: 0.46s;
+  animation-duration: 1.45s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.32s;
-  animation-duration: 1.29s;
+  animation-delay: -0.13s;
+  animation-duration: 1.35s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.54s;
-  animation-duration: 1.52s;
+  animation-delay: 0.29s;
+  animation-duration: 1.16s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.53s;
-  animation-duration: 0.68s;
+  animation-delay: 0.12s;
+  animation-duration: 1.36s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.16s;
-  animation-duration: 0.67s;
+  animation-delay: -0.03s;
+  animation-duration: 1.47s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.29s;
-  animation-duration: 1.49s;
+  animation-delay: 0.22s;
+  animation-duration: 1.51s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0.22s;
-  animation-duration: 1.57s;
+  animation-delay: 0.67s;
+  animation-duration: 0.92s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.61s;
-  animation-duration: 0.72s;
+  animation-delay: -0.03s;
+  animation-duration: 1.36s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.38s;
-  animation-duration: 1.57s;
+  animation-delay: 0.18s;
+  animation-duration: 0.9s;
 }
 
 .ball-grid-pulse > div {
@@ -25640,23 +25640,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.39s;
-  animation-duration: 1.25s;
+  animation-delay: 0.24s;
+  animation-duration: 0.91s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: -0.16s;
-  animation-duration: 0.54s;
+  animation-delay: 0.66s;
+  animation-duration: 0.53s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.3s;
-  animation-duration: 1.17s;
+  animation-delay: 0.69s;
+  animation-duration: 1.05s;
 }
 
 .line-scale-party > div:nth-child(4) {
   animation-delay: 0.7s;
-  animation-duration: 1.21s;
+  animation-duration: 0.56s;
 }
 
 .line-scale-party > div {

@@ -318,6 +318,10 @@ a {
   cursor: pointer;
 }
 
+.file-item .fa-arrow-down {
+  padding:5px;
+}
+
 .file-item .fa-arrow-down:hover, .file-item .fa-trash:hover, .file-item .fa-times:hover {
   color: #555;
   background: #aaa;
@@ -774,7 +778,7 @@ float: left;
 input[id="display-name"] {
   border-width: 0;
   border-bottom: 2px solid #bbb;
-  color: #fff;
+  color: #999;
   background: rgba(245, 245, 245, 0.7);
   padding-top:3px;
   padding-bottom: 2px;

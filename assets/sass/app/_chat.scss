@@ -313,6 +313,74 @@ box-shadow: 0px 0px 15px 0px #444;
   }
 }
 
+
+
+/* visual styling */
+#message {
+  position:absolute;
+  top:15px;
+  margin: 0 auto;
+  right: 0;
+  width: 125px;
+  padding: 10px;
+  background-color: rgba(108, 163, 84, 0.8);
+  margin-top: 20px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+  display:none;
+  color: white;
+  &:after {
+    bottom: 100%;
+    left: 52%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-bottom-color:rgba(108, 163, 84, 0.8);
+    border-width: 6px;
+    margin-left: -10px;
+  }
+}
+// .is-visible {
+//   opacity:1 !important;
+//   display:block;
+// }
+// .is-hidden {
+//   opacity: 0;
+// }
+// .is-removed {
+//   display: none;
+// }
+
+.btn-group > .dropdown-toggle:not(:first-child) {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+
+@include keyframes(bounce) {
+	0%, 20%, 50%, 80%, 100% {
+    @include transform(translateY(20px));
+  }
+	40% {
+    @include transform(translateY(40px));
+  }
+	60% {
+    @include transform(translateY(15px));
+  }
+}
+
+.bouncemessage {
+  @include animation(bounce 2s infinite);
+}
+
 @media(min-width: $screen-xs-min) {
   #chatup {
       left: -161px;

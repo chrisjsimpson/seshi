@@ -62,6 +62,9 @@ window.addEventListener('onPeerConnectionBroken', peerConnectionBroken, false);
 //Event: Recieved file listing of connected peer
 window.addEventListener('gotRemoteFileList', function(){updateFileListDisplay(Seshi.remoteFileList, 'remoteFileList');}, false);
 
+//Event: Chat message received:
+window.addEventListener('onNewChatMessage', newChatMessageReceived, false);
+
 //Event: Storage worker has stored more chunks of a file(s)
 window.addEventListener('storeFilesProgressUpdate', updateStoreProgressDisplay, false);
 
@@ -118,14 +121,14 @@ function peerConnectionBroken() {
     /* Called by event listener when sendFileProgressUpdate event is fired
      *  Used to display a break in Datachannel connection.
      * */
-    alert("Doh we broke the internet!");
+    alert("Peer has disconnected");
     alert("Hold on, we'll try and reconnect");
 
-    $("#hideuntilconnected").fadeOut();
-    $(".temp-message p").show();
-
-    var connectionStateBox = document.getElementById('connectionStatus');
-    connectionStateBox.innerText = 'Atempting Reconnect...';
+    $("#remoteFileListContainer").fadeOut();
+    $("#sendIdThenHide").show();
+    $("connectionStatus").hide();
+    // var connectionStateBox = document.getElementById('connectionStatus');
+    // connectionStateBox.innerText = 'Atempting Reconnect...';
     connect();
 
     //Disable Send / Recieve buttons:
@@ -266,10 +269,13 @@ function play(event) {
                                   });
                           $("#hideall").css({'position':'absolute',
                                               'margin': '0 auto'});
+                          $("#addfilehide").hide();
+                          $("#hideall").hide();
+
                           $("#hideall").addClass('widthOpenVideo');
                           $("#addfilehide").addClass('showtoggle');
                           $("#hideall").addClass('showtoggle');
-                            $('.btn-hide').show();
+                          $('.btn-hide').show();
                         } else if ($(window).width() < 992 && $(window).width() > 768 ) {
                           $('.plyr').css({
                               'position': 'fixed',
@@ -450,7 +456,21 @@ function showConnected() {
 }//End showConnected
 
 
+function newChatMessageReceived() {
+    /* newChatMessageReceived gets called after the
+     * onNewChatMessage event is dispatched. We listen
+     * for that event to fire, and when it does, this
+     * function gets called.
+     */
+    console.log('newChatMessageReceived() called.');
 
+  $("#message").fadeIn();
+    $(".btn-chat-toggle").on('click', function() {
+      $("#message").fadeOut();
+    });
+
+
+} //End newChatMessageReceived()
 
 
 function getFileTypeIcon(mimeType) {
@@ -532,14 +552,14 @@ function updateFileListDisplay(fileListObj, targetElm) {
                 //Only show play button if file is playable
                 if(Seshi.isPlayable(mimeType, fileName))
                 {
-                    list += '<div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a><a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync" class="fa fa-exchange"></i></a></div>';
+                    list += '<div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
                 }else {
                     list += '<div class="col-xs-1 "></div>';
                 }//End only show play button if file is playable
             //Download button
             list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         }//End if targetElm != 'remoteFileList'
-
+// <a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync" class="fa fa-exchange"></i></a>
         //Close </li>
         list += '</li>';
     }//End loop through each local file list (cached) and build list items
@@ -820,11 +840,3 @@ localCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-local
 
 var remoteCheckAll = document.getElementById('checkAll-remoteFileList');
 remoteCheckAll.addEventListener('click', function(){ tickAllFiles('checkAll-remoteFileList');}, false);
-
-//Event: (Play in sync button pressed)
-window.setTimeout(function() {
-        var playInSyncBtn = document.getElementById('playInSync');
-playInSyncBtn.addEventListener("click", function() {
-      trace("Play in sync btn was pressed.");
-      dispatchEvent(SeshiSkinPlay);
-    }, false);}, 4000);

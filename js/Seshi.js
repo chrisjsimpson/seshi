@@ -8,6 +8,10 @@ Seshi = {
                         console.log(welcomeMsg);
                         return welcomeMsg;
                     })(),
+    config:{
+        "SeshiBotOn":false,
+        "YoloInitMsg":false
+    },
     init:function(){
                         /* Initialise Seshi
                          *
@@ -31,6 +35,10 @@ Seshi = {
                         //Fired when the datachannel recieves a file listing from their connected peer
                         gotRemoteFileList = new Event('gotRemoteFileList');
                         gotRemoteFileList.initEvent('gotRemoteFileList', true, true);
+
+                        //Fired when a new chat message is recived
+                        onNewChatMessage = new Event('onNewChatMessage');
+                        onNewChatMessage.initEvent('onNewChatMessage', true, true);
 
                         //Fired when the storage worker reports it has stored from more chunks of a file(s)
                         storeFilesProgressUpdate = new Event('storeFilesProgressUpdate');
@@ -308,7 +316,10 @@ Seshi = {
         msgRemoteFileList = JSON.stringify({'chat':'Sucesfully recived your list of files, ta!\nSending mine now..',
                                             'remoteDisplayName':'SeshiBOT'
                                             });
-        dc.send(msgRemoteFileList);
+        if (Seshi.config.SeshiBotOn)
+            {
+                dc.send(msgRemoteFileList);
+            }//End send Seshi Bot message about file list if SeshiBotIs On
         if (!remoteFileList.reply)
         {
             console.log("Replying back to peer with own local file listing...");
@@ -1170,8 +1181,10 @@ function onDataChannelAdded(e) {
     console.log("We are connected!");
     //sendMostRecentFile();
     setupDataHandlers();
-    sendChat("Yolo! Seshi Init.");
-
+    if ( Seshi.config.YoloInitMsg )
+    {
+        sendChat("Yolo! Seshi Init.");
+    }//Show Seshi init message
 
     e.channel.onopen = function(){
         //Request file listing from remote peer
@@ -1306,6 +1319,9 @@ function setupDataHandlers() {
                 '</li>';
             cb.insertAdjacentHTML('beforeend', remoteChatMsg);
             cb.scrollTop = cb.scrollHeight; msg = msg.chat;
+            //Dispatch event to UI informing it about the new chat message
+            dispatchEvent(onNewChatMessage);
+
             } else if (msg.storeData) {
                 console.log("Received data store message.");
                 //console.log(blobURL);

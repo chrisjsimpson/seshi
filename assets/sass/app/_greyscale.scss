@@ -79,8 +79,8 @@ p {
 
 .mobile-cloud {
   img {
-    width: 266px;
-    height: auto;
+    height:480px;
+    width: auto;
     margin-top: 8vh;
   }
   p{
@@ -223,6 +223,11 @@ padding-right: 15px;
     h4 {
       font-size: 27px;
     }
+  }
+
+  .mobile-cloud img {
+    height: 405px;
+    margin-top: 15vh;
   }
 }
 
@@ -767,8 +772,7 @@ img {
     }
     .mobile-cloud {
       img {
-        width: 276px;
-        height: auto;
+        height: 550px;
         margin-top: 9vh;
         margin-left: 3vw;
       }

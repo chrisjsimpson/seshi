@@ -9,7 +9,8 @@ Seshi = {
                         return welcomeMsg;
                     })(),
     config:{
-        "SeshiBotOn":false
+        "SeshiBotOn":false,
+        "YoloInitMsg":false
     },
     init:function(){
                         /* Initialise Seshi
@@ -1180,8 +1181,10 @@ function onDataChannelAdded(e) {
     console.log("We are connected!");
     //sendMostRecentFile();
     setupDataHandlers();
-    sendChat("Yolo! Seshi Init.");
-
+    if ( Seshi.config.YoloInitMsg )
+    {
+        sendChat("Yolo! Seshi Init.");
+    }//Show Seshi init message
 
     e.channel.onopen = function(){
         //Request file listing from remote peer

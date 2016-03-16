@@ -121,14 +121,14 @@ function peerConnectionBroken() {
     /* Called by event listener when sendFileProgressUpdate event is fired
      *  Used to display a break in Datachannel connection.
      * */
-    alert("Doh we broke the internet!");
+    alert("Peer has disconnected");
     alert("Hold on, we'll try and reconnect");
 
-    $("#hideuntilconnected").fadeOut();
-    $(".temp-message p").show();
-
-    var connectionStateBox = document.getElementById('connectionStatus');
-    connectionStateBox.innerText = 'Atempting Reconnect...';
+    $("#remoteFileListContainer").fadeOut();
+    $("#sendIdThenHide").show();
+    $("connectionStatus").hide();
+    // var connectionStateBox = document.getElementById('connectionStatus');
+    // connectionStateBox.innerText = 'Atempting Reconnect...';
     connect();
 
     //Disable Send / Recieve buttons:
@@ -457,13 +457,24 @@ function showConnected() {
 
 
 function newChatMessageReceived() {
-    /* newChatMessageReceived gets called after the 
+    /* newChatMessageReceived gets called after the
      * onNewChatMessage event is dispatched. We listen
      * for that event to fire, and when it does, this
      * function gets called.
      */
-
     console.log('newChatMessageReceived() called.');
+    function showMessage() {
+    var m = $("#message");
+    m.addClass("is-visible");
+    setTimeout(function() {
+     m.removeClass("is-visible");
+     m.addClass("is-hidden");
+     setTimeout(function() {
+       m.addClass("is-removed");
+     }, 4000);
+    }, 6000);
+    }
+    window.showMessage();
 
 } //End newChatMessageReceived()
 

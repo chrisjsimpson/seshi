@@ -479,6 +479,9 @@ function getFileTypeIcon(mimeType) {
         case 'audio/mp3':
         case 'audio/ogg':
              return 'fa-music';
+        case 'audio/midi':
+        case 'audio/audible':
+              return 'fa-file-audio-o';
         case 'video/mp4':
         case 'video/ogg':
         case 'video/3gpp':

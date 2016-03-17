@@ -45,6 +45,16 @@ var paths = {
          // 'assets/js/script.js',
     ],
     // images: ['assets/images/**/*'],
+    prod: [
+        'Dexie.js',
+        'databaseSchema.js',
+        'adapter.js',
+        'clientXHRSignalingChannel.js',
+        'boxHandling.js',
+        'js/Seshi.js',
+        'js/SeshiSkin.js',
+        'js/vendor/xss.js'
+    ],
     fonts: [
         'assets/bower_components/bootstrap/fonts/*',
         'assets/bower_components/font-awesome/fonts/*'
@@ -53,6 +63,7 @@ var paths = {
     /* Output paths */
     stylesOutput: 'styles',
     scriptsOutput: 'ui/ui',
+    prodOutput: 'js',
     imagesOutput: 'images',
     fontsOutput: 'fonts'
 };
@@ -121,6 +132,18 @@ gulp.task('scripts', function() {
         .pipe(notify({ message: 'Scripts task complete' }));
 });
 
+gulp.task('prod', function() {
+    return gulp.src(paths.prod)
+        // .pipe(jshint('.jshintrc'))
+        // .pipe(jshint.reporter('default'))
+        .pipe(concat('beta.js'))
+        .pipe(gulp.dest(paths.prodOutput))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(uglify())
+        .pipe(gulp.dest(paths.prodOutput))
+        .pipe(notify({ message: 'prod task complete' }));
+});
+
 // gulp.task('images', function() {
 //     return gulp.src(paths.images)
 //         .pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
@@ -153,5 +176,5 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('default', function() {
-    gulp.start('styles', 'scripts', 'fonts', 'watch');
+    gulp.start('styles', 'scripts', 'prod', 'fonts', 'watch');
 });

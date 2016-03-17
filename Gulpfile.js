@@ -34,6 +34,7 @@ var paths = {
         'assets/bower_components/jquery/dist/jquery.js',
         'assets/bower_components/jquery.easing/js/jquery.easing.js',
         'assets/bower_components/bootstrap/dist/js/bootstrap.js',
+        // 'js/plyr/plyr.js',
         'assets/js/ui.js',
         'assets/js/responsive.js',
         'assets/js/media-player.js'
@@ -45,6 +46,7 @@ var paths = {
          // 'assets/js/script.js',
     ],
     // images: ['assets/images/**/*'],
+    // prod: 'js/plyr/plyr.js',
     fonts: [
         'assets/bower_components/bootstrap/fonts/*',
         'assets/bower_components/font-awesome/fonts/*'

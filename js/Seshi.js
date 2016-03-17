@@ -81,13 +81,13 @@ Seshi = {
                             var progressData = event.data;
                             //Update Seshi.storeProgess array with file storing progress updates, indexeded by fileId
 
-                            if ( Seshi.storeProgress[progressData.fileId] === undefined ) 
+                            if ( Seshi.storeProgress[progressData.fileId] === undefined )
                             {
                                 currentChunk = 0;
                             }else { //End set progress to zero initially
                                 currentChunk = Seshi.storeProgress[progressData.fileId].currentChunk;
                             }//End else incriment currentChunk using current value
-                                 
+
                             Seshi.storeProgress[progressData.fileId] = {
                                 "fileName":progressData.fileName,
                                 "currentChunk":currentChunk + 1,
@@ -434,7 +434,7 @@ Seshi = {
     },
     pause:function() {
                         /* Seshi.pause()
-                         * - Fire pause event informing SeshiSkin to pause 
+                         * - Fire pause event informing SeshiSkin to pause
                          *   whatever it's playing.
                          */
                          dispatchEvent(onSeshiPauseReq);
@@ -456,6 +456,7 @@ Seshi = {
                                     case 'audio/x-pn-wav':
                                     case 'audio/x-aac':
                                     case 'audio/midi':
+                                    case 'audio/audible':
                                     case 'video/mp4':
                                     case 'video/ogg':
                                     case 'video/3gpp':
@@ -491,7 +492,7 @@ Seshi = {
     playInSyncRequest:function(fileId) {
 
                             var msg = {
-                                "cmd":"playInSyncRPC", 
+                                "cmd":"playInSyncRPC",
                                 "request": "playRequest",
                                 "fileId":fileId
                             };
@@ -508,7 +509,7 @@ Seshi = {
                                         },
                                         bubbles: true,
                                         cancelable: true
-                                    } 
+                                    }
                             );//End create play request event
                             dispatchEvent(event);
 
@@ -518,14 +519,14 @@ Seshi = {
                             /* playInSync()
                              * - RPC Handler for playing media in sync
                              *
-                             *   Impliments: 
+                             *   Impliments:
                              *   - Play in sync (both peers begin playing same local file)
                              *   - Pause in sync
                              */
-                             
+
                              //determine rpc call
                              switch(msg.request) {
-                                
+
                                  case 'playRequest':
                                      playFile(msg.fileId);
                                      break;
@@ -537,7 +538,7 @@ Seshi = {
                                      resumePlayFile(fileId); //This is more a resume than a play...
                                      break;
                              }//End determine rpc call
-                            
+
                             function playFile(fileId)
                             {
                                 //Don't play if it's the same file as last time  (avoid plyr/me bug)
@@ -546,7 +547,7 @@ Seshi = {
                                     player.plyr.play()
                                     return;
                                 }
-                             
+
                                 //Play file
                                 //Fire Play on local peer event
                                 var event = new CustomEvent(
@@ -591,13 +592,13 @@ Seshi = {
                                         "request":"play"
                                 };
 
-                            //Stringify 
+                            //Stringify
                             msg = JSON.stringify(msg);
                             //Send play request to peer TODO: Check peer connection first
                             dc.send(msg);
     },
     pauseHandler: function() {
-                            /* pauseHandler() 
+                            /* pauseHandler()
                              * - react to pause event fired by UI
                              */
                             trace("In Seshi.pauseHandler");
@@ -607,7 +608,7 @@ Seshi = {
                                         "cmd":"playInSyncRPC",
                                         "request":"pause"
                                 };
-                            //Stringify 
+                            //Stringify
                             msg = JSON.stringify(msg);
                             //Send pause request to peer TODO: Check peer connection first
                             dc.send(msg);
@@ -728,10 +729,10 @@ Seshi = {
                     /* This is called by receivedChunkACK comman from over the datachannel.
                      * This occurs when the connected peer has sucessfully received, and stored
                      * A chunk which we sent to them. the 'receivedChunkACK' is their confirmation
-                     * which we then use to update the sender on the progress of their push. 
+                     * which we then use to update the sender on the progress of their push.
                      * (A push is a file 'upload' to a connected peer).
                      * */
-                    //For file progress, just count number of ACKS received, not the actual 
+                    //For file progress, just count number of ACKS received, not the actual
                     // chunk number in the ACK message, because chunks mayt arrive out of order
                     // therere ack.chunkNumber is not a reliable indicator of chunk recieved progress
 
@@ -779,7 +780,7 @@ Seshi = {
                 dc.send(Seshi.buffer.shift());
         }//End while buffer is not empty
     },
-    buffer:[], 
+    buffer:[],
     recvBuffer:[],
     sendingFileProgress:[],
     addSignalingServer:function(signallingServerAddress){
@@ -1160,7 +1161,7 @@ function onIceconnectionStateChanged(e) {
         //dispatch event onPeerConnectionEstablished since we now have a peer connection (TODO check datachannel state too!)
         dispatchEvent(onPeerConnectionEstablished);
         //Remove key guard from localstorage which prevents users from connecting to themselves
-        localStorage.removeItem('key'); 
+        localStorage.removeItem('key');
     }//End if iceConnectionState == Completed
 
     if (pc.iceConnectionState == 'disconnected') {
@@ -1263,7 +1264,7 @@ function setupDataHandlers() {
                     Seshi.recvRemoteFileList(msg);
                     break;
                 case 'receivedChunkACK': //Got a received & stored Chunk ACK from peer.
-                    trace("Peer told me that they've sucessfully received & stored a chunk I sent them. Yay."); 
+                    trace("Peer told me that they've sucessfully received & stored a chunk I sent them. Yay.");
                     Seshi.updateSendingProgress(msg.data);
                     break;
                 case 'requestFilesById': //Receiving request from peer to pull files from their peer.
@@ -1538,7 +1539,7 @@ function getQueryVariable(variable)
        return(false);
 }
 
-function processRecieveBuffer() {    
+function processRecieveBuffer() {
 
     if ( Seshi.recvBuffer.length == 0 )
     {
@@ -1595,7 +1596,7 @@ function processRecieveBuffer() {
                                                                 var chunk = blob.slice(headerOffset); //Get chunk payload
                                                                 //Store chunkBlob into IndexedDB
                                                                 //Use Seshi.store() API (should move file header parsing to this web worker also...)
-  
+
                                                                 var storeReqObj = {
                                                                     "dataSource"    : "seshiChunk",
                                                                     "boxId"         : Seshi.getBoxId(),
@@ -1607,8 +1608,8 @@ function processRecieveBuffer() {
                                                                     "fileType"      : window.curChunk.fileType,
                                                                     "numberOfChunks": window.curChunk.numberOfChunks
                                                                 };
-                                                                var storePromise = new Promise(function(resolve, reject) 
-                                                                { 
+                                                                var storePromise = new Promise(function(resolve, reject)
+                                                                {
                                                                     StorageWorker.postMessage(storeReqObj);
                                                                     StorageWorker.addEventListener("message", function(e) {
                                                                         resolve(e.data);

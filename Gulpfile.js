@@ -34,6 +34,7 @@ var paths = {
         'assets/bower_components/jquery/dist/jquery.js',
         'assets/bower_components/jquery.easing/js/jquery.easing.js',
         'assets/bower_components/bootstrap/dist/js/bootstrap.js',
+        // 'js/plyr/plyr.js',
         'assets/js/ui.js',
         'assets/js/responsive.js',
         'assets/js/media-player.js'
@@ -45,16 +46,7 @@ var paths = {
          // 'assets/js/script.js',
     ],
     // images: ['assets/images/**/*'],
-    prod: [
-        'Dexie.js',
-        'databaseSchema.js',
-        'adapter.js',
-        'clientXHRSignalingChannel.js',
-        'boxHandling.js',
-        'js/Seshi.js',
-        'js/SeshiSkin.js',
-        'js/vendor/xss.js'
-    ],
+    // prod: 'js/plyr/plyr.js',
     fonts: [
         'assets/bower_components/bootstrap/fonts/*',
         'assets/bower_components/font-awesome/fonts/*'
@@ -63,7 +55,6 @@ var paths = {
     /* Output paths */
     stylesOutput: 'styles',
     scriptsOutput: 'ui/ui',
-    prodOutput: 'js',
     imagesOutput: 'images',
     fontsOutput: 'fonts'
 };
@@ -132,18 +123,6 @@ gulp.task('scripts', function() {
         .pipe(notify({ message: 'Scripts task complete' }));
 });
 
-gulp.task('prod', function() {
-    return gulp.src(paths.prod)
-        // .pipe(jshint('.jshintrc'))
-        // .pipe(jshint.reporter('default'))
-        .pipe(concat('beta.js'))
-        .pipe(gulp.dest(paths.prodOutput))
-        .pipe(rename({suffix: '.min'}))
-        .pipe(uglify())
-        .pipe(gulp.dest(paths.prodOutput))
-        .pipe(notify({ message: 'prod task complete' }));
-});
-
 // gulp.task('images', function() {
 //     return gulp.src(paths.images)
 //         .pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
@@ -176,5 +155,5 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('default', function() {
-    gulp.start('styles', 'scripts', 'prod', 'fonts', 'watch');
+    gulp.start('styles', 'scripts', 'fonts', 'watch');
 });

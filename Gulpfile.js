@@ -55,7 +55,6 @@ var paths = {
     /* Output paths */
     stylesOutput: 'styles',
     scriptsOutput: 'ui/ui',
-    prodOutput: 'js/plyr',
     imagesOutput: 'images',
     fontsOutput: 'fonts'
 };

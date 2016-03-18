@@ -946,7 +946,26 @@ setBoxId:function(boxName) {
 },
 getBoxId:function(){return Seshi.boxId;},
 boxId:'myBoxID',//Defaults to myBoxId
-trace: function(text) {
+notify: function(message) {
+
+            if (Notification.permission !== 'denied') 
+            {
+                Notification.requestPermission(function (permission) 
+                    {
+                        // If the user accepts, let's create a notification
+                        if (permission === "granted") 
+                        {
+                            var options = {
+                                body:message,
+                                icon: 'img/seshilongbetablue.png'
+                            }
+                            var notification = new Notification("New messagge:", options);
+                        }
+                    });
+            }//End check we have notification permissions
+
+}
+,trace: function(text) {
             /* trace()
             * logging with timestamp
             */
@@ -1324,6 +1343,8 @@ function setupDataHandlers() {
             cb.scrollTop = cb.scrollHeight; msg = msg.chat;
             //Dispatch event to UI informing it about the new chat message
             dispatchEvent(onNewChatMessage);
+            //Notify user of new message
+            Seshi.notify(msg);
 
             } else if (msg.storeData) {
                 console.log("Received data store message.");

@@ -699,7 +699,7 @@ Seshi = {
                      *
                      * - Reads outbox & sends each message to peer untill outBox is empty.
                      */
-                    if ( Seshi.flagProcessOutboxStarted == true && typeof fr != 'object')
+                    if ( Seshi.flagProcessOutboxStarted == true && Seshi.outBox.length > 0)
                     {
                         fr = new FileReader
 
@@ -718,8 +718,10 @@ Seshi = {
                                 loadNext(); // shortcut here
                               }
                            };
-                        chunkData = Seshi.outBox.pop();
-                        fr.readAsArrayBuffer(chunkData.chunk);
+                            //Get next chunk from outbox (presuming there is one)
+                            chunkData = Seshi.outBox.pop();
+
+                        fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk
                         }
 
                         loadNext();

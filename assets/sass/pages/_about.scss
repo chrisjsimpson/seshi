@@ -2,6 +2,9 @@
   min-height: 100%;
   /* equal to footer height */
   margin-bottom: -60px;
+  h2 {
+    color:#444;
+  }
 }
 .page-wrap:after {
   content: "";
@@ -18,8 +21,12 @@
   min-height: 80vh;
   color:#222;
   text-transform: none;
+
   p{
     text-align: left;
+  }
+  a {
+    color: rgb(34, 167, 240);
   }
 }
 

@@ -15051,7 +15051,7 @@ p {
   height: 100vh;
   padding: 50px 0;
   text-align: center;
-  background: linear-gradient(rgba(34, 167, 240, 0.9), rgba(100, 100, 100, 0.7)), url("../img/polygon.jpg") no-repeat center center;
+  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(120, 180, 240, 0.1)), url("../img/newlandingpage.jpg") no-repeat center center;
 }
 
 #landingpage .main-header {
@@ -15064,7 +15064,7 @@ p {
   color: #fff;
   letter-spacing: 1px;
   text-transform: none;
-  text-shadow: 1px 1px 2px #888;
+  text-shadow: 1px 1px 2px #333;
   text-align: left;
 }
 
@@ -15128,7 +15128,7 @@ p {
   border-bottom: 1px solid rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
   font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
-  background-color: rgba(22, 174, 231, 0.75);
+  background-color: #fff;
 }
 
 .navbar-custom .navbar-brand {
@@ -15169,12 +15169,12 @@ p {
 }
 
 .navbar-custom a {
-  color: #fefefe;
+  color: #22a7f0;
 }
 
 .navbar-custom .nav li.active {
   outline: none;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .navbar-custom .nav li.active a {
@@ -15189,7 +15189,7 @@ p {
 
 .navbar-custom .nav li a:hover, .navbar-custom .nav li a:focus, .navbar-custom .nav li a.active {
   outline: none;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(200, 200, 200, 0.7);
   color: #222;
 }
 
@@ -15198,6 +15198,7 @@ p {
 }
 
 .navbar-toggle .fa-bars {
+  color: #22a7f0;
   font-size: 30px;
 }
 
@@ -15250,7 +15251,14 @@ p {
     padding: 20px 0;
     border-bottom: none;
     letter-spacing: 1px;
-    background: transparent;
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.8), rgba(255, 0, 0, 0));
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom, rgba(255, 255, 255, 0.8) rgba(255, 0, 0, 0));
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom, rgba(255, 255, 255, 0.8), rgba(255, 0, 0, 0));
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom, rrgba(255, 255, 255, 0.8), rgba(255, 0, 0, 0));
+    /* Standard syntax (must be last) */
     -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
     -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
     transition: background .5s ease-in-out,padding .5s ease-in-out;
@@ -15258,7 +15266,7 @@ p {
   .top-nav-collapse {
     padding: 14px;
     height: 40px;
-    background-color: rgba(34, 167, 240, 0.8);
+    background-color: rgba(255, 255, 255, 0.85);
   }
   .navbar-custom.top-nav-collapse {
     height: 95px;
@@ -15295,7 +15303,7 @@ p {
     outline: none;
   }
   .navbar-custom a {
-    color: #fefefe;
+    color: #22a7f0;
   }
   .navbar-custom .nav li {
     border-bottom: 2px solid transparent;
@@ -15303,10 +15311,10 @@ p {
   .navbar-custom .nav li.active {
     outline: none;
     background-color: transparent;
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid #444;
   }
   .navbar-custom .nav li.active a {
-    color: #fff;
+    color: #444;
   }
   .navbar-custom .nav li a {
     -webkit-transition: all .3s ease-in-out;
@@ -15318,9 +15326,9 @@ p {
   }
   .navbar-custom .nav li a:hover {
     outline: none;
-    color: #eee;
+    color: #444;
     background-color: transparent;
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid #444;
   }
   .mapimg {
     width: 60%;
@@ -15355,7 +15363,7 @@ a:hover, a:focus {
   padding: 50px 0;
   text-align: center;
   color: #fefefe;
-  background: linear-gradient(rgba(253, 227, 167, 0.7), rgba(25, 181, 254, 0.8)), url("../img/polygon.jpg") no-repeat center center;
+  background: linear-gradient(rgba(233, 247, 245, 0.9), rgba(197, 232, 249, 0.8)), url("../img/polygon.jpg") no-repeat center center;
   /* fallback for old browsers */
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -15660,6 +15668,8 @@ img::-moz-selection {
 }
 
 #landingpage .main-header h4 {
+  color: #444;
+  text-shadow: none;
   font-size: 35px;
 }
 
@@ -19973,7 +19983,7 @@ label {
 .file-header h2 {
   margin-top: -40px;
   margin-bottom: 65px;
-  text-shadow: 1px 1px 2px #888;
+  color: #444;
 }
 
 .btn-generate-key {
@@ -23903,6 +23913,10 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   text-align: left;
 }
 
+#about a, #terms a, #press a {
+  color: #22a7f0;
+}
+
 ul.pressfacts li {
   list-style: initial;
   text-align: left;
@@ -25282,48 +25296,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.11s;
-  animation-duration: 0.96s;
+  animation-delay: -0.02s;
+  animation-duration: 1.19s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.62s;
-  animation-duration: 1.47s;
+  animation-delay: 0.35s;
+  animation-duration: 1.17s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
   animation-delay: 0.07s;
-  animation-duration: 1.08s;
-}
-
-.ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.22s;
-  animation-duration: 1.03s;
-}
-
-.ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.12s;
-  animation-duration: 0.88s;
-}
-
-.ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.47s;
   animation-duration: 1.54s;
 }
 
+.ball-grid-beat > div:nth-child(4) {
+  animation-delay: 0.72s;
+  animation-duration: 0.88s;
+}
+
+.ball-grid-beat > div:nth-child(5) {
+  animation-delay: 0.2s;
+  animation-duration: 1.49s;
+}
+
+.ball-grid-beat > div:nth-child(6) {
+  animation-delay: 0.68s;
+  animation-duration: 1.18s;
+}
+
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.05s;
-  animation-duration: 1.51s;
+  animation-delay: 0.34s;
+  animation-duration: 0.93s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.71s;
-  animation-duration: 1.25s;
+  animation-delay: 0.57s;
+  animation-duration: 0.78s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.31s;
-  animation-duration: 0.98s;
+  animation-delay: -0.04s;
+  animation-duration: 1.54s;
 }
 
 .ball-grid-beat > div {
@@ -25359,48 +25373,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.19s;
-  animation-duration: 0.91s;
+  animation-delay: 0.27s;
+  animation-duration: 1.1s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.79s;
-  animation-duration: 1.49s;
+  animation-delay: 0.5s;
+  animation-duration: 0.94s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.47s;
-  animation-duration: 0.75s;
+  animation-delay: 0.56s;
+  animation-duration: 1.34s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.01s;
-  animation-duration: 1.08s;
+  animation-delay: 0.08s;
+  animation-duration: 0.89s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.13s;
-  animation-duration: 0.65s;
+  animation-delay: 0.04s;
+  animation-duration: 0.88s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.12s;
-  animation-duration: 0.9s;
+  animation-delay: -0.1s;
+  animation-duration: 1.28s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0s;
-  animation-duration: 1s;
+  animation-delay: 0.64s;
+  animation-duration: 1.1s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.75s;
-  animation-duration: 1.15s;
+  animation-delay: 0.41s;
+  animation-duration: 1.08s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: -0.03s;
-  animation-duration: 1.36s;
+  animation-delay: 0.11s;
+  animation-duration: 0.78s;
 }
 
 .ball-grid-pulse > div {
@@ -25738,23 +25752,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.22s;
-  animation-duration: 1s;
+  animation-delay: -0.03s;
+  animation-duration: 1.08s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.43s;
-  animation-duration: 0.84s;
+  animation-delay: 0.54s;
+  animation-duration: 0.41s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: -0.09s;
-  animation-duration: 0.92s;
+  animation-delay: 0.25s;
+  animation-duration: 0.83s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.42s;
-  animation-duration: 0.88s;
+  animation-delay: 0.22s;
+  animation-duration: 1.28s;
 }
 
 .line-scale-party > div {

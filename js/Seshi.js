@@ -959,7 +959,21 @@ notify: function(message) {
                                 body:message,
                                 icon: 'img/seshilongbetablue.png'
                             }
-                            var notification = new Notification("New messagge:", options);
+
+                            //Generate title 
+                            var displayName = Seshi.getDisplayName();
+                            if (displayName.length > 0 )
+                            {
+                                var title = Seshi.getDisplayName() + ' says:';
+                            } else {
+                                var title = 'New message: ';
+                            }//End generate title
+
+                            //Only show notification if page is hidden (see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API)
+                            if ( document.hidden ) 
+                            {
+                                var notification = new Notification(title, options);
+                            }//End only show notification if page is hidden
                         }
                     });
             }//End check we have notification permissions

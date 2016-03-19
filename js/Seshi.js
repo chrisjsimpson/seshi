@@ -964,7 +964,7 @@ notify: function(message) {
                             var displayName = Seshi.getDisplayName();
                             if (displayName.length > 0 )
                             {
-                                var title = Seshi.getDisplayName() + ' says:';
+                                var title = Seshi.getRemoteDisplayName() + ' says:';
                             } else {
                                 var title = 'New message: ';
                             }//End generate title

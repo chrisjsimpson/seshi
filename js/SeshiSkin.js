@@ -269,8 +269,8 @@ function play(event) {
                                   });
                           $("#hideall").css({'position':'absolute',
                                               'margin': '0 auto'});
-                          $("#addfilehide").hide();
-                          $("#hideall").hide();
+                          // $("#addfilehide").hide();
+                          // $("#hideall").hide();
 
                           $("#hideall").addClass('widthOpenVideo');
                           $("#addfilehide").addClass('showtoggle');

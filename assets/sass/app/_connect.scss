@@ -926,6 +926,21 @@ padding-right: 5px;
   display:none;
 }
 
+input[id="copykey"] {
+  display:block;
+  position:relative;
+  right: 15px;
+    width:300px;
+  margin: 0 auto;
+  margin-top: 10px;
+  font-weight:600;
+  font-size: 18px;
+  height:40px;
+  &:focus {
+    outline:none;
+  }
+}
+
 @media (min-width: 1200px) {
   .btn-push {
     margin-bottom: 25px;

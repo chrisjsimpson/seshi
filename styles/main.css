@@ -20884,6 +20884,22 @@ input[id="display-name"]:focus + .edit-btn {
   display: none;
 }
 
+input[id="copykey"] {
+  display: block;
+  position: relative;
+  right: 15px;
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 18px;
+  height: 40px;
+}
+
+input[id="copykey"]:focus {
+  outline: none;
+}
+
 @media (min-width: 1200px) {
   .btn-push {
     margin-bottom: 25px;
@@ -25300,48 +25316,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.58s;
-  animation-duration: 0.96s;
+  animation-delay: -0.12s;
+  animation-duration: 1.58s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.56s;
-  animation-duration: 1.21s;
+  animation-delay: -0.11s;
+  animation-duration: 0.77s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.2s;
-  animation-duration: 0.64s;
+  animation-delay: 0.44s;
+  animation-duration: 0.81s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.62s;
-  animation-duration: 1.34s;
+  animation-delay: 0.36s;
+  animation-duration: 0.61s;
 }
 
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.08s;
-  animation-duration: 0.8s;
+  animation-delay: 0.51s;
+  animation-duration: 1.51s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: -0.17s;
-  animation-duration: 1.3s;
+  animation-delay: 0.44s;
+  animation-duration: 0.77s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: -0.17s;
-  animation-duration: 0.93s;
+  animation-delay: -0.18s;
+  animation-duration: 1.03s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.12s;
-  animation-duration: 1.42s;
+  animation-delay: 0.79s;
+  animation-duration: 1.4s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.79s;
-  animation-duration: 0.67s;
+  animation-delay: 0.17s;
+  animation-duration: 1.39s;
 }
 
 .ball-grid-beat > div {
@@ -25377,48 +25393,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.43s;
-  animation-duration: 1.47s;
+  animation-delay: 0.28s;
+  animation-duration: 1.26s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.47s;
-  animation-duration: 1.54s;
+  animation-delay: 0.32s;
+  animation-duration: 1.38s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.03s;
-  animation-duration: 0.86s;
+  animation-delay: 0.48s;
+  animation-duration: 0.99s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: -0.18s;
-  animation-duration: 0.95s;
+  animation-delay: 0.24s;
+  animation-duration: 0.64s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.63s;
-  animation-duration: 0.74s;
+  animation-delay: 0.23s;
+  animation-duration: 1.26s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.66s;
-  animation-duration: 0.87s;
+  animation-delay: -0.15s;
+  animation-duration: 0.75s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: -0.01s;
-  animation-duration: 0.62s;
+  animation-delay: 0.66s;
+  animation-duration: 1.57s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.72s;
-  animation-duration: 0.62s;
+  animation-delay: 0.67s;
+  animation-duration: 0.72s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.75s;
-  animation-duration: 1.28s;
+  animation-delay: -0.07s;
+  animation-duration: 1.4s;
 }
 
 .ball-grid-pulse > div {
@@ -25756,23 +25772,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.24s;
-  animation-duration: 0.75s;
+  animation-delay: 0.28s;
+  animation-duration: 1.25s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: -0.14s;
-  animation-duration: 0.76s;
+  animation-delay: 0.09s;
+  animation-duration: 1.26s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.2s;
-  animation-duration: 0.68s;
+  animation-delay: 0.54s;
+  animation-duration: 0.43s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.42s;
-  animation-duration: 0.95s;
+  animation-delay: 0.47s;
+  animation-duration: 0.64s;
 }
 
 .line-scale-party > div {

@@ -11820,7 +11820,7 @@ $('.drop-up').click(function(e) {
 
 //send key expand
 
-$("#copyclipboard").click(function () {
+$("#copyclipboard").on('click', function () {
     // $(".message-app-card").show();
    //  $(".keycopy").animate({
    //      width: '25%'

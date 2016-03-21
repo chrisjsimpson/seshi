@@ -176,6 +176,11 @@ function createShareUrl() {
         }
     });
 
+    //Show the input box above social share buttons 
+    // with the key inside so user understands what to do:
+    document.getElementById('shareKeyInputElm').value = Seshi.getShareUrl();
+
+
 }//End createShareUrl()
 
 

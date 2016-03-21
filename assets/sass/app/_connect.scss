@@ -816,7 +816,7 @@ input[id="display-name"]:focus + .edit-btn {
 .copyclipboard-card {
   position:relative;
   min-height: 25px;
-  height: 115px;
+  height: 166px;
   /* margin-bottom: 20px; */
   // padding: 10px;
   background-color: rgba(240, 240, 240, 0.7);
@@ -926,14 +926,15 @@ padding-right: 5px;
   display:none;
 }
 
-input[id="copykey"] {
+input[id="shareKeyInputElm"] {
   display:block;
   position:relative;
-  right: 15px;
+  color:#444;
+  padding-left: 5px;
     width:300px;
   margin: 0 auto;
   margin-top: 10px;
-  font-weight:600;
+  font-weight:400;
   font-size: 18px;
   height:40px;
   &:focus {
@@ -1156,7 +1157,7 @@ width: 100%;
 
   }
   .copyclipboard-card {
-    height:99px;
+    height:145px;
     margin-top: 15px;
   }
 }

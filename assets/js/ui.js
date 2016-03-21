@@ -40,22 +40,12 @@ $('.drop-up').click(function(e) {
 
 //send key expand
 
-$("#copyclipboard").on('click', function () {
-    // $(".message-app-card").show();
-   //  $(".keycopy").animate({
-   //      width: '25%'
-   //  });
-
-$(".copyclipboard-card ").css({
-    width: '100%'
-});
+$("#copyclipboard").click(function () {
+    $(".copyclipboard-card ").css({
+        width: '100%'
+    });
     $(".flashcopied").replaceWith('<h6 class="flashcopied"> Copied link! </h6>');
-
-
-   //  $(".copyclipboard-card").css('opacity', '1');
-     $(".copyclipboard-card").fadeIn(500);
-
-
+    $(".copyclipboard-card").fadeIn(500);
 });
 
 //hide the hidebutton on load

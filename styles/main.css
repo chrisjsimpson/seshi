@@ -24528,6 +24528,7 @@ ul.pressfacts li {
 
 .plyr--fullscreen video, .plyr--fullscreen-active video {
   height: 100%;
+  margin-top: 0;
 }
 
 .plyr--fullscreen .plyr__video-wrapper, .plyr--fullscreen-active .plyr__video-wrapper {
@@ -25317,48 +25318,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.79s;
-  animation-duration: 1.36s;
+  animation-delay: 0.08s;
+  animation-duration: 0.79s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.29s;
-  animation-duration: 1.5s;
-}
-
-.ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.28s;
-  animation-duration: 0.91s;
-}
-
-.ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.22s;
+  animation-delay: 0.42s;
   animation-duration: 1.55s;
 }
 
+.ball-grid-beat > div:nth-child(3) {
+  animation-delay: 0.73s;
+  animation-duration: 0.74s;
+}
+
+.ball-grid-beat > div:nth-child(4) {
+  animation-delay: 0.23s;
+  animation-duration: 1.43s;
+}
+
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.47s;
-  animation-duration: 0.95s;
+  animation-delay: -0.1s;
+  animation-duration: 1.22s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.46s;
+  animation-delay: 0.1s;
   animation-duration: 0.78s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.15s;
-  animation-duration: 1.37s;
+  animation-delay: 0.22s;
+  animation-duration: 1.09s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: -0.19s;
-  animation-duration: 0.99s;
+  animation-delay: 0.62s;
+  animation-duration: 1.49s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.4s;
-  animation-duration: 1.22s;
+  animation-delay: 0.8s;
+  animation-duration: 1.45s;
 }
 
 .ball-grid-beat > div {
@@ -25394,48 +25395,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.16s;
-  animation-duration: 1.12s;
+  animation-delay: -0.02s;
+  animation-duration: 0.81s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.45s;
-  animation-duration: 1.55s;
+  animation-delay: 0.65s;
+  animation-duration: 0.88s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.12s;
-  animation-duration: 1.38s;
+  animation-delay: 0.28s;
+  animation-duration: 0.63s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.09s;
-  animation-duration: 1.52s;
+  animation-delay: 0.56s;
+  animation-duration: 0.88s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.47s;
-  animation-duration: 1.03s;
+  animation-delay: -0.03s;
+  animation-duration: 0.73s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.02s;
-  animation-duration: 0.91s;
+  animation-delay: 0.32s;
+  animation-duration: 1.36s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0.23s;
-  animation-duration: 0.72s;
+  animation-delay: -0.03s;
+  animation-duration: 0.77s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.45s;
-  animation-duration: 0.66s;
+  animation-delay: -0.12s;
+  animation-duration: 1.32s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.12s;
-  animation-duration: 1.18s;
+  animation-delay: 0.53s;
+  animation-duration: 0.98s;
 }
 
 .ball-grid-pulse > div {
@@ -25773,23 +25774,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.2s;
-  animation-duration: 0.85s;
+  animation-delay: 0.21s;
+  animation-duration: 0.94s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.62s;
-  animation-duration: 1.04s;
+  animation-delay: -0.03s;
+  animation-duration: 0.52s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.14s;
-  animation-duration: 1.29s;
+  animation-delay: -0.17s;
+  animation-duration: 0.43s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.54s;
-  animation-duration: 1.04s;
+  animation-delay: -0.05s;
+  animation-duration: 1.22s;
 }
 
 .line-scale-party > div {

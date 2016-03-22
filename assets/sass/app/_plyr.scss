@@ -661,6 +661,7 @@ $plyr-bp-captions-large:             768px !default; // When captions jump to th
 
         video {
             height: 100%;
+            margin-top: 0;
         }
         .plyr__video-wrapper {
             height: 100%;

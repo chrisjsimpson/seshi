@@ -389,7 +389,6 @@ Seshi = {
                                                     mimeType: chunks[0].fileType //e.g. audio/ogg
                                                 }); //Resolve promise
                                         })//Assemble all chunks into array
-                                        //Simply download file if on mobiles
                                 }).catch (function (err) {
                                     console.error(err);
                                 })//End get file chunks from fileId and generate object url.

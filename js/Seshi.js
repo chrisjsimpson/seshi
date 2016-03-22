@@ -313,13 +313,8 @@ Seshi = {
         Seshi.remoteFileList = JSON.parse(remoteFileList.data);
         //Dispatch event telling any UI there's a (potentially) updated file listing from their peer
         dispatchEvent(gotRemoteFileList);
-        msgRemoteFileList = JSON.stringify({'chat':'Sucesfully recived your list of files, ta!\nSending mine now..',
-                                            'remoteDisplayName':'SeshiBOT'
-                                            });
-        if (Seshi.config.SeshiBotOn)
-            {
-                dc.send(msgRemoteFileList);
-            }//End send Seshi Bot message about file list if SeshiBotIs On
+        console.log("Sucesfully recived peers list of files. Sending mine back..");
+
         if (!remoteFileList.reply)
         {
             console.log("Replying back to peer with own local file listing...");

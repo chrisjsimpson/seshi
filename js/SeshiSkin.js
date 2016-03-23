@@ -125,8 +125,8 @@ function peerConnectionBroken() {
     alert("Hold on, we'll try and reconnect");
 
     $("#remoteFileListContainer").fadeOut();
-    $("#sendIdThenHide").show();
     $("connectionStatus").hide();
+      $("#sendIdThenHide").fadeIn();
     // var connectionStateBox = document.getElementById('connectionStatus');
     // connectionStateBox.innerText = 'Atempting Reconnect...';
     connect();
@@ -176,7 +176,7 @@ function createShareUrl() {
         }
     });
 
-    //Show the input box above social share buttons 
+    //Show the input box above social share buttons
     // with the key inside so user understands what to do:
     document.getElementById('shareKeyInputElm').value = Seshi.getShareUrl();
 

@@ -768,6 +768,8 @@ function updateSendFileProgessDisplay() {
          }//End if not complete
         }//End loop though Seshi.sendingFileProgress showing sending file progress udates per file
 
+        //Save sendingFileProgres to localStorage
+        Seshi.saveSendingFileProgress();
 }//End updateSendFileProgessDisplay()
 
 

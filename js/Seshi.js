@@ -20,6 +20,9 @@ Seshi = {
                          * > Updates local file list cache
                         */
 
+                        // Restore sendingFileProgress from localStorage (if present) 
+                        Seshi.restoreSendingFileProgress();
+
                         //Create & register Seshi spesific events
                         // - Custom Events triggered by Seshi useful to front-end UI development
                         // - The events are fired (dispatched) according to their individual case.
@@ -778,6 +781,54 @@ Seshi = {
     },
     buffer:[],
     recvBuffer:[],
+    restoreSendingFileProgress:function(){
+                            /* restoreSendingFileProgress()
+                             *  Query localStorage for sendingFileProgress and
+                             *  (if present) parse the string into its 
+                             *  original form (an array) and set it to 
+                             *  Seshi.sendingFileProgress indexed by fileId
+                             *
+                             *  This can be used to recover from failed uploads 
+                             *  as it maintains a registy of fileIds and their 
+                             *  percent completions. 
+                            */
+                            try {
+                                //Unpack sendingFileProgress from localStorage
+                                var unserialised = JSON.parse(localStorage.getItem('sendingFileProgress'));
+                                //Rebuild Seshi.sendingFileProgress
+                                for (var i=0;i<unserialised.length;i++) {
+                                    Seshi.sendingFileProgress[unserialised[i].fileId] = unserialised[i]; 
+                                }
+                            } 
+                            catch (e) {
+                                console.log("Error parsing sendingFileProgress from localStorage " + e);
+                                console.log('Re-setting Seshi.sendingFileProgress to empty array...');
+                                Seshi.sendingFileProgress = [];
+                            }
+    },
+    saveSendingFileProgress:function() {
+                            /* saveSendingFileProgress() 
+                             *   Saves the sendingFileProgress back to localStorage 
+                             *   from in-memory Seshi.sendingFileProgress
+                             *
+                             *   This is useful for sendingFile recovery, to 
+                             *   know which files may have failed to completely
+                             *   be sent to a peer we can check this registry. 
+                             */ 
+                            var sendingFileProgressList = []; //To temporarily store in memory 
+
+                            //Get all in-memory sendingFileProgress & add to sendingFileProgressList for serialising.
+                            for ( var fileId in Seshi.sendingFileProgress) {
+                                sendingFileProgressList.push(Seshi.sendingFileProgress[fileId]);
+                            }
+
+                            //Serialise sendingFileProgressList
+                            var serialisedSendingFileProgressList = JSON.stringify(sendingFileProgressList);
+
+                            //Store to localStorage
+                            localStorage.setItem('sendingFileProgress', serialisedSendingFileProgressList);
+                            console.log('Saved sending progress to local storage');
+    },
     sendingFileProgress:[],
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */

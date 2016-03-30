@@ -20,8 +20,10 @@ Seshi = {
                          * > Updates local file list cache
                         */
 
-                        // Restore sendingFileProgress from localStorage (if present) 
+                        // Restore Seshi.sendingFileProgress from localStorage (if present) 
                         Seshi.restoreSendingFileProgress();
+                        // Restore Seshi.storeProgress from localStorage (if present)
+                        Seshi.restoreStoreProgress();
 
                         //Create & register Seshi spesific events
                         // - Custom Events triggered by Seshi useful to front-end UI development
@@ -347,6 +349,53 @@ Seshi = {
                         StorageWorker.postMessage(dataSourceMsg); // Post data to worker for storage
     },
     storeProgress:[],
+    saveStoreProgress:function(){
+                        /* saveStoreProgress()
+                         *  TODO Consider refactoring as this is same as 
+                         *  saveSendingFileProgress() Saves the current 
+                         *  'in-memeory' Seshi.storeProgress back to localStorage
+                         *
+                         *  This is useful for store file (a Seshi 'pull') 
+                         *  recovery where the pull may have failed due to 
+                         *  break in connection etc. We can query this registry 
+                         *  to check which fileIds do not have the 'complete' 
+                         *  flag set
+                         */
+                        var storeProgressList = []; //To temporarily store in memory
+                        //Get all in-memory Seshi.storeProgress items & add to 
+                        // storeProgressList for serialising.
+                        for ( var fileId in Seshi.storeProgress ) {
+                            storeProgressList.push(Seshi.storeProgress[fileId]);
+                        }//End loop through each Seshi.storeProgress addding to storeProgressList
+
+                        //Serialise storeProgressList
+                        var serialisedStoreProgressList = JSON.stringify(storeProgressList);
+                        //Store to localStorage
+                        localStorage.setItem('storeProgress', serialisedStoreProgressList);
+                        console.log('Saved file store progress to local storage');
+    },
+    restoreStoreProgress:function(){
+                        /* restoreStoreProgress() 
+                         *     TODO Consider reactoring this is same as restoreSendingFileProgress()
+                         *     Query local store for restoreStoreProgress and
+                         *     (if present) parse the string into its
+                         *     original form (an array) and set it to 
+                         *     Seshi.restoreStoreProgress indexed by fileId
+                         */
+                         try {
+                            //Unpack restoreStoreProgress from localStorage
+                            var unserialised = JSON.parse(localStorage.getItem('storeProgress'));
+                            //Rebuild Seshi.restoreStoreProgress
+                            for (var i=0;i<unserialised.length;i++) {
+                                    Seshi.storeProgress[unserialised[i].fileId] = unserialised[i];
+                            }//End restore each store progress file state to memory 
+                         }
+                         catch (e) {
+                            console.log("Error parsing StoreProgress from localStorage " + e);
+                            console.log("Re-setting Seshi.storeProgress to empty array...");
+                            Seshi.storeProgress = [];
+                         }//end catch any errors parsing restoreStoreProgress from localStorage
+    },
     sendLocalFileListToRemote:function(bool) {
         console.log("Should send my file list now over datachannel to peer..");
         //Send most up to date file listing or cached version?? hmm.
@@ -732,8 +781,8 @@ Seshi = {
                      * (A push is a file 'upload' to a connected peer).
                      * */
                     //For file progress, just count number of ACKS received, not the actual
-                    // chunk number in the ACK message, because chunks mayt arrive out of order
-                    // therere ack.chunkNumber is not a reliable indicator of chunk recieved progress
+                    // chunk number in the ACK message, because chunks mayt arrive out of order TODO <<Question this.
+                    // therefore ack.chunkNumber is not a reliable indicator of chunk recieved progress
 
                     if ( Seshi.sendingFileProgress[ack.fileId] === undefined )
                     {
@@ -761,7 +810,8 @@ Seshi = {
                     {
                         delete(Seshi.sendingFileProgress[ack.fileId]);
                     }
-
+                    //Save sendingFileProgres to localStorage
+                    Seshi.saveSendingFileProgress();
     },
     bufferFullThreshold:4096,
     listener: function() {

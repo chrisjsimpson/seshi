@@ -222,6 +222,8 @@ function storeChunk(seshiChunk) {
                 //close();//Close worker thread upon storing the chunk. No need to close as on persistent worker
             });
         console.log("Stored a chunk over RTCdatachannel inside worker");
+        //Save store progress to localStorage
+        Seshi.saveStoreProgress();
 
 }//End storeChunk()
 

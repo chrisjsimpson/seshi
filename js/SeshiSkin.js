@@ -636,6 +636,9 @@ function updateStoreProgressDisplay() {
                     document.getElementById('localFileList').insertAdjacentHTML('afterbegin', output);
              }//End if not complete
          }//End check Seshi.storeProgress[fileId].UIdone == false before proceeding (prevents itterating over already completed UI updates.
+         
+         //Save store progress to localStorage
+         Seshi.saveStoreProgress();
     }//End loop through each item in Seshi.storeProgress & update the display accordingly
 
 
@@ -767,9 +770,6 @@ function updateSendFileProgessDisplay() {
                 document.getElementById('remoteFileList').insertAdjacentHTML('afterbegin', output);
          }//End if not complete
         }//End loop though Seshi.sendingFileProgress showing sending file progress udates per file
-
-        //Save sendingFileProgres to localStorage
-        Seshi.saveSendingFileProgress();
 }//End updateSendFileProgessDisplay()
 
 

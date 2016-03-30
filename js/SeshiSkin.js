@@ -161,7 +161,7 @@ function peerConnectionBroken() {
          $(".dialog").css("opacity", "0");
        }, 400);
      });
-
+     dialogMe();
     // alert("Peer has disconnected");
     // alert("Hold on, we'll try and reconnect");
 

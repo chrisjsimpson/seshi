@@ -123,9 +123,9 @@ function peerConnectionBroken() {
      * */
 
 
-     $(".dialog").before("<div class='dialogBlack'></div>");
-
-     $(".dialog").prepend('<div id="close">x</div>');
+    //  $(".dialog").before("<div class='dialogBlack'></div>");
+     //
+    //  $(".dialog").prepend('<div id="close">x</div>');
 
     //  $("#dialogMe").click(function() {
     //    dialogMe();

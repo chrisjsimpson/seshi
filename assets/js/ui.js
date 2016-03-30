@@ -110,6 +110,11 @@ if($(window).scrollTop() > (topOfOthDiv - 130)) { //scrolled past the other div?
 
 //pyr plugin
 
+
+$(".dialog").before("<div class='dialogBlack'></div>");
+
+$(".dialog").prepend('<div id="close">x</div>');
+
 });
 
 

@@ -158,14 +158,14 @@ function peerConnectionBroken() {
        $(".dialog").css("margin-left", "174.5px");
        $(".dialog").css("padding", "0px");
        setTimeout(function() {
-         $(".dialog").css("opacity", "0");
+         $(".dialog").css("display", "none");
        }, 400);
      });
      dialogMe();
     // alert("Peer has disconnected");
     // alert("Hold on, we'll try and reconnect");
 
-    $("#remoteFileListContainer").fadeOut();
+    $("#remoteFileListContainer").hide();
     $("connectionStatus").hide();
       $("#sendIdThenHide").fadeIn();
     // var connectionStateBox = document.getElementById('connectionStatus');

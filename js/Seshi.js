@@ -956,6 +956,12 @@ Seshi = {
                             for (var fileId in Seshi.storeProgress) {
                                 if( Seshi.storeProgress[fileId].complete == false)
                                 {
+                                    //Delete completed file transfers which miss complete flag
+                                    if ( Seshi.storeProgress[fileId].currentChunk == Seshi.storeProgress[fileId].totalNumChunks ) 
+                                    {
+                                        delete(Seshi.storeProgress[fileId]);
+                                        continue;
+                                    }
                                     var file = Seshi.storeProgress[fileId];
                                     console.log(fileId);
                                     file.fileId = fileId;
@@ -1067,12 +1073,12 @@ Seshi = {
 
                             console.log(filesRequested);
                             //Work out what they want
-                            var filesRequested = JSON.parse(filesRequested.data);
+                            //var filesRequested = JSON.parse(filesRequested.data);
 
                             //Loop though each request sending the file to the peer as requested
-                            for (var i=0;i<filesRequested.length;i++)
+                            for (var i=0;i<filesRequested.data.length;i++)
                             {
-                                Seshi.sendFileToPeer(filesRequested[i]);
+                                Seshi.sendFileToPeer(filesRequested.data[i]);
                             }//End loop through each request sending the file to thhe peer as requested
     },
     syncData:function(){

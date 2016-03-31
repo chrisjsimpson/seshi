@@ -10,7 +10,8 @@ Seshi = {
                     })(),
     config:{
         "SeshiBotOn":false,
-        "YoloInitMsg":false
+        "YoloInitMsg":false,
+        "AUTO_RESUME_INCOMPLETE_TRANSFERS_ON":true
     },
     init:function(){
                         /* Initialise Seshi
@@ -94,6 +95,7 @@ Seshi = {
                             }//End else incriment currentChunk using current value
 
                             Seshi.storeProgress[progressData.fileId] = {
+                                "fileId":progressData.fileId,
                                 "fileName":progressData.fileName,
                                 "currentChunk":currentChunk + 1,
                                 "totalNumChunks":progressData.totalNumChunks,
@@ -691,15 +693,38 @@ Seshi = {
                             console.error(err);
                         });//End get fildIdChunks from fileId
     },
-    sendFileToPeer:function(fileId) {
-                        /* Sends given file (fieId) over Datachannel to connected peer
-                         * For each chunk found, send over data channel until 'last chunk'* has been sent.
+    sendFileToPeer:function(sendDataRequest) {
+                        /* Sends file over Datachannel to connected peer
+                         * Send over data channel requested (ALL or PART) of file
                          * The following comments require multipeer (TODO)
                          *  > *Not all peers will have all chunks to the file, some may only have a subset.
                          *  > Close the connection? no.
                          *  > Exchange useful data:
                          *      Share known signaling servers, peer exchange, file lists (names), boxIds
                         */
+                        //Work our request type to determine chunk offset (if RANGE request)
+                        var fileId = undefined;
+                        var requestedOffset = 0;
+                        switch(sendDataRequest.requestType)
+                        {
+                            case 'ALL':
+                                console.log("Processing request for fileId: " + sendDataRequest.fileId);
+                                fileId = sendDataRequest.fileId;
+                                break;
+                            case 'CHUNK':
+                                console.log("Request for single chunk..");
+                                break;
+                            case 'CHUNK-RANGE':
+                                console.log("Processing request for chunk range for fileId: " + sendDataRequest.fileId);
+                                fileId = sendDataRequest.fileId;
+                                requestedOffset = sendDataRequest.rangeStart;
+                            case 'RANGE':
+                                console.log("Request for RANGE of chunks..");
+                                break;
+                            default:
+                                fileId = sendDataRequest;
+                                console.log("Default fallback to Processing request for entire fileId: " + fileId); 
+                        }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
 
                         //Set flag for outbox
                         Seshi.flagProcessOutboxStarted = true;
@@ -710,7 +735,7 @@ Seshi = {
                         }//End check Datachannel is actually open
 
                         db.transaction('r', db.chunks, function() {
-                            db.chunks.where("fileId").equals(fileId).each(function(chunk) {
+                            db.chunks.where("fileId").equals(fileId).offset(requestedOffset).each(function(chunk) {
                             //Transaction scope
                             //Sending file meta...
                             var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
@@ -806,7 +831,7 @@ Seshi = {
                     //Fire sendFileProgressUpdate event so sender knows to update their UI with sending progress bar
                     dispatchEvent(sendFileProgressUpdate);
                     //Delete completed storeProgess
-                    if(Seshi.sendingFileProgess[ack.fileId].complete == true)
+                    if(Seshi.sendingFileProgress[ack.fileId].complete == true)
                     {
                         delete(Seshi.sendingFileProgress[ack.fileId]);
                     }
@@ -880,6 +905,71 @@ Seshi = {
                             console.log('Saved sending progress to local storage');
     },
     sendingFileProgress:[],
+    checkForIncompleteTransfers:function() {
+                            /* checkForIncompleteTransfers()
+                             *
+                             *   Checks for incomplete push & pull trnasfers
+                             *   If found, fire {} events to UI to request 
+                             *   resume of these files. OR auto recommence 
+                             *   if AUTO_RESUME_INCOMPLETE_TRANSFERS flag is set.
+                             */
+                            
+                            if (Seshi.config.AUTO_RESUME_INCOMPLETE_TRANSFERS_ON) 
+                            {
+                                //Query Seshi.storeProgress for incomplete transfers
+                                var incompletePulls = Seshi.getIncompletePulls();
+                                if (!incompletePulls.length)
+                                { 
+                                    console.log("Nothing to send, there are no incomplete pulls."); 
+                                    return;
+                                }//End exit if there are no incomplete pulls
+                                var filesRequested = [];
+                                //request each incomplete file from peer using RANGE request
+                                incompletePulls.forEach(
+                                        function(file) {
+                                            console.log("Should ask for: " + file);
+                                            //Build RANGE request
+                                           filesRequested.push(
+                                               {
+                                                    "fileId":file.fileId,
+                                                    "requestType":"CHUNK-RANGE",
+                                                    "rangeStart":file.currentChunk,
+                                                    "rangeEnd": file.totalNumChunks
+                                                });//End push request for incomplete file onto array.
+                                }); //End request each incomplete file from peer (RANGE request)
+                                
+                                var msg = {"cmd":"requestFilesById", "data":filesRequested};
+                                msg = JSON.stringify(msg);
+                                dc.send(msg); //TODO this presumes a peer connection..it should not
+                                return;
+                            }//End if AUTO_RESUME_INCOMPLETE_TRANSFERS_ON resume transfers 
+    },
+    getIncompletePulls:function(){
+                            /* Returns an array of incomplete pulls
+                             *  Each element contains:
+                             *  > fileId
+                             *  > currentChunk
+                             *  > totalNumChunks
+                             *  > fileName  
+                            */
+                            var fileList = [];
+                            for (var fileId in Seshi.storeProgress) {
+                                if( Seshi.storeProgress[fileId].complete == false)
+                                {
+                                    var file = Seshi.storeProgress[fileId];
+                                    console.log(fileId);
+                                    file.fileId = fileId;
+                                    fileList.push(file);
+                                }
+                            }
+                            
+                            if (fileList.length > 0)
+                            {
+                                return fileList; 
+                            }
+                            console.log('There were no incomplete pulls found.'); 
+                            return false;
+    },
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
                             //Check dosen't already exist
@@ -982,21 +1072,7 @@ Seshi = {
                             //Loop though each request sending the file to the peer as requested
                             for (var i=0;i<filesRequested.length;i++)
                             {
-                                //Work our request type:
-                                switch(filesRequested[i].requestType)
-                                {
-                                    case 'ALL':
-                                        Seshi.sendFileToPeer(filesRequested[i].fileId);
-                                        break;
-                                    case 'CHUNK':
-                                        console.log("Request for single chunk..");
-                                        break;
-                                    case 'RANGE':
-                                        console.log("Request for RANGE of chunks..");
-                                        break;
-                                    default:
-                                        Seshi.sendFileToPeer(filesRequested[i]);
-                                }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
+                                Seshi.sendFileToPeer(filesRequested[i]);
                             }//End loop through each request sending the file to thhe peer as requested
     },
     syncData:function(){

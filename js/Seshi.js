@@ -718,6 +718,7 @@ Seshi = {
                                 console.log("Processing request for chunk range for fileId: " + sendDataRequest.fileId);
                                 fileId = sendDataRequest.fileId;
                                 requestedOffset = sendDataRequest.rangeStart;
+                                break;
                             case 'RANGE':
                                 console.log("Request for RANGE of chunks..");
                                 break;
@@ -933,7 +934,7 @@ Seshi = {
                                                {
                                                     "fileId":file.fileId,
                                                     "requestType":"CHUNK-RANGE",
-                                                    "rangeStart":file.currentChunk,
+                                                    "rangeStart":file.currentChunk + 1,
                                                     "rangeEnd": file.totalNumChunks
                                                 });//End push request for incomplete file onto array.
                                 }); //End request each incomplete file from peer (RANGE request)
@@ -1076,9 +1077,21 @@ Seshi = {
                             //var filesRequested = JSON.parse(filesRequested.data);
 
                             //Loop though each request sending the file to the peer as requested
-                            for (var i=0;i<filesRequested.data.length;i++)
+                            try { //Interprit filesRequested.data as stringified object
+                                var requestedFileList = JSON.parse(filesRequested.data);
+                            } catch (e) {
+                                console.log("Could not parse as JSON stringified object. Trying as object");
+                            }
+                            try { //Interprit as already an object
+                                var requestedFileList = filesRequested.data;
+                            } catch (e) {
+                                console.log("Could not interprit filesRequested, exiting.");
+                                return;
+                            }
+
+                            for (var i=0;i<requestedFileList.length;i++)
                             {
-                                Seshi.sendFileToPeer(filesRequested.data[i]);
+                                Seshi.sendFileToPeer(requestedFileList[i]);
                             }//End loop through each request sending the file to thhe peer as requested
     },
     syncData:function(){

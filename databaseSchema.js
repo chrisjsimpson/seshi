@@ -4,7 +4,7 @@ var db = new Dexie('seshi');
 //Define a schema
 db.version(1)
     .stores({
-        chunks: '[fileId+chunkNumber],*fileId, boxId'
+        chunks: '[fileId+chunkNumber],fileId, boxId'
     });
 
 //Open the database

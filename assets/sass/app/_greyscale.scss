@@ -791,3 +791,10 @@ img {
       }
     }
 }
+
+/*large desktops*/
+@media(min-width: 1440px) {
+  #landingpage {
+    background-size: 100% auto;
+  }
+}

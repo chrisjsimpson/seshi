@@ -11890,81 +11890,12 @@ if($(window).scrollTop() > (topOfOthDiv - 130)) { //scrolled past the other div?
 
 //pyr plugin
 
+
+$(".dialog").before("<div class='dialogBlack'></div>");
+
+$(".dialog").prepend('<div id="close">x</div>');
+
 });
-
-
-
-
-(function(window) {
-    function triggerCallback(e, callback) {
-      if(!callback || typeof callback !== 'function') {
-        return;
-      }
-      var files;
-      if(e.dataTransfer) {
-        files = e.dataTransfer.files;
-      } else if(e.target) {
-        files = e.target.files;
-      }
-      callback.call(null, files);
-    }
-
-
-    function makeDroppable(ele, callback) {
-      var input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.setAttribute('multiple', true);
-      input.style.display = 'none';
-      input.addEventListener('change', function(e) {
-        triggerCallback(e, callback);
-      });
-      ele.appendChild(input);
-
-      ele.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-          ele.style.zIndex = '3';
-          $(".dropit").css('background-color', 'rgba(0,0,0,0.2)');
-        ele.classList.add('dragover');
-
-      });
-
-      ele.addEventListener('dragleave', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-         ele.style.zIndex = '1';
-         $(".dropit").css('background-color', 'rgba(255,255,255,0.6)');
-        ele.classList.remove('dragover');
-
-      });
-
-      ele.addEventListener('drop', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        ele.classList.remove('dragover');
-        ele.style.zIndex = '1';
-        $(".dropit").css('background-color', 'rgba(255,255,255,0.6)');
-        storeFile(this.files);
-        triggerCallback(e, callback);
-      });
-
-      // ele.addEventListener('click', function() {
-      //   input.value = null;
-      //   input.click();
-      // });
-    }
-    window.makeDroppable = makeDroppable;
-  })(this);
-  (function(window) {
-    makeDroppable(window.document.querySelector('.demo-droppable'), function(files) {
-      console.log(files);
-      // var output = document.querySelector('.output');
-      // output.innerHTML = '';
-      // for(var i=0; i<files.length; i++) {
-      //   output.innerHTML += '<p>'+files[i].name+'</p>';
-      // }
-    });
-  })(this);
 
 // /*
 // JS Modified from a tutorial found here:

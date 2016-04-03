@@ -64,7 +64,6 @@ label {
 
 .fullwidthcard {
   padding:0;
-  z-index: 2;
   // margin-top:24px;
   h4 {
     color: $kinddarkgrey;
@@ -827,7 +826,7 @@ margin: 0 auto;
 margin-top: 15px;
 width: 40%;
 // float:right;
-z-index: 999;
+z-index: 1;
 transition: width 0.3s;
 display:none;
 }
@@ -843,7 +842,7 @@ margin-right: 30px;
   letter-spacing: 0.5px;
   color: #222;
   margin: 0 auto;
-  padding: 11px 0;
+  padding: 11px 6px;
 }
 
 /*large clipboard send link overwrite */
@@ -1157,15 +1156,15 @@ width: 100%;
 
   }
   .copyclipboard-card {
-    height:145px;
+    height:155px;
     margin-top: 15px;
   }
 }
 
 /*small phones  portrait*/
 
-@media(max-width: 767px) {
-  .fullwidthcard {
-    top: 0;
+@media(max-width: 380px) {
+  input[id="shareKeyInputElm"] {
+    width: 70vw;
   }
 }

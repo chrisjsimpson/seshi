@@ -1,0 +1,93 @@
+
+
+#dialogMe
+{
+  background: #fff;
+  color: #212121;
+  border: 1px solid #212121;
+  border-radius: 2px;
+  padding: 10px;
+}
+
+.dialog {
+  margin: 0;
+  background: #fff;
+  display: none;
+  font-family: 'Signika', sans-serif;
+  color:#000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 185px;
+  margin-left: -150px;
+  margin-top: -92.5px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+  z-index: 1500;
+}
+
+.dialog h2 {
+  margin-top: 0px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#close {
+  float: right;
+  font-size: 20px;
+  margin-top: -2.5px;
+  cursor: pointer;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+#okButton {
+  position: absolute !important;
+  left: 49%;
+  bottom: 11%;
+  margin-left: -75px;
+  position: relative;
+  width: 150px;
+  height: 37px;
+  border: none;
+  outline: none;
+  letter-spacing: 3px;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  border-radius: 3px;
+  background:#2299e3;
+  color: #fff;
+}
+
+.dialogBlack {
+  margin: 0;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background: #000;
+  opacity: 0;
+  display:none;
+  z-index: -5;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+
+/*768px*/
+// @media(max-width: $screen-xs-max) {
+//
+// }

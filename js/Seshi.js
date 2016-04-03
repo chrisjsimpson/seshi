@@ -704,26 +704,30 @@ Seshi = {
                         */
                         //Work our request type to determine chunk offset (if RANGE request)
                         var fileId = undefined;
+                        var whereClause = 'fileId';
+                        var equalsClause = undefined;
                         var requestedOffset = 0;
                         switch(sendDataRequest.requestType)
                         {
                             case 'ALL':
                                 console.log("Processing request for fileId: " + sendDataRequest.fileId);
-                                fileId = sendDataRequest.fileId;
+                                equalsClause = sendDataRequest.fileId;
                                 break;
                             case 'CHUNK':
                                 console.log("Request for single chunk..");
+                                whereClause = "[fileId+chunkNumber]"; //Search by compound index for single chunk
+                                equalsClause = [ sendDataRequest.fileId, sendDataRequest.chunkNumber];
                                 break;
                             case 'CHUNK-RANGE':
                                 console.log("Processing request for chunk range for fileId: " + sendDataRequest.fileId);
-                                fileId = sendDataRequest.fileId;
+                                equalsClause = sendDataRequest.fileId;
                                 requestedOffset = sendDataRequest.rangeStart;
                                 break;
                             case 'RANGE':
                                 console.log("Request for RANGE of chunks..");
                                 break;
                             default:
-                                fileId = sendDataRequest;
+                                equalsClause = sendDataRequest;
                                 console.log("Default fallback to Processing request for entire fileId: " + fileId); 
                         }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
 
@@ -736,7 +740,7 @@ Seshi = {
                         }//End check Datachannel is actually open
 
                         db.transaction('r', db.chunks, function() {
-                            db.chunks.where("fileId").equals(fileId).offset(requestedOffset).each(function(chunk) {
+                            db.chunks.where(whereClause).equals(equalsClause).offset(requestedOffset).each(function(chunk) {
                             //Transaction scope
                             //Sending file meta...
                             var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};

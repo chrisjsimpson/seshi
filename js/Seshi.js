@@ -425,7 +425,7 @@ Seshi = {
                             //Query IndexedDB to get the file
                             db.transaction('r', db.chunks, function() {
                                 //Transaction scope
-                                db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                                db.chunks.where("fileId").equals(fileId).sortBy("chunkNumber").then(function(chunks) {
                                             console.log("Found " + chunks.length + " chunks");
                                             var allChunksArray = [];
                                             //Just get blob cunks (without meta info)
@@ -946,7 +946,11 @@ Seshi = {
                             }//End if AUTO_RESUME_INCOMPLETE_TRANSFERS_ON resume transfers 
     },
     getIncompletePulls:function(){
-                            /* Returns an array of incomplete pulls
+                            /* Returns an array of incomplete pulls with their 
+                             * ranges needed. (a file may have 'holes' in it)
+                             * This method works out the range requests needed
+                             * to reform the file.
+                             *
                              *  Each element contains:
                              *  > fileId
                              *  > currentChunk
@@ -976,6 +980,43 @@ Seshi = {
                             }
                             console.log('There were no incomplete pulls found.'); 
                             return false;
+    },
+    calculateMissingChunks:function(fileId){
+                            /* calculateMissingChunks(fildId)
+                             *
+                             *  Returns array of chunk numbers missing
+                             *  (if any) for a given fileId).
+                             *
+                             *  TODO return RANGES of contigious missing 
+                             *  chunks if possible.
+                             */
+                            //Get total number of chunks for fileId (how many there should be, not how many we have)
+                            db.chunks.where("fileId").equals("066bdb26735801a6c75518d8624d771b995206354d83c47b34b3364ed4897e79")
+                            .first(function(first){
+                                var numberOfChunks = first.numberOfChunks;
+                                var haveChunks = [];
+                                //Iterate over every chunk to identify which chunks are present. 
+                                //TODO this is stupid. Just query indexed DB and generate an array of existing keys,
+                                // no to to itteratate over each chunk for fileId.numberOfChunks times! 
+                                db.chunks.where("fileId").equals("066bdb26735801a6c75518d8624d771b995206354d83c47b34b3364ed4897e79")
+                                    .each(function(chunk){
+                                    //console.log(chunk.chunkNumber);
+                                    for (var i=0;i<510;i++) {
+                                        if(chunk.chunkNumber == i) {
+                                            console.log("We've got: " + chunk.chunkNumber);
+                                            haveChunks.push(chunk.chunkNumber);
+                                        }
+                                    }//End query database for every chunk. lots of times.. ouch.
+                                }).then(function(){
+                                    //Sort the haveChunks array ascending
+                                    haveChunks = haveChunks.sort(function(a,b){return a - b;});
+                                });
+                                
+                            }) //End get number of chunks for the complete file, and work out missing chunks.
+                            .catch(function(err) {
+                                console.log("Error:");
+                                console.error(err);
+                            });
     },
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */

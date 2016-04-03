@@ -928,21 +928,26 @@ Seshi = {
                                 //request each incomplete file from peer using RANGE request
                                 incompletePulls.forEach(
                                         function(file) {
-                                            console.log("Should ask for: " + file);
-                                            //Build RANGE request
-                                           filesRequested.push(
+                                           console.log("Should ask for: " + file);
+                                           //Get chunks needed, then send chunk pull request
+                                           Seshi.calculateMissingChunks(file.fileId)
+                                           .then(function(chunksMissing) {
+                                               chunksMissing.forEach(function(chunkNumber)
                                                {
-                                                    "fileId":file.fileId,
-                                                    "requestType":"CHUNK-RANGE",
-                                                    "rangeStart":file.currentChunk + 1,
-                                                    "rangeEnd": file.totalNumChunks
-                                                });//End push request for incomplete file onto array.
-                                }); //End request each incomplete file from peer (RANGE request)
+                                                    filesRequested.push(
+                                                    {
+                                                        "fileId":file.fileId,
+                                                        "requestType":"CHUNK",
+                                                        "chunkNumber":chunkNumber
+                                                    });//End push request for incomplete file onto array.
+                                               });// End build filesRequested array containing missing chunks to request
+                                                var msg = {"cmd":"requestFilesById", "data":filesRequested};
+                                                msg = JSON.stringify(msg);
+                                                dc.send(msg); //TODO this presumes a peer connection..it should not
+                                                return;
+                                           });//End got array of which chunk numbers are missing
+                                }); //End request each incomplete file from peer
                                 
-                                var msg = {"cmd":"requestFilesById", "data":filesRequested};
-                                msg = JSON.stringify(msg);
-                                dc.send(msg); //TODO this presumes a peer connection..it should not
-                                return;
                             }//End if AUTO_RESUME_INCOMPLETE_TRANSFERS_ON resume transfers 
     },
     getIncompletePulls:function(){
@@ -990,33 +995,40 @@ Seshi = {
                              *  TODO return RANGES of contigious missing 
                              *  chunks if possible.
                              */
-                            //Get total number of chunks for fileId (how many there should be, not how many we have)
-                            db.chunks.where("fileId").equals("066bdb26735801a6c75518d8624d771b995206354d83c47b34b3364ed4897e79")
-                            .first(function(first){
-                                var numberOfChunks = first.numberOfChunks;
-                                var haveChunks = [];
-                                //Iterate over every chunk to identify which chunks are present. 
-                                //TODO this is stupid. Just query indexed DB and generate an array of existing keys,
-                                // no to to itteratate over each chunk for fileId.numberOfChunks times! 
-                                db.chunks.where("fileId").equals("066bdb26735801a6c75518d8624d771b995206354d83c47b34b3364ed4897e79")
-                                    .each(function(chunk){
-                                    //console.log(chunk.chunkNumber);
-                                    for (var i=0;i<510;i++) {
-                                        if(chunk.chunkNumber == i) {
-                                            console.log("We've got: " + chunk.chunkNumber);
+                            var promise = new Promise(function(resolve, reject) {
+                                //Get total number of chunks for fileId (how many there should be, not how many we have)
+                                db.chunks.where("fileId").equals(fileId)
+                                .first(function(first){
+                                    expectedNumberOfChunks = first.numberOfChunks;
+                                    var haveChunks = [];
+                                    //Iterate over every chunk to identify which chunks are present. 
+                                    //TODO this is stupid. Just query indexed DB and generate an array of existing keys,
+                                    // no to to itteratate over each chunk for fileId.numberOfChunks times! 
+                                    db.chunks.where("fileId").equals(fileId)
+                                        .each(function(chunk){
                                             haveChunks.push(chunk.chunkNumber);
+                                    }).then(function(){
+                                        //Sort the haveChunks array ascending
+                                        haveChunks = haveChunks.sort(function(a,b){return a - b;});
+                                        missingChunks = [];
+                                        //Loop though chunks we do have to identify missing chunk numbers
+                                        for ( var i=0; i< expectedNumberOfChunks;i++ )
+                                        {
+                                           if (haveChunks.indexOf(i) == -1)
+                                           {
+                                                missingChunks.push(i);
+                                           }
                                         }
-                                    }//End query database for every chunk. lots of times.. ouch.
-                                }).then(function(){
-                                    //Sort the haveChunks array ascending
-                                    haveChunks = haveChunks.sort(function(a,b){return a - b;});
+                                                resolve(missingChunks); //Resolve promise (return array of missing chunks)
+                                    });
+                                    
+                                }) //End get number of chunks for the complete file, and work out missing chunks.
+                                .catch(function(err) {
+                                    console.log("Error:");
+                                    console.error(err);
                                 });
-                                
-                            }) //End get number of chunks for the complete file, and work out missing chunks.
-                            .catch(function(err) {
-                                console.log("Error:");
-                                console.error(err);
-                            });
+                            });//End promise (return array of missing chunks for given fileId
+                            return promise;
     },
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */

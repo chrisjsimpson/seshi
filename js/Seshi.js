@@ -1034,6 +1034,16 @@ Seshi = {
                             });//End promise (return array of missing chunks for given fileId
                             return promise;
     },
+    buildRangeRequests: function(fileId) {
+                            /* 
+                             *
+                             */
+                            Seshi.calculateMissingChunks(fileId)
+                            .then(function(chunksList) {
+                                console.log("Chunks list: ");
+                                console.log(chunksList);
+                            });
+    },
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
                             //Check dosen't already exist

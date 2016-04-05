@@ -707,22 +707,25 @@ Seshi = {
                         var whereClause = 'fileId';
                         var equalsClause = undefined;
                         var requestedOffset = 0;
+                        var partialSendBool = true;
                         switch(sendDataRequest.requestType)
                         {
                             case 'ALL':
                                 console.log("Processing request for fileId: " + sendDataRequest.fileId);
                                 equalsClause = sendDataRequest.fileId;
+                                partialSendBool = false
                                 break;
                             case 'CHUNK':
                                 console.log("Request for single chunk..");
                                 whereClause = "[fileId+chunkNumber]"; //Search by compound index for single chunk
                                 equalsClause = [ sendDataRequest.fileId, sendDataRequest.chunkNumber];
+                                limitCount = 1;
                                 break;
                             case 'CHUNK-RANGE':
                                 console.log("Processing request for chunk range for fileId: " + sendDataRequest.fileId);
                                 equalsClause = sendDataRequest.fileId;
                                 requestedOffset = sendDataRequest.rangeStart;
-                                limitCount = sendDataRequest.rangeEnd;
+                                limitCount = (sendDataRequest.rangeEnd - requestedOffset) + 1;
                                 break;
                             case 'RANGE':
                                 console.log("Request for RANGE of chunks..");
@@ -730,6 +733,7 @@ Seshi = {
                             default:
                                 equalsClause = sendDataRequest;
                                 console.log("Default fallback to Processing request for entire fileId: " + fileId); 
+                                partialSendBool = false;
                         }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
 
                         //Set flag for outbox
@@ -740,34 +744,72 @@ Seshi = {
                             return false;
                         }//End check Datachannel is actually open
 
-                        db.transaction('r', db.chunks, function() {
-                            db.chunks.where(whereClause).equals(equalsClause).offset(requestedOffset).limit(limitCount).each(function(chunk) {
-                            //Transaction scope
-                            //Sending file meta...
-                            var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
-                            var lengthOfMeta = JSON.stringify(meta).length;
-                            lengthOfMeta = zeroFill(lengthOfMeta, 64);
-                            var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
-                            var header = JSON.stringify(metaLength) + JSON.stringify(meta);
-                            var sendChunk = new Blob([header, chunk.chunk]);
-                            //Add chunk to outBox for sending
-                            Seshi.outBox.push({
-                                percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
-                                fileName: chunk.fileName,
-                                fileId: chunk.fileId,
-                                fileType: chunk.fileType,
-                                chunkNumber: chunk.chunkNumber,
-                                numberOfChunks: chunk.numberOfChunks,
-                                chunk: sendChunk
-                            });
-                            Seshi.processOutbox();
-                            //Close outbox flag so we don't repeatedly open a new filereader
-                            Seshi.flagProcessOutboxStarted=false;
+                        if(partialSendBool)
+                        {
+                            db.transaction('r', db.chunks, function() {
+                                db.chunks.where(whereClause).equals(equalsClause).offset(requestedOffset).limit(limitCount).sortBy("chunkNumber").
+                                then(function(chunks) 
+                                {
+                                    chunks.forEach(function(chunk) 
+                                    {
+                                    //Transaction scope
+                                    //Sending file meta...
+                                    var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+                                    var lengthOfMeta = JSON.stringify(meta).length;
+                                    lengthOfMeta = zeroFill(lengthOfMeta, 64);
+                                    var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
+                                    var header = JSON.stringify(metaLength) + JSON.stringify(meta);
+                                    var sendChunk = new Blob([header, chunk.chunk]);
+                                    //Add chunk to outBox for sending
+                                    Seshi.outBox.push({
+                                        percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
+                                        fileName: chunk.fileName,
+                                        fileId: chunk.fileId,
+                                        fileType: chunk.fileType,
+                                        chunkNumber: chunk.chunkNumber,
+                                        numberOfChunks: chunk.numberOfChunks,
+                                        chunk: sendChunk
+                                        });
+                                        if(Seshi.outBox.length > 0) 
+                                        {
+                                            Seshi.flagProcessOutboxStarted=true;
+                                            Seshi.processOutbox();
+                                            //Close outbox flag so we don't repeatedly open a new filereader
+                                            Seshi.flagProcessOutboxStarted=false;
+                                        }
+                                    });//End add each chunk from range to Seshi.outBox
+                                 })})
 
-                            }).then(function(){
-                            Seshi.flagProcessOutboxStarted = true;
-                            Seshi.processOutbox();
-                            })});
+                        } else { //Send all chunks fallback
+                            db.transaction('r', db.chunks, function() {
+                                db.chunks.where(whereClause).equals(equalsClause).each(function(chunk) {
+                                //Transaction scope
+                                //Sending file meta...
+                                var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+                                var lengthOfMeta = JSON.stringify(meta).length;
+                                lengthOfMeta = zeroFill(lengthOfMeta, 64);
+                                var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
+                                var header = JSON.stringify(metaLength) + JSON.stringify(meta);
+                                var sendChunk = new Blob([header, chunk.chunk]);
+                                //Add chunk to outBox for sending
+                                Seshi.outBox.push({
+                                    percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
+                                    fileName: chunk.fileName,
+                                    fileId: chunk.fileId,
+                                    fileType: chunk.fileType,
+                                    chunkNumber: chunk.chunkNumber,
+                                    numberOfChunks: chunk.numberOfChunks,
+                                    chunk: sendChunk
+                                });
+                                Seshi.processOutbox();
+                                //Close outbox flag so we don't repeatedly open a new filereader
+                                Seshi.flagProcessOutboxStarted=false;
+
+                                }).then(function(){
+                                Seshi.flagProcessOutboxStarted = true;
+                                Seshi.processOutbox();
+                                })});
+                        }//End Send all fallback
     },
     outBox:[],
     flagProcessOutboxStarted:true,
@@ -783,22 +825,21 @@ Seshi = {
                         function loadNext() {
 
                         fr.onload = function(chunk) {
-                              if (Seshi.outBox.length >= 0) {
                                 //Add chunk to buffer
                                 Seshi.buffer.push(chunk.target.result);
                                 Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
                                     //Kill off fileReader if we've reached the end
                                     if(Seshi.outBox.length == 0)
                                     {
-                                        fr = undefined;
+                                        //fr = undefined;
                                     }//End kill off fileReader if we've reached the end
                                 loadNext(); // shortcut here
-                              }
                            };
+                            if(Seshi.outBox.length > 0) {
                             //Get next chunk from outbox (presuming there is one)
                             chunkData = Seshi.outBox.pop();
-
-                        fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk
+                            fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk
+                            }
                         }
 
                         loadNext();
@@ -1031,11 +1072,8 @@ Seshi = {
                              */
                             return new Promise(function(resolve, reject)
                             {
-                                fileId = "066bdb26735801a6c75518d8624d771b995206354d83c47b34b3364ed4897e79";
                                 Seshi.calculateMissingChunks(fileId)
                                 .then(function(list) {
-                                    console.log("Chunks list: ");
-                                    console.log(list);
                                     //Sort list
                                     list = list.sort(function(a, b) {
                                           return a - b
@@ -1045,7 +1083,7 @@ Seshi = {
                                      * 
                                      */
                                     Seshi.ranges = [];
-                                    buildRanges(list).then(function(){resolve(); console.log(Seshi.ranges);});
+                                    buildRanges(list).then(function(){resolve();});
                                     function buildRanges(list) {
                                         var promises = [];
                                         //Iterate over 
@@ -1059,18 +1097,18 @@ Seshi = {
                                     function checkForSpace(chunkNumber) {
                                         return new Promise(function(resolve, reject) 
                                         {
-
-                                            //Loop through all existing rages to see if there's a gap.
-                                            for (var i=0;i<Seshi.ranges.length; i++)
-                                            { //If there's space, add it to an existing range
-                                                //Check if chunkNumber is equal to range.end + 1, if so, update this range element.
-                                                if ( Seshi.ranges[i].end + 1 == chunkNumber ) 
-                                                {
-                                                     Seshi.ranges[i].end = chunkNumber;
-                                                     resolve(); //Resolve (updated existing range)
-                                                     return true;
-                                                }
-                                            }//End Loop through all existing rages to see if there's a gap.
+                                            //Check last element of Seshi.ranges array to see if there's a gap.
+                                            //If chunkNumber is equal to range.end + 1, update the rangeEnd
+                                            //for this element.
+                                        if (Seshi.ranges[Seshi.ranges.length - 1] !== undefined)
+                                        {
+                                            if ( Seshi.ranges[Seshi.ranges.length - 1].rangeEnd + 1 == chunkNumber ) 
+                                            {
+                                                 Seshi.ranges[Seshi.ranges.length - 1].rangeEnd = chunkNumber;
+                                                 resolve(); //Resolve (updated existing range)
+                                                 return true;
+                                            }
+                                        }//End check Seshi.ranges[Seshi.ranges.length - 1] is defined (won't be first iteration)
 
                                             //Otherwise, create new range element in ranges array.
                                                 Seshi.ranges.push({requestType:'CHUNK-RANGE',rangeStart:chunkNumber, rangeEnd:chunkNumber, fileId:fileId});
@@ -1487,6 +1525,8 @@ function onIceconnectionStateChanged(e) {
         dispatchEvent(onPeerConnectionEstablished);
         //Remove key guard from localstorage which prevents users from connecting to themselves
         localStorage.removeItem('key');
+        //Check for incomplete transfers (auto resumes them if AUTO_RESUME_INCOMPLETE_TRANSFERS_ON)
+        Seshi.checkForIncompleteTransfers();
     }//End if iceConnectionState == Completed
 
     if (pc.iceConnectionState == 'disconnected') {
@@ -1761,8 +1801,6 @@ function sendChunksToPeer(e, fileId) {
 
 } //End sendChunksToPeer
 
-
->>>>>>> Stashed changes
 
 function sendMostRecentFile() {
 	//Get most recently added file (stored in localstorage.getItem('lastItem'))

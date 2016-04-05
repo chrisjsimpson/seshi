@@ -722,6 +722,7 @@ Seshi = {
                                 console.log("Processing request for chunk range for fileId: " + sendDataRequest.fileId);
                                 equalsClause = sendDataRequest.fileId;
                                 requestedOffset = sendDataRequest.rangeStart;
+                                limitCount = sendDataRequest.rangeEnd;
                                 break;
                             case 'RANGE':
                                 console.log("Request for RANGE of chunks..");
@@ -740,7 +741,7 @@ Seshi = {
                         }//End check Datachannel is actually open
 
                         db.transaction('r', db.chunks, function() {
-                            db.chunks.where(whereClause).equals(equalsClause).offset(requestedOffset).each(function(chunk) {
+                            db.chunks.where(whereClause).equals(equalsClause).offset(requestedOffset).limit(limitCount).each(function(chunk) {
                             //Transaction scope
                             //Sending file meta...
                             var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
@@ -934,21 +935,14 @@ Seshi = {
                                         function(file) {
                                            console.log("Should ask for: " + file);
                                            //Get chunks needed, then send chunk pull request
-                                           Seshi.calculateMissingChunks(file.fileId)
-                                           .then(function(chunksMissing) {
-                                               chunksMissing.forEach(function(chunkNumber)
+                                           Seshi.buildRangeRequests(file.fileId)
+                                           .then(function() {
+                                               Seshi.ranges.forEach(function(rangeRequest)
                                                {
-                                                    filesRequested.push(
-                                                    {
-                                                        "fileId":file.fileId,
-                                                        "requestType":"CHUNK",
-                                                        "chunkNumber":chunkNumber
-                                                    });//End push request for incomplete file onto array.
-                                               });// End build filesRequested array containing missing chunks to request
-                                                var msg = {"cmd":"requestFilesById", "data":filesRequested};
+                                                var msg = {"cmd":"requestFilesById", "data":rangeRequest};
                                                 msg = JSON.stringify(msg);
                                                 dc.send(msg); //TODO this presumes a peer connection..it should not
-                                                return;
+                                               });// End build filesRequested array containing missing chunks to request
                                            });//End got array of which chunk numbers are missing
                                 }); //End request each incomplete file from peer
                                 
@@ -995,9 +989,6 @@ Seshi = {
                              *
                              *  Returns array of chunk numbers missing
                              *  (if any) for a given fileId).
-                             *
-                             *  TODO return RANGES of contigious missing 
-                             *  chunks if possible.
                              */
                             var promise = new Promise(function(resolve, reject) {
                                 //Get total number of chunks for fileId (how many there should be, not how many we have)
@@ -1038,7 +1029,9 @@ Seshi = {
                             /* 
                              *
                              */
-                                fileId = "9a220d012f6f126ce82bd01ecb61485be942a77c69086f5a60daed9496f15e56";
+                            return new Promise(function(resolve, reject)
+                            {
+                                fileId = "066bdb26735801a6c75518d8624d771b995206354d83c47b34b3364ed4897e79";
                                 Seshi.calculateMissingChunks(fileId)
                                 .then(function(list) {
                                     console.log("Chunks list: ");
@@ -1052,32 +1045,40 @@ Seshi = {
                                      * 
                                      */
                                     Seshi.ranges = [];
-                                    buildRanges(list);
+                                    buildRanges(list).then(function(){resolve(); console.log(Seshi.ranges);});
                                     function buildRanges(list) {
+                                        var promises = [];
                                         //Iterate over 
                                         for (var i=0;i<list.length; i++)
                                         {
-                                            checkForSpace(list[i]); 
+                                            promises.push(checkForSpace(list[i])); 
                                         }//End iterate over list.
+                                        return Promise.all(promises);
                                     }//End buildRanges
 
                                     function checkForSpace(chunkNumber) {
-                                        //Loop through all existing rages to see if there's a gap.
-                                        for (var i=0;i<Seshi.ranges.length; i++)
-                                        { //If there's space, add it to an existing range
-                                            //Check if chunkNumber is equal to range.end + 1, if so, update this range element.
-                                            if ( Seshi.ranges[i].end + 1 == chunkNumber ) 
-                                            {
-                                                 Seshi.ranges[i].end = chunkNumber;
-                                                 return true;
-                                            }
-                                        }//End Loop through all existing rages to see if there's a gap.
+                                        return new Promise(function(resolve, reject) 
+                                        {
 
-                                        //Otherwise, create new range element in ranges array.
-                                            Seshi.ranges.push({start:chunkNumber, end:chunkNumber, fileId:fileId});
+                                            //Loop through all existing rages to see if there's a gap.
+                                            for (var i=0;i<Seshi.ranges.length; i++)
+                                            { //If there's space, add it to an existing range
+                                                //Check if chunkNumber is equal to range.end + 1, if so, update this range element.
+                                                if ( Seshi.ranges[i].end + 1 == chunkNumber ) 
+                                                {
+                                                     Seshi.ranges[i].end = chunkNumber;
+                                                     resolve(); //Resolve (updated existing range)
+                                                     return true;
+                                                }
+                                            }//End Loop through all existing rages to see if there's a gap.
+
+                                            //Otherwise, create new range element in ranges array.
+                                                Seshi.ranges.push({requestType:'CHUNK-RANGE',rangeStart:chunkNumber, rangeEnd:chunkNumber, fileId:fileId});
+                                                resolve();//Resolve (added new range)
+                                        });//End promise checkfor space
                                     }//End checkForSpace
-
                                 });//End get all missing chunks for given fileId, and return Range requests array
+                            });//End buildRangeRequests promise
     },
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
@@ -1191,10 +1192,7 @@ Seshi = {
                                 return;
                             }
 
-                            for (var i=0;i<requestedFileList.length;i++)
-                            {
-                                Seshi.sendFileToPeer(requestedFileList[i]);
-                            }//End loop through each request sending the file to thhe peer as requested
+                            Seshi.sendFileToPeer(requestedFileList);
     },
     syncData:function(){
             /* Send all data to connected peer

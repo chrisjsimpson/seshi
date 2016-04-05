@@ -1038,11 +1038,46 @@ Seshi = {
                             /* 
                              *
                              */
-                            Seshi.calculateMissingChunks(fileId)
-                            .then(function(chunksList) {
-                                console.log("Chunks list: ");
-                                console.log(chunksList);
-                            });
+                                fileId = "9a220d012f6f126ce82bd01ecb61485be942a77c69086f5a60daed9496f15e56";
+                                Seshi.calculateMissingChunks(fileId)
+                                .then(function(list) {
+                                    console.log("Chunks list: ");
+                                    console.log(list);
+                                    //Sort list
+                                    list = list.sort(function(a, b) {
+                                          return a - b
+                                    });
+
+                                    /* Create ranges
+                                     * 
+                                     */
+                                    Seshi.ranges = [];
+                                    buildRanges(list);
+                                    function buildRanges(list) {
+                                        //Iterate over 
+                                        for (var i=0;i<list.length; i++)
+                                        {
+                                            checkForSpace(list[i]); 
+                                        }//End iterate over list.
+                                    }//End buildRanges
+
+                                    function checkForSpace(chunkNumber) {
+                                        //Loop through all existing rages to see if there's a gap.
+                                        for (var i=0;i<Seshi.ranges.length; i++)
+                                        { //If there's space, add it to an existing range
+                                            //Check if chunkNumber is equal to range.end + 1, if so, update this range element.
+                                            if ( Seshi.ranges[i].end + 1 == chunkNumber ) 
+                                            {
+                                                 Seshi.ranges[i].end = chunkNumber;
+                                                 return true;
+                                            }
+                                        }//End Loop through all existing rages to see if there's a gap.
+
+                                        //Otherwise, create new range element in ranges array.
+                                            Seshi.ranges.push({start:chunkNumber, end:chunkNumber, fileId:fileId});
+                                    }//End checkForSpace
+
+                                });//End get all missing chunks for given fileId, and return Range requests array
     },
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */

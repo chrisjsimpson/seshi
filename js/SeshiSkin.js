@@ -133,16 +133,9 @@ function peerConnectionBroken() {
 
      function dialogMe() {
        $(".dialog").css("display", "block");
-       $(".dialogBlack").css("display", "block");
-       $(".dialogBlack").css("opacity", "0.2");
-       $(".dialogBlack").css("z-index", "250");
        $(".dialog p, .dialog h2").css("opacity", "1");
        $("#close").css("opacity", "1");
        $("#okButton").css("opacity", "1");
-       $(".dialog").css("height", "185px");
-       $(".dialog").css("width", "300px");
-       $(".dialog").css("padding", "15px");
-       $(".dialog").css("margin-left", "-174.5px");
        setTimeout(function() {
          $(".dialog").css("opacity", "1");
        }, 400);
@@ -150,15 +143,8 @@ function peerConnectionBroken() {
 
      $(".dialog #close, .dialog #okButton, .dialogBlack").click(function() {
        $(".dialog p, .dialog h2").css("opacity", "0");
-       $(".dialogBlack").css("opacity", "0");
-       $(".dialogBlack").css("z-index", "-5");
-        $(".dialogBlack").css("display", "none");
        $("#close").css("opacity", "0");
        $("#okButton").css("opacity", "0");
-       $(".dialog").css("height", "0px");
-       $(".dialog").css("width", "0px");
-       $(".dialog").css("margin-left", "174.5px");
-       $(".dialog").css("padding", "0px");
        setTimeout(function() {
          $(".dialog").css("display", "none");
        }, 400);
@@ -679,7 +665,7 @@ function updateStoreProgressDisplay() {
                     document.getElementById('localFileList').insertAdjacentHTML('afterbegin', output);
              }//End if not complete
          }//End check Seshi.storeProgress[fileId].UIdone == false before proceeding (prevents itterating over already completed UI updates.
-         
+
          //Save store progress to localStorage
          Seshi.saveStoreProgress();
     }//End loop through each item in Seshi.storeProgress & update the display accordingly

@@ -151,9 +151,7 @@ function peerConnectionBroken() {
       //   $(".dialogBlack").css("display", "none");
        $("#close").css("opacity", "0");
        $("#okButton").css("opacity", "0");
-       setTimeout(function() {
-         $(".dialog").css("display", "none");
-       }, 400);
+        $(".dialog").css("display", "none");
      });
      dialogMe();
     // alert("Peer has disconnected");

@@ -11828,6 +11828,12 @@ $("#copyclipboard").click(function () {
     $(".copyclipboard-card").fadeIn(500);
 });
 
+//select all url key
+$('#shareKeyInputElm').on('click',function(){ this.select(); });
+
+//initiate tooltip
+ $('[data-toggle="tooltip"]').tooltip();
+
 //hide the hidebutton on load
 
 $('.btn-hide').hide();

@@ -20793,7 +20793,7 @@ input[id="display-name"]:focus + .edit-btn {
 .copyclipboard-card {
   position: relative;
   min-height: 25px;
-  height: 166px;
+  height: 214px;
   /* margin-bottom: 20px; */
   background-color: rgba(240, 240, 240, 0.7);
   border: 2px solid #aaa;
@@ -20809,8 +20809,8 @@ input[id="display-name"]:focus + .edit-btn {
 
 .flashcopied {
   color: #fc3f3f !important;
-  margin-top: -63px;
-  margin-right: 30px;
+  margin-top: 6px !important;
+  font-size: 14px !important;
 }
 
 .copyclipboard-card h6 {
@@ -21111,7 +21111,7 @@ input[id="shareKeyInputElm"]:focus {
     font-size: 11px;
   }
   .copyclipboard-card {
-    height: 155px;
+    height: 195px;
     margin-top: 15px;
   }
 }
@@ -23917,25 +23917,20 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 
 .dialog {
   margin: 0;
-  background: #fff;
+  background: rgba(249, 224, 157, 0.9);
   display: none;
   font-family: 'Signika', sans-serif;
   color: #000;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 300px;
-  height: 185px;
-  margin-left: -150px;
-  margin-top: -92.5px;
-  border-radius: 2px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  width: 100%;
+  top: 73px;
+  left: 0;
+  height: 123px;
   padding: 15px;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
-  opacity: 0;
   z-index: 1500;
 }
 
@@ -23958,41 +23953,33 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 
 #okButton {
   position: absolute !important;
-  left: 49%;
-  bottom: 11%;
   margin-left: -75px;
   position: relative;
   width: 150px;
   height: 37px;
   border: none;
   outline: none;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
   cursor: pointer;
   overflow: hidden;
   user-select: none;
   border-radius: 3px;
-  background: #2299e3;
-  color: #fff;
-}
-
-.dialogBlack {
-  margin: 0;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  background: #000;
-  opacity: 0;
-  display: none;
-  z-index: -5;
-  -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
+  background: #fff;
+  font-size: 18px;
+  color: #000;
 }
 
 /*768px*/
+@media (min-width: 768px) {
+  #okButton {
+    margin-top: -26px;
+  }
+  .dialog {
+    height: 66px;
+    top: 95px;
+  }
+}
+
 /*pages imports */
 .page-wrap {
   min-height: 100%;
@@ -25410,48 +25397,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.15s;
-  animation-duration: 0.7s;
+  animation-delay: 0.39s;
+  animation-duration: 1.44s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.04s;
-  animation-duration: 1.34s;
+  animation-delay: -0.04s;
+  animation-duration: 1.4s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0s;
-  animation-duration: 1.6s;
+  animation-delay: 0.33s;
+  animation-duration: 0.8s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: -0.1s;
-  animation-duration: 1.57s;
+  animation-delay: 0.03s;
+  animation-duration: 1.32s;
 }
 
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: -0.03s;
-  animation-duration: 0.9s;
+  animation-delay: 0.65s;
+  animation-duration: 1.01s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.42s;
+  animation-delay: -0.02s;
   animation-duration: 1.54s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.24s;
-  animation-duration: 1.24s;
+  animation-delay: 0.26s;
+  animation-duration: 1.55s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
   animation-delay: 0.79s;
-  animation-duration: 1.51s;
+  animation-duration: 0.65s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.06s;
-  animation-duration: 1.18s;
+  animation-delay: 0.75s;
+  animation-duration: 1.13s;
 }
 
 .ball-grid-beat > div {
@@ -25487,48 +25474,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.23s;
-  animation-duration: 0.75s;
+  animation-delay: 0.58s;
+  animation-duration: 0.64s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.59s;
-  animation-duration: 1.11s;
+  animation-delay: 0.7s;
+  animation-duration: 1.22s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: -0.19s;
-  animation-duration: 1.55s;
+  animation-delay: 0.01s;
+  animation-duration: 0.89s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.12s;
-  animation-duration: 0.96s;
+  animation-delay: 0.61s;
+  animation-duration: 1.12s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.21s;
-  animation-duration: 0.74s;
+  animation-delay: 0.8s;
+  animation-duration: 1.5s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.47s;
-  animation-duration: 1.16s;
-}
-
-.ball-grid-pulse > div:nth-child(7) {
-  animation-delay: -0.07s;
+  animation-delay: 0.56s;
   animation-duration: 1.3s;
 }
 
+.ball-grid-pulse > div:nth-child(7) {
+  animation-delay: 0.22s;
+  animation-duration: 1.02s;
+}
+
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.12s;
-  animation-duration: 0.95s;
+  animation-delay: 0.58s;
+  animation-duration: 0.62s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.17s;
-  animation-duration: 0.73s;
+  animation-delay: 0.23s;
+  animation-duration: 1.11s;
 }
 
 .ball-grid-pulse > div {
@@ -25866,23 +25853,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.1s;
-  animation-duration: 1.2s;
+  animation-delay: 0s;
+  animation-duration: 0.42s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.05s;
-  animation-duration: 0.7s;
+  animation-delay: 0.76s;
+  animation-duration: 0.9s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.37s;
-  animation-duration: 0.53s;
+  animation-delay: 0.13s;
+  animation-duration: 0.59s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: -0.18s;
-  animation-duration: 1.06s;
+  animation-delay: 0.57s;
+  animation-duration: 0.62s;
 }
 
 .line-scale-party > div {

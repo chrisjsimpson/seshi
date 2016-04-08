@@ -11821,12 +11821,18 @@ $('.drop-up').click(function(e) {
 //send key expand
 
 $("#copyclipboard").click(function () {
+   $(this).hide();
     $(".copyclipboard-card ").css({
         width: '100%'
     });
-    $(".flashcopied").replaceWith('<h6 class="flashcopied"> Copied link! </h6>');
     $(".copyclipboard-card").fadeIn(500);
 });
+
+//select all url key
+$('#shareKeyInputElm').on('click',function(){ this.select(); });
+
+//initiate tooltip
+ $('[data-toggle="tooltip"]').tooltip();
 
 //hide the hidebutton on load
 

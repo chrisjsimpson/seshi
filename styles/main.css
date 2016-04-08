@@ -23917,25 +23917,20 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 
 .dialog {
   margin: 0;
-  background: #fff;
+  background: rgba(100, 231, 125, 0.9);
   display: none;
   font-family: 'Signika', sans-serif;
   color: #000;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 300px;
-  height: 185px;
-  margin-left: -150px;
-  margin-top: -92.5px;
-  border-radius: 2px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  width: 100%;
+  top: 73px;
+  left: 0;
+  height: 123px;
   padding: 15px;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
-  opacity: 0;
   z-index: 1500;
 }
 
@@ -23958,21 +23953,20 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 
 #okButton {
   position: absolute !important;
-  left: 49%;
-  bottom: 11%;
   margin-left: -75px;
   position: relative;
   width: 150px;
   height: 37px;
   border: none;
   outline: none;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
   cursor: pointer;
   overflow: hidden;
   user-select: none;
   border-radius: 3px;
-  background: #2299e3;
-  color: #fff;
+  background: #fff;
+  font-size: 18px;
+  color: #000;
 }
 
 .dialogBlack {
@@ -23993,6 +23987,16 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 }
 
 /*768px*/
+@media (min-width: 768px) {
+  #okButton {
+    margin-top: -26px;
+  }
+  .dialog {
+    height: 100px;
+    top: 95px;
+  }
+}
+
 /*pages imports */
 .page-wrap {
   min-height: 100%;
@@ -25410,48 +25414,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.15s;
-  animation-duration: 0.7s;
+  animation-delay: -0.1s;
+  animation-duration: 0.71s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
   animation-delay: 0.04s;
-  animation-duration: 1.34s;
+  animation-duration: 1.37s;
 }
 
 .ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0s;
-  animation-duration: 1.6s;
+  animation-delay: 0.21s;
+  animation-duration: 0.83s;
 }
 
 .ball-grid-beat > div:nth-child(4) {
-  animation-delay: -0.1s;
-  animation-duration: 1.57s;
+  animation-delay: 0.77s;
+  animation-duration: 0.63s;
 }
 
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: -0.03s;
-  animation-duration: 0.9s;
+  animation-delay: 0.77s;
+  animation-duration: 0.99s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.42s;
-  animation-duration: 1.54s;
+  animation-delay: 0.15s;
+  animation-duration: 0.83s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.24s;
-  animation-duration: 1.24s;
+  animation-delay: 0.79s;
+  animation-duration: 1.5s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.79s;
-  animation-duration: 1.51s;
+  animation-delay: 0.12s;
+  animation-duration: 1.19s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.06s;
-  animation-duration: 1.18s;
+  animation-delay: 0.47s;
+  animation-duration: 0.7s;
 }
 
 .ball-grid-beat > div {
@@ -25487,48 +25491,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.23s;
-  animation-duration: 0.75s;
+  animation-delay: 0.27s;
+  animation-duration: 1.29s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.59s;
-  animation-duration: 1.11s;
+  animation-delay: 0.6s;
+  animation-duration: 1.17s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: -0.19s;
-  animation-duration: 1.55s;
+  animation-delay: 0.64s;
+  animation-duration: 0.62s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.12s;
-  animation-duration: 0.96s;
+  animation-delay: 0.54s;
+  animation-duration: 1.6s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.21s;
-  animation-duration: 0.74s;
+  animation-delay: 0.66s;
+  animation-duration: 0.9s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.47s;
-  animation-duration: 1.16s;
+  animation-delay: 0.42s;
+  animation-duration: 1.23s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: -0.07s;
-  animation-duration: 1.3s;
+  animation-delay: 0.23s;
+  animation-duration: 1.56s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.12s;
-  animation-duration: 0.95s;
+  animation-delay: 0.73s;
+  animation-duration: 0.78s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.17s;
-  animation-duration: 0.73s;
+  animation-delay: 0.45s;
+  animation-duration: 1.18s;
 }
 
 .ball-grid-pulse > div {
@@ -25866,23 +25870,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.1s;
-  animation-duration: 1.2s;
+  animation-delay: 0.25s;
+  animation-duration: 0.8s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.05s;
-  animation-duration: 0.7s;
+  animation-delay: -0.04s;
+  animation-duration: 0.82s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.37s;
-  animation-duration: 0.53s;
+  animation-delay: 0.45s;
+  animation-duration: 0.68s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: -0.18s;
-  animation-duration: 1.06s;
+  animation-delay: 0.49s;
+  animation-duration: 0.58s;
 }
 
 .line-scale-party > div {

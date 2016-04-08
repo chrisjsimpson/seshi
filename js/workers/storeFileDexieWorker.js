@@ -200,28 +200,36 @@ function storeChunk(seshiChunk) {
     console.log(seshiChunk);
 
     //Store chunk into Seshi's indexedDB
-    db.chunks.add({
-                fileId: seshiChunk.fileId,
-                boxId: 'myBoxID',
-                fileName: seshiChunk.fileName,
-                fileType: seshiChunk.fileType,
-                chunkNumber: seshiChunk.chunkNumber,
-                numberOfChunks: seshiChunk.numberOfChunks,
-                chunkSize: seshiChunk.chunkSize,
-                chunk: seshiChunk.chunk
-            }).then(function(done){
-                console.log('Celebrate');
-                //Post storage progress update to main thread
-                postMessage({
-                        "type":"storageProgressUpdate",
-                        "fileId":seshiChunk.fileId,
-                        "fileName":seshiChunk.fileName,
-                        "currentChunk":seshiChunk.chunkNumber,
-                        "totalNumChunks":seshiChunk.numberOfChunks
-                });
-                //close();//Close worker thread upon storing the chunk. No need to close as on persistent worker
-            });
-        console.log("Stored a chunk over RTCdatachannel inside worker");
+    db.transaction("rw",db.chunks, function() {
+        db.chunks.add({
+                    fileId: seshiChunk.fileId,
+                    boxId: 'myBoxID',
+                    fileName: seshiChunk.fileName,
+                    fileType: seshiChunk.fileType,
+                    chunkNumber: seshiChunk.chunkNumber,
+                    numberOfChunks: seshiChunk.numberOfChunks,
+                    chunkSize: seshiChunk.chunkSize,
+                    chunk: seshiChunk.chunk
+        });
+        
+    }).then(function(done){
+                    console.log('Celebrate');
+                    //Post storage progress update to main thread
+                    postMessage({
+                            "type":"storageProgressUpdate",
+                            "fileId":seshiChunk.fileId,
+                            "fileName":seshiChunk.fileName,
+                            "currentChunk":seshiChunk.chunkNumber,
+                            "totalNumChunks":seshiChunk.numberOfChunks
+                    });
+                    //close();//Close worker thread upon storing the chunk. No need to close as on persistent worker
+                    console.log("Stored a chunk over RTCdatachannel inside worker");
+    
+    }).catch(function(e){
+                    console.log("Error:::: " + e);  
+                    postMessage({"type":"error",
+                                "msg":e});
+    });
 
 }//End storeChunk()
 

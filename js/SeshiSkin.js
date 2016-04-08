@@ -603,7 +603,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
                 //Only show play button if file is playable
                 if(Seshi.isPlayable(mimeType, fileName))
                 {
-                    list += '<div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a></div>';
+                    list += '<div class="col-xs-1 playoptions"><a title="Play"><i onclick="play(event)" data-id="' + fileId + '" class="fa fa-play"></i></a><a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync *coming soon*" class="fa fa-exchange"></i></a></div>';
                 }else {
                     list += '<div class="col-xs-1 "></div>';
                 }//End only show play button if file is playable
@@ -679,6 +679,9 @@ function updateStoreProgressDisplay() {
                     document.getElementById('localFileList').insertAdjacentHTML('afterbegin', output);
              }//End if not complete
          }//End check Seshi.storeProgress[fileId].UIdone == false before proceeding (prevents itterating over already completed UI updates.
+         
+         //Save store progress to localStorage
+         Seshi.saveStoreProgress();
     }//End loop through each item in Seshi.storeProgress & update the display accordingly
 
 
@@ -810,7 +813,6 @@ function updateSendFileProgessDisplay() {
                 document.getElementById('remoteFileList').insertAdjacentHTML('afterbegin', output);
          }//End if not complete
         }//End loop though Seshi.sendingFileProgress showing sending file progress udates per file
-
 }//End updateSendFileProgessDisplay()
 
 

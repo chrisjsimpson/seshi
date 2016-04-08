@@ -10,7 +10,8 @@ Seshi = {
                     })(),
     config:{
         "SeshiBotOn":false,
-        "YoloInitMsg":false
+        "YoloInitMsg":false,
+        "AUTO_RESUME_INCOMPLETE_TRANSFERS_ON":true
     },
     init:function(){
                         /* Initialise Seshi
@@ -19,6 +20,11 @@ Seshi = {
                          * > Checks for existing Signaling Servers, adds Seshi.io as default
                          * > Updates local file list cache
                         */
+
+                        // Restore Seshi.sendingFileProgress from localStorage (if present) 
+                        Seshi.restoreSendingFileProgress();
+                        // Restore Seshi.storeProgress from localStorage (if present)
+                        Seshi.restoreStoreProgress();
 
                         //Create & register Seshi spesific events
                         // - Custom Events triggered by Seshi useful to front-end UI development
@@ -89,6 +95,7 @@ Seshi = {
                             }//End else incriment currentChunk using current value
 
                             Seshi.storeProgress[progressData.fileId] = {
+                                "fileId":progressData.fileId,
                                 "fileName":progressData.fileName,
                                 "currentChunk":currentChunk + 1,
                                 "totalNumChunks":progressData.totalNumChunks,
@@ -313,13 +320,8 @@ Seshi = {
         Seshi.remoteFileList = JSON.parse(remoteFileList.data);
         //Dispatch event telling any UI there's a (potentially) updated file listing from their peer
         dispatchEvent(gotRemoteFileList);
-        msgRemoteFileList = JSON.stringify({'chat':'Sucesfully recived your list of files, ta!\nSending mine now..',
-                                            'remoteDisplayName':'SeshiBOT'
-                                            });
-        if (Seshi.config.SeshiBotOn)
-            {
-                dc.send(msgRemoteFileList);
-            }//End send Seshi Bot message about file list if SeshiBotIs On
+        console.log("Sucesfully recived peers list of files. Sending mine back..");
+
         if (!remoteFileList.reply)
         {
             console.log("Replying back to peer with own local file listing...");
@@ -349,6 +351,53 @@ Seshi = {
                         StorageWorker.postMessage(dataSourceMsg); // Post data to worker for storage
     },
     storeProgress:[],
+    saveStoreProgress:function(){
+                        /* saveStoreProgress()
+                         *  TODO Consider refactoring as this is same as 
+                         *  saveSendingFileProgress() Saves the current 
+                         *  'in-memeory' Seshi.storeProgress back to localStorage
+                         *
+                         *  This is useful for store file (a Seshi 'pull') 
+                         *  recovery where the pull may have failed due to 
+                         *  break in connection etc. We can query this registry 
+                         *  to check which fileIds do not have the 'complete' 
+                         *  flag set
+                         */
+                        var storeProgressList = []; //To temporarily store in memory
+                        //Get all in-memory Seshi.storeProgress items & add to 
+                        // storeProgressList for serialising.
+                        for ( var fileId in Seshi.storeProgress ) {
+                            storeProgressList.push(Seshi.storeProgress[fileId]);
+                        }//End loop through each Seshi.storeProgress addding to storeProgressList
+
+                        //Serialise storeProgressList
+                        var serialisedStoreProgressList = JSON.stringify(storeProgressList);
+                        //Store to localStorage
+                        localStorage.setItem('storeProgress', serialisedStoreProgressList);
+                        console.log('Saved file store progress to local storage');
+    },
+    restoreStoreProgress:function(){
+                        /* restoreStoreProgress() 
+                         *     TODO Consider reactoring this is same as restoreSendingFileProgress()
+                         *     Query local store for restoreStoreProgress and
+                         *     (if present) parse the string into its
+                         *     original form (an array) and set it to 
+                         *     Seshi.restoreStoreProgress indexed by fileId
+                         */
+                         try {
+                            //Unpack restoreStoreProgress from localStorage
+                            var unserialised = JSON.parse(localStorage.getItem('storeProgress'));
+                            //Rebuild Seshi.restoreStoreProgress
+                            for (var i=0;i<unserialised.length;i++) {
+                                    Seshi.storeProgress[unserialised[i].fileId] = unserialised[i];
+                            }//End restore each store progress file state to memory 
+                         }
+                         catch (e) {
+                            console.log("Error parsing StoreProgress from localStorage " + e);
+                            console.log("Re-setting Seshi.storeProgress to empty array...");
+                            Seshi.storeProgress = [];
+                         }//end catch any errors parsing restoreStoreProgress from localStorage
+    },
     sendLocalFileListToRemote:function(bool) {
         console.log("Should send my file list now over datachannel to peer..");
         //Send most up to date file listing or cached version?? hmm.
@@ -376,7 +425,7 @@ Seshi = {
                             //Query IndexedDB to get the file
                             db.transaction('r', db.chunks, function() {
                                 //Transaction scope
-                                db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                                db.chunks.where("fileId").equals(fileId).sortBy("chunkNumber").then(function(chunks) {
                                             console.log("Found " + chunks.length + " chunks");
                                             var allChunksArray = [];
                                             //Just get blob cunks (without meta info)
@@ -394,7 +443,6 @@ Seshi = {
                                                     mimeType: chunks[0].fileType //e.g. audio/ogg
                                                 }); //Resolve promise
                                         })//Assemble all chunks into array
-                                        //Simply download file if on mobiles
                                 }).catch (function (err) {
                                     console.error(err);
                                 })//End get file chunks from fileId and generate object url.
@@ -645,15 +693,43 @@ Seshi = {
                             console.error(err);
                         });//End get fildIdChunks from fileId
     },
-    sendFileToPeer:function(fileId) {
-                        /* Sends given file (fieId) over Datachannel to connected peer
-                         * For each chunk found, send over data channel until 'last chunk'* has been sent.
+    sendFileToPeer:function(sendDataRequest) {
+                        /* Sends file over Datachannel to connected peer
+                         * Send over data channel requested (ALL or PART) of file
                          * The following comments require multipeer (TODO)
                          *  > *Not all peers will have all chunks to the file, some may only have a subset.
                          *  > Close the connection? no.
                          *  > Exchange useful data:
                          *      Share known signaling servers, peer exchange, file lists (names), boxIds
                         */
+                        //Work our request type to determine chunk offset (if RANGE request)
+                        var fileId = undefined;
+                        var whereClause = 'fileId';
+                        var equalsClause = undefined;
+                        var requestedOffset = 0;
+                        switch(sendDataRequest.requestType)
+                        {
+                            case 'ALL':
+                                console.log("Processing request for fileId: " + sendDataRequest.fileId);
+                                equalsClause = sendDataRequest.fileId;
+                                break;
+                            case 'CHUNK':
+                                console.log("Request for single chunk..");
+                                whereClause = "[fileId+chunkNumber]"; //Search by compound index for single chunk
+                                equalsClause = [ sendDataRequest.fileId, sendDataRequest.chunkNumber];
+                                break;
+                            case 'CHUNK-RANGE':
+                                console.log("Processing request for chunk range for fileId: " + sendDataRequest.fileId);
+                                equalsClause = sendDataRequest.fileId;
+                                requestedOffset = sendDataRequest.rangeStart;
+                                break;
+                            case 'RANGE':
+                                console.log("Request for RANGE of chunks..");
+                                break;
+                            default:
+                                equalsClause = sendDataRequest;
+                                console.log("Default fallback to Processing request for entire fileId: " + fileId); 
+                        }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
 
                         //Set flag for outbox
                         Seshi.flagProcessOutboxStarted = true;
@@ -664,7 +740,7 @@ Seshi = {
                         }//End check Datachannel is actually open
 
                         db.transaction('r', db.chunks, function() {
-                            db.chunks.where("fileId").equals(fileId).each(function(chunk) {
+                            db.chunks.where(whereClause).equals(equalsClause).offset(requestedOffset).each(function(chunk) {
                             //Transaction scope
                             //Sending file meta...
                             var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
@@ -735,8 +811,8 @@ Seshi = {
                      * (A push is a file 'upload' to a connected peer).
                      * */
                     //For file progress, just count number of ACKS received, not the actual
-                    // chunk number in the ACK message, because chunks mayt arrive out of order
-                    // therere ack.chunkNumber is not a reliable indicator of chunk recieved progress
+                    // chunk number in the ACK message, because chunks mayt arrive out of order TODO <<Question this.
+                    // therefore ack.chunkNumber is not a reliable indicator of chunk recieved progress
 
                     if ( Seshi.sendingFileProgress[ack.fileId] === undefined )
                     {
@@ -760,11 +836,12 @@ Seshi = {
                     //Fire sendFileProgressUpdate event so sender knows to update their UI with sending progress bar
                     dispatchEvent(sendFileProgressUpdate);
                     //Delete completed storeProgess
-                    if(Seshi.sendingFileProgess[ack.fileId].complete == true)
+                    if(Seshi.sendingFileProgress[ack.fileId].complete == true)
                     {
                         delete(Seshi.sendingFileProgress[ack.fileId]);
                     }
-
+                    //Save sendingFileProgres to localStorage
+                    Seshi.saveSendingFileProgress();
     },
     bufferFullThreshold:4096,
     listener: function() {
@@ -784,7 +861,179 @@ Seshi = {
     },
     buffer:[],
     recvBuffer:[],
+    restoreSendingFileProgress:function(){
+                            /* restoreSendingFileProgress()
+                             *  Query localStorage for sendingFileProgress and
+                             *  (if present) parse the string into its 
+                             *  original form (an array) and set it to 
+                             *  Seshi.sendingFileProgress indexed by fileId
+                             *
+                             *  This can be used to recover from failed uploads 
+                             *  as it maintains a registy of fileIds and their 
+                             *  percent completions. 
+                            */
+                            try {
+                                //Unpack sendingFileProgress from localStorage
+                                var unserialised = JSON.parse(localStorage.getItem('sendingFileProgress'));
+                                //Rebuild Seshi.sendingFileProgress
+                                for (var i=0;i<unserialised.length;i++) {
+                                    Seshi.sendingFileProgress[unserialised[i].fileId] = unserialised[i]; 
+                                }
+                            } 
+                            catch (e) {
+                                console.log("Error parsing sendingFileProgress from localStorage " + e);
+                                console.log('Re-setting Seshi.sendingFileProgress to empty array...');
+                                Seshi.sendingFileProgress = [];
+                            }
+    },
+    saveSendingFileProgress:function() {
+                            /* saveSendingFileProgress() 
+                             *   Saves the sendingFileProgress back to localStorage 
+                             *   from in-memory Seshi.sendingFileProgress
+                             *
+                             *   This is useful for sendingFile recovery, to 
+                             *   know which files may have failed to completely
+                             *   be sent to a peer we can check this registry. 
+                             */ 
+                            var sendingFileProgressList = []; //To temporarily store in memory 
+
+                            //Get all in-memory sendingFileProgress & add to sendingFileProgressList for serialising.
+                            for ( var fileId in Seshi.sendingFileProgress) {
+                                sendingFileProgressList.push(Seshi.sendingFileProgress[fileId]);
+                            }
+
+                            //Serialise sendingFileProgressList
+                            var serialisedSendingFileProgressList = JSON.stringify(sendingFileProgressList);
+
+                            //Store to localStorage
+                            localStorage.setItem('sendingFileProgress', serialisedSendingFileProgressList);
+                            console.log('Saved sending progress to local storage');
+    },
     sendingFileProgress:[],
+    checkForIncompleteTransfers:function() {
+                            /* checkForIncompleteTransfers()
+                             *
+                             *   Checks for incomplete push & pull trnasfers
+                             *   If found, fire {} events to UI to request 
+                             *   resume of these files. OR auto recommence 
+                             *   if AUTO_RESUME_INCOMPLETE_TRANSFERS flag is set.
+                             */
+                            
+                            if (Seshi.config.AUTO_RESUME_INCOMPLETE_TRANSFERS_ON) 
+                            {
+                                //Query Seshi.storeProgress for incomplete transfers
+                                var incompletePulls = Seshi.getIncompletePulls();
+                                if (!incompletePulls.length)
+                                { 
+                                    console.log("Nothing to send, there are no incomplete pulls."); 
+                                    return;
+                                }//End exit if there are no incomplete pulls
+                                var filesRequested = [];
+                                //request each incomplete file from peer using RANGE request
+                                incompletePulls.forEach(
+                                        function(file) {
+                                           console.log("Should ask for: " + file);
+                                           //Get chunks needed, then send chunk pull request
+                                           Seshi.calculateMissingChunks(file.fileId)
+                                           .then(function(chunksMissing) {
+                                               chunksMissing.forEach(function(chunkNumber)
+                                               {
+                                                    filesRequested.push(
+                                                    {
+                                                        "fileId":file.fileId,
+                                                        "requestType":"CHUNK",
+                                                        "chunkNumber":chunkNumber
+                                                    });//End push request for incomplete file onto array.
+                                               });// End build filesRequested array containing missing chunks to request
+                                                var msg = {"cmd":"requestFilesById", "data":filesRequested};
+                                                msg = JSON.stringify(msg);
+                                                dc.send(msg); //TODO this presumes a peer connection..it should not
+                                                return;
+                                           });//End got array of which chunk numbers are missing
+                                }); //End request each incomplete file from peer
+                                
+                            }//End if AUTO_RESUME_INCOMPLETE_TRANSFERS_ON resume transfers 
+    },
+    getIncompletePulls:function(){
+                            /* Returns an array of incomplete pulls with their 
+                             * ranges needed. (a file may have 'holes' in it)
+                             * This method works out the range requests needed
+                             * to reform the file.
+                             *
+                             *  Each element contains:
+                             *  > fileId
+                             *  > currentChunk
+                             *  > totalNumChunks
+                             *  > fileName  
+                            */
+                            var fileList = [];
+                            for (var fileId in Seshi.storeProgress) {
+                                if( Seshi.storeProgress[fileId].complete == false)
+                                {
+                                    //Delete completed file transfers which miss complete flag
+                                    if ( Seshi.storeProgress[fileId].currentChunk == Seshi.storeProgress[fileId].totalNumChunks ) 
+                                    {
+                                        delete(Seshi.storeProgress[fileId]);
+                                        continue;
+                                    }
+                                    var file = Seshi.storeProgress[fileId];
+                                    console.log(fileId);
+                                    file.fileId = fileId;
+                                    fileList.push(file);
+                                }
+                            }
+                            
+                            if (fileList.length > 0)
+                            {
+                                return fileList; 
+                            }
+                            console.log('There were no incomplete pulls found.'); 
+                            return false;
+    },
+    calculateMissingChunks:function(fileId){
+                            /* calculateMissingChunks(fildId)
+                             *
+                             *  Returns array of chunk numbers missing
+                             *  (if any) for a given fileId).
+                             *
+                             *  TODO return RANGES of contigious missing 
+                             *  chunks if possible.
+                             */
+                            var promise = new Promise(function(resolve, reject) {
+                                //Get total number of chunks for fileId (how many there should be, not how many we have)
+                                db.chunks.where("fileId").equals(fileId)
+                                .first(function(first){
+                                    expectedNumberOfChunks = first.numberOfChunks;
+                                    var haveChunks = [];
+                                    //Iterate over every chunk to identify which chunks are present. 
+                                    //TODO this is stupid. Just query indexed DB and generate an array of existing keys,
+                                    // no to to itteratate over each chunk for fileId.numberOfChunks times! 
+                                    db.chunks.where("fileId").equals(fileId)
+                                        .each(function(chunk){
+                                            haveChunks.push(chunk.chunkNumber);
+                                    }).then(function(){
+                                        //Sort the haveChunks array ascending
+                                        haveChunks = haveChunks.sort(function(a,b){return a - b;});
+                                        missingChunks = [];
+                                        //Loop though chunks we do have to identify missing chunk numbers
+                                        for ( var i=0; i< expectedNumberOfChunks;i++ )
+                                        {
+                                           if (haveChunks.indexOf(i) == -1)
+                                           {
+                                                missingChunks.push(i);
+                                           }
+                                        }
+                                                resolve(missingChunks); //Resolve promise (return array of missing chunks)
+                                    });
+                                    
+                                }) //End get number of chunks for the complete file, and work out missing chunks.
+                                .catch(function(err) {
+                                    console.log("Error:");
+                                    console.error(err);
+                                });
+                            });//End promise (return array of missing chunks for given fileId
+                            return promise;
+    },
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
                             //Check dosen't already exist
@@ -882,26 +1131,24 @@ Seshi = {
 
                             console.log(filesRequested);
                             //Work out what they want
-                            var filesRequested = JSON.parse(filesRequested.data);
+                            //var filesRequested = JSON.parse(filesRequested.data);
 
                             //Loop though each request sending the file to the peer as requested
-                            for (var i=0;i<filesRequested.length;i++)
+                            try { //Interprit filesRequested.data as stringified object
+                                var requestedFileList = JSON.parse(filesRequested.data);
+                            } catch (e) {
+                                console.log("Could not parse as JSON stringified object. Trying as object");
+                            }
+                            try { //Interprit as already an object
+                                var requestedFileList = filesRequested.data;
+                            } catch (e) {
+                                console.log("Could not interprit filesRequested, exiting.");
+                                return;
+                            }
+
+                            for (var i=0;i<requestedFileList.length;i++)
                             {
-                                //Work our request type:
-                                switch(filesRequested[i].requestType)
-                                {
-                                    case 'ALL':
-                                        Seshi.sendFileToPeer(filesRequested[i].fileId);
-                                        break;
-                                    case 'CHUNK':
-                                        console.log("Request for single chunk..");
-                                        break;
-                                    case 'RANGE':
-                                        console.log("Request for RANGE of chunks..");
-                                        break;
-                                    default:
-                                        Seshi.sendFileToPeer(filesRequested[i]);
-                                }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
+                                Seshi.sendFileToPeer(requestedFileList[i]);
                             }//End loop through each request sending the file to thhe peer as requested
     },
     syncData:function(){

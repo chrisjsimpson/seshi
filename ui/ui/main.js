@@ -11821,10 +11821,10 @@ $('.drop-up').click(function(e) {
 //send key expand
 
 $("#copyclipboard").click(function () {
+   $(this).hide();
     $(".copyclipboard-card ").css({
         width: '100%'
     });
-    $(".flashcopied").replaceWith('<h6 class="flashcopied"> Copied link! </h6>');
     $(".copyclipboard-card").fadeIn(500);
 });
 

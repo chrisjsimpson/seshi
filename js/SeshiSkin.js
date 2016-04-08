@@ -464,6 +464,7 @@ function showConnected() {
 
     $("#sendIdThenHide").hide();
     $("#remoteFileListContainer").fadeIn();
+      $(".dialog").css("display", "none");
 
     //Get reference to 'connecting' UI button
     if (targetBtn = document.getElementById('connectionStatus')) {

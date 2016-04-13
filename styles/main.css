@@ -20113,6 +20113,7 @@ label {
   font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
+  z-index: 10;
   overflow: hidden;
 }
 
@@ -25389,48 +25390,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.4s;
-  animation-duration: 0.8s;
+  animation-delay: 0.49s;
+  animation-duration: 1.05s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.07s;
-  animation-duration: 0.66s;
-}
-
-.ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.56s;
-  animation-duration: 1.31s;
-}
-
-.ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.15s;
+  animation-delay: -0.16s;
   animation-duration: 0.72s;
 }
 
+.ball-grid-beat > div:nth-child(3) {
+  animation-delay: 0.75s;
+  animation-duration: 0.97s;
+}
+
+.ball-grid-beat > div:nth-child(4) {
+  animation-delay: 0.63s;
+  animation-duration: 0.85s;
+}
+
 .ball-grid-beat > div:nth-child(5) {
-  animation-delay: -0.01s;
-  animation-duration: 1.23s;
+  animation-delay: 0.75s;
+  animation-duration: 1.27s;
 }
 
 .ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.5s;
-  animation-duration: 1.23s;
+  animation-delay: 0.53s;
+  animation-duration: 1.6s;
 }
 
 .ball-grid-beat > div:nth-child(7) {
-  animation-delay: 0.27s;
-  animation-duration: 1.4s;
+  animation-delay: 0.4s;
+  animation-duration: 0.65s;
 }
 
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.79s;
-  animation-duration: 1.35s;
+  animation-delay: -0.08s;
+  animation-duration: 0.61s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.02s;
-  animation-duration: 0.73s;
+  animation-delay: 0.64s;
+  animation-duration: 1.05s;
 }
 
 .ball-grid-beat > div {
@@ -25466,48 +25467,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.77s;
-  animation-duration: 1.32s;
+  animation-delay: 0.56s;
+  animation-duration: 0.84s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.19s;
-  animation-duration: 1.08s;
-}
-
-.ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.57s;
-  animation-duration: 0.77s;
-}
-
-.ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.65s;
-  animation-duration: 1.24s;
-}
-
-.ball-grid-pulse > div:nth-child(5) {
-  animation-delay: -0.17s;
-  animation-duration: 1.14s;
-}
-
-.ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.15s;
-  animation-duration: 0.68s;
-}
-
-.ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0.15s;
-  animation-duration: 1.5s;
-}
-
-.ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.42s;
+  animation-delay: 0.1s;
   animation-duration: 1.51s;
 }
 
+.ball-grid-pulse > div:nth-child(3) {
+  animation-delay: 0.49s;
+  animation-duration: 0.84s;
+}
+
+.ball-grid-pulse > div:nth-child(4) {
+  animation-delay: 0.16s;
+  animation-duration: 1.2s;
+}
+
+.ball-grid-pulse > div:nth-child(5) {
+  animation-delay: 0.03s;
+  animation-duration: 1.13s;
+}
+
+.ball-grid-pulse > div:nth-child(6) {
+  animation-delay: 0.01s;
+  animation-duration: 1.04s;
+}
+
+.ball-grid-pulse > div:nth-child(7) {
+  animation-delay: 0.8s;
+  animation-duration: 1.39s;
+}
+
+.ball-grid-pulse > div:nth-child(8) {
+  animation-delay: 0.29s;
+  animation-duration: 0.85s;
+}
+
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.24s;
-  animation-duration: 1.21s;
+  animation-delay: 0.69s;
+  animation-duration: 0.66s;
 }
 
 .ball-grid-pulse > div {
@@ -25845,23 +25846,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: -0.15s;
-  animation-duration: 0.52s;
+  animation-delay: -0.18s;
+  animation-duration: 0.31s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.12s;
-  animation-duration: 1.14s;
+  animation-delay: 0.37s;
+  animation-duration: 1.29s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.08s;
-  animation-duration: 1.14s;
+  animation-delay: 0.44s;
+  animation-duration: 1.25s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.71s;
-  animation-duration: 0.57s;
+  animation-delay: 0.79s;
+  animation-duration: 1s;
 }
 
 .line-scale-party > div {

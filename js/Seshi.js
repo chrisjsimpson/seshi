@@ -837,8 +837,11 @@ Seshi = {
                            };
                             if(Seshi.outBox.length > 0) {
                             //Get next chunk from outbox (presuming there is one)
-                            chunkData = Seshi.outBox.pop();
-                            fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk
+                                if ( fr.readyState == 2 || fr.readyState == 0 ) 
+                                { 
+                                    chunkData = Seshi.outBox.pop(); 
+                                    fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk 
+                                }//End only read next chunk if fileRead is ready for next one.
                             }
                         }
 

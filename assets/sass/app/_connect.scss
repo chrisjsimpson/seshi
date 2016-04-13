@@ -130,8 +130,10 @@ label {
 
 .name-label {
   cursor: pointer;
-  font-weight: 300;
+  font-weight: 500;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  z-index:10;
   overflow: hidden;
 }
 
@@ -252,6 +254,7 @@ a {
     border-top-left-radius: none !important;
     border-top-right-radius: none !important;
     padding: 10px 15px;
+    list-style: none;
 }
 .file-item .fa-play, .fa-exchange {
   background: #ccc;
@@ -700,20 +703,18 @@ a {
   top: 0;
 }
 
-.uploading.active .progress-bar1, .progress-bar1.active {
-  -webkit-animation: progress-bar-stripes 2s linear infinite;
-  -o-animation: progress-bar-stripes 2s linear infinite;
-  animation: progress-bar-stripes 2s linear infinite;
-}
+// .uploading.active .progress-bar1, .progress-bar1.active {
+//   -webkit-animation: progress-bar-stripes 2s linear infinite;
+//   -o-animation: progress-bar-stripes 2s linear infinite;
+//   animation: progress-bar-stripes 2s linear infinite;
+// }
 
 .uploading {
-  height: 10px;
-  width: 100%;
+  height: 40px;
   position: relative;
-  margin-top: 6px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.6);
-  border-radius: 9px;
+  // border-radius: 9px;
 }
 
 .uploading span {
@@ -722,16 +723,13 @@ a {
   top: 0;
   left: 0;
   display: block;
-  border-radius: 10px;
+  // border-radius: 10px;
 }
 
-.uploading-item {
-  background: rgb(245, 245, 245);
-}
+// .uploading-item {
+//   background: rgb(245, 245, 245);
+// }
 
-#percentupload {
-  margin-top: 2px;
-}
 
 .uploadbar {
   z-index: 10;

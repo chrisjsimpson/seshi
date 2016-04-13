@@ -636,7 +636,7 @@ function updateStoreProgressDisplay() {
             var complete = Seshi.storeProgress[fileId].complete;
 
             var output = '';
-            output += '<li class="file-item uploading-item uploading row " role="progressbar" aria-valuenow="' + valueNow + '"  aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="storingFileId-' + fileId + '">';
+            output += '<li class="file-item uploading-item uploading row " role="progressbar" aria-valuenow="' + valueNow + '"  aria-valuemin="0" aria-valuemax="100" id="storingFileId-' + fileId + '">';
                         //Filename
             output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
             output += '<div class="col-xs-10 col-sm-10 name-label">' + fileName + '</div> ';

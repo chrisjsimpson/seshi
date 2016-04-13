@@ -647,8 +647,8 @@ function updateStoreProgressDisplay() {
             // output += '</div>';
             // output += '</div>';
                         //Percentage complete
-            output += '<div class="col-xs-2 col-sm-2">';
-            output += '<div class="name-label">' + valueNow + '%</div>';
+            output += '<div class="col-xs-2 col-sm-2 name-label">';
+            output += '<div>' + valueNow + '%</div>';
             output += '</div>';
             output += '</li>';
 

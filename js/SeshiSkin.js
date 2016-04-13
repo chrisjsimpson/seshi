@@ -636,15 +636,16 @@ function updateStoreProgressDisplay() {
             var complete = Seshi.storeProgress[fileId].complete;
 
             var output = '';
-            output += '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">';
+            output += '<li class="file-item uploading-item uploading " role="progressbar" aria-valuenow="' + valueNow + '"  aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="storingFileId-' + fileId + '">';
                         //Filename
+            output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
             output += '<div class="col-xs-4 col-sm-4 name-label">' + fileName + '</div> ';
                         //Progress bar
-            output += '<div class="col-xs-6  col-sm-6">';
-            output += '<div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">';
-            output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
-            output += '</div>';
-            output += '</div>';
+            // output += '<div class="col-xs-6  col-sm-6">';
+            // output += '<div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">';
+            //
+            // output += '</div>';
+            // output += '</div>';
                         //Percentage complete
             output += '<div class="col-xs-1 col-sm-1">';
             output += '<div id="percentupload">' + valueNow + '%</div>';

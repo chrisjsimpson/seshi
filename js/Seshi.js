@@ -966,9 +966,9 @@ Seshi = {
                              *  > totalNumChunks
                              *  > fileName
                             */
-                            $("#disconnected").css("display", "none");
-                            $("#resumeTransfer").css("display","block");
-                            dialogMe();
+                            // $("#disconnected").css("display", "none");
+                            // $("#resumeTransfer").css("display","block");
+                            // dialogMe();
                             var fileList = [];
                             for (var fileId in Seshi.storeProgress) {
                                 if( Seshi.storeProgress[fileId].complete == false)

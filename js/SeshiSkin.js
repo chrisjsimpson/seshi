@@ -117,6 +117,30 @@ function tickAllFiles(list) {
     }//End loop though local files list ticking each file
 }//End checkAll local files
 
+
+function dialogMe() {
+  $(".dialog").css("display", "block");
+ //  $(".dialogBlack").css("display", "block");
+ //  $(".dialogBlack").css("opacity", "0.2");
+ //  $(".dialogBlack").css("z-index", "250");
+  $(".dialog p, .dialog h2").css("opacity", "1");
+  $("#close").css("opacity", "1");
+  $("#okButton").css("opacity", "1");
+  setTimeout(function() {
+    $(".dialog").css("opacity", "1");
+  }, 400);
+}
+
+$(".dialog #close, .dialog #okButton, .dialogBlack").click(function() {
+  $(".dialog p, .dialog h2").css("opacity", "0");
+ //  $(".dialogBlack").css("opacity", "0");
+ //  $(".dialogBlack").css("z-index", "-5");
+ //   $(".dialogBlack").css("display", "none");
+  $("#close").css("opacity", "0");
+  $("#okButton").css("opacity", "0");
+   $(".dialog").css("display", "none");
+});
+
 function peerConnectionBroken() {
     /* Called by event listener when sendFileProgressUpdate event is fired
      *  Used to display a break in Datachannel connection.
@@ -130,29 +154,8 @@ function peerConnectionBroken() {
     //  $("#dialogMe").click(function() {
     //    dialogMe();
     //  });
-
-     function dialogMe() {
-       $(".dialog").css("display", "block");
-      //  $(".dialogBlack").css("display", "block");
-      //  $(".dialogBlack").css("opacity", "0.2");
-      //  $(".dialogBlack").css("z-index", "250");
-       $(".dialog p, .dialog h2").css("opacity", "1");
-       $("#close").css("opacity", "1");
-       $("#okButton").css("opacity", "1");
-       setTimeout(function() {
-         $(".dialog").css("opacity", "1");
-       }, 400);
-     }
-
-     $(".dialog #close, .dialog #okButton, .dialogBlack").click(function() {
-       $(".dialog p, .dialog h2").css("opacity", "0");
-      //  $(".dialogBlack").css("opacity", "0");
-      //  $(".dialogBlack").css("z-index", "-5");
-      //   $(".dialogBlack").css("display", "none");
-       $("#close").css("opacity", "0");
-       $("#okButton").css("opacity", "0");
-        $(".dialog").css("display", "none");
-     });
+     $("#disconnected").css("display", "block");
+     $("#resumeTransfer").css("display","none");
      dialogMe();
     // alert("Peer has disconnected");
     // alert("Hold on, we'll try and reconnect");

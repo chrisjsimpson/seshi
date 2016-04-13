@@ -21,7 +21,7 @@ Seshi = {
                          * > Updates local file list cache
                         */
 
-                        // Restore Seshi.sendingFileProgress from localStorage (if present) 
+                        // Restore Seshi.sendingFileProgress from localStorage (if present)
                         Seshi.restoreSendingFileProgress();
                         // Restore Seshi.storeProgress from localStorage (if present)
                         Seshi.restoreStoreProgress();
@@ -353,18 +353,18 @@ Seshi = {
     storeProgress:[],
     saveStoreProgress:function(){
                         /* saveStoreProgress()
-                         *  TODO Consider refactoring as this is same as 
-                         *  saveSendingFileProgress() Saves the current 
+                         *  TODO Consider refactoring as this is same as
+                         *  saveSendingFileProgress() Saves the current
                          *  'in-memeory' Seshi.storeProgress back to localStorage
                          *
-                         *  This is useful for store file (a Seshi 'pull') 
-                         *  recovery where the pull may have failed due to 
-                         *  break in connection etc. We can query this registry 
-                         *  to check which fileIds do not have the 'complete' 
+                         *  This is useful for store file (a Seshi 'pull')
+                         *  recovery where the pull may have failed due to
+                         *  break in connection etc. We can query this registry
+                         *  to check which fileIds do not have the 'complete'
                          *  flag set
                          */
                         var storeProgressList = []; //To temporarily store in memory
-                        //Get all in-memory Seshi.storeProgress items & add to 
+                        //Get all in-memory Seshi.storeProgress items & add to
                         // storeProgressList for serialising.
                         for ( var fileId in Seshi.storeProgress ) {
                             storeProgressList.push(Seshi.storeProgress[fileId]);
@@ -377,11 +377,11 @@ Seshi = {
                         console.log('Saved file store progress to local storage');
     },
     restoreStoreProgress:function(){
-                        /* restoreStoreProgress() 
+                        /* restoreStoreProgress()
                          *     TODO Consider reactoring this is same as restoreSendingFileProgress()
                          *     Query local store for restoreStoreProgress and
                          *     (if present) parse the string into its
-                         *     original form (an array) and set it to 
+                         *     original form (an array) and set it to
                          *     Seshi.restoreStoreProgress indexed by fileId
                          */
                          try {
@@ -390,7 +390,7 @@ Seshi = {
                             //Rebuild Seshi.restoreStoreProgress
                             for (var i=0;i<unserialised.length;i++) {
                                     Seshi.storeProgress[unserialised[i].fileId] = unserialised[i];
-                            }//End restore each store progress file state to memory 
+                            }//End restore each store progress file state to memory
                          }
                          catch (e) {
                             console.log("Error parsing StoreProgress from localStorage " + e);
@@ -728,7 +728,7 @@ Seshi = {
                                 break;
                             default:
                                 equalsClause = sendDataRequest;
-                                console.log("Default fallback to Processing request for entire fileId: " + fileId); 
+                                console.log("Default fallback to Processing request for entire fileId: " + fileId);
                         }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
 
                         //Set flag for outbox
@@ -864,22 +864,22 @@ Seshi = {
     restoreSendingFileProgress:function(){
                             /* restoreSendingFileProgress()
                              *  Query localStorage for sendingFileProgress and
-                             *  (if present) parse the string into its 
-                             *  original form (an array) and set it to 
+                             *  (if present) parse the string into its
+                             *  original form (an array) and set it to
                              *  Seshi.sendingFileProgress indexed by fileId
                              *
-                             *  This can be used to recover from failed uploads 
-                             *  as it maintains a registy of fileIds and their 
-                             *  percent completions. 
+                             *  This can be used to recover from failed uploads
+                             *  as it maintains a registy of fileIds and their
+                             *  percent completions.
                             */
                             try {
                                 //Unpack sendingFileProgress from localStorage
                                 var unserialised = JSON.parse(localStorage.getItem('sendingFileProgress'));
                                 //Rebuild Seshi.sendingFileProgress
                                 for (var i=0;i<unserialised.length;i++) {
-                                    Seshi.sendingFileProgress[unserialised[i].fileId] = unserialised[i]; 
+                                    Seshi.sendingFileProgress[unserialised[i].fileId] = unserialised[i];
                                 }
-                            } 
+                            }
                             catch (e) {
                                 console.log("Error parsing sendingFileProgress from localStorage " + e);
                                 console.log('Re-setting Seshi.sendingFileProgress to empty array...');
@@ -887,15 +887,15 @@ Seshi = {
                             }
     },
     saveSendingFileProgress:function() {
-                            /* saveSendingFileProgress() 
-                             *   Saves the sendingFileProgress back to localStorage 
+                            /* saveSendingFileProgress()
+                             *   Saves the sendingFileProgress back to localStorage
                              *   from in-memory Seshi.sendingFileProgress
                              *
-                             *   This is useful for sendingFile recovery, to 
+                             *   This is useful for sendingFile recovery, to
                              *   know which files may have failed to completely
-                             *   be sent to a peer we can check this registry. 
-                             */ 
-                            var sendingFileProgressList = []; //To temporarily store in memory 
+                             *   be sent to a peer we can check this registry.
+                             */
+                            var sendingFileProgressList = []; //To temporarily store in memory
 
                             //Get all in-memory sendingFileProgress & add to sendingFileProgressList for serialising.
                             for ( var fileId in Seshi.sendingFileProgress) {
@@ -914,18 +914,18 @@ Seshi = {
                             /* checkForIncompleteTransfers()
                              *
                              *   Checks for incomplete push & pull trnasfers
-                             *   If found, fire {} events to UI to request 
-                             *   resume of these files. OR auto recommence 
+                             *   If found, fire {} events to UI to request
+                             *   resume of these files. OR auto recommence
                              *   if AUTO_RESUME_INCOMPLETE_TRANSFERS flag is set.
                              */
-                            
-                            if (Seshi.config.AUTO_RESUME_INCOMPLETE_TRANSFERS_ON) 
+
+                            if (Seshi.config.AUTO_RESUME_INCOMPLETE_TRANSFERS_ON)
                             {
                                 //Query Seshi.storeProgress for incomplete transfers
                                 var incompletePulls = Seshi.getIncompletePulls();
                                 if (!incompletePulls.length)
-                                { 
-                                    console.log("Nothing to send, there are no incomplete pulls."); 
+                                {
+                                    console.log("Nothing to send, there are no incomplete pulls.");
                                     return;
                                 }//End exit if there are no incomplete pulls
                                 var filesRequested = [];
@@ -951,11 +951,11 @@ Seshi = {
                                                 return;
                                            });//End got array of which chunk numbers are missing
                                 }); //End request each incomplete file from peer
-                                
-                            }//End if AUTO_RESUME_INCOMPLETE_TRANSFERS_ON resume transfers 
+
+                            }//End if AUTO_RESUME_INCOMPLETE_TRANSFERS_ON resume transfers
     },
     getIncompletePulls:function(){
-                            /* Returns an array of incomplete pulls with their 
+                            /* Returns an array of incomplete pulls with their
                              * ranges needed. (a file may have 'holes' in it)
                              * This method works out the range requests needed
                              * to reform the file.
@@ -964,14 +964,17 @@ Seshi = {
                              *  > fileId
                              *  > currentChunk
                              *  > totalNumChunks
-                             *  > fileName  
+                             *  > fileName
                             */
+                            $("#disconnected").css("display", "none");
+                            $("#resumeTransfer").css("display","block");
+                            dialogMe();
                             var fileList = [];
                             for (var fileId in Seshi.storeProgress) {
                                 if( Seshi.storeProgress[fileId].complete == false)
                                 {
                                     //Delete completed file transfers which miss complete flag
-                                    if ( Seshi.storeProgress[fileId].currentChunk == Seshi.storeProgress[fileId].totalNumChunks ) 
+                                    if ( Seshi.storeProgress[fileId].currentChunk == Seshi.storeProgress[fileId].totalNumChunks )
                                     {
                                         delete(Seshi.storeProgress[fileId]);
                                         continue;
@@ -982,12 +985,12 @@ Seshi = {
                                     fileList.push(file);
                                 }
                             }
-                            
+
                             if (fileList.length > 0)
                             {
-                                return fileList; 
+                                return fileList;
                             }
-                            console.log('There were no incomplete pulls found.'); 
+                            console.log('There were no incomplete pulls found.');
                             return false;
     },
     calculateMissingChunks:function(fileId){
@@ -996,7 +999,7 @@ Seshi = {
                              *  Returns array of chunk numbers missing
                              *  (if any) for a given fileId).
                              *
-                             *  TODO return RANGES of contigious missing 
+                             *  TODO return RANGES of contigious missing
                              *  chunks if possible.
                              */
                             var promise = new Promise(function(resolve, reject) {
@@ -1005,9 +1008,9 @@ Seshi = {
                                 .first(function(first){
                                     expectedNumberOfChunks = first.numberOfChunks;
                                     var haveChunks = [];
-                                    //Iterate over every chunk to identify which chunks are present. 
+                                    //Iterate over every chunk to identify which chunks are present.
                                     //TODO this is stupid. Just query indexed DB and generate an array of existing keys,
-                                    // no to to itteratate over each chunk for fileId.numberOfChunks times! 
+                                    // no to to itteratate over each chunk for fileId.numberOfChunks times!
                                     db.chunks.where("fileId").equals(fileId)
                                         .each(function(chunk){
                                             haveChunks.push(chunk.chunkNumber);
@@ -1025,7 +1028,7 @@ Seshi = {
                                         }
                                                 resolve(missingChunks); //Resolve promise (return array of missing chunks)
                                     });
-                                    
+
                                 }) //End get number of chunks for the complete file, and work out missing chunks.
                                 .catch(function(err) {
                                     console.log("Error:");
@@ -1195,19 +1198,19 @@ getBoxId:function(){return Seshi.boxId;},
 boxId:'myBoxID',//Defaults to myBoxId
 notify: function(message) {
 
-            if (Notification.permission !== 'denied') 
+            if (Notification.permission !== 'denied')
             {
-                Notification.requestPermission(function (permission) 
+                Notification.requestPermission(function (permission)
                     {
                         // If the user accepts, let's create a notification
-                        if (permission === "granted") 
+                        if (permission === "granted")
                         {
                             var options = {
                                 body:message,
                                 icon: 'img/seshilongbetablue.png'
                             }
 
-                            //Generate title 
+                            //Generate title
                             var displayName = Seshi.getDisplayName();
                             if (displayName.length > 0 )
                             {
@@ -1217,7 +1220,7 @@ notify: function(message) {
                             }//End generate title
 
                             //Only show notification if page is hidden (see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API)
-                            if ( document.hidden ) 
+                            if ( document.hidden )
                             {
                                 var notification = new Notification(title, options);
                             }//End only show notification if page is hidden

@@ -731,9 +731,17 @@ Seshi = {
                                 console.log("Request for RANGE of chunks..");
                                 break;
                             default:
-                                equalsClause = sendDataRequest;
-                                console.log("Default fallback to Processing request for entire fileId: " + fileId); 
-                                partialSendBool = false;
+                                try {
+                                    //Parse sendDataRequest to just get pain old fileId
+                                    console.log("Processing plain old fileId request");
+                                    parsed = JSON.parse(sendDataRequest);
+                                    equalsClause = parsed[0].fileId;
+                                    partialSendBool = false;
+                                } catch (e) {
+                                    equalsClause = sendDataRequest;
+                                    console.log("Default fallback to Processing request for entire fileId: " + fileId); 
+                                    partialSendBool = false;
+                                }
                         }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
 
                         //Set flag for outbox

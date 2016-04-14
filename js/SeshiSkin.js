@@ -585,7 +585,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
 
         if(targetElm = 'remoteFileList') {
           list += '<label class="col-xs-9 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
-        } else if (targetElm = 'localFileList'){
+        } else {
           list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
         }
 

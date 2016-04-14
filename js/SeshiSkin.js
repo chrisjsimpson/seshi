@@ -488,8 +488,8 @@ function showConnected() {
     var sendBtn = document.getElementById('sendBtn').disabled = false;
 
     //Enable chat button / Show online status
-    var chatToggleBtn = document.getElementById('chatToggle');
-    chatToggleBtn.innerText  = "CHAT: Connected!"
+    // var chatToggleBtn = document.getElementById('chatToggle');
+    // chatToggleBtn.innerText  = "CHAT: Connected!"
     //End show show tollge button status
 
 }//End showConnected

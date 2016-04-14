@@ -582,7 +582,13 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Checkbox
         list += '<input class="col-xs-1 ' + checkBoxClass + '" type="checkbox" id="' + fileId + '" data-id="' + fileId + '">\n';
         //Checkbox label & file name
-        list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
+
+        if(targetElm = 'remoteFileList') {
+          list += '<label class="col-xs-9 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
+        } else if (targetElm = 'localFileList'){
+          list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
+        }
+
         //Filetype
         list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="fa ' + getFileTypeIcon(mimeType) + '"></i></label>';
         if (targetElm != 'remoteFileList' ) //Only show action buttons (delete, play, download) on the local file list side)

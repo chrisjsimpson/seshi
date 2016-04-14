@@ -1543,7 +1543,7 @@ function onIceconnectionStateChanged(e) {
         Seshi.checkForIncompleteTransfers();
     }//End if iceConnectionState == Completed
 
-    if (pc.iceConnectionState == 'disconnected') {
+    if (pc.iceConnectionState == 'disconnected' || pc.iceConnectionState ==  'failed'){
         dispatchEvent(onPeerConnectionBroken);
     }//End if iceConnection state is disconnected or failed, dispatch onPeerConnectionEstablished event
 }//End onIceconnectionStateChanged

@@ -463,7 +463,8 @@ function showConnected() {
 
     $("#sendIdThenHide").hide();
     $("#remoteFileListContainer").fadeIn();
-      $(".dialog").css("display", "none");
+    $(".dialog").css("display", "none");
+    location.href= "#fileBoxes";
 
     //Get reference to 'connecting' UI button
     if (targetBtn = document.getElementById('connectionStatus')) {
@@ -582,7 +583,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Checkbox
         list += '<input class="col-xs-1 ' + checkBoxClass + '" type="checkbox" id="' + fileId + '" data-id="' + fileId + '">\n';
         //Checkbox label & file name
-        
+
         list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
         //Filetype
         list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="fa ' + getFileTypeIcon(mimeType) + '"></i></label>';

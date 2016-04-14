@@ -121,21 +121,9 @@ function peerConnectionBroken() {
     /* Called by event listener when sendFileProgressUpdate event is fired
      *  Used to display a break in Datachannel connection.
      * */
-
-
-    //  $(".dialog").before("<div class='dialogBlack'></div>");
-     //
-    //  $(".dialog").prepend('<div id="close">x</div>');
-
-    //  $("#dialogMe").click(function() {
-    //    dialogMe();
-    //  });
      $("#disconnected").css("display", "block");
      function dialogMe() {
        $(".dialog").css("display", "block");
-      //  $(".dialogBlack").css("display", "block");
-      //  $(".dialogBlack").css("opacity", "0.2");
-      //  $(".dialogBlack").css("z-index", "250");
        $(".dialog p, .dialog h2").css("opacity", "1");
        $("#close").css("opacity", "1");
        $("#okButton").css("opacity", "1");
@@ -145,9 +133,6 @@ function peerConnectionBroken() {
      }
      $(".dialog #close, .dialog #okButton, .dialogBlack").click(function() {
        $(".dialog p, .dialog h2").css("opacity", "0");
-      //  $(".dialogBlack").css("opacity", "0");
-      //  $(".dialogBlack").css("z-index", "-5");
-      //   $(".dialogBlack").css("display", "none");
        $("#close").css("opacity", "0");
        $("#okButton").css("opacity", "0");
         $(".dialog").css("display", "none");

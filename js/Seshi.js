@@ -1665,16 +1665,6 @@ function sendChunksToPeer(e, fileId) {
 } //End sendChunksToPeer
 
 
-function sendMostRecentFile() {
-	//Get most recently added file (stored in localstorage.getItem('lastItem'))
-	if(localStorage.getItem('lastItem'))
-	{
-	    fileId = localStorage.getItem('lastItem');
-        //TODO send over datachannel
-	}//Only send last item if localStorage.getItem('lastItem') has a fileId
-}
-
-
 function trace(text) {
   // This function is used for logging.
   if (text[text.length - 1] == '\n') {
@@ -1682,11 +1672,6 @@ function trace(text) {
   }
   console.log((performance.now() / 1000).toFixed(3) + ": " + text);
 }
-
-
-
-
-
 
 
 ////////////////////////////

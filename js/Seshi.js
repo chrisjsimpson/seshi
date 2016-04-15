@@ -1365,8 +1365,6 @@ function createPC() {
   window.pc.ondatachannel = onDataChannelAdded;
   window.pc.oniceconnectionstatechange = onIceconnectionStateChanged;
   window.pc.onsignalingstatechange = onSignalingStateChanged;
-  // wait for local media to be ready
-  attachMediaIfReady();
 }
 
 // When our browser has another candidate, send it to the peer
@@ -1689,28 +1687,6 @@ function trace(text) {
 
 
 
-///////////////////////////////////
-// This next section is for attaching local media to the Peer
-// Connection.
-///////////////////////////////////
-
-// This guard routine effectively synchronizes completion of two
-// async activities:  the creation of the Peer Connection and
-// acquisition of local media.
-function attachMediaIfReady() {
-  // If RTCPeerConnection is ready and we have local media,
-  // proceed.
-  if (pc) {attachMedia();}
-}
-
-// This routine adds our local media stream to the Peer
-// Connection.  Note that this does not cause any media to flow.
-// All it does is to let the browser know to include this stream
-// in its next SDP description.
-function attachMedia() {
-
-  setStatus("Ready for call");
-}
 
 
 ////////////////////////////

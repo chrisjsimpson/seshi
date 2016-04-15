@@ -516,8 +516,10 @@ function newChatMessageReceived(e) {
       $("#message").fadeOut();
     });
     $("#chatToggle").on('click', function() {
-      $("#message-to-send").focus();
-      alert('hfsdfds');
+      $("#message-to-send").focus(function() {
+            alert('hfsdfds');
+      });
+
     });
 
 

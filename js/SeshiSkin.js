@@ -152,6 +152,9 @@ function peerConnectionBroken() {
     var receiveBtn = document.getElementById('receiveBtn').disabled = true;
     var sendBtn = document.getElementById('sendBtn').disabled = true;
 
+    //Disable chat button / Show online status
+    //End show show tollge button status
+
 }//End peerConnectionBroken()
 
 
@@ -515,11 +518,15 @@ function newChatMessageReceived(e) {
     $(".btn-chat-toggle").on('click', function() {
       $("#message").fadeOut();
     });
-    $("#chatToggle").addEventListener('click mousedown' function() {
-      $("#message-to-send").delay(200).focus();
+
+    $(".btn-chat-toggle").click(function() {
+      setTimeout(
+          function() {
+              $("#message-to-send").focus();
+          },
+          1000);
 
     });
-
 
 } //End newChatMessageReceived()
 

@@ -593,7 +593,7 @@ Seshi = {
                                     partialSendBool = false;
                                 } catch (e) {
                                     equalsClause = sendDataRequest;
-                                    console.log("Default fallback to Processing request for entire fileId: " + fileId); 
+                                    console.log("Default fallback to Processing request for entire fileId: " + fileId);
                                     partialSendBool = false;
                                 }
                         }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
@@ -610,9 +610,9 @@ Seshi = {
                         {
                             db.transaction('r', db.chunks, function() {
                                 db.chunks.where(whereClause).equals(equalsClause).offset(requestedOffset).limit(limitCount).sortBy("chunkNumber").
-                                then(function(chunks) 
+                                then(function(chunks)
                                 {
-                                    chunks.forEach(function(chunk) 
+                                    chunks.forEach(function(chunk)
                                     {
                                     //Transaction scope
                                     //Sending file meta...
@@ -632,7 +632,7 @@ Seshi = {
                                         numberOfChunks: chunk.numberOfChunks,
                                         chunk: sendChunk
                                         });
-                                        if(Seshi.outBox.length > 0) 
+                                        if(Seshi.outBox.length > 0)
                                         {
                                             Seshi.flagProcessOutboxStarted=true;
                                             Seshi.processOutbox();
@@ -699,10 +699,10 @@ Seshi = {
                            };
                             if(Seshi.outBox.length > 0) {
                             //Get next chunk from outbox (presuming there is one)
-                                if ( fr.readyState == 2 || fr.readyState == 0 ) 
-                                { 
-                                    chunkData = Seshi.outBox.pop(); 
-                                    fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk 
+                                if ( fr.readyState == 2 || fr.readyState == 0 )
+                                {
+                                    chunkData = Seshi.outBox.pop();
+                                    fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk
                                 }//End only read next chunk if fileRead is ready for next one.
                             }
                         }
@@ -935,7 +935,7 @@ Seshi = {
                             return promise;
     },
     buildRangeRequests: function(fileId) {
-                            /* 
+                            /*
                              *
                              */
                             return new Promise(function(resolve, reject)
@@ -948,29 +948,29 @@ Seshi = {
                                     });
 
                                     /* Create ranges
-                                     * 
+                                     *
                                      */
                                     Seshi.ranges = [];
                                     buildRanges(list).then(function(){resolve();});
                                     function buildRanges(list) {
                                         var promises = [];
-                                        //Iterate over 
+                                        //Iterate over
                                         for (var i=0;i<list.length; i++)
                                         {
-                                            promises.push(checkForSpace(list[i])); 
+                                            promises.push(checkForSpace(list[i]));
                                         }//End iterate over list.
                                         return Promise.all(promises);
                                     }//End buildRanges
 
                                     function checkForSpace(chunkNumber) {
-                                        return new Promise(function(resolve, reject) 
+                                        return new Promise(function(resolve, reject)
                                         {
                                             //Check last element of Seshi.ranges array to see if there's a gap.
                                             //If chunkNumber is equal to range.end + 1, update the rangeEnd
                                             //for this element.
                                         if (Seshi.ranges[Seshi.ranges.length - 1] !== undefined)
                                         {
-                                            if ( Seshi.ranges[Seshi.ranges.length - 1].rangeEnd + 1 == chunkNumber ) 
+                                            if ( Seshi.ranges[Seshi.ranges.length - 1].rangeEnd + 1 == chunkNumber )
                                             {
                                                  Seshi.ranges[Seshi.ranges.length - 1].rangeEnd = chunkNumber;
                                                  resolve(); //Resolve (updated existing range)
@@ -1511,7 +1511,7 @@ function setupDataHandlers() {
             // reset real-time window,
             // and force chat window to last line
             console.log("received chat of '" + msg.chat + "'");
-            
+
             var timeStamp = new Date();
             timeStamp = timeStamp.toString();
             timeStamp = timeStamp.substring(0,21);
@@ -1523,25 +1523,12 @@ function setupDataHandlers() {
                 });
 
             // TODO Move below to Seshi Skin
-            var remoteChatMsg =
-                '<li class="clearfix">' +
-                '    <div class="message-data align-right">' +
-                '    <span class="message-data-time">' + timeStamp +
-                '    <span class="message-data-name">' +
-                     msg.remoteDisplayName+
-                '    </span>' +
-                '    <i class="fa fa-circle me"></i></div>' +
-                '    <div class="message other-message float-right">' +
-                                chatData +
-                '    </div>' +
-                '</li>';
-            cb.insertAdjacentHTML('beforeend', remoteChatMsg);
-            cb.scrollTop = cb.scrollHeight; msg = msg.chat;
+            
             //END TODO Move above to Seshi Skin.
 
             //Dispatch event to UI informing it about the new chat message
             var onNewChatMessage = new CustomEvent(
-                                'onNewChatMessage', 
+                                'onNewChatMessage',
                                     {
                                         'detail': {
                                                     'message': chatData,

@@ -522,7 +522,7 @@ Seshi = {
                         */
                         //Query IndexedDB to get the file
                         db.transaction('r', db.chunks, function() {
-                            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                            db.chunks.where("fileId").equals(fileId).sortBy("chunkNumber").then(function(chunks) {
                                 console.log("Found " + chunks.length + " chunks");
                                 var allChunksArray = [];
                                 //Just get blob cunks without meta

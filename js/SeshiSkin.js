@@ -517,10 +517,11 @@ function newChatMessageReceived(e) {
     console.log(e.detail);
 
   $("#message").fadeIn();
-    $(".btn-chat-toggle").on('click', function(e) {
-      e.preventDefault();
+    $(".btn-chat-toggle").on('click', function() {
+
       $("#message").fadeOut();
       $("#message-to-send").focus();
+      return false;
     });
 
 

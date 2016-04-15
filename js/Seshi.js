@@ -68,19 +68,42 @@ Seshi = {
                             if ( Seshi.storeProgress[progressData.fileId] === undefined )
                             {
                                 currentChunk = 0;
+                                chunksReceived = 0;
                             }else { //End set progress to zero initially
                                 currentChunk = Seshi.storeProgress[progressData.fileId].currentChunk;
+                                chunksReceived = Seshi.storeProgress[progressData.fileId].chunksReceived;
                             }//End else incriment currentChunk using current value
 
                             Seshi.storeProgress[progressData.fileId] = {
                                 "fileId":progressData.fileId,
                                 "fileName":progressData.fileName,
                                 "currentChunk":currentChunk + 1,
+                                "chunksReceived": chunksReceived + 1,
                                 "totalNumChunks":progressData.totalNumChunks,
                                 "complete":currentChunk >= progressData.totalNumChunks ? true:false,
                                 "UIdone":false
                                 }
                             dispatchEvent(storeFilesProgressUpdate);//Dispacht/fire progress update event for local UI
+
+                            //Tell peer if all chunks have been received
+                            if ( chunksReceived == progressData.totalNumChunks )
+                            {
+                                alert("We done!");
+                                //Build receive complete message
+                                var receiveMsg = {
+                                 'cmd':'receiveComplete',
+                                 'fileId':progressData.fileId
+                                };
+
+                                //Send over datachannel
+                                receiveMsg = JSON.stringify(receiveMsg);
+                                
+                                //Check Datachannel connection status
+                                if (typeof dc != "undefined" || dc.readyState == "open") {
+                                    dc.send(receiveMsg); //Inform peer that we've stored the complete file.
+                                }//End check Datachannel is actually open
+
+                            }//End tell peer if all chunks have been received
 
                             //Delete completed storeProgess
                             if(Seshi.storeProgress[progressData.fileId].complete == true)
@@ -1100,6 +1123,18 @@ Seshi = {
 
                             Seshi.sendFileToPeer(requestedFileList);
     },
+    receiveCompleteHandler:function(msg){
+            /* Called in response to receiveComplete command
+            * from over datachannel. 
+            * 
+            *   Used to remove completed upload/push progress
+            *   data from Seshi.sendingFileProgress array
+           */
+                    
+            //delete completed file push/upload from Seshi.sendingFileProgress
+            delete(Seshi.sendingFileProgress[msg.fileId]);
+            
+    },
     syncData:function(){
             /* Send all data to connected peer
              * This is currently very intensive as it does not (yet) make use of the worker
@@ -1484,6 +1519,10 @@ function setupDataHandlers() {
                 case 'receivedChunkACK': //Got a received & stored Chunk ACK from peer.
                     trace("Peer told me that they've sucessfully received & stored a chunk I sent them. Yay.");
                     Seshi.updateSendingProgress(msg.data);
+                    break;
+                case 'receiveComplete': //Peer has told us they received all chunks of a file
+                    alert("They got it all!");
+                    Seshi.receiveCompleteHandler(msg);
                     break;
                 case 'requestFilesById': //Receiving request from peer to pull files from their peer.
                     Seshi.sendRequestedFilesToPeer(msg);

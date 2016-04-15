@@ -33,9 +33,9 @@ $('.navbar-collapse ul li a').click(function() {
 
 //Prevent chat box from close when clicked inside
 
-// $('.drop-up').click(function(e) {
-//        e.stopPropagation();
-//    });
+$('.drop-up').click(function(e) {
+       e.stopPropagation();
+   });
 
 
 //send key expand

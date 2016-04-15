@@ -521,7 +521,6 @@ function newChatMessageReceived(e) {
 
     $(".btn-chat-toggle").click(function(e) {
       e.preventDefault();
-      e.stopPropagation();
       $("#message-to-send").focus();
 
     });

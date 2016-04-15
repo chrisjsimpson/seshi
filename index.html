@@ -52,13 +52,6 @@
     <link href="styles/main.css" rel="stylesheet">
     <link href="img/image.css" rel="stylesheet">
 
-    <!--tutorial css -->
-    <!-- <link rel="stylesheet" href="css/tutorialize.css" type="text/css" />
-      <script type="text/javascript" src="js/tutorial/jquery.tutorialize.min.js"></script>
-       <script type="text/javascript" src="js/tutorial/highlight.pack.js"></script>
-       <script>hljs.initHighlightingOnLoad();</script> -->
-
-
     <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 
     <!-- <link rel="stylesheet" href="https://cdn.plyr.io/1.5.14/plyr.css"> -->
@@ -77,9 +70,9 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand page-scroll" href="#page-top">
-                    <!-- <i class="fa fa-paper-plane"></i>   -->
+              
                     <span><img class="logo" src="img/seshilongbetablue.png"></span>
-                    <!-- <span class="seshitext">SESHI</span> -->
+
                 </a>
             </div>
 
@@ -93,10 +86,6 @@
                     <li>
                         <a class="page-scroll" href="#subscribe">Pro</a>
                     </li>
-
-                    <!-- <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
-                    </li> -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -104,14 +93,9 @@
         <!-- /.container -->
     </nav>
 
-    <!---dropzone -->
-    <!-- <div class="hidden-sm hidden-xs dropfile">
-        <div id="dropzonetext" class="dragdrop"><p>or DROP FILES HERE TO ADD</p></div>
-        <input type="file" id="dropfileinput" onchange="storeFile(this.files)" multiple/>
-    </div> -->
 
 
-    <!-- <div id="dropzone"></div> -->
+
     <!-- Intro Header -->
 
 
@@ -143,7 +127,6 @@
                 </div>
                     <div class="file-header" >
                             <h2>File Exchange </h2>
-                            <!-- <h3> <span>Send key </span>to a friend to start file exchange</h3> -->
 
                             <div class="uploadbox-connect">
                                     <div class="row">
@@ -155,8 +138,6 @@
                                             </span>
                                         </div>
 
-
-                                        <!-- <button class="btn btn-default" id="refreshList">Refresh List</button> -->
                                 </div>
                                 <div class="row">
                                      <span class=" fileUpload btn btn-upload" >
@@ -164,9 +145,7 @@
                                          <span>
                                              <img class="addicon"src="img/addfile.png">
                                          </span><span class="addtext"> Add Files</span>
-                                         <!-- <div class=" hidden-xs dragfile">
-                                             or drag files to upload
-                                         </div> -->
+
                                      </span>
                              </div>
                              <!-- <div class="col-sm-9">
@@ -183,15 +162,6 @@
     <div class="seshi-container" id="hideall"> <!--hide wrapper -->
             <div class="row myfiles" >
 
-                <!-- <div class="row">
-                    <div class="container" id="shareButtonsRow">
-
-                    </div>
-
-                </div> -->
-                <!-- <div class="hidden-sm hidden-xs demo-droppable">
-                  <p>Drag and drop files here</p>
-                </div> -->
 
 
 
@@ -201,8 +171,6 @@
                     <div class="row header-title fixed-header-file" id="header-localFileList">
                         <input id="checkAll-localFileList" class="col-xs-1 col-sm-1 checkall" type="checkbox">
                         <div class="col-xs-9 col-sm-10 table-border file-title-center">My Files</div>
-                        <!-- <div class="col-xs-3 col-sm-2 ">Type</div> -->
-                        <!-- <div class="col-xs-2 col-sm-2"></div> -->
                         <div class="col-xs-1 col-sm-1 dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-chevron-down"></i>
@@ -249,15 +217,13 @@
                         <div class="row header-title fixed-header-file" id="header-remoteFileList">
                             <input id="checkAll-remoteFileList" class="col-xs-1 col-sm-1 checkall" type="checkbox">
                             <div class="col-xs-9 col-sm-10 table-border file-title-center">Friend's Files</div>
-                            <!-- <div class="col-xs-3 col-sm-2 ">Type</div>
-                            <div class="col-xs-2 col-sm-2"></div> -->
+
                             <div class="col-xs-1 col-sm-1 dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-chevron-down"></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a id="hangup" href="#">Disconnect </a></li>
-                                    <!-- <li><a href="#">Di<span class="glyphicon glyphicon-log-out pull-right"></span></a></li> -->
                                 </ul>
                             </div>
                         </div>
@@ -281,14 +247,6 @@
                         <div id="chatup" class="dropdown-menu drop-up" style="">
                             <div class="chat">
                               <div class="chat-header clearfix">
-                                  <!-- <div class="people-list" id="people-list">
-                                    <div class="search">
-                                      <input type="text" placeholder="Enter your display name" />
-                                      <i class="fa fa-arrow-right"></i>
-                                    </div>
-
-                                    </ul>
-                                  </div> -->
                                 <div class="chat-about">
                                     <div class="chat-with" >Connected to: <span id="remoteDisplayName"></span></div>
                                 </div>
@@ -347,12 +305,9 @@
                         </div>
 
                         <div class="col-xs-3 col-sm-4">
-                            <a href="#" class="icon-link round-corner slack fill"><i class="fa fa-slack"></i></a>
+                            <a href="#" class="icon-link round-corner google-plus fill"><i class="fa fa-google-plus"></i></a>
                         </div>
 
-                        <!-- <div class="col-xs-3 col-sm-4">
-                            <a class="icon-link round-corner envelope fill"><i class="fa fa-envelope"></i></a>
-                        </div> -->
                             <div class="col-xs-3 visible-xs">
                                 <a class="icon-link round-corner whatsapp fill"><i class="fa fa-whatsapp"></i></a>
                             </div>
@@ -371,14 +326,8 @@
     <!--Media Player -->
     <div class="plyr">
 
-        <!-- <video id="video" controls poster="/img/seethrough.png">
-
-            <source src="img/deadpool.mp4" type="video/mp4">
-
-        </video> -->
         <audio controls>
 
-           <!-- <source src="img/beatcall.mp3" type="audio/mp3"> -->
 
        </audio>
 
@@ -394,10 +343,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <h2>Seshi Pro </h2>
-                <h3>It's coming summer 2016 (probably)!</h3>
+                <h3>Coming soon in summer 2016</h3>
                 <h4>Please help us test Seshi &amp; get Pro free for life! <i class="fa fa-heart"></i></h4>
                 <!-- Begin MailChimp Signup Form -->
-                <!-- <link href="//cdn-images.mailchimp.com/embedcode/slim-10_7.css" rel="stylesheet" type="text/css"> -->
                 <style type="text/css">
                 	#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
                 	/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.

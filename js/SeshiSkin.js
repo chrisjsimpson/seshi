@@ -587,7 +587,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
             //Download button
             list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         }//End if targetElm != 'remoteFileList'
-// <a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync" class="fa fa-exchange"></i></a>
+
         //Close </li>
         list += '</li>';
     }//End loop through each local file list (cached) and build list items

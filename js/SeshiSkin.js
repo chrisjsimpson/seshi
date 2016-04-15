@@ -1,3 +1,14 @@
+var chatArea = document.getElementById('chatToggle');
+
+chatArea.addEventListener('click', focusChatBox, false);
+
+function focusChatBox() {
+    window.setTimeout(function(){
+            document.getElementById('message-to-send').focus();
+        }, 500);
+}
+
+
 /* Event listeners:
  * - For a cleaner UI developer experience by
  *   avoiding inline Javascript e.g: onclick="example()"

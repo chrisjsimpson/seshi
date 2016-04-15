@@ -15251,7 +15251,7 @@ p {
     padding: 20px 0;
     border-bottom: none;
     letter-spacing: 1px;
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.7), rgba(255, 0, 0, 0));
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
     /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(bottom, rgba(255, 255, 255, 0.7) rgba(255, 0, 0, 0));
     /* For Opera 11.1 to 12.0 */
@@ -25314,48 +25314,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: -0.05s;
-  animation-duration: 0.91s;
-}
-
-.ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.21s;
-  animation-duration: 0.65s;
-}
-
-.ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.43s;
-  animation-duration: 0.94s;
-}
-
-.ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.01s;
-  animation-duration: 1.28s;
-}
-
-.ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.1s;
-  animation-duration: 1.32s;
-}
-
-.ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.01s;
-  animation-duration: 0.64s;
-}
-
-.ball-grid-beat > div:nth-child(7) {
-  animation-delay: -0.17s;
+  animation-delay: 0.8s;
   animation-duration: 0.97s;
 }
 
+.ball-grid-beat > div:nth-child(2) {
+  animation-delay: 0.43s;
+  animation-duration: 1.48s;
+}
+
+.ball-grid-beat > div:nth-child(3) {
+  animation-delay: 0.2s;
+  animation-duration: 1.02s;
+}
+
+.ball-grid-beat > div:nth-child(4) {
+  animation-delay: -0.06s;
+  animation-duration: 0.94s;
+}
+
+.ball-grid-beat > div:nth-child(5) {
+  animation-delay: 0.16s;
+  animation-duration: 1.53s;
+}
+
+.ball-grid-beat > div:nth-child(6) {
+  animation-delay: 0.5s;
+  animation-duration: 1.51s;
+}
+
+.ball-grid-beat > div:nth-child(7) {
+  animation-delay: 0.05s;
+  animation-duration: 0.7s;
+}
+
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.35s;
-  animation-duration: 0.71s;
+  animation-delay: 0.62s;
+  animation-duration: 0.74s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.71s;
-  animation-duration: 1.38s;
+  animation-delay: 0.74s;
+  animation-duration: 0.88s;
 }
 
 .ball-grid-beat > div {
@@ -25391,48 +25391,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.48s;
-  animation-duration: 1.02s;
+  animation-delay: 0.74s;
+  animation-duration: 1.5s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: 0.03s;
-  animation-duration: 1.17s;
+  animation-delay: 0.3s;
+  animation-duration: 0.68s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.21s;
-  animation-duration: 0.86s;
+  animation-delay: 0.3s;
+  animation-duration: 1.4s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.71s;
-  animation-duration: 0.63s;
+  animation-delay: 0.74s;
+  animation-duration: 1.12s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.21s;
-  animation-duration: 1.03s;
+  animation-delay: 0.68s;
+  animation-duration: 0.65s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.33s;
-  animation-duration: 1.09s;
+  animation-delay: -0.09s;
+  animation-duration: 1.22s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0.01s;
-  animation-duration: 0.85s;
+  animation-delay: -0.11s;
+  animation-duration: 1.41s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.45s;
-  animation-duration: 0.89s;
+  animation-delay: 0.29s;
+  animation-duration: 0.84s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.12s;
-  animation-duration: 1.17s;
+  animation-delay: -0.12s;
+  animation-duration: 0.73s;
 }
 
 .ball-grid-pulse > div {
@@ -25770,23 +25770,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.63s;
-  animation-duration: 1.26s;
+  animation-delay: 0.18s;
+  animation-duration: 1.17s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.42s;
-  animation-duration: 1.21s;
+  animation-delay: 0.71s;
+  animation-duration: 1.02s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: -0.15s;
-  animation-duration: 0.86s;
+  animation-delay: 0.29s;
+  animation-duration: 0.47s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.54s;
-  animation-duration: 1.09s;
+  animation-delay: 0.2s;
+  animation-duration: 0.8s;
 }
 
 .line-scale-party > div {

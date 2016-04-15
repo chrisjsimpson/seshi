@@ -531,7 +531,7 @@ chatArea.addEventListener('click', focusChatBox, false);
 function focusChatBox() {
     window.setTimeout(function(){
             document.getElementById('message-to-send').focus();
-        }, 400);
+        }, 100);
 }
 
 

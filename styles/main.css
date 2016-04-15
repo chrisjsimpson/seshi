@@ -20684,7 +20684,7 @@ a {
   height: 40px;
   position: relative;
   background: rgba(100, 100, 100, 0.1);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 .uploading span {
@@ -25386,48 +25386,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: -0.06s;
-  animation-duration: 1.53s;
+  animation-delay: 0.61s;
+  animation-duration: 1.26s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: -0.15s;
-  animation-duration: 1.13s;
-}
-
-.ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.15s;
-  animation-duration: 1.36s;
-}
-
-.ball-grid-beat > div:nth-child(4) {
-  animation-delay: 0.35s;
-  animation-duration: 1.21s;
-}
-
-.ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.41s;
-  animation-duration: 1.08s;
-}
-
-.ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.05s;
-  animation-duration: 1.57s;
-}
-
-.ball-grid-beat > div:nth-child(7) {
-  animation-delay: -0.17s;
+  animation-delay: 0.57s;
   animation-duration: 1.58s;
 }
 
+.ball-grid-beat > div:nth-child(3) {
+  animation-delay: 0.3s;
+  animation-duration: 0.67s;
+}
+
+.ball-grid-beat > div:nth-child(4) {
+  animation-delay: 0.79s;
+  animation-duration: 0.95s;
+}
+
+.ball-grid-beat > div:nth-child(5) {
+  animation-delay: 0.21s;
+  animation-duration: 0.65s;
+}
+
+.ball-grid-beat > div:nth-child(6) {
+  animation-delay: 0.54s;
+  animation-duration: 0.85s;
+}
+
+.ball-grid-beat > div:nth-child(7) {
+  animation-delay: -0.02s;
+  animation-duration: 1.38s;
+}
+
 .ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.01s;
-  animation-duration: 0.73s;
+  animation-delay: 0.3s;
+  animation-duration: 1.25s;
 }
 
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.26s;
-  animation-duration: 1.22s;
+  animation-delay: -0.16s;
+  animation-duration: 0.89s;
 }
 
 .ball-grid-beat > div {
@@ -25463,48 +25463,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.27s;
-  animation-duration: 1.48s;
+  animation-delay: -0.03s;
+  animation-duration: 0.98s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
-  animation-delay: -0.07s;
-  animation-duration: 0.67s;
+  animation-delay: 0.11s;
+  animation-duration: 1.43s;
 }
 
 .ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.55s;
-  animation-duration: 1.44s;
+  animation-delay: 0.07s;
+  animation-duration: 1.3s;
 }
 
 .ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.02s;
-  animation-duration: 1.38s;
+  animation-delay: 0.21s;
+  animation-duration: 1.55s;
 }
 
 .ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.68s;
-  animation-duration: 0.84s;
+  animation-delay: -0.17s;
+  animation-duration: 1.17s;
 }
 
 .ball-grid-pulse > div:nth-child(6) {
-  animation-delay: 0.13s;
-  animation-duration: 1.39s;
+  animation-delay: 0.59s;
+  animation-duration: 1.13s;
 }
 
 .ball-grid-pulse > div:nth-child(7) {
-  animation-delay: 0.35s;
-  animation-duration: 1.01s;
+  animation-delay: -0.19s;
+  animation-duration: 0.88s;
 }
 
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: -0.13s;
-  animation-duration: 1.25s;
+  animation-delay: 0.32s;
+  animation-duration: 1.35s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: 0.7s;
-  animation-duration: 0.68s;
+  animation-delay: 0.77s;
+  animation-duration: 1.27s;
 }
 
 .ball-grid-pulse > div {
@@ -25842,23 +25842,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: -0.05s;
-  animation-duration: 1.18s;
+  animation-delay: 0.36s;
+  animation-duration: 0.46s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: -0.08s;
-  animation-duration: 1.09s;
+  animation-delay: 0.03s;
+  animation-duration: 0.52s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.61s;
-  animation-duration: 0.48s;
+  animation-delay: 0.14s;
+  animation-duration: 0.92s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: -0.09s;
-  animation-duration: 1.21s;
+  animation-delay: 0.28s;
+  animation-duration: 0.89s;
 }
 
 .line-scale-party > div {

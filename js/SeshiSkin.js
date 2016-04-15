@@ -1,12 +1,4 @@
-var chatArea = document.getElementById('chatToggle');
 
-chatArea.addEventListener('click', focusChatBox, false);
-
-function focusChatBox() {
-    window.setTimeout(function(){
-            document.getElementById('message-to-send').focus();
-        }, 500);
-}
 
 
 /* Event listeners:
@@ -530,13 +522,17 @@ function newChatMessageReceived(e) {
       $("#message").fadeOut();
     });
 
-    $(".btn-chat-toggle").click(function(e) {
-      e.preventDefault();
-      $("#message-to-send").focus();
-
-    });
-
 } //End newChatMessageReceived()
+
+var chatArea = document.getElementById('chatToggle');
+
+chatArea.addEventListener('click', focusChatBox, false);
+
+function focusChatBox() {
+    window.setTimeout(function(){
+            document.getElementById('message-to-send').focus();
+        }, 400);
+}
 
 
 function getFileTypeIcon(mimeType) {

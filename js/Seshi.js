@@ -1407,8 +1407,6 @@ function onRemoteStreamRemoved(e) {}
 //data channel, save it, set up handlers, and send welcome
 // message
 function onDataChannelAdded(e) {
-    //statusE = document.getElementById("status"),
-    //statusE.innerHTML = "We are connected!";
     dc = e.channel;
     console.log("We are connected!");
     //sendMostRecentFile();
@@ -1442,14 +1440,6 @@ function setupDataHandlers() {
         dc.send(msg);
     }
     dc.onmessage = function(event) {
-	//statusE = document.getElementById("status"),
-	//statusE.innerHTML = "We are connected!";
-
-        //trace('Received Message: ' + event.data);
-
-        if ( event.data instanceof Array ) {
-                alert('Is array');
-        }
 
         console.log("We got: " + event.data);
 
@@ -1470,8 +1460,6 @@ function setupDataHandlers() {
                 fileMeta = JSON.parse(event.data);
             }
         }//End determin if data message or control message.
-
-
 
         //Don't JSON.parse is data is already an object ;)
         if ( typeof event.data != "object" ) {
@@ -1555,22 +1543,18 @@ function setupDataHandlers() {
 
             } else if (msg.storeData) {
                 console.log("Received data store message.");
-                //console.log(blobURL);
-
             }
            };
     }
 
 function sendChat(msg) {
 	var cb = document.getElementById("chatbox"),
-	//c = document.getElementById("chat");
     c = document.getElementById("message-to-send");
 
 	//Display message locally, send it, and force chat window to
 	// last line
 	msg = msg || c.value;
 	console.log("calling sendChat(" + msg + ")");
-	//cb.value += "-> " + msg + "\n";
     //TODO Move (below) to SeshiSkinExample to keep seperate from API:
     var timeStamp = new Date();
     timeStamp = timeStamp.toString();
@@ -1599,10 +1583,7 @@ function sendChat(msg) {
 	data.send({'chat':msg, 'remoteDisplayName':Seshi.getDisplayName()});
 	c.value = '';
 	cb.scrollTop = cb.scrollHeight;
-}
-
-
-
+}//End sendChat()
 
 
 function zeroFill( number, width )

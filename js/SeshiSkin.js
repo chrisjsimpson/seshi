@@ -520,8 +520,10 @@ function newChatMessageReceived(e) {
     });
 
     $(".btn-chat-toggle").click(function(e) {
-      $("#message-to-send").focus();
+      e.preventDefault();
       e.stopPropagation();
+      $("#message-to-send").focus();
+
     });
 
 } //End newChatMessageReceived()

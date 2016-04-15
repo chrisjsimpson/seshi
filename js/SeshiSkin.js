@@ -164,8 +164,6 @@ function peerConnectionBroken() {
     var sendBtn = document.getElementById('sendBtn').disabled = true;
 
     //Disable chat button / Show online status
-    var chatToggleBtn = document.getElementById('chatToggle');
-    chatToggleBtn.innerText  = "CHAT: Offline"
     //End show show tollge button status
 
 }//End peerConnectionBroken()
@@ -532,6 +530,11 @@ function newChatMessageReceived(e) {
       $("#message").fadeOut();
     });
 
+    $(".btn-chat-toggle").click(function(e) {
+      e.preventDefault();
+      $("#message-to-send").focus();
+
+    });
 
 } //End newChatMessageReceived()
 

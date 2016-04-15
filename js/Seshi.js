@@ -1765,34 +1765,21 @@ function setStatus(str) {
 
   switch (str) {
     case 'Waiting':
-      //statusE.innerHTML = "Sweet! Now send your friend this link: " + getShareLink();
       console.log("Sweet! Now send your friend this link: " + getShareLink() + " status: waiting");
       break;
     case 'Connected':
-      //statuslineE.style.display = "inline";
-      //connectE.style.display = "none";
-      //scMessageE.style.display = "inline-block";
-      //hangUp.style.display = "inline-block";
       break;
     case 'Ready for call':
       //statusE.innerHTML = "You rock! Now press connect:";
       //Auto click connect if user pasted URL
       if (document.location.search) //Search isn't empty if has ?key= in it.
       {
-        //statusE.innerHTML = "Connecting to friend...";
         console.log("Connecting to friend...");
-	    //var connectBtn = document.getElementById('call');
-        //connectBtn.click()
-        //call();
       }//End auto click connect if user pased URL
 
-      //statusE.className = 'alert alert-info';
-      //callE.style.display = "inline";
       break;
     case 'On call':
       console.log("On call");
-      //statusE.innerHTML = "On call";
-      //callE.style.display = "none";
       break;
     default:
   }

@@ -58,28 +58,6 @@ Seshi = {
                         onGotRemoteDisplayName = new Event('onGotRemoteDisplayName');
                         onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName', true, true);
 
-                        //Fired when a playInSync request is recieved, fileId is dispatched to UI
-                        onPlayInSyncRequest = new Event('onPlayInSyncRequest');
-                        onPlayInSyncRequest.initEvent('onPlayInSyncRequest', true, true);
-
-                        //Fired from UI when play event happends <--- NOTE: from UI, a user generated action.
-                        SeshiSkinPlay = new Event('SeshiSkinPlay');
-                        SeshiSkinPlay.initEvent('SeshiSkinPlay', true, true);
-
-                        //Fired from UI when pause event hapends <--- NOTE: from UI, a user generated action.
-                        SeshiSkinPause = new Event('SeshiSkinPause');
-                        SeshiSkinPause.initEvent('SeshiSkinPause', true, true);
-
-                        //Fired when a pause request is received (e.g. from remote peer)
-                        onSeshiPauseReq = new Event('onSeshiPauseReq');
-                        onSeshiPauseReq.initEvent('onSeshiPauseReq', true, true);
-
-                        //Listen for SeshiSkinPlay event (dispatched from the UI)
-                        window.addEventListener('SeshiSkinPlay', Seshi.playHandler, false);
-
-                        //Listen for SeshiSkinPause event (dispatched from the UI)
-                        window.addEventListener('SeshiSkinPause', Seshi.pauseHandler, false);
-
                         //Initalize storage worker
                         StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
                         //Recieve proress message(s)
@@ -537,130 +515,6 @@ Seshi = {
 
                                return false;
     },
-    playInSyncRequest:function(fileId) {
-
-                            var msg = {
-                                "cmd":"playInSyncRPC",
-                                "request": "playRequest",
-                                "fileId":fileId
-                            };
-
-                            msg = JSON.stringify(msg);
-                            //Send request of datachannel
-                            dc.send(msg);
-                            //Fire Play on local peer event
-                            var event = new CustomEvent(
-                                    "playRequest",
-                                    {
-                                        detail: {
-                                            "fileId":fileId
-                                        },
-                                        bubbles: true,
-                                        cancelable: true
-                                    }
-                            );//End create play request event
-                            dispatchEvent(event);
-
-                            //Seshi.play({'fileId':fileId}, "video");
-    },
-    playInSyncRPC:function(msg) {
-                            /* playInSync()
-                             * - RPC Handler for playing media in sync
-                             *
-                             *   Impliments:
-                             *   - Play in sync (both peers begin playing same local file)
-                             *   - Pause in sync
-                             */
-
-                             //determine rpc call
-                             switch(msg.request) {
-
-                                 case 'playRequest':
-                                     playFile(msg.fileId);
-                                     break;
-                                 case 'pause':
-                                     Seshi.pause();
-                                     break;
-                                 case 'play':
-                                     //Note: The var fileId is in global scope (cringe) from origional play in sync request.
-                                     resumePlayFile(fileId); //This is more a resume than a play...
-                                     break;
-                             }//End determine rpc call
-
-                            function playFile(fileId)
-                            {
-                                //Don't play if it's the same file as last time  (avoid plyr/me bug)
-                                if ( fileId == localStorage.getItem('currentlyPlaying')) {
-                                    var player = document.querySelector('.plyr');
-                                    player.plyr.play()
-                                    return;
-                                }
-
-                                //Play file
-                                //Fire Play on local peer event
-                                var event = new CustomEvent(
-                                        "playRequest",
-                                        {
-                                            detail: {
-                                                "fileId":fileId
-                                            },
-                                            bubbles: true,
-                                            cancelable: true
-                                        }
-                                );//End create play request event
-                                dispatchEvent(event);
-                            }//End playFile(fileId);
-
-                            function resumePlayFile(fileId)
-                            {
-                                //Resume Play file
-                                var event = new CustomEvent(
-                                        "resumePlayRequest",
-                                        {
-                                            detail: {
-                                                "fileId":fileId
-                                            },
-                                            bubbles: true,
-                                            cancelable: true
-                                        }
-                                );//End resume play request event
-                                dispatchEvent(event);
-                            }//End resumePlayFile(fileId);
-    },
-    playHandler: function() {
-                            /* playHandler()
-                             *  - This is more an UN-pause handler than a playHandler TODO (RENAME??)
-                             *  - React to play even fired by UI to unpause mendia
-                             */
-                            console.log("In Seshi.playHandler");
-
-                            //If playing in sync, tell other peer to lay  TODO: FLAG NEEDED
-                            var msg = {
-                                        "cmd":"playInSyncRPC",
-                                        "request":"play"
-                                };
-
-                            //Stringify
-                            msg = JSON.stringify(msg);
-                            //Send play request to peer TODO: Check peer connection first
-                            dc.send(msg);
-    },
-    pauseHandler: function() {
-                            /* pauseHandler()
-                             * - react to pause event fired by UI
-                             */
-                            trace("In Seshi.pauseHandler");
-
-                            //If playing in sync, tell other peer to pause TODO: FLAG NEEDED
-                            var msg = {
-                                        "cmd":"playInSyncRPC",
-                                        "request":"pause"
-                                };
-                            //Stringify
-                            msg = JSON.stringify(msg);
-                            //Send pause request to peer TODO: Check peer connection first
-                            dc.send(msg);
-    },
     download:function(fileId) {
                         /* Download
                         * - Download a given fileId from Seshi's database to the system's filesystem boo.
@@ -668,7 +522,7 @@ Seshi = {
                         */
                         //Query IndexedDB to get the file
                         db.transaction('r', db.chunks, function() {
-                            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
+                            db.chunks.where("fileId").equals(fileId).sortBy("chunkNumber").then(function(chunks) {
                                 console.log("Found " + chunks.length + " chunks");
                                 var allChunksArray = [];
                                 //Just get blob cunks without meta
@@ -1511,8 +1365,6 @@ function createPC() {
   window.pc.ondatachannel = onDataChannelAdded;
   window.pc.oniceconnectionstatechange = onIceconnectionStateChanged;
   window.pc.onsignalingstatechange = onSignalingStateChanged;
-  // wait for local media to be ready
-  attachMediaIfReady();
 }
 
 // When our browser has another candidate, send it to the peer
@@ -1651,9 +1503,6 @@ function setupDataHandlers() {
                     break;
                 case 'remoteDisplayName': //Receiving remote's display name
                     Seshi.setRemoteDisplayName(msg);
-                    break;
-                case 'playInSyncRPC': //Play file in sync with connected peer DUDE.
-                    Seshi.playInSyncRPC(msg);
                     break;
             }//Switch on comman requested by remote peer
         }//End check for command & control message from remote peer
@@ -1838,28 +1687,6 @@ function trace(text) {
 
 
 
-///////////////////////////////////
-// This next section is for attaching local media to the Peer
-// Connection.
-///////////////////////////////////
-
-// This guard routine effectively synchronizes completion of two
-// async activities:  the creation of the Peer Connection and
-// acquisition of local media.
-function attachMediaIfReady() {
-  // If RTCPeerConnection is ready and we have local media,
-  // proceed.
-  if (pc) {attachMedia();}
-}
-
-// This routine adds our local media stream to the Peer
-// Connection.  Note that this does not cause any media to flow.
-// All it does is to let the browser know to include this stream
-// in its next SDP description.
-function attachMedia() {
-
-  setStatus("Ready for call");
-}
 
 
 ////////////////////////////
@@ -1914,34 +1741,21 @@ function setStatus(str) {
 
   switch (str) {
     case 'Waiting':
-      //statusE.innerHTML = "Sweet! Now send your friend this link: " + getShareLink();
       console.log("Sweet! Now send your friend this link: " + getShareLink() + " status: waiting");
       break;
     case 'Connected':
-      //statuslineE.style.display = "inline";
-      //connectE.style.display = "none";
-      //scMessageE.style.display = "inline-block";
-      //hangUp.style.display = "inline-block";
       break;
     case 'Ready for call':
       //statusE.innerHTML = "You rock! Now press connect:";
       //Auto click connect if user pasted URL
       if (document.location.search) //Search isn't empty if has ?key= in it.
       {
-        //statusE.innerHTML = "Connecting to friend...";
         console.log("Connecting to friend...");
-	    //var connectBtn = document.getElementById('call');
-        //connectBtn.click()
-        //call();
       }//End auto click connect if user pased URL
 
-      //statusE.className = 'alert alert-info';
-      //callE.style.display = "inline";
       break;
     case 'On call':
       console.log("On call");
-      //statusE.innerHTML = "On call";
-      //callE.style.display = "none";
       break;
     default:
   }

@@ -504,8 +504,7 @@ function newChatMessageReceived(e) {
                                chatData +
                '    </div>' +
                '</li>';
-           cb.insertAdjacentHTML('beforeend', remoteChatMsg);
-           cb.scrollTop = cb.scrollHeight; msg = msg.chat;
+
     console.log('newChatMessageReceived() called.');
 
     //TODO : Take data from this

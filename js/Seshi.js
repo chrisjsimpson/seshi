@@ -1523,9 +1523,10 @@ function setupDataHandlers() {
                 });
 
             // TODO Move below to Seshi Skin
-            
-            //END TODO Move above to Seshi Skin.
 
+            //END TODO Move above to Seshi Skin.
+            cb.insertAdjacentHTML('beforeend', remoteChatMsg);
+            cb.scrollTop = cb.scrollHeight; msg = msg.chat;
             //Dispatch event to UI informing it about the new chat message
             var onNewChatMessage = new CustomEvent(
                                 'onNewChatMessage',

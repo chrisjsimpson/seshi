@@ -495,13 +495,13 @@ function newChatMessageReceived(e) {
      var remoteChatMsg =
                '<li class="clearfix">' +
                '    <div class="message-data align-right">' +
-               '    <span class="message-data-time">' + timeStamp +
+               '    <span class="message-data-time">' + e.detail.timestamp +
                '    <span class="message-data-name">' +
-                    msg.remoteDisplayName+
+                    e.detail.remoteDisplayName+
                '    </span>' +
                '    <i class="fa fa-circle me"></i></div>' +
                '    <div class="message other-message float-right">' +
-                               chatData +
+                               e.detail.message +
                '    </div>' +
                '</li>';
 

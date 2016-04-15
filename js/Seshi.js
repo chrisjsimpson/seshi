@@ -1615,55 +1615,6 @@ function zeroFill( number, width )
   return number + ""; // always return a string
 }//End zeroFill
 
-var sendBuffer = [];
-
-function sendChunksToPeer(e, fileId) {
-        //Get file id else defaults to most recent file added
-        if(typeof(e) == 'object')
-        {
-            var fileId = e.target.dataset.fileid;
-        }
-
-    db.transaction('r', db.chunks, function() {
-            db.chunks.where("fileId").equals(fileId).each(function(chunk) {
-                //Transaction scope
-                        //Sending file meta...
-                        var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
-                        var lengthOfMeta = JSON.stringify(meta).length;
-                        lengthOfMeta = zeroFill(lengthOfMeta, 64);
-                        var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
-                        var header = JSON.stringify(metaLength) + JSON.stringify(meta);
-                        var sendChunk = new Blob([header, chunk.chunk]);
-                        url = window.URL.createObjectURL(sendChunk);
-                        //Needs to be sent as an arrayBuffer
-                        var reader = new FileReader();
-                                reader.onload = function(file) {
-                                if( reader.readyState == FileReader.DONE ) {
-                                        for(var i=0;i<=99999999;i++) {}//Crude delay!
-                                        //Add chunk to send buffer
-                                        sendBuffer.push(file.target.result);
-
-                                        dc.send(result = file.target.result);
-                                }//End FileReader.DONE
-
-                        }//End reader.onload
-                        reader.readAsArrayBuffer(sendChunk);
-			var chunkProg = (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100;
-                        //End sending file meta
-            })//End db.chunks toArray using Dexie (.then follows)
-
-        }).then(function() {
-            //Transaction completed
-	    var uploadBar = document.getElementById('uploadProgress');
-	    uploadBar.innerHTML="<span style=\"color:black\">UploadComplete!</span>";
-        }).catch (function (err) {
-
-            console.error(err);
-
-    });//End get fildIdChunks from fileId
-
-} //End sendChunksToPeer
-
 
 function trace(text) {
   // This function is used for logging.

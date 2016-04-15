@@ -152,11 +152,6 @@ function peerConnectionBroken() {
     var receiveBtn = document.getElementById('receiveBtn').disabled = true;
     var sendBtn = document.getElementById('sendBtn').disabled = true;
 
-    //Disable chat button / Show online status
-    var chatToggleBtn = document.getElementById('chatToggle');
-    chatToggleBtn.innerText  = "CHAT: Offline"
-    //End show show tollge button status
-
 }//End peerConnectionBroken()
 
 

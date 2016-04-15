@@ -492,6 +492,8 @@ function newChatMessageReceived(e) {
      *
      *
      */
+     cb = document.getElementById("chatbox");
+       rtt = document.getElementById("rtt");
      var remoteChatMsg =
                '<li class="clearfix">' +
                '    <div class="message-data align-right">' +
@@ -504,6 +506,9 @@ function newChatMessageReceived(e) {
                                e.detail.message +
                '    </div>' +
                '</li>';
+
+               cb.insertAdjacentHTML('beforeend', remoteChatMsg);
+                   cb.scrollTop = cb.scrollHeight;
 
     console.log('newChatMessageReceived() called.');
 

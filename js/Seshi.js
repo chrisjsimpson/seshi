@@ -1467,8 +1467,7 @@ function setupDataHandlers() {
         } else {
                 var msg = event.data;
         }//End don't parse data message recived if already an object!
-        cb = document.getElementById("chatbox");
-        rtt = document.getElementById("rtt");
+
 
 
         //Command & control
@@ -1524,9 +1523,9 @@ function setupDataHandlers() {
 
             // TODO Move below to Seshi Skin
 
+
             //END TODO Move above to Seshi Skin.
-            cb.insertAdjacentHTML('beforeend', remoteChatMsg);
-            cb.scrollTop = cb.scrollHeight; msg = msg.chat;
+
             //Dispatch event to UI informing it about the new chat message
             var onNewChatMessage = new CustomEvent(
                                 'onNewChatMessage',

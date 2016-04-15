@@ -33,9 +33,9 @@ $('.navbar-collapse ul li a').click(function() {
 
 //Prevent chat box from close when clicked inside
 
-$('.drop-up').click(function(e) {
-       e.stopPropagation();
-   });
+// $('.drop-up').click(function(e) {
+//        e.stopPropagation();
+//    });
 
 
 //send key expand
@@ -59,46 +59,6 @@ $('#shareKeyInputElm').on('click',function(){ this.select(); });
 $('.btn-hide').hide();
 
 //dropzone
-
-
-$('.dropfile').on('dragenter', function() {
-    dropzoneenter();
-
-});
-
-$('.dropfile').on('drop', function(e) {
-   e.preventDefault();
-    dropzoneleave();
-
-});
-
-$('.btn-upload').mouseenter( function(){
-    dropzoneenter();
-});
-
-$('.btn-upload').mouseleave( function(){
-    dropzoneleave();
-});
-
-function dropzoneenter() {
-//     $('.dropfile')
-//     .css({'background-color' : 'rgba(255,255,255,0.6)',
-// });
-    $('.dropfile').css({'opacity':'1',
-                        'z-index': '1002'})
-                        $('input[id="dropfileinput"]').show();
-}
-
-function dropzoneleave() {
-    // $('.dropfile')
-    // .css({'background-color' : ''});
-    $('.dropfile').css({'opacity': '0',
-                        'z-index': '999'});
-                            $('input[id="dropfileinput"]').hide();
-}
-
-
-
 
 //scroll show extra upload button
 

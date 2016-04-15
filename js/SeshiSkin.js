@@ -519,13 +519,9 @@ function newChatMessageReceived(e) {
       $("#message").fadeOut();
     });
 
-    $(".btn-chat-toggle").click(function() {
-      setTimeout(
-          function() {
-              $("#message-to-send").focus();
-          },
-          1000);
-
+    $(".btn-chat-toggle").click(function(e) {
+      $("#message-to-send").focus();
+      e.stopPropagation();
     });
 
 } //End newChatMessageReceived()

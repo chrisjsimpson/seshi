@@ -1511,8 +1511,7 @@ function setupDataHandlers() {
             // reset real-time window,
             // and force chat window to last line
             console.log("received chat of '" + msg.chat + "'");
-            //cb.value += msg.chat + "\n";
-            ////TODO Move to SeshiSkinExample to keep seperate from API:
+            
             var timeStamp = new Date();
             timeStamp = timeStamp.toString();
             timeStamp = timeStamp.substring(0,21);
@@ -1522,6 +1521,8 @@ function setupDataHandlers() {
                 stripIgnoreTag:     true,      // filter out all HTML not in the whilelist
                 stripIgnoreTagBody: ['script'] // the script tag is a special case, we need to filter out its content
                 });
+
+            // TODO Move below to Seshi Skin
             var remoteChatMsg =
                 '<li class="clearfix">' +
                 '    <div class="message-data align-right">' +
@@ -1536,7 +1537,18 @@ function setupDataHandlers() {
                 '</li>';
             cb.insertAdjacentHTML('beforeend', remoteChatMsg);
             cb.scrollTop = cb.scrollHeight; msg = msg.chat;
+            //END TODO Move above to Seshi Skin.
+
             //Dispatch event to UI informing it about the new chat message
+            var onNewChatMessage = new CustomEvent(
+                                'onNewChatMessage', 
+                                    {
+                                        'detail': {
+                                                    'message': chatData,
+                                                    'timestamp': timeStamp,
+                                                    'remoteDisplayName': msg.remoteDisplayName
+                                                  }
+                                    });
             dispatchEvent(onNewChatMessage);
             //Notify user of new message
             Seshi.notify(msg);

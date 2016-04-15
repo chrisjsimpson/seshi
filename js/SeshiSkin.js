@@ -480,13 +480,23 @@ function showConnected() {
 }//End showConnected
 
 
-function newChatMessageReceived() {
+function newChatMessageReceived(e) {
     /* newChatMessageReceived gets called after the
      * onNewChatMessage event is dispatched. We listen
      * for that event to fire, and when it does, this
      * function gets called.
+     *
+     * The event contains details of the  message, 
+     * timestamp & display name of the remote user
+     * exposed from the e.details object.
+     *
+     * 
      */
     console.log('newChatMessageReceived() called.');
+
+    //TODO : Take data from this
+    //object and display in the chat window.
+    console.log(e.detail); 
 
   $("#message").fadeIn();
     $(".btn-chat-toggle").on('click', function() {

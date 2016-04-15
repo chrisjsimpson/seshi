@@ -519,6 +519,7 @@ function newChatMessageReceived(e) {
   $("#message").fadeIn();
     $(".btn-chat-toggle").on('click', function() {
       $("#message").fadeOut();
+      $("#message-to-send").focus();
     });
 
 

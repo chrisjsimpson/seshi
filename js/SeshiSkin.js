@@ -515,7 +515,7 @@ function newChatMessageReceived(e) {
     $(".btn-chat-toggle").on('click', function() {
       $("#message").fadeOut();
     });
-    $("#chatToggle").click(function() {
+    $("#chatToggle").addEventListener('click mousedown' function() {
       $("#message-to-send").delay(200).focus();
 
     });

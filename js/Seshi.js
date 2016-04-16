@@ -1521,7 +1521,6 @@ function setupDataHandlers() {
                     Seshi.updateSendingProgress(msg.data);
                     break;
                 case 'receiveComplete': //Peer has told us they received all chunks of a file
-                    alert("They got it all!");
                     Seshi.receiveCompleteHandler(msg);
                     break;
                 case 'requestFilesById': //Receiving request from peer to pull files from their peer.

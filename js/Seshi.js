@@ -88,7 +88,6 @@ Seshi = {
                             //Tell peer if all chunks have been received
                             if ( chunksReceived == progressData.totalNumChunks )
                             {
-                                alert("We done!");
                                 //Build receive complete message
                                 var receiveMsg = {
                                  'cmd':'receiveComplete',

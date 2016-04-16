@@ -32,17 +32,4 @@ $("#hideall").toggleClass('showtoggle');
     }
     //  $(".btn-hide").text(txt);
 
-})
-
-
-//if audio player CSS change
-// if($('.plyr').find('audio').length != 0) {
-//     $('#hideall').css('position', 'relative');
-//     $('.plyr').css({
-//         'position': 'fixed',
-//         'bottom': '0',
-//         'width': '100%',
-//         'z-index':'1001'
-// 			});
-// 		$('.btn-hide').hide();
-// }
+});

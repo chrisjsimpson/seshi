@@ -11,7 +11,7 @@ Seshi = {
     config:{
         "SeshiBotOn":false,
         "YoloInitMsg":false,
-        "AUTO_RESUME_INCOMPLETE_TRANSFERS_ON":true
+      
     },
     init:function(){
                         /* Initialise Seshi
@@ -58,6 +58,28 @@ Seshi = {
                         onGotRemoteDisplayName = new Event('onGotRemoteDisplayName');
                         onGotRemoteDisplayName.initEvent('onGotRemoteDisplayName', true, true);
 
+                        //Fired when a playInSync request is recieved, fileId is dispatched to UI
+                        onPlayInSyncRequest = new Event('onPlayInSyncRequest');
+                        onPlayInSyncRequest.initEvent('onPlayInSyncRequest', true, true);
+
+                        //Fired from UI when play event happends <--- NOTE: from UI, a user generated action.
+                        SeshiSkinPlay = new Event('SeshiSkinPlay');
+                        SeshiSkinPlay.initEvent('SeshiSkinPlay', true, true);
+
+                        //Fired from UI when pause event hapends <--- NOTE: from UI, a user generated action.
+                        SeshiSkinPause = new Event('SeshiSkinPause');
+                        SeshiSkinPause.initEvent('SeshiSkinPause', true, true);
+
+                        //Fired when a pause request is received (e.g. from remote peer)
+                        onSeshiPauseReq = new Event('onSeshiPauseReq');
+                        onSeshiPauseReq.initEvent('onSeshiPauseReq', true, true);
+
+                        //Listen for SeshiSkinPlay event (dispatched from the UI)
+                        window.addEventListener('SeshiSkinPlay', Seshi.playHandler, false);
+
+                        //Listen for SeshiSkinPause event (dispatched from the UI)
+                        window.addEventListener('SeshiSkinPause', Seshi.pauseHandler, false);
+
                         //Initalize storage worker
                         StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
                         //Recieve proress message(s)
@@ -68,42 +90,19 @@ Seshi = {
                             if ( Seshi.storeProgress[progressData.fileId] === undefined )
                             {
                                 currentChunk = 0;
-                                chunksReceived = 0;
                             }else { //End set progress to zero initially
                                 currentChunk = Seshi.storeProgress[progressData.fileId].currentChunk;
-                                chunksReceived = Seshi.storeProgress[progressData.fileId].chunksReceived;
                             }//End else incriment currentChunk using current value
 
                             Seshi.storeProgress[progressData.fileId] = {
                                 "fileId":progressData.fileId,
                                 "fileName":progressData.fileName,
                                 "currentChunk":currentChunk + 1,
-                                "chunksReceived": chunksReceived + 1,
                                 "totalNumChunks":progressData.totalNumChunks,
                                 "complete":currentChunk >= progressData.totalNumChunks ? true:false,
                                 "UIdone":false
                                 }
                             dispatchEvent(storeFilesProgressUpdate);//Dispacht/fire progress update event for local UI
-
-                            //Tell peer if all chunks have been received
-                            if ( chunksReceived == progressData.totalNumChunks )
-                            {
-                                alert("We done!");
-                                //Build receive complete message
-                                var receiveMsg = {
-                                 'cmd':'receiveComplete',
-                                 'fileId':progressData.fileId
-                                };
-
-                                //Send over datachannel
-                                receiveMsg = JSON.stringify(receiveMsg);
-                                
-                                //Check Datachannel connection status
-                                if (typeof dc != "undefined" || dc.readyState == "open") {
-                                    dc.send(receiveMsg); //Inform peer that we've stored the complete file.
-                                }//End check Datachannel is actually open
-
-                            }//End tell peer if all chunks have been received
 
                             //Delete completed storeProgess
                             if(Seshi.storeProgress[progressData.fileId].complete == true)
@@ -538,6 +537,130 @@ Seshi = {
 
                                return false;
     },
+    playInSyncRequest:function(fileId) {
+
+                            var msg = {
+                                "cmd":"playInSyncRPC",
+                                "request": "playRequest",
+                                "fileId":fileId
+                            };
+
+                            msg = JSON.stringify(msg);
+                            //Send request of datachannel
+                            dc.send(msg);
+                            //Fire Play on local peer event
+                            var event = new CustomEvent(
+                                    "playRequest",
+                                    {
+                                        detail: {
+                                            "fileId":fileId
+                                        },
+                                        bubbles: true,
+                                        cancelable: true
+                                    }
+                            );//End create play request event
+                            dispatchEvent(event);
+
+                            //Seshi.play({'fileId':fileId}, "video");
+    },
+    playInSyncRPC:function(msg) {
+                            /* playInSync()
+                             * - RPC Handler for playing media in sync
+                             *
+                             *   Impliments:
+                             *   - Play in sync (both peers begin playing same local file)
+                             *   - Pause in sync
+                             */
+
+                             //determine rpc call
+                             switch(msg.request) {
+
+                                 case 'playRequest':
+                                     playFile(msg.fileId);
+                                     break;
+                                 case 'pause':
+                                     Seshi.pause();
+                                     break;
+                                 case 'play':
+                                     //Note: The var fileId is in global scope (cringe) from origional play in sync request.
+                                     resumePlayFile(fileId); //This is more a resume than a play...
+                                     break;
+                             }//End determine rpc call
+
+                            function playFile(fileId)
+                            {
+                                //Don't play if it's the same file as last time  (avoid plyr/me bug)
+                                if ( fileId == localStorage.getItem('currentlyPlaying')) {
+                                    var player = document.querySelector('.plyr');
+                                    player.plyr.play()
+                                    return;
+                                }
+
+                                //Play file
+                                //Fire Play on local peer event
+                                var event = new CustomEvent(
+                                        "playRequest",
+                                        {
+                                            detail: {
+                                                "fileId":fileId
+                                            },
+                                            bubbles: true,
+                                            cancelable: true
+                                        }
+                                );//End create play request event
+                                dispatchEvent(event);
+                            }//End playFile(fileId);
+
+                            function resumePlayFile(fileId)
+                            {
+                                //Resume Play file
+                                var event = new CustomEvent(
+                                        "resumePlayRequest",
+                                        {
+                                            detail: {
+                                                "fileId":fileId
+                                            },
+                                            bubbles: true,
+                                            cancelable: true
+                                        }
+                                );//End resume play request event
+                                dispatchEvent(event);
+                            }//End resumePlayFile(fileId);
+    },
+    playHandler: function() {
+                            /* playHandler()
+                             *  - This is more an UN-pause handler than a playHandler TODO (RENAME??)
+                             *  - React to play even fired by UI to unpause mendia
+                             */
+                            console.log("In Seshi.playHandler");
+
+                            //If playing in sync, tell other peer to lay  TODO: FLAG NEEDED
+                            var msg = {
+                                        "cmd":"playInSyncRPC",
+                                        "request":"play"
+                                };
+
+                            //Stringify
+                            msg = JSON.stringify(msg);
+                            //Send play request to peer TODO: Check peer connection first
+                            dc.send(msg);
+    },
+    pauseHandler: function() {
+                            /* pauseHandler()
+                             * - react to pause event fired by UI
+                             */
+                            trace("In Seshi.pauseHandler");
+
+                            //If playing in sync, tell other peer to pause TODO: FLAG NEEDED
+                            var msg = {
+                                        "cmd":"playInSyncRPC",
+                                        "request":"pause"
+                                };
+                            //Stringify
+                            msg = JSON.stringify(msg);
+                            //Send pause request to peer TODO: Check peer connection first
+                            dc.send(msg);
+    },
     download:function(fileId) {
                         /* Download
                         * - Download a given fileId from Seshi's database to the system's filesystem boo.
@@ -545,7 +668,7 @@ Seshi = {
                         */
                         //Query IndexedDB to get the file
                         db.transaction('r', db.chunks, function() {
-                            db.chunks.where("fileId").equals(fileId).sortBy("chunkNumber").then(function(chunks) {
+                            db.chunks.where("fileId").equals(fileId).toArray(function(chunks) {
                                 console.log("Found " + chunks.length + " chunks");
                                 var allChunksArray = [];
                                 //Just get blob cunks without meta
@@ -584,41 +707,28 @@ Seshi = {
                         var whereClause = 'fileId';
                         var equalsClause = undefined;
                         var requestedOffset = 0;
-                        var partialSendBool = true;
                         switch(sendDataRequest.requestType)
                         {
                             case 'ALL':
                                 console.log("Processing request for fileId: " + sendDataRequest.fileId);
                                 equalsClause = sendDataRequest.fileId;
-                                partialSendBool = false
                                 break;
                             case 'CHUNK':
                                 console.log("Request for single chunk..");
                                 whereClause = "[fileId+chunkNumber]"; //Search by compound index for single chunk
                                 equalsClause = [ sendDataRequest.fileId, sendDataRequest.chunkNumber];
-                                limitCount = 1;
                                 break;
                             case 'CHUNK-RANGE':
                                 console.log("Processing request for chunk range for fileId: " + sendDataRequest.fileId);
                                 equalsClause = sendDataRequest.fileId;
                                 requestedOffset = sendDataRequest.rangeStart;
-                                limitCount = (sendDataRequest.rangeEnd - requestedOffset) + 1;
                                 break;
                             case 'RANGE':
                                 console.log("Request for RANGE of chunks..");
                                 break;
                             default:
-                                try {
-                                    //Parse sendDataRequest to just get pain old fileId
-                                    console.log("Processing plain old fileId request");
-                                    parsed = JSON.parse(sendDataRequest);
-                                    equalsClause = parsed[0].fileId;
-                                    partialSendBool = false;
-                                } catch (e) {
-                                    equalsClause = sendDataRequest;
-                                    console.log("Default fallback to Processing request for entire fileId: " + fileId);
-                                    partialSendBool = false;
-                                }
+                                equalsClause = sendDataRequest;
+                                console.log("Default fallback to Processing request for entire fileId: " + fileId);
                         }//End work our request type (ALL/CHUNK/RANGE) and act accordinly
 
                         //Set flag for outbox
@@ -629,72 +739,34 @@ Seshi = {
                             return false;
                         }//End check Datachannel is actually open
 
-                        if(partialSendBool)
-                        {
-                            db.transaction('r', db.chunks, function() {
-                                db.chunks.where(whereClause).equals(equalsClause).offset(requestedOffset).limit(limitCount).sortBy("chunkNumber").
-                                then(function(chunks)
-                                {
-                                    chunks.forEach(function(chunk)
-                                    {
-                                    //Transaction scope
-                                    //Sending file meta...
-                                    var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
-                                    var lengthOfMeta = JSON.stringify(meta).length;
-                                    lengthOfMeta = zeroFill(lengthOfMeta, 64);
-                                    var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
-                                    var header = JSON.stringify(metaLength) + JSON.stringify(meta);
-                                    var sendChunk = new Blob([header, chunk.chunk]);
-                                    //Add chunk to outBox for sending
-                                    Seshi.outBox.push({
-                                        percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
-                                        fileName: chunk.fileName,
-                                        fileId: chunk.fileId,
-                                        fileType: chunk.fileType,
-                                        chunkNumber: chunk.chunkNumber,
-                                        numberOfChunks: chunk.numberOfChunks,
-                                        chunk: sendChunk
-                                        });
-                                        if(Seshi.outBox.length > 0)
-                                        {
-                                            Seshi.flagProcessOutboxStarted=true;
-                                            Seshi.processOutbox();
-                                            //Close outbox flag so we don't repeatedly open a new filereader
-                                            Seshi.flagProcessOutboxStarted=false;
-                                        }
-                                    });//End add each chunk from range to Seshi.outBox
-                                 })})
+                        db.transaction('r', db.chunks, function() {
+                            db.chunks.where(whereClause).equals(equalsClause).offset(requestedOffset).each(function(chunk) {
+                            //Transaction scope
+                            //Sending file meta...
+                            var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+                            var lengthOfMeta = JSON.stringify(meta).length;
+                            lengthOfMeta = zeroFill(lengthOfMeta, 64);
+                            var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
+                            var header = JSON.stringify(metaLength) + JSON.stringify(meta);
+                            var sendChunk = new Blob([header, chunk.chunk]);
+                            //Add chunk to outBox for sending
+                            Seshi.outBox.push({
+                                percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
+                                fileName: chunk.fileName,
+                                fileId: chunk.fileId,
+                                fileType: chunk.fileType,
+                                chunkNumber: chunk.chunkNumber,
+                                numberOfChunks: chunk.numberOfChunks,
+                                chunk: sendChunk
+                            });
+                            Seshi.processOutbox();
+                            //Close outbox flag so we don't repeatedly open a new filereader
+                            Seshi.flagProcessOutboxStarted=false;
 
-                        } else { //Send all chunks fallback
-                            db.transaction('r', db.chunks, function() {
-                                db.chunks.where(whereClause).equals(equalsClause).each(function(chunk) {
-                                //Transaction scope
-                                //Sending file meta...
-                                var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
-                                var lengthOfMeta = JSON.stringify(meta).length;
-                                lengthOfMeta = zeroFill(lengthOfMeta, 64);
-                                var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
-                                var header = JSON.stringify(metaLength) + JSON.stringify(meta);
-                                var sendChunk = new Blob([header, chunk.chunk]);
-                                //Add chunk to outBox for sending
-                                Seshi.outBox.push({
-                                    percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
-                                    fileName: chunk.fileName,
-                                    fileId: chunk.fileId,
-                                    fileType: chunk.fileType,
-                                    chunkNumber: chunk.chunkNumber,
-                                    numberOfChunks: chunk.numberOfChunks,
-                                    chunk: sendChunk
-                                });
-                                Seshi.processOutbox();
-                                //Close outbox flag so we don't repeatedly open a new filereader
-                                Seshi.flagProcessOutboxStarted=false;
-
-                                }).then(function(){
-                                Seshi.flagProcessOutboxStarted = true;
-                                Seshi.processOutbox();
-                                })});
-                        }//End Send all fallback
+                            }).then(function(){
+                            Seshi.flagProcessOutboxStarted = true;
+                            Seshi.processOutbox();
+                            })});
     },
     outBox:[],
     flagProcessOutboxStarted:true,
@@ -710,24 +782,22 @@ Seshi = {
                         function loadNext() {
 
                         fr.onload = function(chunk) {
+                              if (Seshi.outBox.length >= 0) {
                                 //Add chunk to buffer
                                 Seshi.buffer.push(chunk.target.result);
                                 Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
                                     //Kill off fileReader if we've reached the end
                                     if(Seshi.outBox.length == 0)
                                     {
-                                        //fr = undefined;
+                                        fr = undefined;
                                     }//End kill off fileReader if we've reached the end
                                 loadNext(); // shortcut here
+                              }
                            };
-                            if(Seshi.outBox.length > 0) {
                             //Get next chunk from outbox (presuming there is one)
-                                if ( fr.readyState == 2 || fr.readyState == 0 )
-                                {
-                                    chunkData = Seshi.outBox.pop();
-                                    fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk
-                                }//End only read next chunk if fileRead is ready for next one.
-                            }
+                            chunkData = Seshi.outBox.pop();
+
+                        fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk
                         }
 
                         loadNext();
@@ -838,176 +908,6 @@ Seshi = {
                             //Store to localStorage
                             localStorage.setItem('sendingFileProgress', serialisedSendingFileProgressList);
                             console.log('Saved sending progress to local storage');
-    },
-    sendingFileProgress:[],
-    checkForIncompleteTransfers:function() {
-                            /* checkForIncompleteTransfers()
-                             *
-                             *   Checks for incomplete push & pull trnasfers
-                             *   If found, fire {} events to UI to request
-                             *   resume of these files. OR auto recommence
-                             *   if AUTO_RESUME_INCOMPLETE_TRANSFERS flag is set.
-                             */
-
-                            if (Seshi.config.AUTO_RESUME_INCOMPLETE_TRANSFERS_ON)
-                            {
-                                //Query Seshi.storeProgress for incomplete transfers
-                                var incompletePulls = Seshi.getIncompletePulls();
-                                if (!incompletePulls.length)
-                                {
-                                    console.log("Nothing to send, there are no incomplete pulls.");
-                                    return;
-                                }//End exit if there are no incomplete pulls
-                                var filesRequested = [];
-                                //request each incomplete file from peer using RANGE request
-                                incompletePulls.forEach(
-                                        function(file) {
-                                           console.log("Should ask for: " + file);
-                                           //Get chunks needed, then send chunk pull request
-                                           Seshi.buildRangeRequests(file.fileId)
-                                           .then(function() {
-                                               Seshi.ranges.forEach(function(rangeRequest)
-                                               {
-                                                var msg = {"cmd":"requestFilesById", "data":rangeRequest};
-                                                msg = JSON.stringify(msg);
-                                                dc.send(msg); //TODO this presumes a peer connection..it should not
-                                               });// End build filesRequested array containing missing chunks to request
-                                           });//End got array of which chunk numbers are missing
-                                }); //End request each incomplete file from peer
-
-                            }//End if AUTO_RESUME_INCOMPLETE_TRANSFERS_ON resume transfers
-    },
-    getIncompletePulls:function(){
-                            /* Returns an array of incomplete pulls with their
-                             * ranges needed. (a file may have 'holes' in it)
-                             * This method works out the range requests needed
-                             * to reform the file.
-                             *
-                             *  Each element contains:
-                             *  > fileId
-                             *  > currentChunk
-                             *  > totalNumChunks
-                             *  > fileName
-                            */
-                            var fileList = [];
-                            for (var fileId in Seshi.storeProgress) {
-                                if( Seshi.storeProgress[fileId].complete == false)
-                                {
-                                    //Delete completed file transfers which miss complete flag
-                                    if ( Seshi.storeProgress[fileId].currentChunk == Seshi.storeProgress[fileId].totalNumChunks )
-                                    {
-                                        delete(Seshi.storeProgress[fileId]);
-                                        continue;
-                                    }
-                                    var file = Seshi.storeProgress[fileId];
-                                    console.log(fileId);
-                                    file.fileId = fileId;
-                                    fileList.push(file);
-                                }
-                            }
-
-                            if (fileList.length > 0)
-                            {
-                                return fileList;
-                            }
-                            console.log('There were no incomplete pulls found.');
-                            return false;
-    },
-    calculateMissingChunks:function(fileId){
-                            /* calculateMissingChunks(fildId)
-                             *
-                             *  Returns array of chunk numbers missing
-                             *  (if any) for a given fileId).
-                             *
-                             *  TODO return RANGES of contigious missing
-                             *  chunks if possible.
-                             */
-                            var promise = new Promise(function(resolve, reject) {
-                                //Get total number of chunks for fileId (how many there should be, not how many we have)
-                                db.chunks.where("fileId").equals(fileId)
-                                .first(function(first){
-                                    expectedNumberOfChunks = first.numberOfChunks;
-                                    var haveChunks = [];
-                                    //Iterate over every chunk to identify which chunks are present.
-                                    //TODO this is stupid. Just query indexed DB and generate an array of existing keys,
-                                    // no to to itteratate over each chunk for fileId.numberOfChunks times!
-                                    db.chunks.where("fileId").equals(fileId)
-                                        .each(function(chunk){
-                                            haveChunks.push(chunk.chunkNumber);
-                                    }).then(function(){
-                                        //Sort the haveChunks array ascending
-                                        haveChunks = haveChunks.sort(function(a,b){return a - b;});
-                                        missingChunks = [];
-                                        //Loop though chunks we do have to identify missing chunk numbers
-                                        for ( var i=0; i< expectedNumberOfChunks;i++ )
-                                        {
-                                           if (haveChunks.indexOf(i) == -1)
-                                           {
-                                                missingChunks.push(i);
-                                           }
-                                        }
-                                                resolve(missingChunks); //Resolve promise (return array of missing chunks)
-                                    });
-
-                                }) //End get number of chunks for the complete file, and work out missing chunks.
-                                .catch(function(err) {
-                                    console.log("Error:");
-                                    console.error(err);
-                                });
-                            });//End promise (return array of missing chunks for given fileId
-                            return promise;
-    },
-    buildRangeRequests: function(fileId) {
-                            /*
-                             *
-                             */
-                            return new Promise(function(resolve, reject)
-                            {
-                                Seshi.calculateMissingChunks(fileId)
-                                .then(function(list) {
-                                    //Sort list
-                                    list = list.sort(function(a, b) {
-                                          return a - b
-                                    });
-
-                                    /* Create ranges
-                                     *
-                                     */
-                                    Seshi.ranges = [];
-                                    buildRanges(list).then(function(){resolve();});
-                                    function buildRanges(list) {
-                                        var promises = [];
-                                        //Iterate over
-                                        for (var i=0;i<list.length; i++)
-                                        {
-                                            promises.push(checkForSpace(list[i]));
-                                        }//End iterate over list.
-                                        return Promise.all(promises);
-                                    }//End buildRanges
-
-                                    function checkForSpace(chunkNumber) {
-                                        return new Promise(function(resolve, reject)
-                                        {
-                                            //Check last element of Seshi.ranges array to see if there's a gap.
-                                            //If chunkNumber is equal to range.end + 1, update the rangeEnd
-                                            //for this element.
-                                        if (Seshi.ranges[Seshi.ranges.length - 1] !== undefined)
-                                        {
-                                            if ( Seshi.ranges[Seshi.ranges.length - 1].rangeEnd + 1 == chunkNumber )
-                                            {
-                                                 Seshi.ranges[Seshi.ranges.length - 1].rangeEnd = chunkNumber;
-                                                 resolve(); //Resolve (updated existing range)
-                                                 return true;
-                                            }
-                                        }//End check Seshi.ranges[Seshi.ranges.length - 1] is defined (won't be first iteration)
-
-                                            //Otherwise, create new range element in ranges array.
-                                                Seshi.ranges.push({requestType:'CHUNK-RANGE',rangeStart:chunkNumber, rangeEnd:chunkNumber, fileId:fileId});
-                                                resolve();//Resolve (added new range)
-                                        });//End promise checkfor space
-                                    }//End checkForSpace
-                                });//End get all missing chunks for given fileId, and return Range requests array
-                            });//End buildRangeRequests promise
     },
     addSignalingServer:function(signallingServerAddress){
                             /* - Add a signaling server to Seshi - */
@@ -1121,19 +1021,10 @@ Seshi = {
                                 return;
                             }
 
-                            Seshi.sendFileToPeer(requestedFileList);
-    },
-    receiveCompleteHandler:function(msg){
-            /* Called in response to receiveComplete command
-            * from over datachannel. 
-            * 
-            *   Used to remove completed upload/push progress
-            *   data from Seshi.sendingFileProgress array
-           */
-                    
-            //delete completed file push/upload from Seshi.sendingFileProgress
-            delete(Seshi.sendingFileProgress[msg.fileId]);
-            
+                            for (var i=0;i<requestedFileList.length;i++)
+                            {
+                                Seshi.sendFileToPeer(requestedFileList[i]);
+                            }//End loop through each request sending the file to thhe peer as requested
     },
     syncData:function(){
             /* Send all data to connected peer
@@ -1400,6 +1291,8 @@ function createPC() {
   window.pc.ondatachannel = onDataChannelAdded;
   window.pc.oniceconnectionstatechange = onIceconnectionStateChanged;
   window.pc.onsignalingstatechange = onSignalingStateChanged;
+  // wait for local media to be ready
+  attachMediaIfReady();
 }
 
 // When our browser has another candidate, send it to the peer
@@ -1426,11 +1319,9 @@ function onIceconnectionStateChanged(e) {
         dispatchEvent(onPeerConnectionEstablished);
         //Remove key guard from localstorage which prevents users from connecting to themselves
         localStorage.removeItem('key');
-        //Check for incomplete transfers (auto resumes them if AUTO_RESUME_INCOMPLETE_TRANSFERS_ON)
-        Seshi.checkForIncompleteTransfers();
     }//End if iceConnectionState == Completed
 
-    if (pc.iceConnectionState == 'disconnected' || pc.iceConnectionState ==  'failed'){
+    if (pc.iceConnectionState == 'disconnected') {
         dispatchEvent(onPeerConnectionBroken);
     }//End if iceConnection state is disconnected or failed, dispatch onPeerConnectionEstablished event
 }//End onIceconnectionStateChanged
@@ -1442,6 +1333,8 @@ function onRemoteStreamRemoved(e) {}
 //data channel, save it, set up handlers, and send welcome
 // message
 function onDataChannelAdded(e) {
+    //statusE = document.getElementById("status"),
+    //statusE.innerHTML = "We are connected!";
     dc = e.channel;
     console.log("We are connected!");
     //sendMostRecentFile();
@@ -1475,6 +1368,14 @@ function setupDataHandlers() {
         dc.send(msg);
     }
     dc.onmessage = function(event) {
+	//statusE = document.getElementById("status"),
+	//statusE.innerHTML = "We are connected!";
+
+        //trace('Received Message: ' + event.data);
+
+        if ( event.data instanceof Array ) {
+                alert('Is array');
+        }
 
         console.log("We got: " + event.data);
 
@@ -1496,13 +1397,16 @@ function setupDataHandlers() {
             }
         }//End determin if data message or control message.
 
+
+
         //Don't JSON.parse is data is already an object ;)
         if ( typeof event.data != "object" ) {
                 var msg = JSON.parse(event.data);
         } else {
                 var msg = event.data;
         }//End don't parse data message recived if already an object!
-
+        cb = document.getElementById("chatbox");
+        rtt = document.getElementById("rtt");
 
 
         //Command & control
@@ -1520,14 +1424,14 @@ function setupDataHandlers() {
                     trace("Peer told me that they've sucessfully received & stored a chunk I sent them. Yay.");
                     Seshi.updateSendingProgress(msg.data);
                     break;
-                case 'receiveComplete': //Peer has told us they received all chunks of a file
-                    Seshi.receiveCompleteHandler(msg);
-                    break;
                 case 'requestFilesById': //Receiving request from peer to pull files from their peer.
                     Seshi.sendRequestedFilesToPeer(msg);
                     break;
                 case 'remoteDisplayName': //Receiving remote's display name
                     Seshi.setRemoteDisplayName(msg);
+                    break;
+                case 'playInSyncRPC': //Play file in sync with connected peer DUDE.
+                    Seshi.playInSyncRPC(msg);
                     break;
             }//Switch on comman requested by remote peer
         }//End check for command & control message from remote peer
@@ -1548,7 +1452,8 @@ function setupDataHandlers() {
             // reset real-time window,
             // and force chat window to last line
             console.log("received chat of '" + msg.chat + "'");
-
+            //cb.value += msg.chat + "\n";
+            ////TODO Move to SeshiSkinExample to keep seperate from API:
             var timeStamp = new Date();
             timeStamp = timeStamp.toString();
             timeStamp = timeStamp.substring(0,21);
@@ -1558,40 +1463,43 @@ function setupDataHandlers() {
                 stripIgnoreTag:     true,      // filter out all HTML not in the whilelist
                 stripIgnoreTagBody: ['script'] // the script tag is a special case, we need to filter out its content
                 });
-
-            // TODO Move below to Seshi Skin
-
-
-            //END TODO Move above to Seshi Skin.
-
+            var remoteChatMsg =
+                '<li class="clearfix">' +
+                '    <div class="message-data align-right">' +
+                '    <span class="message-data-time">' + timeStamp +
+                '    <span class="message-data-name">' +
+                     msg.remoteDisplayName+
+                '    </span>' +
+                '    <i class="fa fa-circle me"></i></div>' +
+                '    <div class="message other-message float-right">' +
+                                chatData +
+                '    </div>' +
+                '</li>';
+            cb.insertAdjacentHTML('beforeend', remoteChatMsg);
+            cb.scrollTop = cb.scrollHeight; msg = msg.chat;
             //Dispatch event to UI informing it about the new chat message
-            var onNewChatMessage = new CustomEvent(
-                                'onNewChatMessage',
-                                    {
-                                        'detail': {
-                                                    'message': chatData,
-                                                    'timestamp': timeStamp,
-                                                    'remoteDisplayName': msg.remoteDisplayName
-                                                  }
-                                    });
             dispatchEvent(onNewChatMessage);
             //Notify user of new message
             Seshi.notify(msg);
 
             } else if (msg.storeData) {
                 console.log("Received data store message.");
+                //console.log(blobURL);
+
             }
            };
     }
 
 function sendChat(msg) {
 	var cb = document.getElementById("chatbox"),
+	//c = document.getElementById("chat");
     c = document.getElementById("message-to-send");
 
 	//Display message locally, send it, and force chat window to
 	// last line
 	msg = msg || c.value;
 	console.log("calling sendChat(" + msg + ")");
+	//cb.value += "-> " + msg + "\n";
     //TODO Move (below) to SeshiSkinExample to keep seperate from API:
     var timeStamp = new Date();
     timeStamp = timeStamp.toString();
@@ -1620,7 +1528,10 @@ function sendChat(msg) {
 	data.send({'chat':msg, 'remoteDisplayName':Seshi.getDisplayName()});
 	c.value = '';
 	cb.scrollTop = cb.scrollHeight;
-}//End sendChat()
+}
+
+
+
 
 
 function zeroFill( number, width )
@@ -1634,12 +1545,49 @@ function zeroFill( number, width )
 }//End zeroFill
 
 
+function sendMostRecentFile() {
+	//Get most recently added file (stored in localstorage.getItem('lastItem'))
+	if(localStorage.getItem('lastItem'))
+	{
+	    fileId = localStorage.getItem('lastItem');
+        //TODO send over datachannel
+	}//Only send last item if localStorage.getItem('lastItem') has a fileId
+}
+
+
 function trace(text) {
   // This function is used for logging.
   if (text[text.length - 1] == '\n') {
     text = text.substring(0, text.length - 1);
   }
   console.log((performance.now() / 1000).toFixed(3) + ": " + text);
+}
+
+
+
+
+
+///////////////////////////////////
+// This next section is for attaching local media to the Peer
+// Connection.
+///////////////////////////////////
+
+// This guard routine effectively synchronizes completion of two
+// async activities:  the creation of the Peer Connection and
+// acquisition of local media.
+function attachMediaIfReady() {
+  // If RTCPeerConnection is ready and we have local media,
+  // proceed.
+  if (pc) {attachMedia();}
+}
+
+// This routine adds our local media stream to the Peer
+// Connection.  Note that this does not cause any media to flow.
+// All it does is to let the browser know to include this stream
+// in its next SDP description.
+function attachMedia() {
+
+  setStatus("Ready for call");
 }
 
 
@@ -1695,21 +1643,34 @@ function setStatus(str) {
 
   switch (str) {
     case 'Waiting':
+      //statusE.innerHTML = "Sweet! Now send your friend this link: " + getShareLink();
       console.log("Sweet! Now send your friend this link: " + getShareLink() + " status: waiting");
       break;
     case 'Connected':
+      //statuslineE.style.display = "inline";
+      //connectE.style.display = "none";
+      //scMessageE.style.display = "inline-block";
+      //hangUp.style.display = "inline-block";
       break;
     case 'Ready for call':
       //statusE.innerHTML = "You rock! Now press connect:";
       //Auto click connect if user pasted URL
       if (document.location.search) //Search isn't empty if has ?key= in it.
       {
+        //statusE.innerHTML = "Connecting to friend...";
         console.log("Connecting to friend...");
+	    //var connectBtn = document.getElementById('call');
+        //connectBtn.click()
+        //call();
       }//End auto click connect if user pased URL
 
+      //statusE.className = 'alert alert-info';
+      //callE.style.display = "inline";
       break;
     case 'On call':
       console.log("On call");
+      //statusE.innerHTML = "On call";
+      //callE.style.display = "none";
       break;
     default:
   }

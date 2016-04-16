@@ -1,3 +1,6 @@
+
+
+
 /* Event listeners:
  * - For a cleaner UI developer experience by
  *   avoiding inline Javascript e.g: onclick="example()"
@@ -121,12 +124,29 @@ function peerConnectionBroken() {
     /* Called by event listener when sendFileProgressUpdate event is fired
      *  Used to display a break in Datachannel connection.
      * */
-    alert("Peer has disconnected");
-    alert("Hold on, we'll try and reconnect");
+     $("#disconnected").css("display", "block");
+     function dialogMe() {
+       $(".dialog").css("display", "block");
+       $(".dialog p, .dialog h2").css("opacity", "1");
+       $("#close").css("opacity", "1");
+       $("#okButton").css("opacity", "1");
+       setTimeout(function() {
+         $(".dialog").css("opacity", "1");
+       }, 400);
+     }
+     $(".dialog #close, .dialog #okButton, .dialogBlack").click(function() {
+       $(".dialog p, .dialog h2").css("opacity", "0");
+       $("#close").css("opacity", "0");
+       $("#okButton").css("opacity", "0");
+        $(".dialog").css("display", "none");
+     });
+     dialogMe();
+    // alert("Peer has disconnected");
+    // alert("Hold on, we'll try and reconnect");
 
-    $("#remoteFileListContainer").fadeOut();
-    $("#sendIdThenHide").show();
+    $("#remoteFileListContainer").hide();
     $("connectionStatus").hide();
+      $("#sendIdThenHide").fadeIn();
     // var connectionStateBox = document.getElementById('connectionStatus');
     // connectionStateBox.innerText = 'Atempting Reconnect...';
     connect();
@@ -136,8 +156,6 @@ function peerConnectionBroken() {
     var sendBtn = document.getElementById('sendBtn').disabled = true;
 
     //Disable chat button / Show online status
-    var chatToggleBtn = document.getElementById('chatToggle');
-    chatToggleBtn.innerText  = "CHAT: Offline"
     //End show show tollge button status
 
 }//End peerConnectionBroken()
@@ -176,7 +194,7 @@ function createShareUrl() {
         }
     });
 
-    //Show the input box above social share buttons 
+    //Show the input box above social share buttons
     // with the key inside so user understands what to do:
     document.getElementById('shareKeyInputElm').value = Seshi.getShareUrl();
 
@@ -431,6 +449,8 @@ function showConnected() {
 
     $("#sendIdThenHide").hide();
     $("#remoteFileListContainer").fadeIn();
+    $(".dialog").css("display", "none");
+    location.href= "#fileBoxes";
 
     //Get reference to 'connecting' UI button
     if (targetBtn = document.getElementById('connectionStatus')) {
@@ -454,28 +474,65 @@ function showConnected() {
     var sendBtn = document.getElementById('sendBtn').disabled = false;
 
     //Enable chat button / Show online status
-    var chatToggleBtn = document.getElementById('chatToggle');
-    chatToggleBtn.innerText  = "CHAT: Connected!"
+    // var chatToggleBtn = document.getElementById('chatToggle');
+    // chatToggleBtn.innerText  = "CHAT: Connected!"
     //End show show tollge button status
 
 }//End showConnected
 
 
-function newChatMessageReceived() {
+function newChatMessageReceived(e) {
     /* newChatMessageReceived gets called after the
      * onNewChatMessage event is dispatched. We listen
      * for that event to fire, and when it does, this
      * function gets called.
+     *
+     * The event contains details of the  message,
+     * timestamp & display name of the remote user
+     * exposed from the e.details object.
+     *
+     *
      */
+     cb = document.getElementById("chatbox");
+       rtt = document.getElementById("rtt");
+     var remoteChatMsg =
+               '<li class="clearfix">' +
+               '    <div class="message-data align-right">' +
+               '    <span class="message-data-time">' + e.detail.timestamp +
+               '    <span class="message-data-name">' +
+                    e.detail.remoteDisplayName+
+               '    </span>' +
+               '    <i class="fa fa-circle me"></i></div>' +
+               '    <div class="message other-message float-right">' +
+                               e.detail.message +
+               '    </div>' +
+               '</li>';
+
+               cb.insertAdjacentHTML('beforeend', remoteChatMsg);
+                   cb.scrollTop = cb.scrollHeight;
+
     console.log('newChatMessageReceived() called.');
+
+    //TODO : Take data from this
+    //object and display in the chat window.
+    console.log(e.detail);
 
   $("#message").fadeIn();
     $(".btn-chat-toggle").on('click', function() {
       $("#message").fadeOut();
     });
 
-
 } //End newChatMessageReceived()
+
+var chatArea = document.getElementById('chatToggle');
+
+chatArea.addEventListener('click', focusChatBox, false);
+
+function focusChatBox() {
+    window.setTimeout(function(){
+            document.getElementById('message-to-send').focus();
+        }, 100);
+}
 
 
 function getFileTypeIcon(mimeType) {
@@ -549,6 +606,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
         //Checkbox
         list += '<input class="col-xs-1 ' + checkBoxClass + '" type="checkbox" id="' + fileId + '" data-id="' + fileId + '">\n';
         //Checkbox label & file name
+
         list += '<label class="col-xs-6 table-border name-label" for="' + fileId + '">' + fileName + '</label>\n';
         //Filetype
         list += '<label class="col-xs-2 name-label" for="' + fileId + '"><i class="fa ' + getFileTypeIcon(mimeType) + '"></i></label>';
@@ -567,7 +625,7 @@ function updateFileListDisplay(fileListObj, targetElm) {
             //Download button
             list += '<div class="col-xs-1 "><i onclick="download(event)" title="Download" data-id="' + fileId + '" class="fa fa-arrow-down"></i></div>';
         }//End if targetElm != 'remoteFileList'
-// <a class="playsync"><i data-toggle="tooltip" data-placement="bottom" title="play in sync" class="fa fa-exchange"></i></a>
+
         //Close </li>
         list += '</li>';
     }//End loop through each local file list (cached) and build list items
@@ -603,18 +661,13 @@ function updateStoreProgressDisplay() {
             var complete = Seshi.storeProgress[fileId].complete;
 
             var output = '';
-            output += '<li class="list-group-item file-item uploading-item row" id="storingFileId-' + fileId + '">';
+            output += '<li class="file-item uploading-item uploading row " role="progressbar" aria-valuenow="' + valueNow + '"  aria-valuemin="0" aria-valuemax="100" id="storingFileId-' + fileId + '">';
                         //Filename
-            output += '<div class="col-xs-4 col-sm-4 name-label">' + fileName + '</div> ';
-                        //Progress bar
-            output += '<div class="col-xs-6  col-sm-6">';
-            output += '<div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">';
             output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
-            output += '</div>';
-            output += '</div>';
+            output += '<div class="col-xs-10 col-sm-10 name-label">' + fileName + '</div> ';
                         //Percentage complete
-            output += '<div class="col-xs-1 col-sm-1">';
-            output += '<div id="percentupload">' + valueNow + '%</div>';
+            output += '<div class="col-xs-2 col-sm-2 name-label">';
+            output += '<div>' + valueNow + '%</div>';
             output += '</div>';
             output += '</li>';
 
@@ -636,6 +689,9 @@ function updateStoreProgressDisplay() {
                     document.getElementById('localFileList').insertAdjacentHTML('afterbegin', output);
              }//End if not complete
          }//End check Seshi.storeProgress[fileId].UIdone == false before proceeding (prevents itterating over already completed UI updates.
+
+         //Save store progress to localStorage
+         Seshi.saveStoreProgress();
     }//End loop through each item in Seshi.storeProgress & update the display accordingly
 
 
@@ -731,24 +787,14 @@ function updateSendFileProgessDisplay() {
         var complete = file.recvChunkCount >= numberOfChunks ? true:false;
 
         var output = '';
-        output += '<li class="list-group-item file-item uploading-item row" id="sendingFileId-' + fileId + '">';
+        output += '<li class="file-item uploading-item uploading row " role="progressbar" aria-valuenow="' + valueNow + '"  aria-valuemin="0" aria-valuemax="100" id="sendingFileId-' + fileId + '">';
                     //Filename
-        output += '<div class="col-xs-4 col-sm-3">' + fileName + '</div> ';
-                    //Progress bar
-        output += '<div class="col-xs-5  col-sm-6">';
-        output += '<div class="uploading active" role="progressbar" aria-valuenow="' + valueNow + '" aria-valuemin="0" aria-valuemax="100" style="width: 100%">';
         output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
-        output += '</div>';
-        output += '</div>';
+        output += '<div class="col-xs-10 col-sm-10 name-label">' + fileName + '</div> ';
                     //Percentage complete
-        output += '<div class="col-xs-1 col-sm-1">';
-        output += '<div id="percentupload">' + valueNow + '%</div>';
+        output += '<div class="col-xs-2 col-sm-2 name-label">';
+        output += '<div>' + valueNow + '%</div>';
         output += '</div>';
-                    //Cancell button
-        output += '<div class="col-xs-1 col-sm-1">';
-        output += '<i class="fa fa-times "></i>';
-        output += '</div>';
-        output += '<div class="col-xs-1 col-sm-1"></div>';
         output += '</li>';
 
          //If complete, check for existing progress bar and delete it
@@ -767,7 +813,6 @@ function updateSendFileProgessDisplay() {
                 document.getElementById('remoteFileList').insertAdjacentHTML('afterbegin', output);
          }//End if not complete
         }//End loop though Seshi.sendingFileProgress showing sending file progress udates per file
-
 }//End updateSendFileProgessDisplay()
 
 

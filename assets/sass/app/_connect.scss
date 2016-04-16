@@ -8,7 +8,6 @@ label {
   margin-top: -40px;
   margin-bottom: 65px;
   color: #444;
-  // text-shadow: 1px 1px 2px #888;
 }
 
 .btn-generate-key {
@@ -64,7 +63,6 @@ label {
 
 .fullwidthcard {
   padding:0;
-  z-index: 2;
   // margin-top:24px;
   h4 {
     color: $kinddarkgrey;
@@ -131,8 +129,10 @@ label {
 
 .name-label {
   cursor: pointer;
-  font-weight: 300;
+  font-weight: 500;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  z-index:10;
   overflow: hidden;
 }
 
@@ -253,6 +253,7 @@ a {
     border-top-left-radius: none !important;
     border-top-right-radius: none !important;
     padding: 10px 15px;
+    list-style: none;
 }
 .file-item .fa-play, .fa-exchange {
   background: #ccc;
@@ -701,20 +702,13 @@ a {
   top: 0;
 }
 
-.uploading.active .progress-bar1, .progress-bar1.active {
-  -webkit-animation: progress-bar-stripes 2s linear infinite;
-  -o-animation: progress-bar-stripes 2s linear infinite;
-  animation: progress-bar-stripes 2s linear infinite;
-}
 
 .uploading {
-  height: 10px;
-  width: 100%;
+  height: 40px;
   position: relative;
-  margin-top: 6px;
-  background: rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.6);
-  border-radius: 9px;
+  background: rgba(100, 100, 100, 0.1);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.3);
+  // border-radius: 9px;
 }
 
 .uploading span {
@@ -723,21 +717,14 @@ a {
   top: 0;
   left: 0;
   display: block;
-  border-radius: 10px;
+  // border-radius: 10px;
 }
 
-.uploading-item {
-  background: rgb(245, 245, 245);
-}
-
-#percentupload {
-  margin-top: 2px;
-}
 
 .uploadbar {
   z-index: 10;
   width: 2%;
-  background: rgba(22,154,231, 0.8);
+  background: rgb(83, 178, 233);
   box-shadow: 0 0 7px rgba(52, 169, 237, 0.2);
 }
 
@@ -816,7 +803,7 @@ input[id="display-name"]:focus + .edit-btn {
 .copyclipboard-card {
   position:relative;
   min-height: 25px;
-  height: 166px;
+  height: 214px;
   /* margin-bottom: 20px; */
   // padding: 10px;
   background-color: rgba(240, 240, 240, 0.7);
@@ -827,15 +814,15 @@ margin: 0 auto;
 margin-top: 15px;
 width: 40%;
 // float:right;
-z-index: 999;
+z-index: 1;
 transition: width 0.3s;
 display:none;
 }
 
 .flashcopied {
   color: #fc3f3f !important;
-  margin-top: -63px;
-margin-right: 30px;
+    margin-top: 6px !important;
+font-size: 14px !important;
 }
 
 .copyclipboard-card h6 {
@@ -843,7 +830,7 @@ margin-right: 30px;
   letter-spacing: 0.5px;
   color: #222;
   margin: 0 auto;
-  padding: 11px 0;
+  padding: 11px 6px;
 }
 
 /*large clipboard send link overwrite */
@@ -1157,15 +1144,15 @@ width: 100%;
 
   }
   .copyclipboard-card {
-    height:145px;
+    height:195px;
     margin-top: 15px;
   }
 }
 
 /*small phones  portrait*/
 
-@media(max-width: 767px) {
-  .fullwidthcard {
-    top: 0;
+@media(max-width: 380px) {
+  input[id="shareKeyInputElm"] {
+    width: 70vw;
   }
 }

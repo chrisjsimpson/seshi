@@ -1,0 +1,99 @@
+
+
+#dialogMe
+{
+  background: #fff;
+  color: #212121;
+  border: 1px solid #212121;
+  border-radius: 2px;
+  padding: 10px;
+}
+
+.dialog {
+  margin: 0;
+  background: rgba(249, 224, 157, 0.9);
+  display: none;
+  font-family: 'Signika', sans-serif;
+  color:#000;
+  position: fixed;
+  width: 100%;
+  top: 73px;
+  left: 0;
+  height: 123px;
+  padding: 15px;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  // opacity: 0;
+  z-index: 1500;
+}
+
+.dialog h2 {
+  margin-top: 0px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#close {
+  float: right;
+  font-size: 20px;
+  margin-top: -2.5px;
+  cursor: pointer;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+#okButton {
+  position: absolute !important;
+  margin-left: -75px;
+  position: relative;
+  width: 150px;
+  height: 37px;
+  border: none;
+  outline: none;
+  letter-spacing: 1px;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  border-radius: 3px;
+  background:#fff;
+  font-size: 18px;
+  color: #000;
+}
+
+// .dialogBlack {
+//   margin: 0;
+//   top: 0;
+//   left: 0;
+//   height: 100%;
+//   width: 100%;
+//   position: fixed;
+//   background: #000;
+//   opacity: 0;
+//   display:none;
+//   z-index: -5;
+//   -webkit-transition: all 0.5s ease-in-out;
+//   -moz-transition: all 0.5s ease-in-out;
+//   -o-transition: all 0.5s ease-in-out;
+//   transition: all 0.5s ease-in-out;
+// }
+
+#disconnected, #resumeTransfer {
+  display:none;
+}
+
+
+
+/*768px*/
+@media(min-width: $screen-sm-min) {
+  #okButton {
+    margin-top: -26px;
+  }
+  .dialog {
+    height: 66px;
+      top: 95px;
+  }
+}

@@ -280,7 +280,7 @@ padding-right: 15px;
     padding: 20px 0;
     border-bottom: none;
     letter-spacing: 1px;
-    background: -webkit-linear-gradient(top, rgba(255,255,255,0.7), rgba(255,0,0,0)); /* For Safari 5.1 to 6.0 */
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0.7), rgba(255,255,255,0)); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(bottom, rgba(255,255,255,0.7) rgba(255,0,0,0)); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(bottom, rgba(255,255,255,0.7), rgba(255,0,0,0)); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to bottom, rrgba(255,255,255,0.7), rgba(255,0,0,0)); /* Standard syntax (must be last) */
@@ -790,4 +790,11 @@ img {
         margin-left:3vw;
       }
     }
+}
+
+/*large desktops*/
+@media(min-width: 1440px) {
+  #landingpage {
+    background-size: 100% auto;
+  }
 }

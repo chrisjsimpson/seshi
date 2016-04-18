@@ -144,14 +144,10 @@ function peerConnectionBroken() {
         $(".dialog").css("display", "none");
      });
      dialogMe();
-    // alert("Peer has disconnected");
-    // alert("Hold on, we'll try and reconnect");
 
     $("#remoteFileListContainer").hide();
     $("connectionStatus").hide();
       $("#sendIdThenHide").fadeIn();
-    // var connectionStateBox = document.getElementById('connectionStatus');
-    // connectionStateBox.innerText = 'Atempting Reconnect...';
     connect();
 
     //Disable Send / Recieve buttons:

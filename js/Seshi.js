@@ -30,6 +30,9 @@ Seshi = {
                         // - Custom Events triggered by Seshi useful to front-end UI development
                         // - The events are fired (dispatched) according to their individual case.
 
+                        //Fired when peer begins waiting for connection from peer
+                        onPeerConnectionWaiting = new Event('onPeerConnectionWaiting');
+
                         //Fired when a datachannel is established between both peers
                         onPeerConnectionEstablished = new Event('onPeerConnectionEstablished');
                         onPeerConnectionEstablished.initEvent('onPeerConnectionEstablished', true, true);
@@ -1695,6 +1698,7 @@ function setStatus(str) {
   switch (str) {
     case 'Waiting':
       console.log("Sweet! Now send your friend this link: " + getShareLink() + " status: waiting");
+      dispatchEvent(onPeerConnectionWaiting);
       break;
     case 'Connected':
       break;

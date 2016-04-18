@@ -56,6 +56,9 @@ var sendMsg = document.getElementById('sendMsg');
 sendMsg.addEventListener('click', function(){sendChat()});
 
 
+//Event: When peer is waiting for connection
+window.addEventListener('onPeerConnectionWaiting', showWaiting, false);
+
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('onPeerConnectionEstablished', showConnected, false);
 
@@ -479,6 +482,12 @@ function showConnected() {
     //End show show tollge button status
 
 }//End showConnected
+
+function showWaiting() {
+    console.log("Show waiting..");
+}//End showWaiting
+
+
 
 
 function newChatMessageReceived(e) {

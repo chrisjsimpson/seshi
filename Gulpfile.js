@@ -93,13 +93,6 @@ gulp.task('scripts', function() {
         .pipe(notify({ message: 'Scripts task complete' }));
 });
 
-// gulp.task('images', function() {
-//     return gulp.src(paths.images)
-//         .pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
-//         .pipe(gulp.dest(paths.imagesOutput))
-//         .pipe(notify({ message: 'Images task complete' }));
-// });
-
 gulp.task('fonts', function() {
     return gulp.src(paths.fonts)
     .pipe(gulp.dest(paths.fontsOutput))

@@ -126,7 +126,6 @@ padding-right: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
   font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
-  // background-color: rgba(22,174,231, 0.75);
   background-color: #fff;
 
   .navbar-brand {
@@ -284,7 +283,6 @@ padding-right: 15px;
     background: -o-linear-gradient(bottom, rgba(255,255,255,0.7) rgba(255,0,0,0)); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(bottom, rgba(255,255,255,0.7), rgba(255,0,0,0)); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to bottom, rrgba(255,255,255,0.7), rgba(255,0,0,0)); /* Standard syntax (must be last) */
-    // background-color: rgba(3,13,36, 0.6);
     -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
     -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
     transition: background .5s ease-in-out,padding .5s ease-in-out;
@@ -422,8 +420,6 @@ a {
     rgba(233, 247, 245, 0.9),
   rgba(197, 232, 249, 0.8)
   ), url('../img/polygon.jpg')  no-repeat center center; /* fallback for old browsers */
-  // background: -webkit-linear-gradient(to bottom, #4b6cb7 , #182848); /* Chrome 10-25, Safari 5.1-6 */
-  // background: linear-gradient(to bottom, #4b6cb7 , #182848); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -458,14 +454,6 @@ a {
   color: #333;
   padding:50px;
   padding-top: 120px !important;
- //  background: linear-gradient(
- //      rgba(255, 0, 0, 0.45),
- //      rgba(255, 0, 0, 0.45)
- //    ), url('../img/beachrocks.jpg')  no-repeat center center fixed;
- //  -webkit-background-size: cover;
- // -moz-background-size: cover;
- // -o-background-size: cover;
- // background-size: cover;
  z-index:1000;
  .seshi-pro-p {
    font-size: 17px;
@@ -633,11 +621,6 @@ ul.banner-social-buttons {
   }
 }
 
-// @media(min-width: $screen-sm-min) {
-//   .contact-seshi {
-//     margin-left: 30px;
-//   }
-// }
 
 @media(min-width: $screen-md-min){
   .contact-seshi {
@@ -687,9 +670,6 @@ ul.banner-social-buttons {
 }
 
 footer {
-  // padding: 80px 0;
-  // padding-top: 10px;
-  // height: 60px;
 
   p {
     margin: 0;

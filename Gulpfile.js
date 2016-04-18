@@ -34,19 +34,10 @@ var paths = {
         'assets/bower_components/jquery/dist/jquery.js',
         'assets/bower_components/jquery.easing/js/jquery.easing.js',
         'assets/bower_components/bootstrap/dist/js/bootstrap.js',
-        // 'js/plyr/plyr.js',
         'assets/js/ui.js',
         'assets/js/responsive.js',
         'assets/js/media-player.js'
-         // 'assets/js/jquery.fileupload.js',
-         // 'assets/js/jquery.iframe-transport.js',
-         // 'assets/js/jquery.knob.js',
-         // 'assets/js/jquery.ui.widget.js',
-         // 'assets/js/jquery.ui.widget.js',
-         // 'assets/js/script.js',
     ],
-    // images: ['assets/images/**/*'],
-    // prod: 'js/plyr/plyr.js',
     fonts: [
         'assets/bower_components/bootstrap/fonts/*',
         'assets/bower_components/font-awesome/fonts/*'
@@ -69,15 +60,6 @@ var autoprefixerOptions = {
 };
 
 /* Tasks */
-// gulp.task('styles', function() {
-//     return sass(paths.styles)
-//         .pipe(gulp.dest(paths.stylesOutput))
-//         .pipe(rename({suffix: '.min'}))
-//         .pipe(minifycss())
-//         .pipe(gulp.dest(paths.stylesOutput))
-//         .pipe(notify({ message: 'Styles task complete' }))
-//         .pipe( livereload() );
-// });
 
 gulp.task('styles', function () {
   return gulp
@@ -94,16 +76,6 @@ gulp.task('styles', function () {
 
 });
 
-// gulp.task('styles', function () {
-//   gulp.src(paths.styles)
-//     .pipe(sass().on('error', sass.logError))
-//     .pipe(concat('main.css'))
-//     .pipe(gulp.dest(paths.stylesOutput))
-//     .pipe( minifycss() )
-//     .pipe( rename( { suffix: '.min' } ) )
-//     .pipe( gulp.dest(paths.stylesOutput) );
-// });
-
 gulp.task('styles', function () {
   return gulp
     .src(paths.styles)
@@ -113,8 +85,6 @@ gulp.task('styles', function () {
 
 gulp.task('scripts', function() {
     return gulp.src(paths.scripts)
-        // .pipe(jshint('.jshintrc'))
-        // .pipe(jshint.reporter('default'))
         .pipe(concat('main.js'))
         .pipe(gulp.dest(paths.scriptsOutput))
         .pipe(rename({suffix: '.min'}))

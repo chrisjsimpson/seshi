@@ -59,10 +59,12 @@ sendMsg.addEventListener('click', function(){sendChat()});
 //Event: When peer is waiting for connection
 window.addEventListener('onPeerConnectionWaiting', showWaiting, false);
 
+//Event: When peer is checking connection
+window.addEventListener('onPeerConnectionChecking', showChecking, false);
+
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('onPeerConnectionEstablished', showConnected, false);
 
-//Event: Peer-to-Peer data connection is BROKEN :'( :
 window.addEventListener('onPeerConnectionBroken', peerConnectionBroken, false);
 
 //Event: Recieved file listing of connected peer
@@ -79,6 +81,9 @@ window.addEventListener('sendFileProgressUpdate', updateSendFileProgessDisplay, 
 
 //Event: displayName of remote user is recived
 window.addEventListener('onGotRemoteDisplayName', showRemoteDisplayName, false);
+
+//Event: User clicks peer connection state 'OK' botton or closes it
+document.getElementById('okButton').addEventListener('click', closeConnectionStateWindow, false);
 
 //Init plyr
     // plyr Settings:
@@ -107,6 +112,24 @@ document.querySelector(".plyr").addEventListener("play", function() {
       //dispatchEvent(SeshiSkinPlay);
 });
 
+function closeConnectionStateWindow() {
+    console.log("Closing connection state window.");
+    //Hide connection state window
+    $("#connectionState").hide();
+    //Remove all state messages within state window
+    clearConnectionStateMessages();
+}//End closeConnectionStateWindow
+
+function clearConnectionStateMessages() {
+    var elm = document.querySelector('#connectionState-messages');
+    var messages = elm.children;
+    for (var i = 0; i < messages.length; i++)
+    {
+        //Takes each connection state message (e.g. 'connected') 
+        // and sets its display to none.
+        messages[i].style.display = "none"; 
+    }
+}//End clearConnectionStateMessages()
 
 function tickAllFiles(list) {
 
@@ -127,23 +150,15 @@ function peerConnectionBroken() {
     /* Called by event listener when sendFileProgressUpdate event is fired
      *  Used to display a break in Datachannel connection.
      * */
-     $("#disconnected").css("display", "block");
-     function dialogMe() {
-       $(".dialog").css("display", "block");
-       $(".dialog p, .dialog h2").css("opacity", "1");
-       $("#close").css("opacity", "1");
-       $("#okButton").css("opacity", "1");
-       setTimeout(function() {
-         $(".dialog").css("opacity", "1");
-       }, 400);
-     }
-     $(".dialog #close, .dialog #okButton, .dialogBlack").click(function() {
-       $(".dialog p, .dialog h2").css("opacity", "0");
-       $("#close").css("opacity", "0");
-       $("#okButton").css("opacity", "0");
-        $(".dialog").css("display", "none");
-     });
-     dialogMe();
+    
+     //Clear any previouce connection state messages
+     clearConnectionStateMessages();
+
+     $("#connectionState").show();    
+     document.querySelector(".connectionState-message-disconnected").style.display = "block";
+     setTimeout(function() {
+         $("#connectionState").css("opacity", "1");
+       }, 9000);
 
     $("#remoteFileListContainer").hide();
     $("connectionStatus").hide();
@@ -446,9 +461,14 @@ if (getQueryVariable("key")) {
 
 function showConnected() {
 
+    //Hide landing page
+    $('#landingpage').hide();
+    //Clear any previouce connection state messages
+    clearConnectionStateMessages();
+    closeConnectionStateWindow();
+
     $("#sendIdThenHide").hide();
     $("#remoteFileListContainer").fadeIn();
-    $(".dialog").css("display", "none");
     location.href= "#fileBoxes";
 
     //Get reference to 'connecting' UI button
@@ -472,16 +492,24 @@ function showConnected() {
     var receiveBtn = document.getElementById('receiveBtn').disabled = false;
     var sendBtn = document.getElementById('sendBtn').disabled = false;
 
-    //Enable chat button / Show online status
-    // var chatToggleBtn = document.getElementById('chatToggle');
-    // chatToggleBtn.innerText  = "CHAT: Connected!"
-    //End show show tollge button status
-
 }//End showConnected
 
+//TODO Refactor showWaiting/ShowConnected etc into one event handler
 function showWaiting() {
     console.log("Show waiting..");
+    //Clear any previouce connection state messages
+    clearConnectionStateMessages();
+    $("#connectionState").show();
+    document.querySelector(".connectionState-message-waiting").style.display = "block";
 }//End showWaiting
+
+function showChecking() {
+    console.log("Show checking..");
+    //Clear any previouce connection state messages
+    clearConnectionStateMessages();
+    $("#connectionState").show();
+    document.querySelector(".connectionState-message-checking").style.display = "block";
+}//End showChecking
 
 
 

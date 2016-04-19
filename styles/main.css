@@ -6042,6 +6042,11 @@ a.thumbnail.active {
   border: 1px solid #ddd;
 }
 
+.list-group-item:first-child {
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+
 .list-group-item:last-child {
   margin-bottom: 0;
   border-bottom-right-radius: 4px;
@@ -23820,15 +23825,7 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   }
 }
 
-#dialogMe {
-  background: #fff;
-  color: #212121;
-  border: 1px solid #212121;
-  border-radius: 2px;
-  padding: 10px;
-}
-
-.dialog {
+#connectionState {
   margin: 0;
   background: rgba(249, 224, 157, 0.9);
   display: none;
@@ -23847,10 +23844,18 @@ input[id="mce-EMAIL"]:focus + .email-btn {
   z-index: 1500;
 }
 
-.dialog h2 {
+#connectionState h2 {
   margin-top: 0px;
   font-size: 20px;
   font-weight: 500;
+}
+
+.connectionState-message-waiting,
+.connectionState-message-checking,
+.connectionState-message-connected,
+.connectionState-message-disconnected,
+.connectionState-message-resumeTransfer {
+  display: none;
 }
 
 #close {
@@ -23888,10 +23893,7 @@ input[id="mce-EMAIL"]:focus + .email-btn {
 
 /*768px*/
 @media (min-width: 768px) {
-  #okButton {
-    margin-top: -26px;
-  }
-  .dialog {
+  #connectionState {
     height: 66px;
     top: 95px;
   }
@@ -25314,48 +25316,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-beat > div:nth-child(1) {
-  animation-delay: 0.8s;
-  animation-duration: 0.97s;
+  animation-delay: 0.39s;
+  animation-duration: 1.21s;
 }
 
 .ball-grid-beat > div:nth-child(2) {
-  animation-delay: 0.43s;
-  animation-duration: 1.48s;
-}
-
-.ball-grid-beat > div:nth-child(3) {
-  animation-delay: 0.2s;
-  animation-duration: 1.02s;
-}
-
-.ball-grid-beat > div:nth-child(4) {
-  animation-delay: -0.06s;
-  animation-duration: 0.94s;
-}
-
-.ball-grid-beat > div:nth-child(5) {
-  animation-delay: 0.16s;
-  animation-duration: 1.53s;
-}
-
-.ball-grid-beat > div:nth-child(6) {
-  animation-delay: 0.5s;
-  animation-duration: 1.51s;
-}
-
-.ball-grid-beat > div:nth-child(7) {
   animation-delay: 0.05s;
-  animation-duration: 0.7s;
-}
-
-.ball-grid-beat > div:nth-child(8) {
-  animation-delay: 0.62s;
   animation-duration: 0.74s;
 }
 
+.ball-grid-beat > div:nth-child(3) {
+  animation-delay: 0.12s;
+  animation-duration: 1.3s;
+}
+
+.ball-grid-beat > div:nth-child(4) {
+  animation-delay: 0.6s;
+  animation-duration: 1.37s;
+}
+
+.ball-grid-beat > div:nth-child(5) {
+  animation-delay: 0.54s;
+  animation-duration: 1.26s;
+}
+
+.ball-grid-beat > div:nth-child(6) {
+  animation-delay: -0.07s;
+  animation-duration: 0.61s;
+}
+
+.ball-grid-beat > div:nth-child(7) {
+  animation-delay: 0.47s;
+  animation-duration: 1.16s;
+}
+
+.ball-grid-beat > div:nth-child(8) {
+  animation-delay: 0.31s;
+  animation-duration: 1.49s;
+}
+
 .ball-grid-beat > div:nth-child(9) {
-  animation-delay: 0.74s;
-  animation-duration: 0.88s;
+  animation-delay: -0.05s;
+  animation-duration: 0.61s;
 }
 
 .ball-grid-beat > div {
@@ -25391,48 +25393,48 @@ ul.pressfacts li {
 }
 
 .ball-grid-pulse > div:nth-child(1) {
-  animation-delay: 0.74s;
-  animation-duration: 1.5s;
+  animation-delay: 0.69s;
+  animation-duration: 1.3s;
 }
 
 .ball-grid-pulse > div:nth-child(2) {
   animation-delay: 0.3s;
-  animation-duration: 0.68s;
-}
-
-.ball-grid-pulse > div:nth-child(3) {
-  animation-delay: 0.3s;
-  animation-duration: 1.4s;
-}
-
-.ball-grid-pulse > div:nth-child(4) {
-  animation-delay: 0.74s;
-  animation-duration: 1.12s;
-}
-
-.ball-grid-pulse > div:nth-child(5) {
-  animation-delay: 0.68s;
-  animation-duration: 0.65s;
-}
-
-.ball-grid-pulse > div:nth-child(6) {
-  animation-delay: -0.09s;
   animation-duration: 1.22s;
 }
 
-.ball-grid-pulse > div:nth-child(7) {
-  animation-delay: -0.11s;
+.ball-grid-pulse > div:nth-child(3) {
+  animation-delay: 0.05s;
+  animation-duration: 0.82s;
+}
+
+.ball-grid-pulse > div:nth-child(4) {
+  animation-delay: 0.65s;
   animation-duration: 1.41s;
 }
 
+.ball-grid-pulse > div:nth-child(5) {
+  animation-delay: 0.55s;
+  animation-duration: 0.68s;
+}
+
+.ball-grid-pulse > div:nth-child(6) {
+  animation-delay: 0.74s;
+  animation-duration: 0.78s;
+}
+
+.ball-grid-pulse > div:nth-child(7) {
+  animation-delay: -0.14s;
+  animation-duration: 0.73s;
+}
+
 .ball-grid-pulse > div:nth-child(8) {
-  animation-delay: 0.29s;
-  animation-duration: 0.84s;
+  animation-delay: 0.15s;
+  animation-duration: 1.14s;
 }
 
 .ball-grid-pulse > div:nth-child(9) {
-  animation-delay: -0.12s;
-  animation-duration: 0.73s;
+  animation-delay: -0.11s;
+  animation-duration: 1.42s;
 }
 
 .ball-grid-pulse > div {
@@ -25770,23 +25772,23 @@ ul.pressfacts li {
 }
 
 .line-scale-party > div:nth-child(1) {
-  animation-delay: 0.18s;
-  animation-duration: 1.17s;
+  animation-delay: 0.25s;
+  animation-duration: 0.83s;
 }
 
 .line-scale-party > div:nth-child(2) {
-  animation-delay: 0.71s;
-  animation-duration: 1.02s;
+  animation-delay: 0s;
+  animation-duration: 0.84s;
 }
 
 .line-scale-party > div:nth-child(3) {
-  animation-delay: 0.29s;
-  animation-duration: 0.47s;
+  animation-delay: 0.79s;
+  animation-duration: 0.35s;
 }
 
 .line-scale-party > div:nth-child(4) {
-  animation-delay: 0.2s;
-  animation-duration: 0.8s;
+  animation-delay: 0.1s;
+  animation-duration: 0.46s;
 }
 
 .line-scale-party > div {

@@ -32,6 +32,9 @@ Seshi = {
 
                         //Fired when peer begins waiting for connection from peer
                         onPeerConnectionWaiting = new Event('onPeerConnectionWaiting');
+                        
+                        //Fired when peer begins checking the peer connection
+                        onPeerConnectionChecking = new Event('onPeerConnectionChecking');
 
                         //Fired when a datachannel is established between both peers
                         onPeerConnectionEstablished = new Event('onPeerConnectionEstablished');
@@ -1423,6 +1426,11 @@ function onRemoteStreamAdded(e) {
 // When browser alerts of change to Ice connection state
 function onIceconnectionStateChanged(e) {
     console.log("Ice Connection State Change to: " + pc.iceConnectionState);
+// TODO change to switch statement
+    if (pc.iceConnectionState == 'checking') {   
+       dispatchEvent(onPeerConnectionChecking);
+    }
+
     if ( pc.iceConnectionState == 'completed' || pc.iceConnectionState == 'connected') {
         //dispatch event onPeerConnectionEstablished since we now have a peer connection (TODO check datachannel state too!)
         dispatchEvent(onPeerConnectionEstablished);

@@ -198,10 +198,24 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                     </ul>
                 </div>
 
-                <div class="dialog">
+                <div id="connectionState">
                 <row>
-                    <div class="col-sm-6" id="disconnected">  <p>Peer has disconnected</p></div>
-                    <div class="col-sm-6" id="resumeTransfer">  <p>Resuming file transfer</p></div>
+                    <div class="col-sm-6" id="connectionState-messages">
+                        <p class="connectionState-message-waiting">
+                            Waiting for friend to connect...
+                        </p>
+                        <p class="connectionState-message-checking">
+                            Checking connection...
+                        </p>
+                        <p class="connectionState-message-disconnected">
+                            Peer has disconnected, attempting automatic re-connect...
+                        </p>
+                        <p class="connectionState-message-resumeTransfer">
+                            Resuming file transfer
+                        </p>
+                    </div>
+                    <!-- <div class="col-sm-6" id="disconnected">  <p>Peer has disconnected</p></div> -->
+                    <!-- <div class="col-sm-6" id="resumeTransfer">  <p>Resuming file transfer</p></div> -->
                     <div class="col-sm-6">  <span><button id="okButton">OK</button></span> </div>
                 </row>
                 </div>

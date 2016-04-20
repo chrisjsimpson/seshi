@@ -905,12 +905,6 @@ Seshi = {
                             for (var fileId in Seshi.storeProgress) {
                                 if( Seshi.storeProgress[fileId].complete == false)
                                 {
-                                    //Delete completed file transfers which miss complete flag
-                                    if ( Seshi.storeProgress[fileId].currentChunk == Seshi.storeProgress[fileId].totalNumChunks )
-                                    {
-                                        delete(Seshi.storeProgress[fileId]);
-                                        continue;
-                                    }
                                     var file = Seshi.storeProgress[fileId];
                                     console.log(fileId);
                                     file.fileId = fileId;

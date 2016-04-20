@@ -39,6 +39,9 @@ Seshi = {
                         //Fired when a datachannel is established between both peers
                         onPeerConnectionEstablished = new Event('onPeerConnectionEstablished');
                         onPeerConnectionEstablished.initEvent('onPeerConnectionEstablished', true, true);
+                        
+                        //Fired when resuming file transfer begins 
+                        onPeerConnectionResumeTransfer = new Event('onPeerConnectionResumeTransfer');
 
                         //Fired when a datachannel is BROKEN between both peers
                         onPeerConnectionBroken = new Event('onPeerConnectionBroken');
@@ -863,6 +866,10 @@ Seshi = {
                                     console.log("Nothing to send, there are no incomplete pulls.");
                                     return;
                                 }//End exit if there are no incomplete pulls
+
+                                //Tell UI we're attempting to resume file transfers
+                                dispatchEvent(onPeerConnectionResumeTransfer);
+
                                 var filesRequested = [];
                                 //request each incomplete file from peer using RANGE request
                                 incompletePulls.forEach(

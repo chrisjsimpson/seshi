@@ -65,6 +65,9 @@ window.addEventListener('onPeerConnectionChecking', showChecking, false);
 //Event: When we have a true Peer-to-Peer data connection established:
 window.addEventListener('onPeerConnectionEstablished', showConnected, false);
 
+//Event: When Seshi attempts to resume incomplete file transfers
+window.addEventListener('onPeerConnectionResumeTransfer', showResuming, false);
+
 window.addEventListener('onPeerConnectionBroken', peerConnectionBroken, false);
 
 //Event: Recieved file listing of connected peer
@@ -510,6 +513,14 @@ function showChecking() {
     $("#connectionState").show();
     document.querySelector(".connectionState-message-checking").style.display = "block";
 }//End showChecking
+
+function showResuming() {
+    console.log("Show resumeTransfer..");
+    //Clear any previouce connection state messages
+    clearConnectionStateMessages();
+    $("#connectionState").show();
+    document.querySelector(".connectionState-message-resumeTransfer").style.display = "block";
+}//End showResuming()
 
 
 

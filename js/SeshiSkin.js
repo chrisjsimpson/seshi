@@ -520,6 +520,9 @@ function showResuming() {
     clearConnectionStateMessages();
     $("#connectionState").show();
     document.querySelector(".connectionState-message-resumeTransfer").style.display = "block";
+    window.setTimeout(function() {
+        $("#connectionState").hide();
+    }, 3000);//End close resuming file transfers message after x secconds
 }//End showResuming()
 
 

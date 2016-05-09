@@ -56,7 +56,7 @@ self.onmessage = function(msg) {
 
 }//End onmessage handler for storeFileDexieWorker
 
-const CHUNKSIZE = 1000000;//1 Megabyte 
+const CHUNKSIZE = 24512;
 var fr = new FileReader();
 var currentFile = 0;
 

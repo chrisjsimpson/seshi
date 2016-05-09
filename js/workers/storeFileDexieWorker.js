@@ -12,6 +12,10 @@ try { //This try wraps the entire worker!
 if ( 'undefined' === typeof window){
             importScripts("../../Dexie.js");
             importScripts("../../databaseSchema.js");
+            importScripts("core.js");
+            importScripts("md5.js");
+            importScripts("sha1.js");
+            importScripts("sha256.js");
         }
 
 //Get handle to files wanting to be stored by user/datachannel.
@@ -52,145 +56,169 @@ self.onmessage = function(msg) {
 
 }//End onmessage handler for storeFileDexieWorker
 
+const CHUNKSIZE = 1000000;//1 Megabyte 
+var fr = new FileReader();
+var currentFile = 0;
 
-var storeFilesInbox = [];
+function storeFiles(files) {
+    var file = files[currentFile];
+    var fileName = file.name;
+    var fileType = file.type;
+    var fileSize = file.size;
+    var numChunksNeeded = Math.ceil(fileSize/CHUNKSIZE);
+    var currentChunkNum = 0;
+    var offset = 0;
+    var hash = '';
+    var md5Hash = CryptoJS.algo.MD5.create();
+    var sha1Hash = CryptoJS.algo.SHA1.create();
 
-function storeFiles(fileList) {
-/* Takes Filelist object, chunks and stores each file
- * into Seshi's indexedDB
-*/
-    console.log("Storing files using storeFileDexieWorker. Start.");
-    console.log(fileList);
-  
-
-    //Loop through each file, chunk and store it
-    for (var i=0; i< fileList.length; i++) {
-        console.log("At file: " + fileList[i].name);
-        //Add file to storeFilesInbox for future processing
-        storeFilesInbox.push(fileList[i]);
-    }//End add all file handles to storeFilesInbox array
-
-    processStoreFilesInbox();
-    function processStoreFilesInbox()
+    hashFile();
+    function hashFile()
     {
-                var currentFile = storeFilesInbox.shift();
-                var maxChunkSize = 24512; //bytes
-                //Get file metadata
+        var readChunkPromise = new Promise(function(resolve, reject) {
+            //Take a slice off the file & hash it..
+            console.log("Taking from offset: " + offset);
+            //Take chunk of file
+            var blob = file.slice(offset, offset + CHUNKSIZE);
 
-                var reader = new FileReader();
-                    reader.onload = function(file) {
-                        if ( reader.readyState == FileReader.DONE) {
-                            //Read next file
-                            if (storeFilesInbox.length > 0) {
-                                processStoreFilesInbox();
-                            }//End begin read next file.
-                            result = file.target.result;
-                            var fileSize = result.byteLength;
-                            if(result.byteLength <= maxChunkSize) { //If tiny file (only one chunk needed
-                                console.log("File size is: " + result.byteLength);//Get file size
-                                var numChunksNeeded = Math.ceil(fileSize/maxChunkSize);
-                                console.log("We need " + numChunksNeeded + " chunks. (" + fileSize +"/" + maxChunkSize + ")");
-                                //Generate SHA-256 hash of file
-                                sha256(result).then(function(digest) 
-                                    {
-                                       fileId = digest;
-                                       storeTinyLessThanOneChunkFile();
-                                    }); 
+            //Read blob as array buffer then convert to wordArray for CryptoJS
+            fr.onload = function(event) {
+                var arrayBuff = event.target.result;
+                console.log('The hash is:');
+                var wordArray = arrayBufferToWordArray(arrayBuff);
+                hash += CryptoJS.SHA1(wordArray);
+                md5Hash.update(wordArray) //Update MD5 hash
+                sha1Hash.update(wordArray); //Update SHA1 hash
+                console.log(hash);
 
-                                function storeTinyLessThanOneChunkFile()
+                //Update current chunk count
+                currentChunkNum = currentChunkNum + 1;
+
+                //Display current chunk ( Chunk index starts at zero, hence +1
+                //postMessage({type:'UI-Update', data: {target:'#currentChunk', content: currentChunkNum + 1}});
+
+                //Update offset for next iteration
+                offset += CHUNKSIZE;
+                resolve();
+
+            }//End blob read as array buffer
+            fr.readAsArrayBuffer(blob);
+            console.log(blob);
+            console.log("Length is: " +  blob.size);
+        });
+        readChunkPromise.then( //Read next chunk of file
+          function() {
+              if (offset < fileSize)
+              {
+                hashFile();
+              } else {
+                //Output bittorrent style file hash
+                var value = 'File name: ' + fileName + '\n' + 'Hash: ' + hash + '\n\n';
+                //postMessage({type:'UI-Update', data: {target:'#hashValue', value: value, options:{append:true}}});
+
+                //Output MD5 hash of file
+                md5Hash = md5Hash.finalize();
+                var md5HashValue = 'File name: ' + fileName + '\n' + 'MD5 Hash: ' + md5Hash + '\n\n';
+                //postMessage({type:'UI-Update', data: {target:'#md5Hash', value: md5HashValue, options:{append:true}}});
+
+                //Output SHA1 hash of file
+                sha1Hash = sha1Hash.finalize();
+                sha1HashValue = 'File name: ' + fileName + '\n' + 'SHA1 Hash: ' + sha1Hash + '\n\n';
+                //postMessage({type:'UI-Update', data: {target:'#sha1Hash', value: sha1HashValue, options:{append:true}}});
+
+                //Show status storing
+                var statusValue = 'Storing file...';
+                //postMessage({type:'UI-Update', data: {target:'#status', content: statusValue}});
+
+                //Store file in IndexedDB with associated hashes
+                console.log('Storing in IndexedDB');
+                currentChunkNum = 0;
+                offset = 0;
+                storeFile();
+                function storeFile()
+                {
+                    console.log('Time to store: ' + fileName);
+                    console.log('With hash: ' + sha1Hash);
+                    console.log('File handle:');
+                    console.log(file);
+                    var storeChunkPromise = new Promise(function(resolve, reject) {
+                        //Take a slice off the file & store it..
+                        console.log("Taking from offset: " + offset);
+                        //Take chunk of file
+                        var blob = file.slice(offset, offset + CHUNKSIZE);
+
+                        fr.onload = function(event) {
+                            var arrayBuff = event.target.result;
+                            //Display current chunk (index starts at zero, hence +1)
+                            //postMessage({type:'UI-Update', data: {target:'#currentChunk', content: currentChunkNum + 1}});
+
+                            //Update offer for next iteration   
+                            offset += CHUNKSIZE;
+                            //Store in IndexedDB
+                            db.chunks.add({
+                                        fileId:sha1Hash.toString(),
+                                        boxId: 'myBoxID',
+                                        fileName: fileName,
+                                        fileType: fileType,
+                                        chunkNumber: currentChunkNum,
+                                        numberOfChunks: numChunksNeeded,
+                                        chunkSize: arrayBuff.byteLength,
+                                        chunk:arrayBuff,
+                                        hash:hash.toString(),
+                                        md5Hash:md5Hash.toString(),
+                                        sha1Hash:sha1Hash.toString()
+                            }).then(function(){
+                                //Update current chunk count
+                                currentChunkNum = currentChunkNum + 1;
+                                resolve();
+                            });
+                        }//End blob read as array buffer
+                        fr.readAsArrayBuffer(blob);
+                        console.log(blob);
+                        console.log("Length is: " +  blob.size);
+                    });//End storeChunkPromise
+
+                    storeChunkPromise.then( //Read next chunk of file
+                        function() {
+                            //Post store progess update to UI
+                            postMessage({
+                                        "type":"storageProgressUpdate",
+                                        "fileId":sha1Hash.toString(),
+                                        "fileName":fileName,
+                                        "currentChunk":currentChunkNum,
+                                        "totalNumChunks":numChunksNeeded,
+                                        }); 
+                            if (offset < fileSize)
+                            {
+                                storeFile();
+                            } else {
+                                //Check for additional files to process
+                                currentFile = currentFile + 1;
+                                if (files[currentFile] !== undefined)
                                 {
-                                    db.transaction("rw", db.chunks, function() {
-                                    var chunk = result.slice(start,end);
-                                        db.chunks
-                                            .add({
-                                                fileId: fileId,
-                                                boxId: 'myBoxID',
-                                                fileName: currentFile.name,
-                                                fileType: currentFile.type,
-                                                chunkNumber: 0,
-                                                numberOfChunks: 1,
-                                                chunkSize: result.byteLength,
-                                                chunk: result
-                                            }).catch(function(error) {
-                                                    console.log(error)
-                                    }).then(function() {
-                                        //Check if storage is complete
-                                        //Post storage progress update to main thread
-                                        postMessage({
+                                    storeFiles(files);//Hash & Store next file
+                                } else {
+                                    //Show status complete.
+                                    postMessage({
                                                 "type":"storageProgressUpdate",
-                                                "fileId":fileId,
-                                                "fileName":currentFile.name,
-                                                "currentChunk":1, //It's actually chunk zero, but our store progress postMessage simplifies if we send one
-                                                "totalNumChunks":1,
-                                        });
-                                            //close(); //Exit worker on completion
-                                    }).catch(function(error) {
-                                        console.err(error);
-                                    })})
-                                }//End storeTinyLessThanOneChunkFile() 
+                                                "fileId":sha1Hash.toString(),
+                                                "fileName":fileName,
+                                                "currentChunk":currentChunkNum,
+                                                "totalNumChunks":numChunksNeeded,
+                                                }); 
+                                    //Reset current file index
+                                    currentFile = 0;
+                                }//End if no more files to process, we are complete
+                          }
+                        });
+            }//End storeFile()
+            return hash;
+          } //End if file has been completly stored, check for additional files.
+      }); //End readChunkPromise complete
+    }//End hashFile();
 
-                            } else { //File is bigger than maxChunkSize, so needs more than one chunk
 
-                                var fileSize = result.byteLength;
-                                //Begin chunking...
-                                console.log("Chunk size is set to: " + maxChunkSize + " bytes.");
-                                var numChunksNeeded = Math.ceil(fileSize/maxChunkSize);
-                                console.log("We need " + numChunksNeeded + " chunks. (" + fileSize +"/" + maxChunkSize + ")");
-                                var start = 0;
-                                var end = maxChunkSize;
-                                //Generate SHA-256 hash of file
-                                sha256(result).then(function(digest) 
-                                    {
-                                       fileId = digest;
-                                       storeLargerThanOneChunkFile();
-                                    }); 
-                                    function storeLargerThanOneChunkFile() 
-                                    {
-                                        //Piece by piece, take maxChunkSize sized piexes of file.target.result and store them to IndexedDB
-                                        for(var chunkNum=0; chunkNum<= numChunksNeeded; chunkNum++)
-                                        {   
-                                            db.transaction("rw", db.chunks, function() {
-                                            var chunk = result.slice(start,end);
-                                            var currentChunkNumTransactionScope = chunkNum; //Without this, for loop will complete (out of scope) immediatly to value  of <= numChunksNeeded
-                                                db.chunks
-                                                    .add({
-                                                        fileId: fileId,
-                                                        boxId: 'myBoxID',
-                                                        fileName: currentFile.name,
-                                                        fileType: currentFile.type,
-                                                        chunkNumber: chunkNum,
-                                                        numberOfChunks: numChunksNeeded,
-                                                        chunkSize: chunk.byteLength,
-                                                        chunk: chunk
-                                                    }).catch(function(error) {
-                                                            console.log(error)
-                                            }).then(function() {
-                                                //Check if storage is complete
-                                                //Post storage progress update to main thread
-                                                postMessage({
-                                                        "type":"storageProgressUpdate",
-                                                        "fileId":fileId,
-                                                        "fileName":currentFile.name,
-                                                        "currentChunk":currentChunkNumTransactionScope,
-                                                        "totalNumChunks":numChunksNeeded,
-                                                });
-                                                //Exit if storage is complete
-                                                if(currentChunkNumTransactionScope == numChunksNeeded) 
-                                                {
-                                                    //close(); //Exit worker on completion
-                                                }//End exit if storage is complete                  
-                                            }).catch(function(error) {
-                                                console.err(error);
-                                            })})
-                                            start = start + maxChunkSize;//Shift up to next bytes from file.target.result
-                                            end = end + maxChunkSize; 
-                                        }//End Piece by piece, take a chunk of the file.target.result, and store it to IndexedDB
-                               }//End storeLargerThanOneChunkFile() 
-                            }//End else if need more than one chunk
-                        }//End reader.readyState == DONE
-                    }//End reader.onload
-                    reader.readAsArrayBuffer(currentFile);
-    }//End processStoreFilesInbox()
+
 }//End storeFiles(fileList)
 
 
@@ -276,3 +304,13 @@ function hex(buffer) {
 } catch (e) {//End of try
     onError(e);
 }//End of try/catch which wrapps the entire worker.
+
+function arrayBufferToWordArray(ab) {
+/* Credit http://stackoverflow.com/questions/33914764/how-to-read-a-binary-file-with-filereader-in-order-to-hash-it-with-sha-256-in-cr */
+  var i8a = new Uint8Array(ab);
+  var a = [];
+  for (var i = 0; i < i8a.length; i += 4) {
+    a.push(i8a[i] << 24 | i8a[i + 1] << 16 | i8a[i + 2] << 8 | i8a[i + 3]);
+  }
+  return CryptoJS.lib.WordArray.create(a, i8a.length);
+}

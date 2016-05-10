@@ -706,7 +706,8 @@ function updateStoreProgressDisplay() {
             var valueNow = parseInt((Seshi.storeProgress[fileId].currentChunk + 1) / Seshi.storeProgress[fileId].totalNumChunks * 100);
             var totalNumChunks = Seshi.storeProgress[fileId].totalNumChunks;
             var complete = Seshi.storeProgress[fileId].complete;
-            var statusMsg = Seshi.storeProgress[fileId].status;
+            var statusMsg = '';
+            Seshi.storeProgress[fileId].status ? statusMsg = Seshi.storeProgress[fileId].status : statusMsg = 'Receiving';
             var output = '';
             output += '<li class="file-item uploading-item uploading row " role="progressbar" aria-valuenow="' + valueNow + '"  aria-valuemin="0" aria-valuemax="100" id="storingFileId-' + fileId + '">';
                         //Filename

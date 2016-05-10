@@ -94,9 +94,6 @@ function storeFiles(files) {
                 //Update current chunk count
                 currentChunkNum = currentChunkNum + 1;
 
-                //Display current chunk ( Chunk index starts at zero, hence +1
-                //postMessage({type:'UI-Update', data: {target:'#currentChunk', content: currentChunkNum + 1}});
-
                 //Update offset for next iteration
                 offset += CHUNKSIZE;
                 resolve();
@@ -121,25 +118,9 @@ function storeFiles(files) {
                             }); 
                 hashFile();
               } else {
-                //Output bittorrent style file hash
-                var value = 'File name: ' + fileName + '\n' + 'Hash: ' + hash + '\n\n';
-                //postMessage({type:'UI-Update', data: {target:'#hashValue', value: value, options:{append:true}}});
 
-                //Output MD5 hash of file
                 md5Hash = md5Hash.finalize();
-                var md5HashValue = 'File name: ' + fileName + '\n' + 'MD5 Hash: ' + md5Hash + '\n\n';
-                //postMessage({type:'UI-Update', data: {target:'#md5Hash', value: md5HashValue, options:{append:true}}});
-
-                //Output SHA1 hash of file
                 sha1Hash = sha1Hash.finalize();
-                sha1HashValue = 'File name: ' + fileName + '\n' + 'SHA1 Hash: ' + sha1Hash + '\n\n';
-                //postMessage({type:'UI-Update', data: {target:'#sha1Hash', value: sha1HashValue, options:{append:true}}});
-
-                //Show status storing
-                var statusValue = 'Storing file...';
-                //postMessage({type:'UI-Update', data: {target:'#status', content: statusValue}});
-
-                //Store file in IndexedDB with associated hashes
                 console.log('Storing in IndexedDB');
                 currentChunkNum = 0;
                 offset = 0;
@@ -158,8 +139,6 @@ function storeFiles(files) {
 
                         fr.onload = function(event) {
                             var arrayBuff = event.target.result;
-                            //Display current chunk (index starts at zero, hence +1)
-                            //postMessage({type:'UI-Update', data: {target:'#currentChunk', content: currentChunkNum + 1}});
 
                             //Update offer for next iteration   
                             offset += CHUNKSIZE;

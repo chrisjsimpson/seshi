@@ -110,6 +110,15 @@ function storeFiles(files) {
           function() {
               if (offset < fileSize)
               {
+                //Post store progess update to UI
+                postMessage({
+                            "type":"storageProgressUpdate",
+                            "fileId":sha1Hash.toString(),
+                            "fileName":fileName,
+                            "currentChunk":currentChunkNum,
+                            "totalNumChunks":numChunksNeeded,
+                            "status":"Crunching"
+                            }); 
                 hashFile();
               } else {
                 //Output bittorrent style file hash
@@ -187,6 +196,7 @@ function storeFiles(files) {
                                         "fileName":fileName,
                                         "currentChunk":currentChunkNum,
                                         "totalNumChunks":numChunksNeeded,
+                                        "status":"Storing"
                                         }); 
                             if (offset < fileSize)
                             {

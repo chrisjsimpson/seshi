@@ -706,12 +706,12 @@ function updateStoreProgressDisplay() {
             var valueNow = parseInt((Seshi.storeProgress[fileId].currentChunk + 1) / Seshi.storeProgress[fileId].totalNumChunks * 100);
             var totalNumChunks = Seshi.storeProgress[fileId].totalNumChunks;
             var complete = Seshi.storeProgress[fileId].complete;
-
+            var statusMsg = Seshi.storeProgress[fileId].status;
             var output = '';
             output += '<li class="file-item uploading-item uploading row " role="progressbar" aria-valuenow="' + valueNow + '"  aria-valuemin="0" aria-valuemax="100" id="storingFileId-' + fileId + '">';
                         //Filename
             output += '<span class="uploadbar" style="width: ' + valueNow + '%;"></span>';
-            output += '<div class="col-xs-10 col-sm-10 name-label">' + fileName + '</div> ';
+            output += '<div class="col-xs-10 col-sm-10 name-label"><em>' + statusMsg + '</em> your file: ' + fileName + '</div> ';
                         //Percentage complete
             output += '<div class="col-xs-2 col-sm-2 name-label">';
             output += '<div>' + valueNow + '%</div>';

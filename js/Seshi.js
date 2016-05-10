@@ -89,6 +89,7 @@ Seshi = {
                                 "currentChunk":currentChunk + 1,
                                 "chunksReceived": chunksReceived + 1,
                                 "totalNumChunks":progressData.totalNumChunks,
+                                "status":progressData.status,
                                 "complete":currentChunk >= progressData.totalNumChunks ? true:false,
                                 "UIdone":false
                                 }

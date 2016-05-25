@@ -11,7 +11,6 @@ Seshi = {
     config:{
         "SeshiBotOn":false,
         "YoloInitMsg":false,
-	"HASH_FILES_ON":true,
         "AUTO_RESUME_INCOMPLETE_TRANSFERS_ON":true
     },
     init:function(){
@@ -1859,3 +1858,11 @@ function processRecieveBuffer() {
  }//End if Seshi.recvBuffer is < 0.
 
 }//End processRecieveBuffer.
+
+window.uuid = function()
+{   /* Credit http://stackoverflow.com/a/2117523 */
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+    });
+}

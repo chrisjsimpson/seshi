@@ -11,6 +11,7 @@ Seshi = {
     config:{
         "SeshiBotOn":false,
         "YoloInitMsg":false,
+	"HASH_FILES_ON":true,
         "AUTO_RESUME_INCOMPLETE_TRANSFERS_ON":true
     },
     init:function(){

@@ -797,6 +797,10 @@ Seshi = {
                 }//End wait for buffer to clear (dc.bufferedAmount > bufferFullThreshold)
                 dc.send(Seshi.buffer.shift());
         }//End while buffer is not empty
+	if ( Seshi.buffer.length > 0) 
+	{
+            Seshi.sendAllData();
+	}
     },
     buffer:[],
     recvBuffer:[],
@@ -1768,7 +1772,16 @@ function processRecieveBuffer() {
                 reader2.onload = function(file2) {
                         if ( reader2.readyState == FileReader.DONE ) {
                                 result2 = file2.target.result;
-                                var fileMetaLengthObj = JSON.parse(result2);
+			 	try {
+                                    var fileMetaLengthObj = JSON.parse(result2);
+				    storeReceivedChunk();
+				} catch (e) {
+                                    console.log("Oopse, not a fileMetaLengthObj?");
+				    console.log(e);
+				    processRecieveBuffer();
+				}
+			    function storeReceivedChunk() 
+			    {
                                 var fileMetaLength = parseInt(fileMetaLengthObj.metaLength);
                                 window.fileMetaLength = fileMetaLength;
                                 console.log("Meta length is:" + fileMetaLength);
@@ -1852,6 +1865,7 @@ function processRecieveBuffer() {
                                         }//End reader.onload
                                         reader.readAsText(chunkFileMeta);
                                         //End extract file meta from blob
+				}//End storeReceivedChunk().
                         }//End IF reading byte lenth of fileMeata
                 }//End get bytelength of fileMeta
                 reader2.readAsText(metaLength);

@@ -656,12 +656,6 @@ Seshi = {
                                     var sendChunk = new Blob([header, chunk.chunk]);
                                     //Add chunk to outBox for sending
                                     Seshi.outBox.push({
-                                        percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
-                                        fileName: chunk.fileName,
-                                        fileId: chunk.fileId,
-                                        fileType: chunk.fileType,
-                                        chunkNumber: chunk.chunkNumber,
-                                        numberOfChunks: chunk.numberOfChunks,
                                         chunk: sendChunk
                                         });
                                         if(Seshi.outBox.length > 0)
@@ -687,12 +681,6 @@ Seshi = {
                                 var sendChunk = new Blob([header, chunk.chunk]);
                                 //Add chunk to outBox for sending
                                 Seshi.outBox.push({
-                                    percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
-                                    fileName: chunk.fileName,
-                                    fileId: chunk.fileId,
-                                    fileType: chunk.fileType,
-                                    chunkNumber: chunk.chunkNumber,
-                                    numberOfChunks: chunk.numberOfChunks,
                                     chunk: sendChunk
                                 });
                                 Seshi.processOutbox();

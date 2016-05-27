@@ -679,11 +679,16 @@ Seshi = {
                                 var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                                 var sendChunk = new Blob([header, chunk.chunk]);
                                 //Add chunk to outBox for sending
-                                Seshi.outBox.push(sendChunk);
+				//Convert chunk to ArrayBuffer before adding to buffer
+				var frToArrayBuffer = new FileReader;
+				frToArrayBuffer.onload = function(chunk) {	
+                                    Seshi.outBox.push(chunk.target.result);
+                                    Seshi.processOutbox();
+                                    //Close outbox flag so we don't repeatedly open a new filereader
+                                    Seshi.flagProcessOutboxStarted=false;
+				}//End read chunk as ArrayBuffer and push to Seshi.outBox
+				frToArrayBuffer.readAsArrayBuffer(sendChunk);
 
-                                Seshi.processOutbox();
-                                //Close outbox flag so we don't repeatedly open a new filereader
-                                Seshi.flagProcessOutboxStarted=false;
 
                                 }).then(function(){
                                 Seshi.flagProcessOutboxStarted = true;
@@ -700,32 +705,7 @@ Seshi = {
                      */
                     if ( Seshi.flagProcessOutboxStarted == true && Seshi.outBox.length > 0)
                     {
-                        fr = new FileReader
-
-                        function loadNext() {
-
-                        fr.onload = function(chunk) {
-                                //Add chunk to buffer
-                                Seshi.buffer.push(chunk.target.result);
-                                Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
-                                    //Kill off fileReader if we've reached the end
-                                    if(Seshi.outBox.length == 0)
-                                    {
-                                        //fr = undefined;
-                                    }//End kill off fileReader if we've reached the end
-                                loadNext(); // shortcut here
-                           };
-                            if(Seshi.outBox.length > 0) {
-                            //Get next chunk from outbox (presuming there is one)
-                                if ( fr.readyState == 2 || fr.readyState == 0 )
-                                {
-                                    chunkData = Seshi.outBox.pop();
-                                    fr.readAsArrayBuffer(chunkData); //Read in next chunk
-                                }//End only read next chunk if fileRead is ready for next one.
-                            }
-                        }
-
-                        loadNext();
+		        Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
                     }//End only open reader again if flagProcessOutboxStarted is set to true.
     },
     updateSendingProgress: function(ack) {
@@ -774,14 +754,14 @@ Seshi = {
                 Seshi.sendAllData();
     },
     sendAllData: function() {
-        while (Seshi.buffer.length > 0) {
+        while (Seshi.outBox.length > 0) {
                 if(dc.bufferedAmount > Seshi.bufferFullThreshold) {
                     //Use polling (forced)
                     //setTimeout(Seshi.sendAllData, 106500);
                     dc.addEventListener('bufferedamountlow', Seshi.listener);
                     return; //Exit sendAllData  until ready because buffer is full
                 }//End wait for buffer to clear (dc.bufferedAmount > bufferFullThreshold)
-                dc.send(Seshi.buffer.shift());
+                dc.send(Seshi.outBox.shift());
         }//End while buffer is not empty
     },
     buffer:[],

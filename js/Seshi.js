@@ -655,9 +655,8 @@ Seshi = {
                                     var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                                     var sendChunk = new Blob([header, chunk.chunk]);
                                     //Add chunk to outBox for sending
-                                    Seshi.outBox.push({
-                                        chunk: sendChunk
-                                        });
+                                    Seshi.outBox.push(sendChunk);
+
                                         if(Seshi.outBox.length > 0)
                                         {
                                             Seshi.flagProcessOutboxStarted=true;
@@ -680,9 +679,8 @@ Seshi = {
                                 var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                                 var sendChunk = new Blob([header, chunk.chunk]);
                                 //Add chunk to outBox for sending
-                                Seshi.outBox.push({
-                                    chunk: sendChunk
-                                });
+                                Seshi.outBox.push(sendChunk);
+
                                 Seshi.processOutbox();
                                 //Close outbox flag so we don't repeatedly open a new filereader
                                 Seshi.flagProcessOutboxStarted=false;
@@ -722,7 +720,7 @@ Seshi = {
                                 if ( fr.readyState == 2 || fr.readyState == 0 )
                                 {
                                     chunkData = Seshi.outBox.pop();
-                                    fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk
+                                    fr.readAsArrayBuffer(chunkData); //Read in next chunk
                                 }//End only read next chunk if fileRead is ready for next one.
                             }
                         }

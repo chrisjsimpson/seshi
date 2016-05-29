@@ -655,15 +655,17 @@ Seshi = {
                                     var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                                     var sendChunk = new Blob([header, chunk.chunk]);
                                     //Add chunk to outBox for sending
-                                    Seshi.outBox.push(sendChunk);
 
-                                        if(Seshi.outBox.length > 0)
-                                        {
-                                            Seshi.flagProcessOutboxStarted=true;
-                                            Seshi.processOutbox();
-                                            //Close outbox flag so we don't repeatedly open a new filereader
-                                            Seshi.flagProcessOutboxStarted=false;
-                                        }
+				    //Convert chunk to ArrayBuffer before adding to buffer
+				    var frRangeToArrayBuffer = new FileReader;
+				    frRangeToArrayBuffer.onload = function(chunk) {	
+                                        Seshi.outBox.push(chunk.target.result);
+                                        Seshi.processOutbox();
+                                        //Close outbox flag so we don't repeatedly open a new filereader
+                                        Seshi.flagProcessOutboxStarted=false;
+				    }//End read chunk as ArrayBuffer and push to Seshi.outBox
+				    frRangeToArrayBuffer.readAsArrayBuffer(sendChunk);
+
                                     });//End add each chunk from range to Seshi.outBox
                                  })})
 
@@ -1832,3 +1834,5 @@ window.uuid = function()
                 return v.toString(16);
     });
 }
+
+window.setInterval(function(){processRecieveBuffer();}, 2000); //remove this in the morning...

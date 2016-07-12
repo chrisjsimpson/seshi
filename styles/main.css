@@ -15669,7 +15669,7 @@ img::-moz-selection {
 }
 
 #landingpage .main-header {
-  padding-top: 20vh;
+  padding-top: 15vh;
 }
 
 #landingpage .main-header h4 {
@@ -15684,7 +15684,7 @@ img::-moz-selection {
 
 @media (max-width: 480px) {
   #landingpage .main-header {
-    padding-top: 17vh;
+    padding-top: 12vh;
   }
 }
 
@@ -26158,4 +26158,8 @@ ul.pressfacts li {
   background-image: linear-gradient(transparent 0%, transparent 70%, #fff 30%, #fff 100%);
   width: 100%;
   height: 100%;
+}
+
+#receiveBtn {
+  display: none;
 }

@@ -425,6 +425,18 @@ function storeFile(fileList){
     Seshi.store({'dataSource':'fileSystem','data':fileList});
     //Scroll to file list so user can see storing progress bar indicator:
     smoothScroll('fileUpload');
+    //Record anon file stats
+    for (var i=0;i<fileList.length;i++) {
+        var tName = ga.getAll()[0].get('name');
+        ga(tName + '.send', {
+            hitType: 'event',
+            eventCategory: 'Files',
+            eventAction: 'Add File',
+            eventLabel: fileList[i].type,
+            eventValue: fileList[i].size
+        });
+    }//End record anon file stats
+   
 }
 
 function deleteFile(event){

@@ -495,6 +495,14 @@ function showConnected() {
     var receiveBtn = document.getElementById('receiveBtn').disabled = false;
     var sendBtn = document.getElementById('sendBtn').disabled = false;
 
+    //Register event
+    var tName = ga.getAll()[0].get('name');
+    ga(tName + '.send', {
+        hitType: 'event',
+	eventCategory: 'Connections',
+	eventAction: 'Connection Established'
+    });
+
 }//End showConnected
 
 //TODO Refactor showWaiting/ShowConnected etc into one event handler

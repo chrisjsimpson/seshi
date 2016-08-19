@@ -55,10 +55,6 @@ Seshi = {
                         onNewChatMessage = new Event('onNewChatMessage');
                         onNewChatMessage.initEvent('onNewChatMessage', true, true);
 
-                        //Fired when the storage worker reports it has stored from more chunks of a file(s)
-                        storeFilesProgressUpdate = new Event('storeFilesProgressUpdate');
-                        storeFilesProgressUpdate.initEvent('storeFilesProgressUpdate', true, true);
-
                         //Fired when sending file progress update occurs (sending chunk-by-chunk over datachannel)
                         sendFileProgressUpdate = new Event('sendFileProgressUpdate');
                         sendFileProgressUpdate.initEvent('sendFileProgressUpdate', true, true);
@@ -93,6 +89,14 @@ Seshi = {
                                 "complete":currentChunk >= progressData.totalNumChunks ? true:false,
                                 "UIdone":false
                                 }
+                			
+							var storeFilesProgressUpdate= new CustomEvent(
+                                'storeFilesProgressUpdate',
+                                 {
+                                 	'detail': {
+                                    	'type': storeType //Local file or Datachannel
+                                        }
+                                 }); 
                             dispatchEvent(storeFilesProgressUpdate);//Dispacht/fire progress update event for local UI
 
                             //Tell peer if all chunks have been received
@@ -655,22 +659,17 @@ Seshi = {
                                     var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                                     var sendChunk = new Blob([header, chunk.chunk]);
                                     //Add chunk to outBox for sending
-                                    Seshi.outBox.push({
-                                        percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
-                                        fileName: chunk.fileName,
-                                        fileId: chunk.fileId,
-                                        fileType: chunk.fileType,
-                                        chunkNumber: chunk.chunkNumber,
-                                        numberOfChunks: chunk.numberOfChunks,
-                                        chunk: sendChunk
-                                        });
-                                        if(Seshi.outBox.length > 0)
-                                        {
-                                            Seshi.flagProcessOutboxStarted=true;
-                                            Seshi.processOutbox();
-                                            //Close outbox flag so we don't repeatedly open a new filereader
-                                            Seshi.flagProcessOutboxStarted=false;
-                                        }
+
+                                    //Convert chunk to ArrayBuffer before adding to buffer
+                                    var frRangeToArrayBuffer = new FileReader;
+                                    frRangeToArrayBuffer.onload = function(chunk) { 
+                                        Seshi.outBox.push(chunk.target.result);
+                                        Seshi.processOutbox();
+                                        //Close outbox flag so we don't repeatedly open a new filereader
+                                        Seshi.flagProcessOutboxStarted=false;
+                                    }//End read chunk as ArrayBuffer and push to Seshi.outBox
+                                    frRangeToArrayBuffer.readAsArrayBuffer(sendChunk);
+
                                     });//End add each chunk from range to Seshi.outBox
                                  })})
 
@@ -686,18 +685,16 @@ Seshi = {
                                 var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                                 var sendChunk = new Blob([header, chunk.chunk]);
                                 //Add chunk to outBox for sending
-                                Seshi.outBox.push({
-                                    percentComplete: (chunk.chunkNumber + 1) / chunk.numberOfChunks * 100,
-                                    fileName: chunk.fileName,
-                                    fileId: chunk.fileId,
-                                    fileType: chunk.fileType,
-                                    chunkNumber: chunk.chunkNumber,
-                                    numberOfChunks: chunk.numberOfChunks,
-                                    chunk: sendChunk
-                                });
-                                Seshi.processOutbox();
-                                //Close outbox flag so we don't repeatedly open a new filereader
-                                Seshi.flagProcessOutboxStarted=false;
+                                //Convert chunk to ArrayBuffer before adding to buffer
+                                var frToArrayBuffer = new FileReader;
+                                frToArrayBuffer.onload = function(chunk) {  
+                                                    Seshi.outBox.push(chunk.target.result);
+                                                    Seshi.processOutbox();
+                                                    //Close outbox flag so we don't repeatedly open a new filereader
+                                                    Seshi.flagProcessOutboxStarted=false;
+                                }//End read chunk as ArrayBuffer and push to Seshi.outBox
+                                frToArrayBuffer.readAsArrayBuffer(sendChunk);
+
 
                                 }).then(function(){
                                 Seshi.flagProcessOutboxStarted = true;
@@ -714,32 +711,7 @@ Seshi = {
                      */
                     if ( Seshi.flagProcessOutboxStarted == true && Seshi.outBox.length > 0)
                     {
-                        fr = new FileReader
-
-                        function loadNext() {
-
-                        fr.onload = function(chunk) {
-                                //Add chunk to buffer
-                                Seshi.buffer.push(chunk.target.result);
-                                Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
-                                    //Kill off fileReader if we've reached the end
-                                    if(Seshi.outBox.length == 0)
-                                    {
-                                        //fr = undefined;
-                                    }//End kill off fileReader if we've reached the end
-                                loadNext(); // shortcut here
-                           };
-                            if(Seshi.outBox.length > 0) {
-                            //Get next chunk from outbox (presuming there is one)
-                                if ( fr.readyState == 2 || fr.readyState == 0 )
-                                {
-                                    chunkData = Seshi.outBox.pop();
-                                    fr.readAsArrayBuffer(chunkData.chunk); //Read in next chunk
-                                }//End only read next chunk if fileRead is ready for next one.
-                            }
-                        }
-
-                        loadNext();
+                        Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
                     }//End only open reader again if flagProcessOutboxStarted is set to true.
     },
     updateSendingProgress: function(ack) {
@@ -788,14 +760,14 @@ Seshi = {
                 Seshi.sendAllData();
     },
     sendAllData: function() {
-        while (Seshi.buffer.length > 0) {
+        while (Seshi.outBox.length > 0) {
                 if(dc.bufferedAmount > Seshi.bufferFullThreshold) {
                     //Use polling (forced)
                     //setTimeout(Seshi.sendAllData, 106500);
                     dc.addEventListener('bufferedamountlow', Seshi.listener);
                     return; //Exit sendAllData  until ready because buffer is full
                 }//End wait for buffer to clear (dc.bufferedAmount > bufferFullThreshold)
-                dc.send(Seshi.buffer.shift());
+                dc.send(Seshi.outBox.shift());
         }//End while buffer is not empty
 	if ( Seshi.buffer.length > 0) 
 	{
@@ -1601,13 +1573,13 @@ function setupDataHandlers() {
     }
 
 function sendChat(msg) {
-	var cb = document.getElementById("chatbox"),
+    var cb = document.getElementById("chatbox"),
     c = document.getElementById("message-to-send");
 
-	//Display message locally, send it, and force chat window to
-	// last line
-	msg = msg || c.value;
-	console.log("calling sendChat(" + msg + ")");
+    //Display message locally, send it, and force chat window to
+    // last line
+    msg = msg || c.value;
+    console.log("calling sendChat(" + msg + ")");
     //TODO Move (below) to SeshiSkinExample to keep seperate from API:
     var timeStamp = new Date();
     timeStamp = timeStamp.toString();
@@ -1633,9 +1605,9 @@ function sendChat(msg) {
             '</li>';
     cb.insertAdjacentHTML('beforeend', localChatMsg);
 
-	data.send({'chat':msg, 'remoteDisplayName':Seshi.getDisplayName()});
-	c.value = '';
-	cb.scrollTop = cb.scrollHeight;
+    data.send({'chat':msg, 'remoteDisplayName':Seshi.getDisplayName()});
+    c.value = '';
+    cb.scrollTop = cb.scrollHeight;
 }//End sendChat()
 
 
@@ -1738,8 +1710,8 @@ function log(msg) {
 }
 
 function getShareLink() {
-	var key = Seshi.getKey();
-	return document.location.origin + '/?key=' + key;
+    var key = Seshi.getKey();
+    return document.location.origin + '/?key=' + key;
 }
 
 function getQueryVariable(variable)
@@ -1880,3 +1852,5 @@ window.uuid = function()
                 return v.toString(16);
     });
 }
+
+window.setInterval(function(){processRecieveBuffer();}, 2000); //remove this in the morning...

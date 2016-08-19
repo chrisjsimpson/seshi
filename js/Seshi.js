@@ -55,10 +55,6 @@ Seshi = {
                         onNewChatMessage = new Event('onNewChatMessage');
                         onNewChatMessage.initEvent('onNewChatMessage', true, true);
 
-                        //Fired when the storage worker reports it has stored from more chunks of a file(s)
-                        storeFilesProgressUpdate = new Event('storeFilesProgressUpdate');
-                        storeFilesProgressUpdate.initEvent('storeFilesProgressUpdate', true, true);
-
                         //Fired when sending file progress update occurs (sending chunk-by-chunk over datachannel)
                         sendFileProgressUpdate = new Event('sendFileProgressUpdate');
                         sendFileProgressUpdate.initEvent('sendFileProgressUpdate', true, true);
@@ -93,6 +89,14 @@ Seshi = {
                                 "complete":currentChunk >= progressData.totalNumChunks ? true:false,
                                 "UIdone":false
                                 }
+                			
+							var storeFilesProgressUpdate= new CustomEvent(
+                                'storeFilesProgressUpdate',
+                                 {
+                                 	'detail': {
+                                    	'type': storeType //Local file or Datachannel
+                                        }
+                                 }); 
                             dispatchEvent(storeFilesProgressUpdate);//Dispacht/fire progress update event for local UI
 
                             //Tell peer if all chunks have been received
@@ -656,15 +660,15 @@ Seshi = {
                                     var sendChunk = new Blob([header, chunk.chunk]);
                                     //Add chunk to outBox for sending
 
-				    //Convert chunk to ArrayBuffer before adding to buffer
-				    var frRangeToArrayBuffer = new FileReader;
-				    frRangeToArrayBuffer.onload = function(chunk) {	
+                                    //Convert chunk to ArrayBuffer before adding to buffer
+                                    var frRangeToArrayBuffer = new FileReader;
+                                    frRangeToArrayBuffer.onload = function(chunk) { 
                                         Seshi.outBox.push(chunk.target.result);
                                         Seshi.processOutbox();
                                         //Close outbox flag so we don't repeatedly open a new filereader
                                         Seshi.flagProcessOutboxStarted=false;
-				    }//End read chunk as ArrayBuffer and push to Seshi.outBox
-				    frRangeToArrayBuffer.readAsArrayBuffer(sendChunk);
+                                    }//End read chunk as ArrayBuffer and push to Seshi.outBox
+                                    frRangeToArrayBuffer.readAsArrayBuffer(sendChunk);
 
                                     });//End add each chunk from range to Seshi.outBox
                                  })})
@@ -681,15 +685,15 @@ Seshi = {
                                 var header = JSON.stringify(metaLength) + JSON.stringify(meta);
                                 var sendChunk = new Blob([header, chunk.chunk]);
                                 //Add chunk to outBox for sending
-				//Convert chunk to ArrayBuffer before adding to buffer
-				var frToArrayBuffer = new FileReader;
-				frToArrayBuffer.onload = function(chunk) {	
-                                    Seshi.outBox.push(chunk.target.result);
-                                    Seshi.processOutbox();
-                                    //Close outbox flag so we don't repeatedly open a new filereader
-                                    Seshi.flagProcessOutboxStarted=false;
-				}//End read chunk as ArrayBuffer and push to Seshi.outBox
-				frToArrayBuffer.readAsArrayBuffer(sendChunk);
+                                //Convert chunk to ArrayBuffer before adding to buffer
+                                var frToArrayBuffer = new FileReader;
+                                frToArrayBuffer.onload = function(chunk) {  
+                                                    Seshi.outBox.push(chunk.target.result);
+                                                    Seshi.processOutbox();
+                                                    //Close outbox flag so we don't repeatedly open a new filereader
+                                                    Seshi.flagProcessOutboxStarted=false;
+                                }//End read chunk as ArrayBuffer and push to Seshi.outBox
+                                frToArrayBuffer.readAsArrayBuffer(sendChunk);
 
 
                                 }).then(function(){
@@ -707,7 +711,7 @@ Seshi = {
                      */
                     if ( Seshi.flagProcessOutboxStarted == true && Seshi.outBox.length > 0)
                     {
-		        Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
+                        Seshi.sendAllData(); //Send arrayBuffer chunks out over datachannel with buffering
                     }//End only open reader again if flagProcessOutboxStarted is set to true.
     },
     updateSendingProgress: function(ack) {
@@ -1565,13 +1569,13 @@ function setupDataHandlers() {
     }
 
 function sendChat(msg) {
-	var cb = document.getElementById("chatbox"),
+    var cb = document.getElementById("chatbox"),
     c = document.getElementById("message-to-send");
 
-	//Display message locally, send it, and force chat window to
-	// last line
-	msg = msg || c.value;
-	console.log("calling sendChat(" + msg + ")");
+    //Display message locally, send it, and force chat window to
+    // last line
+    msg = msg || c.value;
+    console.log("calling sendChat(" + msg + ")");
     //TODO Move (below) to SeshiSkinExample to keep seperate from API:
     var timeStamp = new Date();
     timeStamp = timeStamp.toString();
@@ -1597,9 +1601,9 @@ function sendChat(msg) {
             '</li>';
     cb.insertAdjacentHTML('beforeend', localChatMsg);
 
-	data.send({'chat':msg, 'remoteDisplayName':Seshi.getDisplayName()});
-	c.value = '';
-	cb.scrollTop = cb.scrollHeight;
+    data.send({'chat':msg, 'remoteDisplayName':Seshi.getDisplayName()});
+    c.value = '';
+    cb.scrollTop = cb.scrollHeight;
 }//End sendChat()
 
 
@@ -1702,8 +1706,8 @@ function log(msg) {
 }
 
 function getShareLink() {
-	var key = Seshi.getKey();
-	return document.location.origin + '/?key=' + key;
+    var key = Seshi.getKey();
+    return document.location.origin + '/?key=' + key;
 }
 
 function getQueryVariable(variable)

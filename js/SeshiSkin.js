@@ -726,8 +726,10 @@ function updateStoreProgressDisplay() {
             var valueNow = parseInt((Seshi.storeProgress[fileId].currentChunk + 1) / Seshi.storeProgress[fileId].totalNumChunks * 100);
             var totalNumChunks = Seshi.storeProgress[fileId].totalNumChunks;
             var complete = Seshi.storeProgress[fileId].complete;
-            var statusMsg = '';
-            Seshi.storeProgress[fileId].status ? statusMsg = Seshi.storeProgress[fileId].status : statusMsg = 'Receiving';
+
+            //Seshi.storeProgress[fileId].status ? statusMsg = Seshi.storeProgress[fileId].status : statusMsg = 'Receiving';
+            if ( Seshi.storeProgress[fileId].storeType == 'remote' ) { var statusMsg = 'Receiving';} else { var statusMsg = 'Storing';}
+
             var output = '';
             output += '<li class="file-item uploading-item uploading row " role="progressbar" aria-valuenow="' + valueNow + '"  aria-valuemin="0" aria-valuemax="100" id="storingFileId-' + fileId + '">';
                         //Filename

@@ -189,6 +189,7 @@ function storeFiles(files) {
 		    //Post store progess update to UI
 		    postMessage({
 				"type":"storageProgressUpdate",
+                "storeType":"local", //"local" == a user manually added file (ie not via datachannel)
 				"fileId":sha1Hash.toString(),
 				"fileName":fileName,
 				"currentChunk":currentChunkNum,
@@ -208,6 +209,7 @@ function storeFiles(files) {
 			    //Show status complete.
 			    postMessage({
 					"type":"storageProgressUpdate",
+                    "storeType":"local", //"local" == a user manually added file (ie not via datachannel)
 					"fileId":sha1Hash.toString(),
 					"fileName":fileName,
 					"currentChunk":currentChunkNum,
@@ -246,6 +248,7 @@ function storeChunk(seshiChunk) {
                     //Post storage progress update to main thread
                     postMessage({
                             "type":"storageProgressUpdate",
+                            "storeType":"remote", //"remote == data received over datachannel
                             "fileId":seshiChunk.fileId,
                             "fileName":seshiChunk.fileName,
                             "currentChunk":seshiChunk.chunkNumber,

@@ -87,6 +87,7 @@ Seshi = {
                             Seshi.storeProgress[progressData.fileId] = {
                                 "fileId":progressData.fileId,
                                 "fileName":progressData.fileName,
+                                "storeType":progressData.storeType,
                                 "currentChunk":currentChunk + 1,
                                 "chunksReceived": chunksReceived + 1,
                                 "totalNumChunks":progressData.totalNumChunks,
@@ -99,7 +100,7 @@ Seshi = {
                                 'storeFilesProgressUpdate',
                                  {
                                  	'detail': {
-                                    	'type': storeType //Local file or Datachannel
+                                    	'type': progressData.storeType //Local file or Datachannel
                                         }
                                  }); 
                             dispatchEvent(storeFilesProgressUpdate);//Dispacht/fire progress update event for local UI

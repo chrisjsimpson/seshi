@@ -1,4 +1,9 @@
 processRecieveBufferFLAG = false;
+
+//Bye bye Safari
+var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+if (isSafari) alert("Safari is not supported yet, please use Chrome or Firefox, or Opera");
+
 Seshi = {
     welcome:(function(){   /*
                         #   Seshi Init

@@ -140,7 +140,7 @@ Seshi = {
 
                         //Add default Seshi.io Signaling server if none present
                         if ( Seshi.signalingServers.list.length == 0 ) {
-                            Seshi.addSignalingServer("seshi.io");
+                              Seshi.addSignalingServer("http://signal.seshi.io");
                         }//End add default signaling server if none present
                         return "It's 106 miles to Chicago; We got a full tank of gas; half a pack of cigarettes; its dark, and we're wearing sunglasses. Let's go!";
     },

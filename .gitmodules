@@ -1,6 +1,3 @@
 [submodule "seshiapi"]
 	path = seshiapi
 	url = https://chrisjsimpson@bitbucket.org/seshiProject/seshiapi.git
-[submodule "seshiskin"]
-	path = seshiskin
-	url = https://bitbucket.org/seshiProject/seshiskin

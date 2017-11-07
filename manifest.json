@@ -1,0 +1,20 @@
+{
+  "short_name": "Seshi",
+  "name": "Seshi",
+  "icons": [
+    {
+      "src": "96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#2299e3",
+  "theme_color": "#2299e3",
+  "display":"standalone"
+}

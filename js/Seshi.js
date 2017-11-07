@@ -24,7 +24,9 @@ Seshi = {
                          * > Create all Seshi.events
                          * > Checks for existing Signaling Servers, adds Seshi.io as default
                          * > Updates local file list cache
-                        */
+                         */
+                        //Register service worker
+                        Seshi.serviceWorker();
 
                         // Restore Seshi.sendingFileProgress from localStorage (if present)
                         Seshi.restoreSendingFileProgress();
@@ -171,7 +173,23 @@ Seshi = {
                         '#          > Seshi.connect() -- Establish connection between peers\n' +
                         '#          > Seshi.play() -- Returns blob url of file so UI can playback media. (see: https://goo.gl/mmPU9V)\n'
             ); return "🚀 🚀  Keep calm & Seshi on! 🚀 🚀"},
-    connect: function() {
+   serviceWorker: function() {
+                        /* serviceWorker() 
+                         *  
+                         *  Registers service worker for offline experience.
+                         *
+                         */
+                         if ('serviceWorker' in navigator) {
+                          navigator.serviceWorker.register('sw.js', { scope: '/'})
+                             .then(function(reg) {
+                                // registration worked
+                                console.log('Registration of service worker succeeded. Scope is ' + reg.scope);
+                             }).catch(function(error) {
+                                console.log('Registration of service worker failed with ' + error);
+                             });
+                         }
+   },
+   connect: function() {
                         /* Connect()
                          *
                          * Calls index.js Connect

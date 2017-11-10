@@ -219,7 +219,6 @@ function createShareUrl() {
    	if (navigator.share) {
   		navigator.share({
       	title: 'Seshi Instant File Share Link',
-      	text: 'Share this link with your friend',
       	url: Seshi.getShareUrl(),
   		})
     	.then(() => console.log('Successful native share api call.'))

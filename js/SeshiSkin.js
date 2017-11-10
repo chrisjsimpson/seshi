@@ -215,6 +215,16 @@ function createShareUrl() {
     // with the key inside so user understands what to do:
     document.getElementById('shareKeyInputElm').value = Seshi.getShareUrl();
 
+    //Call native share if available
+   	if (navigator.share) {
+  		navigator.share({
+      	title: 'Seshi Instant File Share Link',
+      	text: 'Share this link with your friend',
+      	url: Seshi.getShareUrl(),
+  		})
+    	.then(() => console.log('Successful native share api call.'))
+    	.catch((error) => console.log('Error sharing', error));
+		} 
 
 }//End createShareUrl()
 

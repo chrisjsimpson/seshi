@@ -728,7 +728,7 @@ function updateStoreProgressDisplay() {
 
     //Loop through each item in Seshi.storeProgress & update the display accordingly
     for ( var fileId in Seshi.storeProgress) {
-        if(Seshi.storeProgress[fileId].UIdone == false)
+        if( fileId != "undefined" && Seshi.storeProgress[fileId].UIdone == false)
         {
             Seshi.storeProgress[fileId];
             var fileName = Seshi.storeProgress[fileId].fileName;

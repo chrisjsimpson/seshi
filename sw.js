@@ -3,6 +3,7 @@ this.addEventListener('install', function(event) {
     caches.open('v1').then(function(cache) {
       return cache.addAll([
         '/',
+        '/?utm_source=homescreen',
         '/js/jquery.min.js',
         '/js/clipboard.min.js',
         '/Dexie.js',

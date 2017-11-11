@@ -85,6 +85,30 @@ function storeFiles(files) {
 	storeFile(); //Else just store file without generating file hashes
     }
 
+		function hex(buffer) {
+			var hexCodes = [];
+			var view = new DataView(buffer);
+			for (var i = 0; i < view.byteLength; i += 4) {
+				// Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
+				var value = view.getUint32(i)
+				// toString(16) will give the hex representation of the number without padding
+				var stringValue = value.toString(16)
+				// We use concatenation and slice for padding
+				var padding = '00000000'
+				var paddedValue = (padding + stringValue).slice(-padding.length)
+				hexCodes.push(paddedValue);
+			}
+
+			// Join all the hex strings into one
+			return hexCodes.join("");
+		}
+
+		function sha256(arrayBuff) {
+			return crypto.subtle.digest("SHA-256", arrayBuff).then(function (hash) {
+				return hex(hash);
+			});
+		}
+
     function hashFile()
     {
         var readChunkPromise = new Promise(function(resolve, reject) {
@@ -156,28 +180,55 @@ function storeFiles(files) {
 		var blob = file.slice(offset, offset + CHUNKSIZE);
 
 		fr.onload = function(event) {
-		    var arrayBuff = event.target.result;
+        var arrayBuff = event.target.result;
 
-		    //Update offer for next iteration   
-		    offset += CHUNKSIZE;
-		    //Store in IndexedDB
-		    db.chunks.add({
-				fileId: config.HASH_FILES_ON ? sha1Hash.toString() : fileId,
-				boxId: 'myBoxID',
-				fileName: fileName,
-				fileType: fileType,
-				chunkNumber: currentChunkNum,
-				numberOfChunks: numChunksNeeded,
-				chunkSize: arrayBuff.byteLength,
-				chunk: arrayBuff,
-				hash: config.HASH_FILES_ON ? hash.toString() : false,
-				md5Hash: config.HASH_FILES_ON ? md5Hash.toString() : false,
-				sha1Hash: config.HASH_FILES_ON ? sha1Hash.toString() : false
-		    }).then(function(){
-			//Update current chunk count
-			currentChunkNum = currentChunkNum + 1;
-			resolve();
-		    });
+        if (config.CHECKSUM_CHUNKS_ON)
+        {
+					sha256(arrayBuff).then(function(digest) {
+						console.log("Chunk checksum: " + digest);
+						db.chunks.add({
+						fileId: config.HASH_FILES_ON ? sha1Hash.toString() : fileId,
+						boxId: 'myBoxID',
+						fileName: fileName,
+						fileType: fileType,
+						chunkNumber: currentChunkNum,
+						numberOfChunks: numChunksNeeded,
+						chunkSize: arrayBuff.byteLength,
+						chunk: arrayBuff,
+						checksum: digest,
+						hash: config.HASH_FILES_ON ? hash.toString() : false,
+						md5Hash: config.HASH_FILES_ON ? md5Hash.toString() : false,
+						sha1Hash: config.HASH_FILES_ON ? sha1Hash.toString() : false
+						}).then(function(){
+							//Update current chunk count
+							currentChunkNum = currentChunkNum + 1;
+							resolve();
+						});
+					}); // outputs sha256 of hexString
+        } else {
+						db.chunks.add({
+						fileId: config.HASH_FILES_ON ? sha1Hash.toString() : fileId,
+						boxId: 'myBoxID',
+						fileName: fileName,
+						fileType: fileType,
+						chunkNumber: currentChunkNum,
+						numberOfChunks: numChunksNeeded,
+						chunkSize: arrayBuff.byteLength,
+						chunk: arrayBuff,
+						hash: config.HASH_FILES_ON ? hash.toString() : false,
+						md5Hash: config.HASH_FILES_ON ? md5Hash.toString() : false,
+						sha1Hash: config.HASH_FILES_ON ? sha1Hash.toString() : false
+						}).then(function(){
+							//Update current chunk count
+							currentChunkNum = currentChunkNum + 1;
+							resolve();
+						});
+				}//End dont compute chunk checksum before storing if config.CHECKSUM_CHUNKS_ON is false
+
+				//Update offer for next iteration   
+				offset += CHUNKSIZE;
+				//Store in IndexedDB
+
 		}//End blob read as array buffer
 		fr.readAsArrayBuffer(blob);
 		console.log(blob);

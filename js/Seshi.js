@@ -676,7 +676,7 @@ Seshi = {
                                     {
                                     //Transaction scope
                                     //Sending file meta...
-                                    var meta = {"fileId":chunk.fileId, "checksum":chunk.checksum, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+                                    var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "boxId":chunk.boxId, "checksum":chunk.checksum,"chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
                                     var lengthOfMeta = JSON.stringify(meta).length;
                                     lengthOfMeta = zeroFill(lengthOfMeta, 64);
                                     var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified
@@ -702,7 +702,7 @@ Seshi = {
                                 db.chunks.where(whereClause).equals(equalsClause).each(function(chunk) {
                                 //Transaction scope
                                 //Sending file meta...
-                                var meta = {"fileId":chunk.fileId, "checksum":chunk.checksum, "chunkNumber":chunk.chunkNumber, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
+                                var meta = {"fileId":chunk.fileId, "chunkNumber":chunk.chunkNumber, "boxId":chunk.boxId, "checksum":chunk.checksum, "chunkSize":chunk.chunkSize, "numberOfChunks":chunk.numberOfChunks,"fileType":chunk.fileType,"fileName":chunk.fileName};
                                 var lengthOfMeta = JSON.stringify(meta).length;
                                 lengthOfMeta = zeroFill(lengthOfMeta, 64);
                                 var metaLength = {"metaLength":lengthOfMeta}; //Always 81 characters when stringified

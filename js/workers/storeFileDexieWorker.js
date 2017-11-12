@@ -50,7 +50,15 @@ self.onmessage = function(msg) {
             break;
         case "seshiChunk":
             console.log("caught seshiChunk store req");
-            storeChunk(storeRequest);
+            verifyChunk(storeRequest)
+            .then(function() {
+              storeChunk(storeRequest);
+            }, function(Error) {
+                //Re-request chunk TODO
+                console.log(storeRequest);
+                console.log(Error);
+              }
+            );
             break;
     }//End switch to determine data input source
 
@@ -276,6 +284,37 @@ function storeFiles(files) {
 }//End storeFiles(fileList)
 
 
+/* verifyChunk(seshiChunk)
+ *
+ * Verify the integrity of a chunk if we can by
+ * - Check if the chuck has a 'checksum' set
+ * - If so, recalculate the checksum using 
+ *   seshiChunk.chunk
+ * - Compete the locally computed checksum with
+ *   the checksum recieved over the wire.
+ */
+function verifyChunk(seshiChunk) {
+
+  return new Promise((resolve, reject) => {
+    var reader = new FileReader();
+    reader.addEventListener("loadend", function(read) {
+      //read.result contains the contents of blob as a typed array
+      sha256(read.target.result).then(function(digest) {
+        console.log(digest);
+        console.log("yolo verrifying chunk");
+        if (seshiChunk.checksum != digest)
+        {
+          reject({"errorMessage": "seshichunk checksum mismatch"});
+        } else {
+          resolve(digest);
+        }
+      }); // outputs sha256 of hexString
+    });
+    reader.readAsArrayBuffer(seshiChunk.chunk);
+  });
+}
+
+
 function storeChunk(seshiChunk) {
 
     console.log("Recived req to store chunk in webworker.");
@@ -285,6 +324,7 @@ function storeChunk(seshiChunk) {
     db.transaction("rw",db.chunks, function() {
         db.chunks.add({
                     fileId: seshiChunk.fileId,
+                    checksum: seshiChunk.checksum,
                     boxId: 'myBoxID',
                     fileName: seshiChunk.fileName,
                     fileType: seshiChunk.fileType,
@@ -302,6 +342,7 @@ function storeChunk(seshiChunk) {
                             "storeType":"remote", //"remote == data received over datachannel
                             "fileId":seshiChunk.fileId,
                             "fileName":seshiChunk.fileName,
+                            "checksum":seshiChunk.checksum,
                             "currentChunk":seshiChunk.chunkNumber,
                             "totalNumChunks":seshiChunk.numberOfChunks
                     });

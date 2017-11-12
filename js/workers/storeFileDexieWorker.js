@@ -51,7 +51,7 @@ self.onmessage = function(msg) {
         case "seshiChunk":
             console.log("caught seshiChunk store req");
             verifyChunk(storeRequest)
-            .then(function() {
+            .then(function(storeRequest) {
               storeChunk(storeRequest);
             }, function(Error) {
                 //Re-request chunk TODO
@@ -296,6 +296,8 @@ function storeFiles(files) {
 function verifyChunk(seshiChunk) {
 
   return new Promise((resolve, reject) => {
+    if (!config.CHECKSUM_CHUNKS_ON)
+      resolve(seshiChunk.chunk);
     var reader = new FileReader();
     reader.addEventListener("loadend", function(read) {
       //read.result contains the contents of blob as a typed array
@@ -305,9 +307,8 @@ function verifyChunk(seshiChunk) {
         if (seshiChunk.checksum != digest)
         {
           reject({"errorMessage": "seshichunk checksum mismatch"});
-          alert("woo");
         } else {
-          resolve(digest);
+          resolve(seshiChunk);
         }
       }); // outputs sha256 of hexString
     });

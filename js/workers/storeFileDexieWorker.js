@@ -305,6 +305,7 @@ function verifyChunk(seshiChunk) {
         if (seshiChunk.checksum != digest)
         {
           reject({"errorMessage": "seshichunk checksum mismatch"});
+          alert("woo");
         } else {
           resolve(digest);
         }
@@ -324,11 +325,11 @@ function storeChunk(seshiChunk) {
     db.transaction("rw",db.chunks, function() {
         db.chunks.add({
                     fileId: seshiChunk.fileId,
-                    checksum: seshiChunk.checksum,
+                    chunkNumber: seshiChunk.chunkNumber,
                     boxId: 'myBoxID',
+                    checksum: seshiChunk.checksum,
                     fileName: seshiChunk.fileName,
                     fileType: seshiChunk.fileType,
-                    chunkNumber: seshiChunk.chunkNumber,
                     numberOfChunks: seshiChunk.numberOfChunks,
                     chunkSize: seshiChunk.chunkSize,
                     chunk: seshiChunk.chunk

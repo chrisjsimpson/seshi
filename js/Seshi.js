@@ -74,64 +74,14 @@ Seshi = {
                         StorageWorker = new Worker("js/workers/storeFileDexieWorker.js");
                         //Recieve proress message(s)
                         StorageWorker.onmessage = function(event) {
-                            var progressData = event.data;
-                            //Update Seshi.storeProgess array with file storing progress updates, indexeded by fileId
-
-                            if ( Seshi.storeProgress[progressData.fileId] === undefined )
-                            {
-                                currentChunk = 0;
-                                chunksReceived = 0;
-                            }else { //End set progress to zero initially
-                                currentChunk = Seshi.storeProgress[progressData.fileId].currentChunk;
-                                chunksReceived = Seshi.storeProgress[progressData.fileId].chunksReceived;
-                            }//End else incriment currentChunk using current value
-
-                            Seshi.storeProgress[progressData.fileId] = {
-                                "fileId":progressData.fileId,
-                                "fileName":progressData.fileName,
-                                "storeType":progressData.storeType,
-                                "currentChunk":currentChunk + 1,
-                                "chunksReceived": chunksReceived + 1,
-                                "totalNumChunks":progressData.totalNumChunks,
-                                "status":progressData.status,
-                                "complete":currentChunk >= progressData.totalNumChunks ? true:false,
-                                "UIdone":false
-                                }
-                			
-							var storeFilesProgressUpdate= new CustomEvent(
-                                'storeFilesProgressUpdate',
-                                 {
-                                 	'detail': {
-                                    	'type': progressData.storeType //Local file or Datachannel
-                                        }
-                                 }); 
-                            dispatchEvent(storeFilesProgressUpdate);//Dispacht/fire progress update event for local UI
-
-                            //Tell peer if all chunks have been received
-                            if ( chunksReceived == progressData.totalNumChunks )
-                            {
-                                //Build receive complete message
-                                var receiveMsg = {
-                                 'cmd':'receiveComplete',
-                                 'fileId':progressData.fileId
-                                };
-
-                                //Send over datachannel
-                                receiveMsg = JSON.stringify(receiveMsg);
-                                
-                                //Check Datachannel connection status
-                                if (typeof dc != "undefined" || dc.readyState == "open") {
-                                    dc.send(receiveMsg); //Inform peer that we've stored the complete file.
-                                }//End check Datachannel is actually open
-
-                            }//End tell peer if all chunks have been received
-
-                            //Delete completed storeProgess
-                            if(Seshi.storeProgress[progressData.fileId].complete == true)
-                            {
-                                delete(Seshi.storeProgress[progressData.fileId]);
-                            }
-                        }//End recieve storage progress update and update Seshi.storeProgress array with fileId's progress
+                          //Desypher message type
+                          switch (event.data.type) {
+                            case 'storageProgressUpdate':
+                              //recieve storage progress update and update Seshi.storeProgress array with fileId's progress
+                              Seshi.storeProgressUpdate(event);
+                              break;
+                          }
+                        }//End recieve storage worker onmessage event (parse msg type, dispatch to handlers accordingly)
 
                         //Initalize local files list cache if empty
                         if (!localStorage.getItem("localFilesList" || localStorage.getItem('localFilesList').length == 0)) {
@@ -389,6 +339,66 @@ Seshi = {
                         StorageWorker.postMessage(dataSourceMsg); // Post data to worker for storage
     },
     storeProgress:[],
+    storeProgressUpdate:function(event) {
+                        var progressData = event.data;
+                        //Update Seshi.storeProgess array with file storing progress updates, indexeded by fileId
+
+                        if ( Seshi.storeProgress[progressData.fileId] === undefined )
+                        {
+                            currentChunk = 0;
+                            chunksReceived = 0;
+                        }else { //End set progress to zero initially
+                            currentChunk = Seshi.storeProgress[progressData.fileId].currentChunk;
+                            chunksReceived = Seshi.storeProgress[progressData.fileId].chunksReceived;
+                        }//End else incriment currentChunk using current value
+
+                        Seshi.storeProgress[progressData.fileId] = {
+                            "fileId":progressData.fileId,
+                            "fileName":progressData.fileName,
+                            "storeType":progressData.storeType,
+                            "currentChunk":currentChunk + 1,
+                            "chunksReceived": chunksReceived + 1,
+                            "totalNumChunks":progressData.totalNumChunks,
+                            "status":progressData.status,
+                            "complete":currentChunk >= progressData.totalNumChunks ? true:false,
+                            "UIdone":false
+                        }
+
+                        var storeFilesProgressUpdate= new CustomEvent(
+                            'storeFilesProgressUpdate',
+                             {
+                              'detail': {
+                                  'type': progressData.storeType //Local file or Datachannel
+                                    }
+                             }); 
+                        dispatchEvent(storeFilesProgressUpdate);//Dispacht/fire progress update event for local UI
+
+                        //Tell peer if all chunks have been received
+                        if ( chunksReceived == progressData.totalNumChunks )
+                        {
+                            //Build receive complete message
+                            var receiveMsg = {
+                             'cmd':'receiveComplete',
+                             'fileId':progressData.fileId
+                            };
+
+                            //Send over datachannel
+                            receiveMsg = JSON.stringify(receiveMsg);
+                            
+                            //Check Datachannel connection status
+                            if (typeof dc != "undefined" || dc.readyState == "open") {
+                                dc.send(receiveMsg); //Inform peer that we've stored the complete file.
+                            }//End check Datachannel is actually open
+
+                        }//End tell peer if all chunks have been received
+
+                        //Delete completed storeProgess
+                        if(Seshi.storeProgress[progressData.fileId].complete == true)
+                        {
+                            delete(Seshi.storeProgress[progressData.fileId]);
+                        }
+
+    },
     saveStoreProgress:function(){
                         /* saveStoreProgress()
                          *  TODO Consider refactoring as this is same as

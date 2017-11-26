@@ -1816,8 +1816,32 @@ function storeChunk(storeReqObj) {
   return new Promise((resolve, reject) => {
     StorageWorker.postMessage(storeReqObj);
     StorageWorker.addEventListener("message", function(e) {
-        resolve(e.data);
+				if (e.data.type == "storageProgressUpdate" && e.data.storeType == "remote") {
+        	resolve(storeReqObj);
+				}
     });
+  });
+}
+
+function sendReceivedChunkACK(storeReqObj) {
+	return new Promise((resolve, reject) => {
+		//Send back ACK to remote peer with progess update
+		var peerReceivedChunkACK = {
+      'cmd':'receivedChunkACK',
+			'data':{
+        'boxId'         : Seshi.getBoxId(),
+        'fileId'        : storeReqObj.fileId,
+        'fileName'      : storeReqObj.fileName,
+        'fileType'      : storeReqObj.fileType,
+        'numberOfChunks': storeReqObj.numberOfChunks,
+        'chunkNumber'   : storeReqObj.chunkNumber,
+        'chunkSize'     : storeReqObj.chunkSize
+			}
+		};
+    //Send chunk received ACK over datachannel to peer
+    peerReceivedChunkACK = JSON.stringify(peerReceivedChunkACK);
+    dc.send(peerReceivedChunkACK);
+    resolve();
   });
 }
 
@@ -1834,7 +1858,8 @@ function processRecieveBuffer() {
       var blob = Seshi.recvBuffer.pop();
       getMetaLength(blob)
       .then(seshiMeta => parseMetaSegment(seshiMeta))
-      .then(seshiChunk => storeChunk(seshiChunk));
+      .then(seshiChunk => storeChunk(seshiChunk))
+      .then(storeReqObj => sendReceivedChunkACK(storeReqObj));
     }
 
 }//End processRecieveBuffer.

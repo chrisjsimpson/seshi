@@ -1204,7 +1204,7 @@ notify: function(message) {
                         if (permission === "granted")
                         {
                             var options = {
-                                body:message,
+                                body:message.chat,
                                 icon: 'img/seshilongbetablue.png'
                             }
 

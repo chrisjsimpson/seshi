@@ -1384,7 +1384,7 @@ html {
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #333333;
   background-color: #fff;
@@ -1564,7 +1564,7 @@ h4, .h4 {
 }
 
 h5, .h5 {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 h6, .h6 {
@@ -1913,7 +1913,7 @@ pre {
   display: block;
   padding: 9.5px;
   margin: 0 0 10px;
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.42857;
   word-break: break-all;
   word-wrap: break-word;
@@ -3026,7 +3026,7 @@ input[type="checkbox"]:focus {
 output {
   display: block;
   padding-top: 7px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
 }
@@ -3036,7 +3036,7 @@ output {
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   color: #555555;
   background-color: #fff;
@@ -3628,7 +3628,7 @@ select[multiple].input-lg,
   border: 1px solid transparent;
   white-space: nowrap;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
   border-radius: 4px;
   -webkit-user-select: none;
@@ -4118,7 +4118,7 @@ tbody.collapse.in {
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 16px;
   text-align: left;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -4511,7 +4511,7 @@ tbody.collapse.in {
 
 .input-group-addon {
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: normal;
   line-height: 1;
   color: #555555;
@@ -7064,7 +7064,7 @@ button.close {
   word-break: normal;
   word-spacing: normal;
   word-wrap: normal;
-  font-size: 14px;
+  font-size: 16px;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ccc;
@@ -7093,7 +7093,7 @@ button.close {
 .popover-title {
   margin: 0;
   padding: 8px 14px;
-  font-size: 14px;
+  font-size: 16px;
   background-color: #f7f7f7;
   border-bottom: 1px solid #ebebeb;
   border-radius: 5px 5px 0 0;
@@ -15489,7 +15489,7 @@ a:hover, a:focus {
 
 footer {
   background-color: rgba(20, 20, 20, 0.9);
-  font-size: 14px;
+  font-size: 16px;
   padding: 36px;
   z-index: 1000;
 }
@@ -15723,7 +15723,7 @@ img::-moz-selection {
   .mobile-cloud p {
     font-family: 'Source Sans Pro';
     color: #16aee7;
-    font-size: 14px;
+    font-size: 16px;
     margin-left: 3vw;
   }
 }
@@ -18273,7 +18273,7 @@ img::-moz-selection {
 }
 
 .button--size-s {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .button--size-m {
@@ -19573,7 +19573,7 @@ li {
   color: #333;
   background: #fff;
   width: 90%;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .people-list i {
@@ -19638,7 +19638,7 @@ li {
 
 .chat .chat-header .chat-num-messages {
   color: #92959E;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .chat .chat-header .fa-star {
@@ -19672,7 +19672,7 @@ li {
   color: white;
   padding: 5px 9px;
   line-height: 19px;
-  font-size: 14px;
+  font-size: 16px;
   border-radius: 2px;
   margin-bottom: 15px;
   width: 65%;
@@ -20182,7 +20182,7 @@ input[type="checkbox"]:checked + .fileitem {
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 16px;
   text-align: left;
   color: #000;
   background-color: white;
@@ -20800,7 +20800,7 @@ input[id="display-name"]:focus + .edit-btn {
 .flashcopied {
   color: #fc3f3f !important;
   margin-top: 6px !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
 }
 
 .copyclipboard-card h6 {
@@ -21065,7 +21065,7 @@ input[id="shareKeyInputElm"]:focus {
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 7px;
-    font-size: 13px;
+    font-size: 16px;
   }
   .myfiles h3 {
     padding: 0 50px;
@@ -23579,7 +23579,7 @@ input[id="shareKeyInputElm"]:focus {
   border: 2px solid #fff;
   margin: 0 auto;
   margin-bottom: 20px;
-  font-size: 13px;
+  font-size: 16px;
   letter-spacing: 1.5px;
   border-radius: 6px;
 }
@@ -24178,7 +24178,7 @@ ul.pressfacts li {
   margin-left: 10px;
   color: #6B7D86;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .plyr__controls .plyr__time + .plyr__time {
@@ -24208,7 +24208,7 @@ ul.pressfacts li {
   box-shadow: 0 0 5px rgba(64, 64, 64, 0.9), 0 0 0 1px rgba(64, 64, 64, 0.9);
   border-radius: 3px;
   color: #6B7D86;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   font-weight: 600;
   transform: translate(-50%, 10px) scale(0.8);

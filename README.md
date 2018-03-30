@@ -170,6 +170,9 @@ Both peers send their candidate addresses to the signalling server, so that each
     console.log(key); //xyz
     Seshi.connect(key); //See docs
 
+### Resources 
+
+- Learn how Seshi works: https://pages.seshi.io/so-what-is-seshi-anyway/ 
 
 
 [^n]: http://w3c.github.io/webrtc-pc/#idl-def-RTCIceCandidate 

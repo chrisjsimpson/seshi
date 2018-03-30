@@ -1,0 +1,86 @@
+@import "bourbon/bourbon";
+$green: #86BB71;
+$darkgreen: #6ca354;
+
+
+
+.subscribe-email {
+  height:60px;
+  width:80%;
+  // margin: 0 auto;
+  font-size: 25px;
+  outline:none;
+}
+
+.btn-subscribe {
+  width: 180px;
+  min-height: 35px;
+  font-size: 18px;
+  color: #fff;
+  letter-spacing: 1.3px;
+  font-family: 'Source Sans Pro';
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 15px;
+  background: $darkgreen;
+  border-bottom: 2px solid darkgreen;
+  transition: all 0.2s ease-in-out;
+  &:hover,
+  &:focus {
+    background: $green;
+    border-bottom: 2px solid $darkgreen;
+  }
+}
+
+input[id="mce-EMAIL"] {
+    border-width: 0;
+    border-bottom: 2px solid #888;
+    color:#555;
+    background: #ddd;
+    padding-bottom: 2px;
+    padding-right: 16px;
+    padding-left: 16px;
+    margin-left: 6vw;
+    // width: 170px;
+    transition: all .3s ease-in-out;
+    &:focus {
+    outline:none;
+    color:#333;
+    border-bottom: 2px solid #555;
+    }
+    &:focus + .email-btn{
+    color:#333;
+    }
+}
+
+.email-btn {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    line-height: 16px;
+    font-size: 20px;
+    top: -3px;
+    right: 15px;
+    color: #aaa;
+    transition: all .3s ease-in-out;
+}
+
+@media(max-width: $screen-xs-max) {
+  .btn-subscribe {
+    margin: 0 auto;
+    margin-top: 25px;
+  }
+  .subscribe-email {
+    height:60px;
+    width:100%;
+    // margin: 0 auto;
+    font-size: 22px;
+  }
+  #subscribe {
+    padding: 17px;
+    padding-bottom: 30px;
+  }
+  input[id="mce-EMAIL"] {
+    margin: 0 auto;
+  }
+}

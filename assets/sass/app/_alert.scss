@@ -1,0 +1,80 @@
+
+#connectionState {
+  margin: 0;
+  background: rgba(249, 224, 157, 0.9);
+  display: none;
+  font-family: 'Signika', sans-serif;
+  color:#000;
+  position: fixed;
+  width: 100%;
+  top: 73px;
+  left: 0;
+  height: 123px;
+  padding: 15px;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  z-index: 1500;
+}
+
+#connectionState h2 {
+  margin-top: 0px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.connectionState-messages {
+}
+
+.connectionState-message-waiting, 
+.connectionState-message-checking,
+.connectionState-message-connected,
+.connectionState-message-disconnected,
+.connectionState-message-resumeTransfer
+{
+    display: none;
+}
+
+#close {
+  float: right;
+  font-size: 20px;
+  margin-top: -2.5px;
+  cursor: pointer;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+#okButton {
+  position: absolute !important;
+  margin-left: -75px;
+  position: relative;
+  width: 150px;
+  height: 37px;
+  border: none;
+  outline: none;
+  letter-spacing: 1px;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  border-radius: 3px;
+  background:#fff;
+  font-size: 18px;
+  color: #000;
+}
+
+#disconnected, #resumeTransfer {
+  display:none;
+}
+
+
+
+/*768px*/
+@media(min-width: $screen-sm-min) {
+  #connectionState {
+    height: 66px;
+      top: 95px;
+  }
+}
